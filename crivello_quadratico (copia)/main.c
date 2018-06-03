@@ -17,7 +17,7 @@
 #include <mpfr.h>
 #include "main.h"
 #include <pthread.h>
-
+//proof
 	//valori globali(presi da altri file)
 	extern FILE*file_log;//file di log
 	extern struct timespec timer;//istante di tempo 
