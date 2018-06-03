@@ -1,0 +1,59 @@
+n=10216022408938332424838032055678928223479415259793135853679310697336903604162773 M_start=25 B_start=20 k=5 card_f_base=5 p_min=2 p_max=4 a=143 num potential B_smooth=0 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=2 ns:189970
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=221 num potential B_smooth=7 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:719701
+mean_increment=0.000000
+n=19967359 M_start=25 B_start=20 k=7 card_f_base=3 p_min=p_max=2 a=3 num potential B_smooth=0 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:643624
+mean_increment=0.000000
+n=19967359 M_start=25000 B_start=2000 k=7 card_f_base=148 p_min=69 p_max=147 a=0 num potential B_smooth=4519 M_end=25000 B_end=2000 num_increment=0 time_total:hour=0 min=0 sec:0 ms=124 ns:282543
+mean_increment=0.000000
+n=19967359 M_start=25000 B_start=2000 k=7 card_f_base=148 p_min=69 p_max=147 a=0 num potential B_smooth=4519 M_end=25000 B_end=2000 num_increment=0 time_total:hour=0 min=0 sec:0 ms=124 ns:148521
+mean_increment=0.000000
+n=19967359 M_start=25000 B_start=2000 k=7 n=19967359 M_start=25000 B_start=2000 k=7 n=19967359 M_start=25000 B_start=2000 k=7 card_f_base=148 p_min=69 p_max=147 a=0 num potential B_smooth=4519 M_end=25000 B_end=2000 num_increment=0 time_total:hour=0 min=0 sec:0 ms=126 ns:672517
+mean_increment=0.000000
+n=163197805698170863 M_start=25000 B_start=2000 k=7 card_f_base=158 p_min=67 p_max=157 a=1713143 num potential B_smooth=233 M_end=25000 B_end=2000 num_increment=0 time_total:hour=0 min=0 sec:0 ms=100 ns:32334
+mean_increment=0.000000
+n=4795987391651737054527889181 M_start=25000 B_start=2000 k=5 card_f_base=138 p_min=63 p_max=137 a=7229669357 num potential B_smooth=3 M_end=25000 B_end=2000 num_increment=0 time_total:hour=0 min=0 sec:0 ms=102 ns:259266
+mean_increment=0.000000
+n=4795987391651737054527889181 M_start=25000 B_start=2000 k=5 card_f_base=138 p_min=63 p_max=137 a=6768764917 num potential B_smooth=0 M_end=25000 B_end=2000 num_increment=0 time_total:hour=0 min=0 sec:0 ms=99 ns:75758
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 num potential B_smooth=7 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:596817
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 num potential B_smooth=19 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=1 ns:109161
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=221 num potential B_smooth=17 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=3 ns:86096
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=119 num potential B_smooth=21 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=1 ns:158429
+mean_increment=0.000000
+n=10216022408938332424838032055678928223479415259793135853679310697336903604162773 M_start=100000 B_start=5000000 k=5 card_f_base=174384 p_min=74 p_max=503 a=3352839795975558141624381998523265957 num potential B_smooth=177 M_end=100000 B_end=5000000 num_increment=0 time_total:hour=0 min=2 sec:24 ms=825 ns:290402
+mean_increment=0.000000
+n=10216022408938332424838032055678928223479415259793135853679310697336903604162773 M_start=100000 B_start=5000000 k=5 card_f_base=174384 p_min=43 p_max=275 a=44468159863471017246911868891417053 num potential B_smooth=184 M_end=100000 B_end=5000000 num_increment=0 time_total:hour=0 min=2 sec:25 ms=522 ns:548787
+mean_increment=0.000000
+n=10216022408938332424838032055678928223479415259793135853679310697336903604162773 M_start=100000 B_start=5000000 k=5 card_f_base=174384 p_min=43 p_max=153 a=24094748712225325104362262964711 num potential B_smooth=29 M_end=100000 B_end=5000000 num_increment=0 time_total:hour=0 min=2 sec:23 ms=471 ns:342622
+mean_increment=0.000000
+n=10216022408938332424838032055678928223479415259793135853679310697336903604162773 M_start=500000 B_start=10000000 k=5 card_f_base=331890 p_min=43 p_max=503 a=84081421582556866013123649093177739 num potential B_smooth=2176 M_end=500000 B_end=10000000 num_increment=0 time_total:hour=0 min=8 sec:35 ms=884 ns:232668
+mean_increment=0.000000
+n=10216022408938332424838032055678928223479415259793135853679310697336903604162773 M_start=500000 B_start=10000000 k=5 n=1100017 M_start=25 B_start=20 k=1 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 num potential B_smooth=19 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 num potential B_smooth=19 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 num potential B_smooth=19 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 num potential B_smooth=19 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 num potential B_smooth=19 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=119 num potential B_smooth=21 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=221 num potential B_smooth=17 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=221 num potential B_smooth=17 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=221 num potential B_smooth=17 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=119 num potential B_smooth=21 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=119 num potential B_smooth=21 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=221 num potential B_smooth=17 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=221 num potential B_smooth=17 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 num potential B_smooth=19 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 num potential B_smooth=19 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=221 num potential B_smooth=17 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=499 ns:289136
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=119 num potential B_smooth=21 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=512 ns:876086
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 num potential B_smooth=19 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=507 ns:898640
+mean_increment=0.000000
+n=10216022408938332424838032055678928223479415259793135853679310697336903604162773 M_start=100000 B_start=200000 k=5 card_f_base=8996 p_min=43 p_max=503 a=228033662676232853376806217631509361 num potential B_smooth=1 M_end=100000 B_end=200000 num_increment=0 time_total:hour=0 min=2 sec:20 ms=976 ns:394611
+mean_increment=0.000000
+n=10216022408938332424838032055678928223479415259793135853679310697336903604162773 M_start=100000 B_start=200000 k=5 card_f_base=8996 p_min=43 p_max=503 a=1435225287815026605612511887340961411 num potential B_smooth=2 M_end=100000 B_end=200000 num_increment=0 time_total:hour=0 min=2 sec:23 ms=105 ns:855176
+mean_increment=0.000000
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 num potential B_smooth=19 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=3 ns:944543
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=221 num potential B_smooth=17 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=1 ns:94382
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=119 num potential B_smooth=21 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=1 ns:686186
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 num potential B_smooth=19 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=2 ns:87442
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=119 num potential B_smooth=21 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=2 ns:242905
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 num potential B_smooth=19 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=2 ns:206465
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 num potential B_smooth=19 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:981093
+mean_increment=0.000000

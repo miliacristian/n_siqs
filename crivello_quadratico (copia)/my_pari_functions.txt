@@ -1,0 +1,71 @@
+f(x)={ \\funzione con parametri
+	my (a = 2*x);\\ local variables,cosa fa my?
+	my (b = a^2); /*ciao*/
+	i=0;
+	for(a=0,10,i=i+a);\\10 iterazioni
+	if(i<=100,i=2,i=98);\\ if-else
+	printf(i);
+	printf("      ");
+	printf(i);
+	printf("\n");
+	return (i);
+}
+
+fun_no_param()={ \\funzione senza parametri
+	i=123;
+	return (-1);
+}
+
+
+\\variable name expected==è stato usato il nome di una funzione come variabile
+\\indici partono da 1(one based)
+
+\\genera numeri semiprimi n=p*q in modo random
+random_biprime()={
+	n;
+	p;
+	q;
+	MAX_DIGIT_N=80;
+	MAX_NUM_FOR_DIGIT=6;
+	cardinality=MAX_DIGIT_N/2*MAX_NUM_FOR_DIGIT;
+	l=List();
+	for(digit=1,MAX_DIGIT_N/2,
+		for(number=1,MAX_NUM_FOR_DIGIT,
+			maximum=10^digit;
+			minimum=10^(digit-1);
+			diff=maximum-minimum;
+			rand1=random(diff);
+			rand1=rand1+minimum;
+			p=nextprime(rand1);
+			rand2=random(diff);
+			rand2=rand2+minimum;
+			q=nextprime(rand2);
+			n=p*q;
+			array=vector(3);
+			array[1]=n;
+			array[2]=p;
+			array[3]=q;
+			listput(l,array);
+		);
+	);
+	listsort(l);
+	for(i=1,i=cardinality,
+		write("biprime2.txt",l[i][1]);
+		write("factorization_biprime.txt",l[i]);
+		if(i%MAX_NUM_FOR_DIGIT==0,
+			writetex("biprime2.txt","\n");
+		);
+	);
+	return (0);
+}
+
+
+
+
+
+
+
+
+
+
+

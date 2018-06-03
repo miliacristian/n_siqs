@@ -1,0 +1,60 @@
+dimensioni dei vari array,dei vari vettori e delle varie matrici
+
+big int:
+n
+x0=b_default
+b1
+a_default,
+a,
+a_mpqs,
+thresold_a,
+thresold_q,
+q;
+
+
+
+long:
+primi della factor base(B deve essere grande in modo tale da avere numeri long),in teoria anche int dovrebbe bastare
+B
+M
+b
+
+
+
+int:
+s
+k
+dim_sol
+num_B_smooth
+cardinality_factor_base
+matrix factorization ha elementi int
+
+
+array long:
+array_of_prime_chosen_for_a dimensione 2*s A=[indice primo,valore primo,indice secondo primo scelto,valore secondo primo scelto]
+
+
+matrix_long:
+
+
+
+matrix int:
+linear_system: row:card factor base col:num_B_smooth
+base_matrix: row:num_B_smooth col:dim sol
+matrix_solution:(soluzioni messe per riga) row:2^(dim-1) col:num_B_smooth
+
+
+matrix_mpz:
+matrix_factorization: row:2m+1(array di numeri) col:card fac base*2(factor num iesimo array numeri:valore primo e esponente relativo)
+matrix_B_smooth: row:num b_smooth col:card fac base*2(factor num B_smooth iesimo array numeri:valore primo e esponente relativo)
+
+array_big_int:	
+array_bi;	dimensione 2^(s-1)
+array_Bk;	dimensione s	
+array_number	dimensione 2*M+1 
+}
+
+
+
+
+
