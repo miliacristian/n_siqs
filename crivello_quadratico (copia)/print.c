@@ -442,6 +442,12 @@ void print_matrix_factorization_f(struct matrix_factorization m){
 	printf("num_row=%d\n",m.num_row);
 	return;
 }
+void print_thread_data(struct thread_data thread_data,long M){
+	for(int i=0;i<2*M+1;i++){
+		gmp_printf("b=%Zd,",thread_data.b);
+		printf("first_index=%d,last_index=%d,sum_log=%d,j=%d\n",thread_data.numbers[i].first_index_f_base,thread_data.numbers[i].last_index_f_base,thread_data.numbers[i].sum_log,thread_data.numbers[i].j);
+	}
+}
 
 
 

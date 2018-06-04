@@ -27,7 +27,7 @@ struct timespec;
 struct row_factorization{
 	int length;//card*2
 	int*prime;//contiene primo factor base e
-	float*log_prime;//valore del suo logaritmo
+	int*log_prime;//valore del suo logaritmo
 };
 struct row{
 	int index_first_prime;
@@ -50,7 +50,19 @@ struct matrix_relation_B_smooth{//matrice che contiene le relazioni B_smooth
 	struct row_relation_B_smooth*row;
 	int num_row;
 };
+struct thread_data {
+	float log_thresold;//valore della soglia
+	mpz_t b;//coefficiente b
+	struct number*numbers;//array di struct di numberi
+};
 
+struct number {
+	int j;//indice j va da -M a M
+	int sum_log;//somma del logaritmo
+	int first_index_f_base;//primo indice del primo della factor base che divide number
+	int last_index_f_base;//ultimo indice del primo della factor base che divide number
+	//number=a^2j^2+2*a*b*j+b^2-n,b^2-n=a*c
+};
 struct square_relation {
     mpz_t square;
     struct node_factorization*head_factorization;
@@ -72,4 +84,5 @@ void test();
 FILE*open_file_log();
 void print_time_elapsed_on_file_log(char*string);
 FILE*open_file(char*path);
+struct thread_data*alloc_array_thread_data(int length_array_thread_data,long M);
 #endif

@@ -80,7 +80,7 @@ void create_row_factorization(struct node_factor_base*head_f_base_f,int card_f_b
 	for(int i=0;i<card_f_base;i++){
 		r.prime[i]=p->prime;//metti il primo della factor base in posizione pari
 		if(p->prime!=-1){
-			r.log_prime[i]=(float)log(p->prime);
+			r.log_prime[i]=(int)round(log2f((float)p->prime));
 		}
 		p=p->next;
 	}
