@@ -210,12 +210,12 @@ void print_list(struct node*head){
 	printf("\n");
 	return;
 }
-void print_list_f(struct node_f*head){
+void print_list_f(struct node_factor_base*head){
 	if (head==NULL){
 		printf("impossible print list head is NULL\n");
 		return;
 	}
-	struct node_f *p=head;
+	struct node_factor_base *p=head;
 	while(p!=NULL){
 		printf("%d ",p->prime);
 		p=p->next;

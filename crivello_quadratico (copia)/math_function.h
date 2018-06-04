@@ -1,7 +1,7 @@
 #include "dynamic_list.h"
 #include "print.h"
 #include <gmp.h>
-#include "dyn_list_base.h"
+#include "list_factor_base.h"
 void square_root_mod_p_to_k(mpz_t rootpk,const mpz_t x,long p,const mpz_t n,int k);
 void reduce_mod_n(long *a,long n);//reduce a mod n
 void reduce_mod_n_int(int *a,int n);//reduce a mod n

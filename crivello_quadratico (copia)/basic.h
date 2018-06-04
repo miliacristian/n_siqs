@@ -26,8 +26,8 @@
 struct timespec;
 struct row_factorization{
 	int length;//card*2
-	int*prime;//contiene primo factor base e valore del suo logaritmo
-	float*log_prime;
+	int*prime;//contiene primo factor base e
+	float*log_prime;//valore del suo logaritmo
 };
 struct row{
 	int index_first_prime;
@@ -49,6 +49,11 @@ struct row_relation_B_smooth{//riga che contiene relazioni B_smooth
 struct matrix_relation_B_smooth{//matrice che contiene le relazioni B_smooth
 	struct row_relation_B_smooth*row;
 	int num_row;
+};
+
+struct square_relation {
+    mpz_t square;
+    struct node_factorization*head_factorization;
 };
 
 void print_time_elapsed(char*string);

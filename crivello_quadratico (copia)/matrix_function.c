@@ -4,7 +4,7 @@
 #include <math.h>
 #include "matrix_function.h"
 #include "basic.h"
-#include "dyn_list_base.h"
+#include "list_factor_base.h"
 #include <mpfr.h>
 extern struct row_factorization r;
 extern struct timespec timer;
@@ -72,15 +72,15 @@ struct matrix_factorization**alloc_array_matrix_factorization(int length_array_m
 	}
 	return array_matrix_factorization;
 }
-void create_row_factorization(struct node_f*head_f_base_f,int card_f_base){
+void create_row_factorization(struct node_factor_base*head_f_base_f,int card_f_base){
 	if(head_f_base_f==NULL || card_f_base<=0){
 		handle_error_with_exit("error in create row factorization\n");
 	}
-	struct node_f*p=head_f_base_f;
+	struct node_factor_base*p=head_f_base_f;
 	for(int i=0;i<card_f_base;i++){
 		r.prime[i]=p->prime;//metti il primo della factor base in posizione pari
 		if(p->prime!=-1){
-			r.log_prime[i]=log(p->prime);
+			r.log_prime[i]=(float)log(p->prime);
 		}
 		p=p->next;
 	}

@@ -9,7 +9,7 @@
 #include "print.h"
 #include <gmp.h>
 #include <mpfr.h>
-#include "dyn_list_base.h"
+#include "list_factor_base.h"
 void calculate_a_and_b(int*solution,mpz_t**matrix_B_smooth,int num_B_smooth,int card_f_base,mpz_t a,mpz_t b,const mpz_t n);
 int try_to_factor(const mpz_t a,const mpz_t b,const mpz_t n,mpz_t factor1,mpz_t factor2);
 int factor_n(int **matrix_solution,int dim_sol,int num_B_smooth,mpz_t**matrix_B_smooth,int card_f_base,const mpz_t n);
@@ -32,12 +32,12 @@ void adjust_array_bi(mpz_t *array_Bk,int s,const mpz_t a);
 void calculate_news_M_and_B(long*M,long*B);
 void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B);
 int find_factor_of_n_from_base_matrix(int **base_matrix,int num_row,int* num_column,int **matrix_linear_system,int num_row_matrix,int num_col_matrix,mpz_t n,mpz_t**matrix_B_smooth,int num_B_smooth,int card_f_base);
-struct node_f* create_factor_base_f(int*cardinality_factor_base,long B,struct node_f**tail,const mpz_t n,mpz_t q,const mpz_t thresold_q);
-void calculate_a_f(mpz_t a,const mpfr_t target_a,int*s,struct node_f*head_f_base_f,long cardinality_factor_base,
+struct node_factor_base* create_factor_base_f(int*cardinality_factor_base,long B,struct node_factor_base**tail,const mpz_t n,mpz_t q,const mpz_t thresold_q);
+void calculate_a_f(mpz_t a,const mpfr_t target_a,int*s,struct node_factor_base*head_f_base_f,long cardinality_factor_base,
 long**array_of_prime_chosen_for_a,long**Q,long**Q_number);
-void calculate_target_a1_f(mpfr_t target_a1,const mpfr_t target_a,struct node_f*head_f_base_f,
+void calculate_target_a1_f(mpfr_t target_a1,const mpfr_t target_a,struct node_factor_base*head_f_base_f,
 long p_min_i,long p_max_i,int 	cardinality_factor_base);
-void calculate_p_min_p_max_i_f(long*p_min_i,long*p_max_i,struct node_f*head_f_base_f,long cardinality_factor_base);
-void calculate_a_f2(mpz_t a,const mpfr_t target_a,int*s,struct node_f*head_f_base_f,long cardinality_factor_base,int**best_q,int**best_q_number);
+void calculate_p_min_p_max_i_f(long*p_min_i,long*p_max_i,struct node_factor_base*head_f_base_f,long cardinality_factor_base);
+void calculate_a_f2(mpz_t a,const mpfr_t target_a,int*s,struct node_factor_base*head_f_base_f,long cardinality_factor_base,int**best_q,int**best_q_number);
 mpz_t*calculate_array_Bk_f(int*index_prime_a,int*number_prime_a,int card_factor_base,const mpz_t n,long s,const mpz_t a,mpz_t b1);
 

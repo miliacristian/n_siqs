@@ -12,8 +12,8 @@ add_executable(crivello_quadratico__copia_1
         "crivello_quadratico (copia)/criv_quad.c"
         "crivello_quadratico (copia)/criv_quad.h"
         "crivello_quadratico (copia)/domini.txt"
-        "crivello_quadratico (copia)/dyn_list_base.c"
-        "crivello_quadratico (copia)/dyn_list_base.h"
+        "crivello_quadratico (copia)/list_factor_base.c"
+        "crivello_quadratico (copia)/list_factor_base.h"
         "crivello_quadratico (copia)/dynamic_list.c"
         "crivello_quadratico (copia)/dynamic_list.h"
         "crivello_quadratico (copia)/factorization_biprime.txt"
@@ -37,4 +37,4 @@ add_executable(crivello_quadratico__copia_1
         "crivello_quadratico (copia)/run.c"
         "crivello_quadratico (copia)/runtest"
         "crivello_quadratico (copia)/runtest.c"
-        "crivello_quadratico (copia)/valgrind-out.txt")
+        "crivello_quadratico (copia)/valgrind-out.txt" "crivello_quadratico (copia)/list_factorization.c" "crivello_quadratico (copia)/list_factorization.h" "crivello_quadratico (copia)/list_square_relation.c" "crivello_quadratico (copia)/list_square_relation.h")

@@ -2,7 +2,7 @@
 #include "math_function.h"
 #include <gmp.h>
 #include <mpfr.h>
-#include "dyn_list_base.h"
+#include "list_factor_base.h"
 extern long k;
 extern struct timespec timer;
 extern struct timespec time_start;
@@ -74,7 +74,7 @@ void calculate_thresold_a(mpfr_t thresold_a,const mpz_t radn,long M){
 	return;
 }
 
-void calculate_b_mpqs(mpz_t b_mpqs,const mpz_t q,const mpz_t n,const mpz_t a_mpqs){
+/*void calculate_b_mpqs(mpz_t b_mpqs,const mpz_t q,const mpz_t n,const mpz_t a_mpqs){
 	//da thresold_q calcolare una radice di N mod thresold_q 
 	// e con la radice trovata calcolare la radice di N mod q^2
 	//thresold_q è primo
@@ -97,7 +97,7 @@ void calculate_b_mpqs(mpz_t b_mpqs,const mpz_t q,const mpz_t n,const mpz_t a_mpq
 	square_root_mod_p_to_k(b_mpqs,root,p,n,2);//b_mpqs=radice quadrata di n modulo q^2
 	mpz_clear(root);
 	return;
-}
+}*/
 
 void calculate_x0(mpz_t x0,const mpz_t n,int k,char *factorized){
 	if(x0 ==NULL || n==NULL || (k!=1 && k!=3 && k!=5 && k!=7) || factorized==NULL){
@@ -228,7 +228,7 @@ void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B){
 }
 
 
-void calculate_best_M(const mpz_t n,long*M){
+/*void calculate_best_M(const mpz_t n,long*M){
 	if(M==NULL || n==NULL){
 		handle_error_with_exit("error in calculate best M\n");
 	}
@@ -419,13 +419,13 @@ void calculate_best_B(const mpz_t n,long*B){
 	mpz_clear(temp1);
 	mpz_clear(ten);
 	return;
-}
-struct node_f* create_factor_base_f(int*cardinality_factor_base,long B,struct node_f**tail,const mpz_t n,mpz_t q,const mpz_t thresold_q){//crea la factor base aggiungendo i numeri primi minori o uguali a B
+}*/
+struct node_factor_base* create_factor_base_f(int*cardinality_factor_base,long B,struct node_factor_base**tail,const mpz_t n,mpz_t q,const mpz_t thresold_q){//crea la factor base aggiungendo i numeri primi minori o uguali a B
 	if(B<2 || tail==NULL || cardinality_factor_base==NULL || n==NULL || q==NULL || thresold_q==NULL){
 		handle_error_with_exit("error in parameter\n");
 	}
-	struct node_f *head=NULL;
-	struct node_f*node;
+	struct node_factor_base *head=NULL;
+	struct node_factor_base*node;
 	char found=0;
 	long v,m;
 	mpz_t p,pp,value;
@@ -503,7 +503,7 @@ struct node_f* create_factor_base_f(int*cardinality_factor_base,long B,struct no
 	return head;
 }
 
-struct node* create_factor_base(int*cardinality_factor_base,long B,struct node**tail,const mpz_t n,mpz_t q,const mpz_t thresold_q){//crea la factor base aggiungendo i numeri primi minori o uguali a B
+/*struct node* create_factor_base(int*cardinality_factor_base,long B,struct node**tail,const mpz_t n,mpz_t q,const mpz_t thresold_q){//crea la factor base aggiungendo i numeri primi minori o uguali a B
 	if(B<2 || tail==NULL || cardinality_factor_base==NULL || n==NULL || q==NULL || thresold_q==NULL){
 		handle_error_with_exit("error in parameter\n");
 	}
@@ -583,9 +583,9 @@ struct node* create_factor_base(int*cardinality_factor_base,long B,struct node**
 	mpz_clear(min);
 	mpz_clear(max);
 	return head;
-}
+}*/
 
-void calculate_p_min_p_max_i(long*p_min_i,long*p_max_i,struct node*head_f_base,long cardinality_factor_base){
+/*void calculate_p_min_p_max_i(long*p_min_i,long*p_max_i,struct node*head_f_base,long cardinality_factor_base){
 	if(p_min_i==NULL || p_max_i==NULL || head_f_base==NULL || cardinality_factor_base<=0){
 		handle_error_with_exit("error in calculate _p_min_p_max_i\n");
 	}
@@ -616,12 +616,12 @@ void calculate_p_min_p_max_i(long*p_min_i,long*p_max_i,struct node*head_f_base,l
 	}
 	mpz_clear(temp);
 	return;
-}
-void calculate_p_min_p_max_i_f(long*p_min_i,long*p_max_i,struct node_f*head_f_base_f,long cardinality_factor_base){
+}*/
+void calculate_p_min_p_max_i_f(long*p_min_i,long*p_max_i,struct node_factor_base*head_f_base_f,long cardinality_factor_base){
 	if(p_min_i==NULL || p_max_i==NULL || head_f_base_f==NULL || cardinality_factor_base<=0){
 		handle_error_with_exit("error in calculate _p_min_p_max_i\n");
 	}
-	struct node_f*list=head_f_base_f;
+	struct node_factor_base*list=head_f_base_f;
 	mpz_t temp;
 	mpz_init(temp);
 	long i=0;
@@ -649,7 +649,7 @@ void calculate_p_min_p_max_i_f(long*p_min_i,long*p_max_i,struct node_f*head_f_ba
 	mpz_clear(temp);
 	return;
 }
-void calculate_target_a1(mpfr_t target_a1,const mpfr_t target_a,struct node*head_f_base,long p_min_i,long p_max_i,int cardinality_factor_base){
+/*void calculate_target_a1(mpfr_t target_a1,const mpfr_t target_a,struct node*head_f_base,long p_min_i,long p_max_i,int cardinality_factor_base){
 	if(target_a==NULL || head_f_base==NULL || p_min_i<0 || p_max_i<=0 || p_min_i>p_max_i || target_a1==NULL || 
 	cardinality_factor_base<=p_max_i){
 		handle_error_with_exit("error in calculate_target_a1\n");
@@ -701,8 +701,8 @@ void calculate_target_a1(mpfr_t target_a1,const mpfr_t target_a,struct node*head
 	mpfr_clear(temp);
 	print_time_elapsed("time to calculate target_a1");
 	return;
-}
-void calculate_target_a1_f(mpfr_t target_a1,const mpfr_t target_a,struct node_f*head_f_base_f,
+}*/
+void calculate_target_a1_f(mpfr_t target_a1,const mpfr_t target_a,struct node_factor_base*head_f_base_f,
 		long p_min_i,long p_max_i,int 	cardinality_factor_base){
 	if(target_a==NULL || head_f_base_f==NULL || p_min_i<0 || p_max_i<=0 || p_min_i>p_max_i || target_a1==NULL || 
 	cardinality_factor_base<=p_max_i){
@@ -722,7 +722,7 @@ void calculate_target_a1_f(mpfr_t target_a1,const mpfr_t target_a,struct node_f*
 	mpfr_init(sqrt_prime_avg);
 	mpfr_init(temp);
 	int count=0;
-	struct node_f*p=head_f_base_f;
+	struct node_factor_base*p=head_f_base_f;
 	while(count<p_min_i){
 		p=p->next;
 		count++;
@@ -758,7 +758,7 @@ void calculate_target_a1_f(mpfr_t target_a1,const mpfr_t target_a,struct node_f*
 }
 
 
-void calculate_a(mpz_t a,const mpfr_t target_a,int*s,struct node*head_f_base,long cardinality_factor_base,long**array_of_prime_chosen_for_a){
+/*void calculate_a(mpz_t a,const mpfr_t target_a,int*s,struct node*head_f_base,long cardinality_factor_base,long**array_of_prime_chosen_for_a){
 	if(s==NULL || target_a==NULL || mpfr_sgn(target_a)<0 || head_f_base==NULL || cardinality_factor_base<=0 || *array_of_prime_chosen_for_a!=NULL || a==NULL){
 		handle_error_with_exit("error in calculate_a\n");
 	}
@@ -920,9 +920,9 @@ void calculate_a(mpz_t a,const mpfr_t target_a,int*s,struct node*head_f_base,lon
 	mpfr_clear(ratio);
 	mpz_clear(v);
 	return;
-}
+}*/
 
-void calculate_a_f2(mpz_t a,const mpfr_t target_a,int*s,struct node_f*head_f_base_f,long cardinality_factor_base,int**best_q,int**best_q_number){
+void calculate_a_f2(mpz_t a,const mpfr_t target_a,int*s,struct node_factor_base*head_f_base_f,long cardinality_factor_base,int**best_q,int**best_q_number){
 	if(s==NULL || target_a==NULL || mpfr_sgn(target_a)<0 || head_f_base_f==NULL || cardinality_factor_base<=0 || a==NULL || best_q==NULL || best_q_number==NULL){
 		handle_error_with_exit("error in calculate_a\n");
 	}
@@ -1095,7 +1095,7 @@ void add_remainder_to_matrix_factorization(mpz_t **matrix_factorization,mpz_t*ar
 	return;
 }
 
-mpz_t*calculate_array_Bk(long*array_of_prime_chosen_for_a,int card_factor_base,const mpz_t n,long s,const mpz_t a,mpz_t b1){
+/*mpz_t*calculate_array_Bk(long*array_of_prime_chosen_for_a,int card_factor_base,const mpz_t n,long s,const mpz_t a,mpz_t b1){
 	mpz_t*array_Bk=NULL;
 	long vpk;
 	char t;
@@ -1165,7 +1165,7 @@ mpz_t*calculate_array_Bk(long*array_of_prime_chosen_for_a,int card_factor_base,c
 	mpz_clear(root);
 	mpz_clear(ak_inverse);
 	return array_Bk;
-}
+}*/
 mpz_t*calculate_array_Bk_f(int*index_prime_a,int*number_prime_a,int card_factor_base,const mpz_t n,long s,const mpz_t a,mpz_t b1){
 	mpz_t*array_Bk=NULL;
 	long vpk;
@@ -1496,7 +1496,7 @@ int try_to_factor(const mpz_t a,const mpz_t b,const mpz_t n,mpz_t factor1,mpz_t 
 }
 int find_factor_of_n_from_base_matrix(int **base_matrix,int num_row,int* num_column,int **matrix_linear_system,int num_row_matrix,int num_col_matrix,mpz_t n,mpz_t**matrix_B_smooth,int num_B_smooth,int card_f_base){
 //calcola tutte le soluzioni una per una e per ognuna prova a vedere se trova una coppia a,b che fattorizza n se riesce allora ritorna al chiamante
-	if(*base_matrix==NULL || base_matrix==NULL || num_row<=0 || *num_column<=0 || matrix_linear_system==NULL || *matrix_linear_system==NULL
+	if(base_matrix==NULL || *base_matrix==NULL || num_row<=0 || *num_column<=0 || matrix_linear_system==NULL || *matrix_linear_system==NULL
 		|| num_row_matrix<=0 || num_col_matrix<=0 || matrix_B_smooth==NULL || *matrix_B_smooth==NULL || card_f_base<=0){
 		handle_error_with_exit("error in parameter find_factor_of_n_from_base_matrix\n");
 	}

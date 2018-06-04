@@ -6,7 +6,7 @@
 #include "basic.h"
 #include "math_function.h"
 #include "dynamic_list.h"
-#include "dyn_list_base.h"
+#include "list_factor_base.h"
 #include "matrix_function.h"
 #include "print.h"
 #include "miller_rabin.h"
@@ -27,8 +27,8 @@
 	struct row_factorization r;
 	int k=-1;//moltiplicatore di n,se n dispari k=1,3,5 o 7,se n pari so fattorizzarlo
 	//argv[1]=path del file da leggere per ottenere n da fattorizzare
-	struct node_f*head_f_base_f=NULL;//testa della lista dinamica factor base
-	struct node_f*tail_f_base_f=NULL;//coda della lista dinamica factor base
+	struct node_factor_base*head_f_base_f=NULL;//testa della lista dinamica factor base
+	struct node_factor_base*tail_f_base_f=NULL;//coda della lista dinamica factor base
 	mpz_t n,x0;//dichiarazione di n,n da fattorizzare,deve essere inizializzato a zero,e deve essere sovrascritto con il numero preso da riga 		di comando o da file
 	mpz_t a,thresold_q,q;//valore del coefficiente a del polinomio,soglia q e q
 	mpfr_t thresold_a;//soglia per il calcolo di a
@@ -42,7 +42,7 @@
 	int dim_sol=-1;//numero di vettori linearmente indpendenti ottenuti dalla risoluzione del sistema lineare,combinandoli opportunamente 		calcolano tutte le possibili combinazioni/soluzioni del sistema
 	int cardinality_factor_base=-1;//cardinalità factor base
 	struct matrix_factorization**array_matrix_B_smooth=NULL;
-	int length_array_matrix=-1;
+	int length_array_matrix=-1;//lunghezza dell'array di matrici,ogni thread riceve una matrice per fare la computazione
 	int num_increment_M_and_B=0;
 	int*index_prime_a=NULL;//indice dei primi usati per ottenere a,rispetto alla factor base
 	int*number_prime_a=NULL;//numeri primi usati per ottenere a
@@ -60,19 +60,20 @@ int main(int argc,char*argv[]){
 		num_increment_M_and_B=0;
 		struct matrix_factorization*matrix_B_smooth=NULL;//matrice che mememorizza le fattorizzazioni dei soli numeri b_smooth 			presenti 			nell'array
 		struct matrix_factorization*mat=NULL;
-		mpz_t*array_number=NULL;
+		mpz_t*array_number=NULL;//array di numeri
 		mpz_t a_default,b_default;//a,b sono i coefficienti del polinomio aj^2+2bj+c,thresold a serve per calcolare il valore di a
-		int*array_id=NULL;
+		int*array_id=NULL;//array che contiene gli id dei nuovi thread creati a partire da 0
 		int num_B_smooth=-1;//numero di numeri b-smooth trovati nell'array
 		char*linear_system=NULL;//sistema lineare da risolvere per trovare a e b
 		int**base_matrix=NULL;//matrice che riporta per colonna i vettori che formano una base del sistema lineare
 		pthread_t *array_tid=NULL;
 		int row_result=-1;//numero di righe risultanti dalla concatenazione di tutte le matrici
 		int factorizations_founded=-1;//numero di fattorizazzioni trovate
-		char factorized=0;
+		char factorized=0;//indica se numero fattorizzato o no
 		char digit=-1;//numero cifre di n
 		
 		k=1;
+
 		//mpz_init
 		mpz_init(n);
 		mpz_init(a);
@@ -112,24 +113,23 @@ int main(int argc,char*argv[]){
 		}
 		printf("B=%ld\n",B);
 		print_time_elapsed("time to calculate B");
+        if(B<=0 || M<=0){
+            handle_error_with_exit("error in B or M\n");
+        }
 
 		//k,moltiplicatore di n per renderlo un quadrato modulo 8
 		multiply_n_for_k(n,&k,&factorized);
-		if(factorized==1){
+		if(factorized==1){//se n viene fattorizzato pulire la memoria e terminare il programma
 			goto clean_memory;
 		}
 		printf("k=%d\n",k);
 		fprintf(file_log,"k=%d ",k);
 		gmp_printf("n*k=%Zd\n",n);
 		print_time_elapsed("time to calculate k");
-	
-		if(B<=0 || M<=0){
-			handle_error_with_exit("error in B or M\n");
-		}
-	
+
 		//x0
 		calculate_x0(x0,n,k,&factorized);//x0=n^(1/2),xo radice quadrata di n
-		if(factorized==1){
+		if(factorized==1){//se n viene fattorizzato pulire la memoria e terminare il programma
 			goto clean_memory;
 		}
 		gmp_printf("x0=%Zd\n",x0);//stampa x0
@@ -206,9 +206,9 @@ int main(int argc,char*argv[]){
 				length_array_matrix=1;
 			}
 			else{
-				length_array_matrix=(int)pow(2,s-1)+1;
+				length_array_matrix=(int)pow(2,s-1)+1;//abbiamo 2^(s-1) polinomi diversi con un a fissato
 			}
-			if(NUM_THREAD==0){
+			if(NUM_THREAD==0){//se non ci sono thread la lunghezza della matrice è 1
 				length_array_matrix=1;
 			}
 			array_matrix_B_smooth=alloc_array_matrix_factorization(length_array_matrix);
@@ -224,6 +224,7 @@ int main(int argc,char*argv[]){
 			head_f_base_f=NULL;
 			tail_f_base_f=NULL;
 			print_time_elapsed("time to create row factorization");
+
 			//creazione e avvio thread
 			if(length_array_matrix!=1){
 				array_tid=alloc_array_tid(NUM_THREAD);//alloca memoria per contenere tutti i tid
@@ -284,6 +285,7 @@ int main(int argc,char*argv[]){
 			fprintf(file_log,"num potential B_smooth=%d ",row_result);
 			print_time_elapsed("time to create single matrix factorization");
 			print_matrix_factorization_f(*(array_matrix_B_smooth[0]));
+
 			//crea matrice_fattorizzazioni_B_smooth
 			print_time_elapsed("time to create matrix_B_smooth");
 			linear_system=create_linear_system_f(array_matrix_B_smooth[0],cardinality_factor_base);

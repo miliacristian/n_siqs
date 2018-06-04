@@ -1,4 +1,4 @@
-#include "dyn_list_base.h"
+#include "list_factor_base.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -6,23 +6,23 @@
 #include "basic.h"
 #include <gmp.h>
 
-int count_element_linked_list_f(struct node_f*head){
+int count_element_linked_list_f(struct node_factor_base*head){
 	int count=0;
 	if (head==NULL){
 		handle_error_with_exit("head is NULL\n");
 	}
-	struct node_f *p=head;
+	struct node_factor_base *p=head;
 	while(p!=NULL){
 		count++;
 		p=p->next;
 	}
 	return count;
 }
-void get_element_linked_list_f(int *elem,struct node_f*head,int index){//index start at 0
+void get_element_linked_list_f(int *elem,struct node_factor_base*head,int index){//index start at 0
 	if(index<0 || head==NULL || elem==NULL){
 		handle_error_with_exit("index must be zero or positive\n");
 	}
-	struct node_f*p=head;
+	struct node_factor_base*p=head;
 	int count=0;
 	while(p!=NULL){
 		if(count==index){
@@ -34,15 +34,15 @@ void get_element_linked_list_f(int *elem,struct node_f*head,int index){//index s
 	}
 	return;
 }
-void remove_after_node_f(struct node_f**ppos,struct node_f**tail){
+void remove_after_node_f(struct node_factor_base**ppos,struct node_factor_base**tail){
 	if(ppos==NULL || tail==NULL ){
 		handle_error_with_exit("error in parameter remove_after_node\n");
 	}
 	 if(*ppos==NULL || *tail==NULL){
         handle_error_with_exit("impossible remove node,empty list\n");
   }
-	struct node_f *r = *ppos;
-	struct node_f*q=r->next;
+	struct node_factor_base *r = *ppos;
+	struct node_factor_base*q=r->next;
 	if(q==NULL){//fine della lista,bisogna aggiornare la coda
         *ppos=r->next;
         *tail=r->prev;
@@ -58,7 +58,7 @@ void remove_after_node_f(struct node_f**ppos,struct node_f**tail){
     return;
 }
 
-int delete_head_f(struct node_f** head){//non è importante il valore iniziale di oldhead
+int delete_head_f(struct node_factor_base** head){//non è importante il valore iniziale di oldhead
     //initializza oldhead con il primo nodo della lista e distrugge il primo nodo della lista
     if(head==NULL){
         handle_error_with_exit("error in delete head\n");
@@ -70,7 +70,7 @@ int delete_head_f(struct node_f** head){//non è importante il valore iniziale d
         free(*head);
         *head = NULL;
     }else{
-	struct node_f*temp=(*head)->next;
+	struct node_factor_base*temp=(*head)->next;
         free(*head);
         *head =temp;
         (*head)-> prev = NULL;
@@ -78,7 +78,7 @@ int delete_head_f(struct node_f** head){//non è importante il valore iniziale d
     return 0;
 }
 
-void insert_first_f(struct node_f *new_node, struct node_f **head, struct node_f **tail){//inserisce il primo nodo
+void insert_first_f(struct node_factor_base *new_node, struct node_factor_base **head, struct node_factor_base **tail){//inserisce il primo nodo
     if(new_node==NULL || head==NULL || tail==NULL){
         handle_error_with_exit("error in insert_first\n");
     }
@@ -87,7 +87,7 @@ void insert_first_f(struct node_f *new_node, struct node_f **head, struct node_f
     return;
 }
 
-void insert_at_tail_f(struct node_f *new_node,struct node_f**head,struct node_f** tail){//inserisce un nodo in coda
+void insert_at_tail_f(struct node_factor_base *new_node,struct node_factor_base**head,struct node_factor_base** tail){//inserisce un nodo in coda
     if(head==NULL){
         handle_error_with_exit("error in insert_at_head **head is NULL\n");
     }
@@ -105,11 +105,11 @@ void insert_at_tail_f(struct node_f *new_node,struct node_f**head,struct node_f*
 
 
 //alloca e inizializza un nodo della lista dinamica ordinata
-struct node_f* get_new_node_f(int num) {
+struct node_factor_base* get_new_node_f(int num) {
 	if(num<=0 && num!=-1){
 		handle_error_with_exit("error in get_new_node\n");
 	}
-    struct node_f* new_node = (struct node_f*)malloc(sizeof(struct node_f));
+    struct node_factor_base* new_node = (struct node_factor_base*)malloc(sizeof(struct node_factor_base));
     if(new_node==NULL){
         handle_error_with_exit("error in malloc get_new_node\n");
     }
@@ -120,7 +120,7 @@ struct node_f* get_new_node_f(int num) {
 }
 
 
-void insert_at_head_f(struct node_f* new_node,struct node_f** head,struct node_f** tail) {//inserisce un nodo in testa alla lista
+void insert_at_head_f(struct node_factor_base* new_node,struct node_factor_base** head,struct node_factor_base** tail) {//inserisce un nodo in testa alla lista
     if(head==NULL){
         handle_error_with_exit("error in insert_at_head **head is NULL\n");
     }
@@ -138,18 +138,18 @@ void insert_at_head_f(struct node_f* new_node,struct node_f** head,struct node_f
 }
 
 
-char first_is_smaller_f(struct node_f node1, struct node_f node2){//verifica se il primo nodo contiene tempi più piccoli del secondo nodo
+char first_is_smaller_f(struct node_factor_base node1, struct node_factor_base node2){//verifica se il primo nodo contiene tempi più piccoli del secondo nodo
 	if(node1.prime>=node2.prime){
 		return 0;
 	}
     return 1;//node1 è più piccolo di node 2
 }
 
-void insert_ordered_f(int num, struct node_f** head, struct node_f** tail){
+void insert_ordered_f(int num, struct node_factor_base** head, struct node_factor_base** tail){
     //inserisce ordinatamente un nodo nella lista ordinata per istanti temporali
-    struct node_f* temp = *tail;
-    struct node_f* next_node = NULL;
-    struct node_f* new_node = get_new_node_f(num);
+    struct node_factor_base* temp = *tail;
+    struct node_factor_base* next_node = NULL;
+    struct node_factor_base* new_node = get_new_node_f(num);
     if(head==NULL || tail==NULL){
         handle_error_with_exit("error in insert_ordered,head or tail are NULL\n");
     }
@@ -177,12 +177,12 @@ void insert_ordered_f(int num, struct node_f** head, struct node_f** tail){
     }
     return;
 }
-void free_memory_list_f(struct node_f*head){
+void free_memory_list_f(struct node_factor_base*head){
 	if(head==NULL){
 		return;
 	}
-	struct node_f*p=head;
-	struct node_f*q;
+	struct node_factor_base*p=head;
+	struct node_factor_base*q;
 	while(p!=NULL){
 		q=p->next;
 		free(p);
