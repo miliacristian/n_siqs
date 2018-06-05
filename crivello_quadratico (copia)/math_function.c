@@ -508,7 +508,7 @@ char divide_all_by_2_log(long M,struct thread_data thread_data){//divide gli ele
     }
     return 1;
 }
-char divide_all_by_4(mpz_t*array_of_number,long M,mpz_t**matrix_factorization,const mpz_t n,const mpz_t a,const mpz_t b){//ritorna 1 se c'è stata almeno 1 divisione,zero altrimenti
+/*char divide_all_by_4(mpz_t*array_of_number,long M,mpz_t**matrix_factorization,const mpz_t n,const mpz_t a,const mpz_t b){//ritorna 1 se c'è stata almeno 1 divisione,zero altrimenti
 	if(n==NULL || a==NULL || b==NULL || array_of_number==NULL || matrix_factorization==NULL || *matrix_factorization==NULL || M<=0 || mpz_sgn(n)<=0){
 		handle_error_with_exit("invalid parameter divide all_by_4\n");
 	}
@@ -749,7 +749,7 @@ char divide_all_by_4_f(long M,struct matrix_factorization *mat,const mpz_t n,con
 		return 1;//ritorna 1 se c'è stata almeno 1 divisione
 	}
 	return 0;//ritorna 0 se non ci sono state divisioni nell'array
-}
+}*/
 /*char divide_all_by_2_to_k(mpz_t*array_of_number,long M,mpz_t**matrix_factorization,const mpz_t n,long k,const mpz_t a,const mpz_t b,const mpz_t y){
 	//k esponente di 2 a,b coefficienti di a(j)=aj^2+2bj+c y coincide con y(k-2),se si sa y(k-2) allora a=2*y(k-2)+1
 

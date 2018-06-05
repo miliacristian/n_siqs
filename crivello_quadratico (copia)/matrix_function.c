@@ -11,7 +11,7 @@ extern struct timespec timer;
 extern struct timespec time_start;
 extern FILE*file_log;
 
-void free_memory_matrix_factorization(struct matrix_factorization *mat){
+/*void free_memory_matrix_factorization(struct matrix_factorization *mat){
 	if(mat==NULL){
 		handle_error_with_exit("error in free memory matrix factorization\n");
 	}
@@ -85,8 +85,8 @@ void create_row_factorization(struct node_factor_base*head_f_base_f,int card_f_b
 		p=p->next;
 	}
 	return;
-}
-struct matrix_factorization*create_matrix_factorization_f(int M,int card_f_base,const mpz_t a,const mpz_t b,const mpz_t n){
+}*/
+/*struct matrix_factorization*create_matrix_factorization_f(int M,int card_f_base,const mpz_t a,const mpz_t b,const mpz_t n){
 	if(M<=0 || card_f_base<=0 || a==NULL || b==NULL || n==NULL){
 		handle_error_with_exit("error in create_matrix_factorization_f\n");
 	}
@@ -169,7 +169,7 @@ struct matrix_factorization*create_matrix_factorization_f(int M,int card_f_base,
 	mpfr_clear(log_value);
 	mpfr_free_cache();
 	return m;
-}
+}*/
 
 //funzioni per allocare array o matrici 
 void copy_array_mpz(mpz_t*array1,mpz_t*array2,int length){
@@ -306,7 +306,7 @@ mpz_t**realloc_array_pointer_to_mpz(mpz_t**t,int new_length){
 	return array;
 }
 
-struct row_factorization*realloc_array_row_factorization(struct row_factorization*row,int new_length){
+/*struct row_factorization*realloc_array_row_factorization(struct row_factorization*row,int new_length){
 	if(new_length<=0 || row==NULL){
 		handle_error_with_exit("error in parameter realloc array_row_factorization\n");
 	}
@@ -325,7 +325,7 @@ struct row*realloc_array_row(struct row*row,int new_length){
 		handle_error_with_exit("error in realloc array row\n");
 	}
 	return r;
-}
+}*/
 mpz_t**alloc_array_pointer_to_mpz(int length){
 	if(length<=0){
 		handle_error_with_exit("error in parameteralloc array pointer to mpz\n");
@@ -425,7 +425,7 @@ char is_in_array_int(int*array,long length,long p_i){//ritorna vero se p_i è pr
 	}
 	return 0;
 }
-void concatenate_matrix_long(long***res,long**matrix1,int num_row1,int num_col1,long**matrix2,int num_row2,int num_col2){//concatena 2 matrici
+/*void concatenate_matrix_long(long***res,long**matrix1,int num_row1,int num_col1,long**matrix2,int num_row2,int num_col2){//concatena 2 matrici
 //allungando le righe della matrice che contiene più righe
 	if(matrix1==NULL || *matrix1==NULL || matrix2==NULL || *matrix2==NULL || num_row1<=0 
 		|| num_col1<=0 || num_row2<=0 || num_col2<=0
@@ -522,8 +522,9 @@ void concatenate_all_matrix_B_smooth(struct matrix_factorization**array_matrix_f
 		(*(array_matrix_factorization[i+1])).num_row);
 	}
 	return;
-}
-void adjust_array_of_prime(long*array_of_prime_chosen_for_a,int length_array,long*best_q,int length_best_q){//mette degli 1 in posizione opportuna
+}*/
+
+/*void adjust_array_of_prime(long*array_of_prime_chosen_for_a,int length_array,long*best_q,int length_best_q){//mette degli 1 in posizione opportuna
 	long index=-1;
 	if(array_of_prime_chosen_for_a==NULL || length_array<=0 || best_q==NULL || length_best_q<=0){
 		handle_error_with_exit("error in adjust_array_of_prime\n");
@@ -539,7 +540,7 @@ void adjust_array_of_prime(long*array_of_prime_chosen_for_a,int length_array,lon
 		array_of_prime_chosen_for_a[2*index+1]=1;
 	}
 	return;
-}
+}*/
 
 void sum_elem_multiple_of_2_mpz(mpz_t*vector1,mpz_t*vector2,int length1,int length2){//vettore risultato=vector1=copia elementi di posto dispari(indice pari) e somma elementi di posto pari(indice dispari)
 //vector1 e vector2 devono avere gli elementi di posto dispari uguali e la loro lunghezza deve essere pari
@@ -837,7 +838,7 @@ void find_max_array_mpz(mpz_t max,mpz_t*array,long length){
 	return matrix_factor;
 }*/
 
-mpz_t**create_matrix_factorization(long M,int cardinality_factor_base,struct node*head_f_base,long*array_of_prime_chosen_for_a,const mpz_t a,const mpz_t b){
+/*mpz_t**create_matrix_factorization(long M,int cardinality_factor_base,struct node*head_f_base,long*array_of_prime_chosen_for_a,const mpz_t a,const mpz_t b){
 	if(M<=0 || cardinality_factor_base<=0 || (array_of_prime_chosen_for_a==NULL && mpz_get_si(a)!=1) || a==NULL || b==NULL){
 		handle_error_with_exit("error in parameter create matrix factorization\n");
 	}
@@ -880,13 +881,13 @@ mpz_t**create_matrix_factorization(long M,int cardinality_factor_base,struct nod
 		if(mpz_cmp_si(matrix_factor[i][length],0)<0){//se gli elementi sono negativi
 			mpz_neg(matrix_factor[i][length],matrix_factor[i][length]);//inverti il segno
 		}
-	}*/
+	}
 	mpz_clear(v);
 	mpz_clear(a_temp);
 	mpz_clear(j_temp);
 	print_time_elapsed("fine");
 	return matrix_factor;
-}
+}*/
 
 void divide_elem_multiple_of_2_by_x(mpz_t*vector,int length,double x){//vector = num1 exp1 num2 exp2 ecc,divide elementi di posto pari per 2
 	//il vettore deve avere lunghezza pari
@@ -923,7 +924,7 @@ void divide_elem_multiple_of_2_by_x(mpz_t*vector,int length,double x){//vector =
 	return potential_number_B_smooth;
 }*/
 
-int count_number_B_smooth_matrix_unsorted(mpz_t**single_matrix_factorization,int num_row,int num_col){
+/*int count_number_B_smooth_matrix_unsorted(mpz_t**single_matrix_factorization,int num_row,int num_col){
 	//non assume che la matrice ha i residui ordinati
 	int number_B_smooth=0;
 	if(single_matrix_factorization==NULL || *single_matrix_factorization==NULL || num_row<=0 || num_col<=0){
@@ -937,8 +938,9 @@ int count_number_B_smooth_matrix_unsorted(mpz_t**single_matrix_factorization,int
 		i++;//passa alla prossima riga
 	}
 	return number_B_smooth;
-}
-int count_number_B_smooth_matrix_unsorted_f(struct matrix_factorization *single_matrix_factorization,int num_row){
+}*/
+
+/*int count_number_B_smooth_matrix_unsorted_f(struct matrix_factorization *single_matrix_factorization,int num_row){
 	//non assume che la matrice ha i residui ordinati
 	if(num_row<=0 || single_matrix_factorization==NULL){
 		handle_error_with_exit("error in count number_B_smooth_matrix_unsorted_f\n");
@@ -962,7 +964,7 @@ int count_number_B_smooth_matrix_unsorted_f(struct matrix_factorization *single_
 		i++;//passa alla prossima riga
 	}
 	return number_B_smooth;
-}
+}*/
 /*void copy_residuos_from_matrix(mpz_t**potential_matrix_B_smooth,int potential_num_B_smooth,mpz_t**array_matrix_mpz,int num_row_matrix,int num_col_matrix){
 	//copia le righe B_smooth della matrice e le mette in potential_matrix_B_smooth
 	if(potential_matrix_B_smooth==NULL || *potential_matrix_B_smooth==NULL || potential_num_B_smooth<=0 || 
@@ -983,7 +985,7 @@ int count_number_B_smooth_matrix_unsorted_f(struct matrix_factorization *single_
 }*/
 
 
-void copy_row_matrix(struct row*row_dest,struct row row_source){
+/*void copy_row_matrix(struct row*row_dest,struct row row_source){
 	if(row_dest==NULL){
 		handle_error_with_exit("error in copy_row_matrix\n");
 	}
@@ -1044,7 +1046,7 @@ struct matrix_factorization*create_matrix_B_smooth_f(int num_B_smooth,struct mat
 		handle_error_with_exit("error in create_matrix_B_smooth\n");
 	}
 	return matrix_B_smooth;
-}
+}*/
 
 mpz_t*create_array_temp_factorization(int card_f_base,mpz_t*row_matrix_b_smooth){// crea array -1 0 2 0 30...primo factor base 0...di 2*cardinalità 		della factor base elementi
 	if(card_f_base<=0 || row_matrix_b_smooth==NULL){

@@ -133,21 +133,7 @@ void print_array_mpz(mpz_t*array,int length){
 	return;
 }
 
-void print_array_number(mpz_t*array,int M){
-	if(M<=0){
-		handle_error_with_exit("error in print_array_number\n");
-	}
-	if(array==NULL){
-		printf("array_number is empty\n");
-		return;
-	}
-	if(not_print_array(2*M+1)==1){
-		return;
-	}
-	printf("array number:\n");
-	print_array_mpz(array,2*M+1);
-	return;
-}
+
 void print_array_Bk(mpz_t*array_Bk,long s){
 	if(s<0){
 		handle_error_with_exit("error in print_array_Bk\n");
@@ -360,17 +346,7 @@ void print_matrix_mpz(mpz_t**matrix,int num_row,int num_col){
 	}
 	return;
 }
- void print_matrix_factorization(mpz_t**matrix_factorization,int M,int cardinality_factor_base){
-	if(matrix_factorization==NULL || *matrix_factorization==NULL){
-		printf("matrix factorization is empty\n");
-	}
-	if(M <=0 || cardinality_factor_base <=0){
-		handle_error_with_exit("error in print_matrix_factorization\n");
-	}
-	printf("matrix_factorization:\n");
-	print_matrix_mpz(matrix_factorization,2*M+1,cardinality_factor_base*2+2);
-	return;
-}
+
 
 void print_matrix_B_smooth(mpz_t**matrix_B_smooth,int num_of_B_smooth,int cardinality_factor_base){//parametri matrice,righe,colonne
 	if(matrix_B_smooth==NULL || *matrix_B_smooth==NULL){
@@ -434,9 +410,28 @@ void print_array_chosen_for_a(long*array_of_prime_chosen_for_a,int card_factor_b
 	return;
 }
 
+
+void print_matrix_factorization(mpz_t**matrix_factorization,int M,int cardinality_factor_base){
+	if(matrix_factorization==NULL || *matrix_factorization==NULL){
+		printf("matrix factorization is empty\n");
+	}
+	if(M <=0 || cardinality_factor_base <=0){
+		handle_error_with_exit("error in print_matrix_factorization\n");
+	}
+	printf("matrix_factorization:\n");
+	print_matrix_mpz(matrix_factorization,2*M+1,cardinality_factor_base*2+2);
+	return;
+}
+void print_thread_data(struct thread_data thread_data,long M){
+	for(int i=0;i<2*M+1;i++){
+		gmp_printf("b=%Zd,",thread_data.b);
+		printf("first_index=%d,last_index=%d,sum_log=%d,j=%d\n",thread_data.numbers[i].first_index_f_base,thread_data.numbers[i].last_index_f_base,thread_data.numbers[i].sum_log,thread_data.numbers[i].j);
+	}
+}
+
 void print_array_matrix_same_dimension(mpz_t***array_matrix_mpz,int length_array,int num_row,int num_col){
 	if(array_matrix_mpz==NULL || *array_matrix_mpz==NULL || **array_matrix_mpz==NULL || length_array<=0
-	 || num_row<=0 ||  num_col<=0){
+	   || num_row<=0 ||  num_col<=0){
 		handle_error_with_exit("error in print_array_mpz_same_dimension\n");
 	}
 	for(int i=0;i<length_array;i++){
@@ -447,21 +442,28 @@ void print_array_matrix_same_dimension(mpz_t***array_matrix_mpz,int length_array
 void print_matrix_factorization_f(struct matrix_factorization m){
 	for(int i=0;i<m.num_row;i++){
 		printf("first_p=%d last_p=%d sum_log=%lf log=%lf ",m.row[i].index_first_prime,
-		m.row[i].index_last_prime,m.row[i].sum_log,m.row[i].log);
+			   m.row[i].index_last_prime,m.row[i].sum_log,m.row[i].log);
 		//printf("sum_log=%lf log=%lf ",m.row[i].sum_log,m.row[i].log);
 		gmp_printf("num=%Zd,square=%Zd\n",m.row[i].num,m.row[i].square);
 	}
 	printf("num_row=%d\n",m.num_row);
 	return;
 }
-void print_thread_data(struct thread_data thread_data,long M){
-	for(int i=0;i<2*M+1;i++){
-		gmp_printf("b=%Zd,",thread_data.b);
-		printf("first_index=%d,last_index=%d,sum_log=%d,j=%d\n",thread_data.numbers[i].first_index_f_base,thread_data.numbers[i].last_index_f_base,thread_data.numbers[i].sum_log,thread_data.numbers[i].j);
+void print_array_number(mpz_t*array,int M){
+	if(M<=0){
+		handle_error_with_exit("error in print_array_number\n");
 	}
+	if(array==NULL){
+		printf("array_number is empty\n");
+		return;
+	}
+	if(not_print_array(2*M+1)==1){
+		return;
+	}
+	printf("array number:\n");
+	print_array_mpz(array,2*M+1);
+	return;
 }
-
-
 
 
 
