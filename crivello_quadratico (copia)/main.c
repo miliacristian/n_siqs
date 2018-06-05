@@ -62,7 +62,7 @@ int main(int argc,char*argv[]){
 		num_increment_M_and_B=0;
 		mpz_t a_default,b_default;//a,b sono i coefficienti del polinomio aj^2+2bj+c,thresold a serve per calcolare il valore di a
 		int*array_id=NULL;//array che contiene gli id dei nuovi thread creati a partire da 0
-		int num_B_smooth=-1;//numero di numeri b-smooth trovati nell'array
+		int num_B_smooth=-1,num_potential_B_smooth=-1;//numero di numeri b-smooth potenziali e reali trovati nell'array
 		char*linear_system=NULL;//sistema lineare da risolvere per trovare a e b
 		int**base_matrix=NULL;//matrice che riporta per colonna i vettori che formano una base del sistema lineare
 		pthread_t *array_tid=NULL;
@@ -347,7 +347,7 @@ int main(int argc,char*argv[]){
 			mean_increment_M_and_B+=num_increment_M_and_B;*/
 		}
 		clean_memory://pulire memoria rimanente
-		free_memory_list_factor(head_f_base_f);
+		free_memory_list_f(head_f_base_f);
 		head_f_base_f=NULL;
 		tail_f_base_f=NULL;
 		mpz_clear(n);

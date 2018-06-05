@@ -1,3 +1,4 @@
+#include "basic.h"
 #ifndef CRIVELLO_QUADRATICO_COPIA_1_LIST_SQUARE_RELATION_H
 #define CRIVELLO_QUADRATICO_COPIA_1_LIST_SQUARE_RELATION_H
 struct node_square_relation {
