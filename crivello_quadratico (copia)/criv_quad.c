@@ -1084,7 +1084,7 @@ void calculate_a_f2(mpz_t a,const mpfr_t target_a,int*s,struct node_factor_base*
 	mpz_clear(v);
 	return;
 }
-void add_remainder_to_matrix_factorization(mpz_t **matrix_factorization,mpz_t*array_number,long M,int cardinality_factor_base){
+/*void add_remainder_to_matrix_factorization(mpz_t **matrix_factorization,mpz_t*array_number,long M,int cardinality_factor_base){
 	//aggiunge il fattore rimanente dall'elemento dell'array di numeri una volta che viene diviso per tutti i numeri della factor base
 	if(*matrix_factorization==NULL || matrix_factorization==NULL || array_number==NULL || M<=0 || cardinality_factor_base<=0){
 		handle_error_with_exit("error in add_remainder_to_matrix_factorization\n");
@@ -1093,7 +1093,7 @@ void add_remainder_to_matrix_factorization(mpz_t **matrix_factorization,mpz_t*ar
 		mpz_set(matrix_factorization[i][cardinality_factor_base*2+1],array_number[i]);
 	}
 	return;
-}
+}*/
 
 /*mpz_t*calculate_array_Bk(long*array_of_prime_chosen_for_a,int card_factor_base,const mpz_t n,long s,const mpz_t a,mpz_t b1){
 	mpz_t*array_Bk=NULL;
@@ -1334,7 +1334,7 @@ mpz_t *calculate_bi(mpz_t *array_Bk,const mpz_t b1,int s){
 	mpz_clear(v1);
 	return array;
 }*/
-mpz_t *create_array_of_number(const mpz_t a,const mpz_t b,long M,const mpz_t n){//crea array di numeri da setacciare per vedere quali sono B smooth
+/*mpz_t *create_array_of_number(const mpz_t a,const mpz_t b,long M,const mpz_t n){//crea array di numeri da setacciare per vedere quali sono B smooth
 	if(a==NULL || b==NULL || n==NULL || mpz_sgn(n)<=0 || M<=0 || mpz_sgn(a)<=0 || mpz_sgn(b)<=0){
 		handle_error_with_exit("invalid parameter create_array_of_number\n");
 	}
@@ -1395,7 +1395,7 @@ mpz_t *create_array_of_number(const mpz_t a,const mpz_t b,long M,const mpz_t n){
 	mpz_clear(double_b);
 	mpz_clear(t_j);
 	return array;
-}
+}*/
 void calculate_a_and_b(int*solution,mpz_t**matrix_B_smooth,int num_B_smooth,int card_f_base,mpz_t a,mpz_t b,const mpz_t n){
 	if(solution==NULL || matrix_B_smooth==NULL || *matrix_B_smooth==NULL || num_B_smooth<=0 || card_f_base<=0 || num_B_smooth<card_f_base || a==NULL || b==NULL || n==NULL){
 		handle_error_with_exit("error in parameter calculate a and b\n");

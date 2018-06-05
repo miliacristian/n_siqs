@@ -72,6 +72,7 @@ struct matrix_factorization**alloc_array_matrix_factorization(int length_array_m
 	}
 	return array_matrix_factorization;
 }
+*/
 void create_row_factorization(struct node_factor_base*head_f_base_f,int card_f_base){
 	if(head_f_base_f==NULL || card_f_base<=0){
 		handle_error_with_exit("error in create row factorization\n");
@@ -85,7 +86,7 @@ void create_row_factorization(struct node_factor_base*head_f_base_f,int card_f_b
 		p=p->next;
 	}
 	return;
-}*/
+}
 /*struct matrix_factorization*create_matrix_factorization_f(int M,int card_f_base,const mpz_t a,const mpz_t b,const mpz_t n){
 	if(M<=0 || card_f_base<=0 || a==NULL || b==NULL || n==NULL){
 		handle_error_with_exit("error in create_matrix_factorization_f\n");
