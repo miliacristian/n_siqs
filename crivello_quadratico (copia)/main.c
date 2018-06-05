@@ -392,14 +392,18 @@ int thread_job_criv_quad(int id_thread){//id inizia da 0,il lavoro di un thread 
 	int num_B_smooth=-1;
 	struct matrix_factorization*matrix_B_smooth=NULL;
 	struct matrix_factorization *matrix=NULL;
+
+    //gettime
+    gettime(&timer_thread);
+    //gettime(&time_start_thread);
 	while(count<=length_array_thread_data-2){//ogni thread prende un sottoinsieme di compiti,il thread con id 0 farà i compiti 0,NUM_THREAD,2*NUM_THREAD,il thread 1 farà 1,NUM_THREAD+1,2*NUM_THREAD+1 ecc
 
 		//creazione e fattorizzazione matrice dei thread secondari
 		printf("thread=%d\n",count);
         mpz_set(thread_data[id_thread].b,array_bi[count]);//imposta ad ogni ciclo il valore di b
-		print_time_elapsed("time_to_create matrix_factorization");
+		print_time_elapsed_local("time_to_create matrix_factorization",&timer_thread);
 		factor_matrix_f(n,M,thread_data[id_thread],cardinality_factor_base,a);//fattorizza una nuova matrice
-		print_time_elapsed("time to factor matrix_factorization");
+		print_time_elapsed_local("time to factor matrix_factorization",&timer_thread);
 		/*num_B_smooth=count_number_B_smooth_matrix_unsorted_f(matrix,2*M+1);
 		printf("num_B_smooth thread=%d\n",num_B_smooth);
 		if(num_B_smooth>0){

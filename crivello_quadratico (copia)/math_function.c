@@ -1955,9 +1955,6 @@ char divide_all_by_p_to_k_f(const mpz_t rad,long p,int index_of_prime,long k,lon
 	else{//p divide a,esiste solo una soluzione,si usa solo j1
 
 		//calcolo di c
-        gmp_printf("b=%Zd\n",b);
-        gmp_printf("n=%Zd\n",n);
-        gmp_printf("a=%Zd\n",a);
 		mpz_mul(v,b,b);//v=b^2
 		mpz_sub(v,v,n);//v=b^2-n
 		if(mpz_divisible_p(v,a)==0){//v non divide a
