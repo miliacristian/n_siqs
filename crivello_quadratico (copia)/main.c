@@ -16,6 +16,7 @@
 #include <assert.h>
 #include <mpfr.h>
 #include "main.h"
+#include "list_factorization.h"
 #include <pthread.h>
 
 	//valori globali(presi da altri file)
@@ -24,7 +25,7 @@
 	extern struct timespec time_start;//istante di tempo iniziale
 
 	//valori globali del file main
-	struct row_factorization r;
+	struct row_factorization r;//contiene tutti i primi della factor base e i relativi log
 	int k=-1;//moltiplicatore di n,se n dispari k=1,3,5 o 7,se n pari so fattorizzarlo
 	//argv[1]=path del file da leggere per ottenere n da fattorizzare
 	struct node_factor_base*head_f_base_f=NULL;//testa della lista dinamica factor base
@@ -32,16 +33,16 @@
 	mpz_t n,x0;//dichiarazione di n,n da fattorizzare,deve essere inizializzato a zero,e deve essere sovrascritto con il numero preso da riga 		di comando o da file
 	mpz_t a,thresold_q,q;//valore del coefficiente a del polinomio,soglia q e q
 	mpfr_t thresold_a;//soglia per il calcolo di a
-	mpz_t temp;
+	mpz_t temp;//mpz temporaneo
 	int s=-1;//numero di primi della factor base distinti che compongono a
 	long B=-1;//smoothness_bound
 	long M=-1;//metà dimensione array
 	mpz_t b1;//valore del primo b=somma di tutti i Bk presi dall'array Bk
-	mpz_t *array_bi=NULL;
-	mpz_t *array_Bk=NULL;
+	mpz_t *array_bi=NULL;//array dei coefficienti bi
+	mpz_t *array_Bk=NULL;//array che serve per calcolare array_bi
 	int dim_sol=-1;//numero di vettori linearmente indpendenti ottenuti dalla risoluzione del sistema lineare,combinandoli opportunamente 		calcolano tutte le possibili combinazioni/soluzioni del sistema
 	int cardinality_factor_base=-1;//cardinalità factor base
-	struct thread_data*thread_data=NULL;
+	struct thread_data*thread_data=NULL;//struttura dati globale per far svolgere la computazione ai thread
 	int length_array_thread_data=-1;//lunghezza dell'array di matrici,ogni thread riceve una matrice per fare la computazione
 	int num_increment_M_and_B=0;
 	int*index_prime_a=NULL;//indice dei primi usati per ottenere a,rispetto alla factor base
@@ -49,25 +50,23 @@
 
 int main(int argc,char*argv[]){
 	srand((unsigned int)time(NULL));//imposta seme casuale
-	if(argc!=2){
+	if(argc!=2){//se non c'è esattamente un parametro,termina
 		handle_error_with_exit("usage<path>\n");
 	}
 	FILE*file_number=open_file(argv[1]);//apri file in cui risiede il numero n da fattorizzare
 	double mean_increment_M_and_B=0;
 	for(int i=0;i<MAX_NUM_FOR_DIGIT;i++){
+
 		//apertura file e dichiarazione variabili
 		file_log=open_file_log();//apri file di log
 		num_increment_M_and_B=0;
-		struct matrix_factorization*matrix_B_smooth=NULL;//matrice che mememorizza le fattorizzazioni dei soli numeri b_smooth 			presenti 			nell'array
-		struct matrix_factorization*mat=NULL;
-		mpz_t*array_number=NULL;//array di numeri
 		mpz_t a_default,b_default;//a,b sono i coefficienti del polinomio aj^2+2bj+c,thresold a serve per calcolare il valore di a
 		int*array_id=NULL;//array che contiene gli id dei nuovi thread creati a partire da 0
 		int num_B_smooth=-1;//numero di numeri b-smooth trovati nell'array
 		char*linear_system=NULL;//sistema lineare da risolvere per trovare a e b
 		int**base_matrix=NULL;//matrice che riporta per colonna i vettori che formano una base del sistema lineare
 		pthread_t *array_tid=NULL;
-		int row_result=-1;//numero di righe risultanti dalla concatenazione di tutte le matrici
+		//int row_result=-1;//numero di righe risultanti dalla concatenazione di tutte le matrici
 		int factorizations_founded=-1;//numero di fattorizazzioni trovate
 		char factorized=0;//indica se numero fattorizzato o no
 		char digit=-1;//numero cifre di n
@@ -156,7 +155,8 @@ int main(int argc,char*argv[]){
 			print_time_elapsed("time to calculate thresold_a");
 	
 			//factor base
-			head_f_base_f=create_factor_base_f(&cardinality_factor_base,B,&tail_f_base_f,n,q,thresold_q);//crea 				lista dinamica con tutti i primi
+			head_f_base_f=create_factor_base_f(&cardinality_factor_base,B,&tail_f_base_f,n,q,thresold_q);//crea lista dinamica con tutti i primi
+			//scrivere modo per appendere una factor base con un'altra in modo da non ricalcolare nulla da capo
 			printf("factor base=");
 			print_list_factor(head_f_base_f,cardinality_factor_base);
 			printf("cardinality factor_base %d\n",cardinality_factor_base);
@@ -201,7 +201,7 @@ int main(int argc,char*argv[]){
 			}
 			print_time_elapsed("time to calculate array bi");
 
-			//creazione array_matrix_factorization
+			//creazione struttura dati dei thread
 			if(array_bi==NULL){
 				length_array_thread_data=1;
 			}
@@ -212,19 +212,17 @@ int main(int argc,char*argv[]){
 				length_array_thread_data=1;
 			}
 			printf("length_array_matrix_factorization=%d\n",length_array_thread_data);
-			printf("creazione struttura dati thread\n");
 			thread_data=alloc_array_thread_data(length_array_thread_data,M);
 			print_time_elapsed("time to create thread data");
-			//fattorizza numeri nell'array
+
+			//creazione della struttura row_factorization(che contiene primi factor base e log)
 			r.prime=alloc_array_int(cardinality_factor_base);
 			r.log_prime=alloc_array_int(cardinality_factor_base);
 			create_row_factorization(head_f_base_f,cardinality_factor_base);
 			print_array_int(r.log_prime,cardinality_factor_base);
 			print_array_int(r.prime,cardinality_factor_base);
 
-			//free_memory_list_f(head_f_base_f);
-			//head_f_base_f=NULL;
-			//tail_f_base_f=NULL;
+
 			print_time_elapsed("time to create row factorization");
 
 			//creazione e avvio thread
@@ -234,15 +232,15 @@ int main(int argc,char*argv[]){
 			}
 			print_time_elapsed("time to create thread");
 
-			//creazione matrice fattorizazione main thread
-			//mat=create_matrix_factorization_f(M,cardinality_factor_base,a_default,b_default,n);
-
-            //thread_data[length_array_thread_data-1]==struttura dati main thread
-            mpz_set(thread_data[length_array_thread_data-1].b,b_default);
+            //n.b. thread_data[length_array_thread_data-1]==struttura dati main thread
+            mpz_set(thread_data[length_array_thread_data-1].b,b_default);//imposta b
 			print_time_elapsed("time_to_create matrix_factorization main thread");
-			factor_matrix_f(n,M,thread_data[length_array_thread_data-1],cardinality_factor_base,a_default);
+			factor_matrix_f(n,M,thread_data[length_array_thread_data-1],cardinality_factor_base,a_default);//fattorizza numeri
 			print_time_elapsed("time_to_factor matrix_factorization main thread");
 			//print_thread_data(thread_data[length_array_thread_data-1],M);
+
+			//ricerca dei B_smooth potenziali,reali e fattorizzazione dei B_smooth reali
+
 			/*num_B_smooth=count_number_B_smooth_matrix_unsorted_f(mat,2*M+1);
 			printf("num_B_smooth=%d\n",num_B_smooth);
 			if(num_B_smooth>0){
@@ -254,7 +252,8 @@ int main(int argc,char*argv[]){
 				matrix_B_smooth=alloc_matrix_factorization(0);
 			}*/
 			//free_memory_matrix_factorization(mat);
-			//array_matrix_B_smooth[length_array_thread_data-1]=matrix_B_smooth;//aggiungi la matrice fattorizzazioni di default 				come ultima matrice
+			//array_matrix_B_smooth[length_array_thread_data-1]=matrix_B_smooth;//aggiungi la matrice fattorizzazioni di default come ultima matrice
+
 			//aspetta tutti i thread e libera memoria
 			if(length_array_thread_data!=1 && NUM_THREAD>0){
 				join_all_threads(array_tid,NUM_THREAD);//aspetta tutti i thread
@@ -347,7 +346,10 @@ int main(int argc,char*argv[]){
 			}
 			mean_increment_M_and_B+=num_increment_M_and_B;*/
 		}
-		clean_memory:
+		clean_memory://pulire memoria rimanente
+		free_memory_list_factor(head_f_base_f);
+		head_f_base_f=NULL;
+		tail_f_base_f=NULL;
 		mpz_clear(n);
 		mpz_clear(a);
 		mpz_clear(temp);
@@ -361,6 +363,7 @@ int main(int argc,char*argv[]){
 		fprintf(file_log,"M_end=%ld ",M);
 		fprintf(file_log,"B_end=%ld ",B);
 		fprintf(file_log,"num_increment=%d ",num_increment_M_and_B);
+
 		//tempo totale,imposta il tempo iniziale alla struct,tempo totale=get_time-tempo iniziale
 		timer.tv_nsec=time_start.tv_nsec;//timer=time_start
 		timer.tv_sec=time_start.tv_sec;//timer=time_start
@@ -387,23 +390,22 @@ int thread_job_criv_quad(int id_thread){//id inizia da 0,il lavoro di un thread 
 		return 0;
 	}
     struct timespec timer_thread;//istante di tempo
-    struct timespec time_start_thread;//istante di tempo iniziale
 	int count=id_thread;//indica quale polinomio deve usare per fare il crivello quadratico
-	int num_B_smooth=-1;
-	struct matrix_factorization*matrix_B_smooth=NULL;
-	struct matrix_factorization *matrix=NULL;
+	int num_B_smooth=-1,num_potential_B_smooth=-1;//numero di B_smooth e B_smooth potenziali trovati
 
     //gettime
     gettime(&timer_thread);
-    //gettime(&time_start_thread);
 	while(count<=length_array_thread_data-2){//ogni thread prende un sottoinsieme di compiti,il thread con id 0 farà i compiti 0,NUM_THREAD,2*NUM_THREAD,il thread 1 farà 1,NUM_THREAD+1,2*NUM_THREAD+1 ecc
 
-		//creazione e fattorizzazione matrice dei thread secondari
+		//fattorizzazione
 		printf("thread=%d\n",count);
         mpz_set(thread_data[id_thread].b,array_bi[count]);//imposta ad ogni ciclo il valore di b
 		print_time_elapsed_local("time_to_create matrix_factorization",&timer_thread);
 		factor_matrix_f(n,M,thread_data[id_thread],cardinality_factor_base,a);//fattorizza una nuova matrice
 		print_time_elapsed_local("time to factor matrix_factorization",&timer_thread);
+
+		//ricerca dei B_smooth potenziali,reali e fattorizzazione dei B_smooth reali
+
 		/*num_B_smooth=count_number_B_smooth_matrix_unsorted_f(matrix,2*M+1);
 		printf("num_B_smooth thread=%d\n",num_B_smooth);
 		if(num_B_smooth>0){
