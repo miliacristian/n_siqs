@@ -2,13 +2,14 @@
 #define RAD2 1.41421356
 //#define THRESOLD_PROBABLE_PRIME 1000000 //per i numeri più piccoli della soglia si vede se sono primi dividendoli per ogni numero minore di essi che risiede nella factor base
 #define THRESOLD_PROBABLE_PRIME 100
-#define THRESOLD_PRINT_ARRAY 1000000000
-#define THRESOLD_PRINT_MATRIX 100000000
+#define THRESOLD_PRINT_ARRAY 1000
+#define THRESOLD_PRINT_MATRIX 1000
+#define THRESOLD_PRINT_LIST 1000
 #define SIQS_MIN_PRIME_POLYNOMIAL 400 //parametri per il calcolo di a
 #define SIQS_MAX_PRIME_POLYNOMIAL 8000 //parametri per il calcolo di a
 #define NUM_ITER_FOR_CALCULATE_A 100 //parametri per il calcolo di a
 #define THRESOLD_RELATION 0 
-#define NUM_THREAD 4 //numero di thread
+#define NUM_THREAD 8 //numero di thread
 #define S_MAX 10//corrisponde a 2^(S_MAX-1) polinomi diversi
 #define MAX_DIM_SOL 15 //dimensione soluzione massima
 #define PERC_INCREMENT_M 50 

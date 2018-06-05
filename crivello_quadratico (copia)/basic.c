@@ -39,18 +39,47 @@ struct thread_data*alloc_array_thread_data(int length_array_thread_data,long M){
 		t_data[0].numbers[i].sum_log=0;
 		t_data[0].numbers[i].last_index_f_base=-1;
 	}
-	print_thread_data(t_data[0],M);
-	for(int i=1;i<length_array_thread_data;i++){
-		printf("l\n");
-		mpz_init(t_data[i].b);
-		printf("q\n");
+	for(int i=0;i<length_array_thread_data;i++){
 		t_data[i].log_thresold=0;
-		memcpy(t_data[i].numbers,t_data[0].numbers, sizeof(struct number)*(2*M+1));
+		memcpy(t_data[i].numbers,t_data[0].numbers,sizeof(struct number)*(2*M+1));
 	}
-	printf("fine\n");
 	return t_data;
 }
-
+/*struct thread_data*alloc_array_thread_data(int length_array_thread_data,long M){
+    if(length_array_thread_data<=0 || M<=0){
+        handle_error_with_exit("error in alloc_array_thread_data\n");
+    }
+    struct thread_data**t_data=malloc(sizeof(struct thread_data*)*1);
+    if(t_data==NULL){
+        handle_error_with_exit("error in malloc alloc array p_thread_data\n");
+    }
+    (*t_data)=malloc(sizeof(struct thread_data)*length_array_thread_data);
+    if(*t_data==NULL){
+        handle_error_with_exit("error in malloc alloc array thread_data\n");
+    }
+    for(int i=0;i<length_array_thread_data;i++){
+        mpz_init((*t_data)[i].b);
+        (*t_data)[i].log_thresold=1;
+        (*t_data)[i].numbers=malloc(sizeof(struct number)*(2*M+1));
+        if((*t_data)[i].numbers==NULL){
+            handle_error_with_exit("error in malloc alloc numbers");
+        }
+        printf("index=%d\n",(*t_data)[i].numbers[5].first_index_f_base);
+    }
+    for(int i=0;i<2*M+1;i++){
+        (*t_data[0]).numbers[i].j=i-M;
+        (*t_data[0]).numbers[i].first_index_f_base=-1;
+        (*t_data[0]).numbers[i].sum_log=0;
+        (*t_data[0]).numbers[i].last_index_f_base=-1;
+    }
+    for(int i=0;i<length_array_thread_data;i++){
+        (*t_data)[i].log_thresold=0;
+        memcpy((*t_data)[i].numbers,(*t_data)[0].numbers,sizeof(struct number)*(2*M+1));
+    }
+    print_thread_data((*t_data)[1],M);
+    printf("fine\n");
+    return *t_data;
+}*/
 FILE*open_file_log(){
 	FILE*file=fopen("file_log.txt","a");//modalità append
 	if(file==NULL){

@@ -210,9 +210,21 @@ void print_list(struct node*head){
 	printf("\n");
 	return;
 }
-void print_list_f(struct node_factor_base*head){
-	if (head==NULL){
+char not_print_list(int length){
+	if(length>=THRESOLD_PRINT_LIST){
+		return 1;
+	}
+	return 0;
+}
+void print_list_factor(struct node_factor_base*head,int length){
+	if (head==NULL || length<0){
 		printf("impossible print list head is NULL\n");
+		return;
+	}
+	if(length==0){
+		printf("list is empty\n");
+	}
+	if(not_print_list(length)==1){
 		return;
 	}
 	struct node_factor_base *p=head;

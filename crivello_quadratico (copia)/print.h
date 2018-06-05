@@ -33,5 +33,5 @@ void print_matrix_mpz(mpz_t**matrix,int num_row,int num_col);
 void print_array_matrix_same_dimension(mpz_t***array_matrix_mpz,int length_array,int num_row,int num_col);
 void print_matrix_factorization_f(struct matrix_factorization m);
 void print_array_float(float*array,int length);
-void print_list_f(struct node_factor_base*head);
+void print_list_factor(struct node_factor_base*head,int length);
 void print_thread_data(struct thread_data thread_data,long M);
