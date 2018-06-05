@@ -91,3 +91,28 @@ n=102160224089383324248380320556789282234794152597931358536793106973369036041627
 mean_increment=0.000000
 n=10216022408938332424838032055678928223479415259793135853679310697336903604162773 M_start=400000 B_start=5000000 k=5 card_f_base=174384 p_min=43 p_max=503 a=615978568908498513685160826964547221 M_end=400000 B_end=5000000 num_increment=0 time_total:hour=0 min=0 sec:5 ms=498 ns:477072
 mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=119 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=119 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:309953
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=221 error in mpz_divisible divide all by p_to_k
+error in mpz_divisible divide all by p_to_k
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=221 error in mpz_divisible divide all by p_to_k
+error in mpz_divisible divide all by p_to_k
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=119 error in mpz_divisible divide all by p_to_k
+error in mpz_divisible divide all by p_to_k
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 error in mpz_divisible divide all by p_to_k
+error in mpz_divisible divide all by p_to_k
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=1 ns:834653
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=221 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:486173
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=221 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=1 ns:5981
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=119 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=119 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=119 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=221 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=119 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:549076
+mean_increment=0.000000
+n=10216022408938332424838032055678928223479415259793135853679310697336903604162773 M_start=400000 B_start=5000000 k=5 card_f_base=174384 p_min=43 p_max=503 a=80574087031741121677661880246895553 error in mpz_divisible divide all by p_to_k
+n=10216022408938332424838032055678928223479415259793135853679310697336903604162773 M_start=400000 B_start=5000000 k=5 card_f_base=174384 p_min=43 p_max=503 a=157598538014830616008080891726493591 error in mpz_divisible divide all by p_to_k
+n=10216022408938332424838032055678928223479415259793135853679310697336903604162773 M_start=400000 B_start=5000000 k=5 card_f_base=174384 p_min=43 p_max=503 a=494050703014267619506616964772077923 error in mpz_divisible divide all by p_to_k
+n=10216022408938332424838032055678928223479415259793135853679310697336903604162773 M_start=400000 B_start=5000000 k=5 card_f_base=174384 p_min=43 p_max=503 a=1324808488397358874587431305789921127 error in mpz_divisible divide all by p_to_k
+n=10216022408938332424838032055678928223479415259793135853679310697336903604162773 M_start=400000 B_start=5000000 k=5 card_f_base=174384 p_min=43 p_max=503 a=684400456102977597698748477317870567 error in mpz_divisible divide all by p_to_k
+n=10216022408938332424838032055678928223479415259793135853679310697336903604162773 M_start=400000 B_start=5000000 k=5 card_f_base=174384 p_min=43 p_max=503 a=817221324355830719385793943599041727 M_end=400000 B_end=5000000 num_increment=0 time_total:hour=0 min=1 sec:9 ms=52 ns:992690
+mean_increment=0.000000

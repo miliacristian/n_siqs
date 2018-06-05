@@ -184,7 +184,7 @@ int main(int argc,char*argv[]){
 			array_Bk=calculate_array_Bk_f(index_prime_a,number_prime_a,cardinality_factor_base,n,s,a,b1);
 			if(array_Bk!=NULL){
 				gmp_printf("b1=%Zd\n",b1);
-				//print_array_Bk(array_Bk,s);
+				print_array_Bk(array_Bk,s);
 			}
 			print_time_elapsed("time to calculate array Bk");
 
@@ -197,7 +197,7 @@ int main(int argc,char*argv[]){
 			if(array_bi!=NULL){
 				reduce_array_mpz_mod_n(array_bi,(int)pow(2,s-1),a);
 				adjust_array_bi(array_bi,s,a);
-				//print_array_bi(array_bi,s);
+				print_array_bi(array_bi,s);
 			}
 			print_time_elapsed("time to calculate array bi");
 
@@ -242,7 +242,7 @@ int main(int argc,char*argv[]){
 			print_time_elapsed("time_to_create matrix_factorization main thread");
 			factor_matrix_f(n,M,thread_data[length_array_thread_data-1],cardinality_factor_base,a_default);
 			print_time_elapsed("time_to_factor matrix_factorization main thread");
-			
+			//print_thread_data(thread_data[length_array_thread_data-1],M);
 			/*num_B_smooth=count_number_B_smooth_matrix_unsorted_f(mat,2*M+1);
 			printf("num_B_smooth=%d\n",num_B_smooth);
 			if(num_B_smooth>0){
@@ -386,6 +386,8 @@ int thread_job_criv_quad(int id_thread){//id inizia da 0,il lavoro di un thread 
 	if(id_thread+1>length_array_thread_data-1){//l'indice del thread eccede il numero di job da fare
 		return 0;
 	}
+    struct timespec timer_thread;//istante di tempo
+    struct timespec time_start_thread;//istante di tempo iniziale
 	int count=id_thread;//indica quale polinomio deve usare per fare il crivello quadratico
 	int num_B_smooth=-1;
 	struct matrix_factorization*matrix_B_smooth=NULL;
@@ -394,9 +396,9 @@ int thread_job_criv_quad(int id_thread){//id inizia da 0,il lavoro di un thread 
 
 		//creazione e fattorizzazione matrice dei thread secondari
 		printf("thread=%d\n",count);
-        mpz_set(thread_data[length_array_thread_data-1].b,array_bi[count]);
+        mpz_set(thread_data[id_thread].b,array_bi[count]);//imposta ad ogni ciclo il valore di b
 		print_time_elapsed("time_to_create matrix_factorization");
-		factor_matrix_f(n,M,thread_data[count],cardinality_factor_base,a);
+		factor_matrix_f(n,M,thread_data[id_thread],cardinality_factor_base,a);//fattorizza una nuova matrice
 		print_time_elapsed("time to factor matrix_factorization");
 		/*num_B_smooth=count_number_B_smooth_matrix_unsorted_f(matrix,2*M+1);
 		printf("num_B_smooth thread=%d\n",num_B_smooth);
