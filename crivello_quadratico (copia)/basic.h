@@ -55,6 +55,10 @@ struct thread_data {
 	float log_thresold;//valore della soglia
 	mpz_t b;//coefficiente b
 	struct number*numbers;//array di struct di numberi
+	struct node_square_relation*head;//ogni thread dopo il suo compito ha una lista di relazioni quadratiche
+	struct node_square_relation*tail;//ogni thread dopo il suo compito ha una lista di relazioni quadratiche
+	//ogni volta che un thread analizza un dato appende la lista delle relazioni quadratiche a quella
+	// precedentemente calcolata
 };
 
 struct number {

@@ -392,7 +392,7 @@ int thread_job_criv_quad(int id_thread){//id inizia da 0,il lavoro di un thread 
     struct timespec timer_thread;//istante di tempo
 	int count=id_thread;//indica quale polinomio deve usare per fare il crivello quadratico
 	int num_B_smooth=-1,num_potential_B_smooth=-1;//numero di B_smooth e B_smooth potenziali trovati
-
+    struct node_square_relation*head=NULL,*tail=NULL;
     //gettime
     gettime(&timer_thread);
 	while(count<=length_array_thread_data-2){//ogni thread prende un sottoinsieme di compiti,il thread con id 0 farà i compiti 0,NUM_THREAD,2*NUM_THREAD,il thread 1 farà 1,NUM_THREAD+1,2*NUM_THREAD+1 ecc
@@ -405,7 +405,7 @@ int thread_job_criv_quad(int id_thread){//id inizia da 0,il lavoro di un thread 
 		print_time_elapsed_local("time to factor matrix_factorization",&timer_thread);
 
 		//ricerca dei B_smooth potenziali,reali e fattorizzazione dei B_smooth reali
-
+        find_square_relation(thread_data[id_thread],&num_B_smooth,&num_potential_B_smooth,M,&head,&tail);
 		/*num_B_smooth=count_number_B_smooth_matrix_unsorted_f(matrix,2*M+1);
 		printf("num_B_smooth thread=%d\n",num_B_smooth);
 		if(num_B_smooth>0){

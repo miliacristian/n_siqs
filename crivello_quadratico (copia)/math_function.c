@@ -9,6 +9,27 @@
 #include "print.h"
 #include <unistd.h>
 extern struct row_factorization r;
+
+float calculate_log_thresold(const mpz_t n,long M){
+    float log_thresold=-1.0;
+    //log_thresold=log(M*rad(n))-error
+    return log_thresold;
+}
+void find_square_relation(struct thread_data thread_data,int*num_B_smooth,int*num_potential_B_smooth,long M,struct node_suqare_relation**head,struct node_suqare_relation**tail,const mpz_t n){
+    if(num_B_smooth==NULL || num_potential_B_smooth==NULL || M<=0 || head==NULL || tail==NULL){
+        handle_error_with_exit("error in find_square_relation");
+    }
+    thread_data.log_thresold=calculate_log_thresold(n,M);
+    for(long i=0;i<2*M+1;i++){
+        if(thread_data.numbers[i].sum_log>=thread_data.log_thresold){
+            //possibile B_smooth trovato
+            (*num_potential_B_smooth)++;
+            create_num();
+            factorize_num();
+        }
+    }
+    return;
+}
 int max(int i,int j){//calcola il massimo tra i e j
 	if(i<=j){
 		return j;
