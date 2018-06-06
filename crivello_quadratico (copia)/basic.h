@@ -32,17 +32,15 @@ struct row_factorization{
 	int*log_prime;//valore del suo logaritmo
 };
 
-
-
-struct row{
+/*struct row{
 	int index_first_prime;
 	int index_last_prime;
 	mpz_t num;
 	mpz_t square;
 	float sum_log;//somma dei logaritmi
 	float log;//logaritmo di num
-};
-struct matrix_factorization {//matrice che contiene tutte le fattorizazzioni
+};*/
+/*struct matrix_factorization {//matrice che contiene tutte le fattorizazzioni
 	struct row*row;//2*M+1
 	int num_row;
 };
@@ -54,7 +52,7 @@ struct row_relation_B_smooth{//riga che contiene relazioni B_smooth
 struct matrix_relation_B_smooth{//matrice che contiene le relazioni B_smooth
 	struct row_relation_B_smooth*row;
 	int num_row;
-};
+};*/
 struct thread_data {
 	float log_thresold;//valore della soglia
 	mpz_t b;//coefficiente b

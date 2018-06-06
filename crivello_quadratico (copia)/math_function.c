@@ -7,20 +7,42 @@
 #include "gmp.h"
 #include "matrix_function.h"
 #include "print.h"
+#include "list_factorization.h"
 #include <unistd.h>
 #include <mpfr.h>
 
 extern struct row_factorization r;
-
+void calculate_index_min_max_a(int*number_prime_a,int*index_prime_a,int length,int*index_min_a,int*index_max_a){
+	if(number_prime_a==NULL || index_max_a==NULL || length<=0 || index_min_a==NULL || index_max_a==NULL){
+		handle_error_with_exit("error in calculate min_max_a\n");
+	}
+	int min_a=number_prime_a[0];
+	*index_min_a=index_prime_a[0];
+	int max_a=number_prime_a[0];
+	*index_max_a=index_prime_a[0];
+	for(int i=1;i<length;i++){
+		if(min_a>number_prime_a[i]){
+			min_a=number_prime_a[i];
+			*index_min_a=index_prime_a[i];
+		}
+		if(max_a<number_prime_a[i]) {
+			max_a=number_prime_a[i];
+			*index_max_a=index_prime_a[i];
+		}
+	}
+	return;
+}
 float calculate_log_thresold(const mpz_t n,long M){
+	//log_thresold=log(M*rad(n))-error=log(M)+log(rad(n)-error=log(M)+1/2*log(n)-error
     float log_thresold=-1.0;
-    mpfr_t rad_n;
-    mpfr_init(rad_n);
-    mpfr_set_z(rad_n,n,MPFR_RNDN);//rad_n=n
-    //log_thresold=log(M*rad(n))-error=log(M)+log(rad(n)-error
-	mpfr_sqrt(rad_n,rad_n,MPFR_RNDN);//rad_n=radice di n
-	mpfr_log2(rad_n,rad_n,MPFR_RNDN);//rad_n=log2(rad(n))
-	log_thresold=mpfr_get_flt(rad_n,MPFR_RNDN);
+    mpfr_t log_n;
+    mpfr_init(log_n);
+    mpfr_set_z(log_n,n,MPFR_RNDN);//log_rad_n=n
+
+	//mpfr_sqrt(log_rad_n,log_rad_n,MPFR_RNDN);//log_rad_n=radice di n
+	mpfr_log2(log_n,log_n,MPFR_RNDN);//rad_n=log2(n)
+	log_thresold=mpfr_get_flt(log_n,MPFR_RNDN);
+	log_thresold=log_thresold*0.5;//log_thresold=log2(n)
     log_thresold=log_thresold+log2f((float)M);
     log_thresold=log_thresold-ERROR_LOG;
     return log_thresold;
@@ -47,16 +69,59 @@ void create_num(mpz_t num,const mpz_t a,const mpz_t b,const mpz_t n,long j){
 	mpz_mul(a_mul_c,b,b);//a_mul_c=b^2
 	mpz_sub(a_mul_c,a_mul_c,n);//a_mul_c=b^2-n
 
+	mpz_add(num,square_a_mul_suqare_j,double_b_mul_j);
+	mpz_add(num,num,a_mul_c);//num=a^2*j^2+2*bj+a*c
+
 	mpz_clear(a_mul_c);
 	mpz_clear(double_b_mul_j);
 	mpz_clear(square_a_mul_suqare_j);
 }
+struct node_factorization*factorize_num(const mpz_t num,int first_index_f_base,int last_index_f_base,int index_min_a,int index_max_a,char*is_B_smooth){
+	if(first_index_f_base<0 || last_index_f_base<0 || index_min_a<0 || index_max_a<0 || is_B_smooth==NULL){
+		handle_error_with_exit("error in factorize_num\n");
+	}
+	mpz_t temp;
+	mpz_init(temp);
+	struct node_factorization*head;
+	struct node_factorization*tail;
+	if(mpz_cmp_si(num,0)<0){//valore negativo->divisibile per 1
+		mpz_neg(temp,temp);//rendilo positivo
+		insert_ordered_factor(-1,1,0,&head,&tail);//inserisci nodo -1
+	}
+	return head;
+}
+/*char factorize_num_B_smooth(int*array_factorization,int len_array,struct row *row){
+	mpz_t temp;
+	mpz_init(temp);
+	if(array_factorization==NULL || len_array<=0 || row==NULL){
+		handle_error_with_exit("error in factorize num_B_smooth\n");
+	}
+	for(int i=0;i<len_array/2;i++){
+		mpz_set(temp,row->num);
+		array_factorization[2*i]=r.prime[i+row->index_first_prime];
+		while(mpz_divisible_ui_p(temp,r.prime[i+row->index_first_prime])!=0){
+			mpz_divexact_ui(temp,temp,r.prime[i+row->index_first_prime]);
+			array_factorization[2*i+1]+=1;
+		}
+	}
+	/*if(mpz_cmp_si(temp,1)==0 ||
+		return 1;
+	}
+	if(mpz_cmp_si(temp,-1)==0){
+		return 2;
+	}
+	mpz_clear(temp);
+	return 0;
+}*/
+
 void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth, int *num_potential_B_smooth, long M,
 							   struct node_square_relation **head, struct node_square_relation **tail,
-							   const mpz_t n,const mpz_t a) {
+							   const mpz_t n,const mpz_t a,int index_min_a,int index_max_a) {
 	mpz_t num;
-	if(num_B_smooth==NULL || num_potential_B_smooth==NULL || M<=0 || head==NULL || tail==NULL){
-		handle_error_with_exit("error in find_square_relation");
+	struct node_factorization*head_factor=NULL;
+	char is_B_smooth=-1;
+	if(num_B_smooth==NULL || num_potential_B_smooth==NULL || M<=0 || head==NULL || tail==NULL || index_min_a<0 || index_max_a<0){
+		handle_error_with_exit("error in find_list_square_relation");
 	}
 	mpz_init(num);
 	for(long i=0;i<2*M+1;i++){
@@ -65,10 +130,14 @@ void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth
             (*num_potential_B_smooth)++;
             create_num(num,a,thread_data.b,n,thread_data.numbers[i].j);
             gmp_printf("num=%Zd\n",num);
-            //factorize_num();
+            head_factor=factorize_num(num,thread_data.numbers[i].first_index_f_base,thread_data.numbers[i].last_index_f_base,index_min_a,index_max_a,&is_B_smooth);
+            print_factorization(num,head_factor);
+            if(is_B_smooth){
+            	*num_B_smooth++;
+            	//crea relazioni quadratiche
+            }
         }
     }
-    exit(0);
 	return;
 }
 

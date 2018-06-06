@@ -47,6 +47,7 @@
 	int num_increment_M_and_B=0;
 	int*index_prime_a=NULL;//indice dei primi usati per ottenere a,rispetto alla factor base
 	int*number_prime_a=NULL;//numeri primi usati per ottenere a
+	int index_min_a=-1,index_max_a=-1;//minimo e massimo dei numeri primi scelti per a
 
 int main(int argc,char*argv[]){
 	srand((unsigned int)time(NULL));//imposta seme casuale
@@ -166,12 +167,13 @@ int main(int argc,char*argv[]){
 
 			//a,per siqs e generare tutti gli altri b,prodotto di primi dispari distinti
 			calculate_a_f2(a,thresold_a,&s,head_f_base_f,cardinality_factor_base,&index_prime_a,&number_prime_a);
+			calculate_index_min_max_a(number_prime_a,index_prime_a,s,&index_min_a,&index_max_a);
 			gmp_printf("a=%Zd\n",a);
 			fprintf(file_log,"a=");
 			mpz_out_str(file_log,10,a);
 			fprintf(file_log," ");
+			printf("index_min_a=%d,index_max_a=%d\n",index_min_a,index_max_a);
 			printf("s=%d\n",s);
-
 			//number_prime_a e index_prime_a
 			if(s>0){
 				printf("number_prime_a=");
@@ -243,7 +245,7 @@ int main(int argc,char*argv[]){
 			//ricerca dei B_smooth potenziali,reali e fattorizzazione dei B_smooth reali
 			thread_data[length_array_thread_data-1].log_thresold=calculate_log_thresold(n,M);
 			printf("log_thresold main thread=%f\n",thread_data[length_array_thread_data-1].log_thresold);
-			find_list_square_relation(thread_data[length_array_thread_data-1],&num_B_smooth,&num_potential_B_smooth,M,&head,&tail,n,a);
+			find_list_square_relation(thread_data[length_array_thread_data-1],&num_B_smooth,&num_potential_B_smooth,M,&head,&tail,n,a_default,0,0);
 
 			/*num_B_smooth=count_number_B_smooth_matrix_unsorted_f(mat,2*M+1);
 			printf("num_B_smooth=%d\n",num_B_smooth);
@@ -413,7 +415,7 @@ int thread_job_criv_quad(int id_thread){//id inizia da 0,il lavoro di un thread 
 		print_time_elapsed_local("time to factor matrix_factorization",&timer_thread);
 
 		//ricerca dei B_smooth potenziali,reali e fattorizzazione dei B_smooth reali
-        find_list_square_relation(thread_data[id_thread],&num_B_smooth,&num_potential_B_smooth,M,&head,&tail,n,a);
+        find_list_square_relation(thread_data[id_thread],&num_B_smooth,&num_potential_B_smooth,M,&head,&tail,n,a,index_min_a,index_max_a);
 
 		/*num_B_smooth=count_number_B_smooth_matrix_unsorted_f(matrix,2*M+1);
 		printf("num_B_smooth thread=%d\n",num_B_smooth);

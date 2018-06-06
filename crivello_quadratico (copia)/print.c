@@ -5,6 +5,7 @@
 #include <string.h>
 #include <math.h>
 #include "basic.h"
+#include "list_factorization.h"
 #include <gmp.h>
 char not_print_array(long length){//ritorna 1 se non bisogna stampare 0 altrimenti
 	if(length<=THRESOLD_PRINT_ARRAY){
@@ -346,7 +347,20 @@ void print_matrix_mpz(mpz_t**matrix,int num_row,int num_col){
 	}
 	return;
 }
-
+void print_factorization(const mpz_t num,struct node_factorization*head_factor){
+    if(head_factor==NULL){
+        printf("no simple factorization found");
+        return;
+    }
+    struct node_factorization *p=head_factor;
+    while(p!=NULL){
+        gmp_printf("%Zd=",num);
+        printf("%d^%d ",p->number,p->exp_of_number);
+        p=p->next;
+    }
+    printf("\n");
+    return;
+}
 
 void print_matrix_B_smooth(mpz_t**matrix_B_smooth,int num_of_B_smooth,int cardinality_factor_base){//parametri matrice,righe,colonne
 	if(matrix_B_smooth==NULL || *matrix_B_smooth==NULL){
@@ -439,7 +453,7 @@ void print_array_matrix_same_dimension(mpz_t***array_matrix_mpz,int length_array
 	}
 	return;
 }
-void print_matrix_factorization_f(struct matrix_factorization m){
+/*void print_matrix_factorization_f(struct matrix_factorization m){
 	for(int i=0;i<m.num_row;i++){
 		printf("first_p=%d last_p=%d sum_log=%lf log=%lf ",m.row[i].index_first_prime,
 			   m.row[i].index_last_prime,m.row[i].sum_log,m.row[i].log);
@@ -448,7 +462,7 @@ void print_matrix_factorization_f(struct matrix_factorization m){
 	}
 	printf("num_row=%d\n",m.num_row);
 	return;
-}
+}*/
 void print_array_number(mpz_t*array,int M){
 	if(M<=0){
 		handle_error_with_exit("error in print_array_number\n");

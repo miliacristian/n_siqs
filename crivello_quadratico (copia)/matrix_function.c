@@ -1814,30 +1814,8 @@ char check_solution_base_matrix(int**linear_system,int num_row_system,int num_co
 	}
 	return 1;
 }
-char factorize_num_B_smooth(int*array_factorization,int len_array,struct row *row){
-	mpz_t temp;
-	mpz_init(temp);
-	if(array_factorization==NULL || len_array<=0 || row==NULL){
-		handle_error_with_exit("error in factorize num_B_smooth\n");
-	}
-	for(int i=0;i<len_array/2;i++){
-		mpz_set(temp,row->num);
-		array_factorization[2*i]=r.prime[i+row->index_first_prime];
-		while(mpz_divisible_ui_p(temp,r.prime[i+row->index_first_prime])!=0){
-			mpz_divexact_ui(temp,temp,r.prime[i+row->index_first_prime]);
-			array_factorization[2*i+1]+=1;
-		}
-	}
-	/*if(mpz_cmp_si(temp,1)==0 || 
-		return 1;
-	}*/
-	if(mpz_cmp_si(temp,-1)==0){
-		return 2;
-	}
-	mpz_clear(temp);
-	return 0;
-}
-char*create_linear_system_f(struct matrix_factorization *mat,int cardinality_factor_base){
+
+/*char*create_linear_system_f(struct matrix_factorization *mat,int cardinality_factor_base){
 	//mat contiene solamente i B_smooth;
 	if(mat->num_row<=0 || cardinality_factor_base<=0 || mat==NULL){
 		handle_error_with_exit("error in create linear_system_f\n");
@@ -1867,7 +1845,7 @@ char*create_linear_system_f(struct matrix_factorization *mat,int cardinality_fac
 		array_factorization=NULL;
 	}
 	return linear_system;
-}
+}*/
 
 
 
