@@ -8,28 +8,70 @@
 #include "matrix_function.h"
 #include "print.h"
 #include <unistd.h>
+#include <mpfr.h>
+
 extern struct row_factorization r;
 
 float calculate_log_thresold(const mpz_t n,long M){
     float log_thresold=-1.0;
-    //log_thresold=log(M*rad(n))-error
+    mpfr_t rad_n;
+    mpfr_init(rad_n);
+    mpfr_set_z(rad_n,n,MPFR_RNDN);//rad_n=n
+    //log_thresold=log(M*rad(n))-error=log(M)+log(rad(n)-error
+	mpfr_sqrt(rad_n,rad_n,MPFR_RNDN);//rad_n=radice di n
+	mpfr_log2(rad_n,rad_n,MPFR_RNDN);//rad_n=log2(rad(n))
+	log_thresold=mpfr_get_flt(rad_n,MPFR_RNDN);
+    log_thresold=log_thresold+log2f((float)M);
+    log_thresold=log_thresold-ERROR_LOG;
     return log_thresold;
 }
-void find_square_relation(struct thread_data thread_data,int*num_B_smooth,int*num_potential_B_smooth,long M,struct node_suqare_relation**head,struct node_suqare_relation**tail,const mpz_t n){
-    if(num_B_smooth==NULL || num_potential_B_smooth==NULL || M<=0 || head==NULL || tail==NULL){
-        handle_error_with_exit("error in find_square_relation");
-    }
-    thread_data.log_thresold=calculate_log_thresold(n,M);
-    for(long i=0;i<2*M+1;i++){
+void create_num(mpz_t num,const mpz_t a,const mpz_t b,const mpz_t n,long j){
+	//num=a^2*j^2+2*bj+a*c
+	mpz_t a_mul_c,double_b_mul_j,square_a_mul_suqare_j;
+	mpz_init(a_mul_c);
+	mpz_init(double_b_mul_j);
+	mpz_init(square_a_mul_suqare_j);
+
+	//square_a_mul_suqare_j=a
+	mpz_set(square_a_mul_suqare_j,a);//square_a_mul_suqare_j=a
+	mpz_mul(square_a_mul_suqare_j,square_a_mul_suqare_j,square_a_mul_suqare_j);//square_a_mul_suqare_j=a^2
+	mpz_mul_si(square_a_mul_suqare_j,square_a_mul_suqare_j,j);//square_a_mul_suqare_j=a^2*j
+	mpz_mul_si(square_a_mul_suqare_j,square_a_mul_suqare_j,j);//square_a_mul_suqare_j=a^2*j^2
+
+	//double_b_mul_j
+	mpz_set(double_b_mul_j,b);//double_b_mul_j=b
+	mpz_mul_2exp(double_b_mul_j,double_b_mul_j,1);//double_b_mul_j=2*b
+	mpz_mul_si(double_b_mul_j,double_b_mul_j,j);//double_b_mul_j=2*b*j
+
+	//a_mul_c
+	mpz_mul(a_mul_c,b,b);//a_mul_c=b^2
+	mpz_sub(a_mul_c,a_mul_c,n);//a_mul_c=b^2-n
+
+	mpz_clear(a_mul_c);
+	mpz_clear(double_b_mul_j);
+	mpz_clear(square_a_mul_suqare_j);
+}
+void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth, int *num_potential_B_smooth, long M,
+							   struct node_square_relation **head, struct node_square_relation **tail,
+							   const mpz_t n,const mpz_t a) {
+	mpz_t num;
+	if(num_B_smooth==NULL || num_potential_B_smooth==NULL || M<=0 || head==NULL || tail==NULL){
+		handle_error_with_exit("error in find_square_relation");
+	}
+	mpz_init(num);
+	for(long i=0;i<2*M+1;i++){
         if(thread_data.numbers[i].sum_log>=thread_data.log_thresold){
             //possibile B_smooth trovato
             (*num_potential_B_smooth)++;
-            create_num();
-            factorize_num();
+            create_num(num,a,thread_data.b,n,thread_data.numbers[i].j);
+            gmp_printf("num=%Zd\n",num);
+            //factorize_num();
         }
     }
-    return;
+    exit(0);
+	return;
 }
+
 int max(int i,int j){//calcola il massimo tra i e j
 	if(i<=j){
 		return j;

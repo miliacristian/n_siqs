@@ -70,7 +70,8 @@ int main(int argc,char*argv[]){
 		int factorizations_founded=-1;//numero di fattorizazzioni trovate
 		char factorized=0;//indica se numero fattorizzato o no
 		char digit=-1;//numero cifre di n
-		
+		struct node_square_relation*head=NULL,*tail=NULL;
+
 		k=1;
 
 		//mpz_init
@@ -240,6 +241,9 @@ int main(int argc,char*argv[]){
 			//print_thread_data(thread_data[length_array_thread_data-1],M);
 
 			//ricerca dei B_smooth potenziali,reali e fattorizzazione dei B_smooth reali
+			thread_data[length_array_thread_data-1].log_thresold=calculate_log_thresold(n,M);
+			printf("log_thresold main thread=%f\n",thread_data[length_array_thread_data-1].log_thresold);
+			find_list_square_relation(thread_data[length_array_thread_data-1],&num_B_smooth,&num_potential_B_smooth,M,&head,&tail,n,a);
 
 			/*num_B_smooth=count_number_B_smooth_matrix_unsorted_f(mat,2*M+1);
 			printf("num_B_smooth=%d\n",num_B_smooth);
@@ -395,6 +399,10 @@ int thread_job_criv_quad(int id_thread){//id inizia da 0,il lavoro di un thread 
     struct node_square_relation*head=NULL,*tail=NULL;
     //gettime
     gettime(&timer_thread);
+	thread_data[id_thread].log_thresold=calculate_log_thresold(n,M);
+	printf("log_thresold=%f\n",thread_data[id_thread].log_thresold);
+	print_time_elapsed_local("time to calculate log thresold",&timer_thread);
+
 	while(count<=length_array_thread_data-2){//ogni thread prende un sottoinsieme di compiti,il thread con id 0 farà i compiti 0,NUM_THREAD,2*NUM_THREAD,il thread 1 farà 1,NUM_THREAD+1,2*NUM_THREAD+1 ecc
 
 		//fattorizzazione
@@ -405,7 +413,8 @@ int thread_job_criv_quad(int id_thread){//id inizia da 0,il lavoro di un thread 
 		print_time_elapsed_local("time to factor matrix_factorization",&timer_thread);
 
 		//ricerca dei B_smooth potenziali,reali e fattorizzazione dei B_smooth reali
-        find_square_relation(thread_data[id_thread],&num_B_smooth,&num_potential_B_smooth,M,&head,&tail);
+        find_list_square_relation(thread_data[id_thread],&num_B_smooth,&num_potential_B_smooth,M,&head,&tail,n,a);
+
 		/*num_B_smooth=count_number_B_smooth_matrix_unsorted_f(matrix,2*M+1);
 		printf("num_B_smooth thread=%d\n",num_B_smooth);
 		if(num_B_smooth>0){
