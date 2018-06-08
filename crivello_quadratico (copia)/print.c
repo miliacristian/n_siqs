@@ -349,14 +349,15 @@ void print_matrix_mpz(mpz_t**matrix,int num_row,int num_col){
 }
 void print_factorization(const mpz_t num,struct node_factorization*head_factor){
     if(head_factor==NULL){
-        printf("no simple factorization found");
+        printf("no simple factorization found\n");
         return;
     }
-    struct node_factorization *p=head_factor;
+    struct node_factorization*p=head_factor;
     while(p!=NULL){
-        gmp_printf("%Zd=",num);
-        printf("%d^%d ",p->number,p->exp_of_number);
+        gmp_printf("%Zd=\n",num);
+        printf("%d^%d\n",p->number,p->exp_of_number);
         p=p->next;
+        break;
     }
     printf("\n");
     return;

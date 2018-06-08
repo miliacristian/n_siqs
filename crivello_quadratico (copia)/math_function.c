@@ -77,17 +77,36 @@ void create_num(mpz_t num,const mpz_t a,const mpz_t b,const mpz_t n,long j){
 	mpz_clear(square_a_mul_suqare_j);
 }
 struct node_factorization*factorize_num(const mpz_t num,int first_index_f_base,int last_index_f_base,int index_min_a,int index_max_a,char*is_B_smooth){
-	if(first_index_f_base<0 || last_index_f_base<0 || index_min_a<0 || index_max_a<0 || is_B_smooth==NULL){
+	if((first_index_f_base<0 && first_index_f_base!=-1)|| (last_index_f_base<0 && last_index_f_base!=-1)
+       || index_min_a<0 || index_max_a<0 || is_B_smooth==NULL
+            || first_index_f_base>last_index_f_base){
 		handle_error_with_exit("error in factorize_num\n");
 	}
+	printf("factorize num\n");
+	int number=0;
+	int exp=0;
 	mpz_t temp;
 	mpz_init(temp);
-	struct node_factorization*head;
-	struct node_factorization*tail;
+	struct node_factorization*head=NULL;
+	struct node_factorization*tail=NULL;
+	if(first_index_f_base==-1 || last_index_f_base==-1){//nessun fattore trovato
+	    return NULL;
+	}
 	if(mpz_cmp_si(num,0)<0){//valore negativo->divisibile per 1
 		mpz_neg(temp,temp);//rendilo positivo
 		insert_ordered_factor(-1,1,0,&head,&tail);//inserisci nodo -1
 	}
+	int min_index=min(first_index_f_base,index_min_a);//calcola indice minimo
+	int max_index=max(last_index_f_base,index_max_a);//calcola indice massimo
+	for(int i=min_index;i<max_index+1;i++){
+	    number=r.prime[i];
+        while(mpz_divisible_ui_p(temp,r.prime[i])!=0) {//se il numero è divisibile per un primo della fattor base
+            mpz_divexact_ui(temp, temp, r.prime[i]);
+            exp+=1;
+        }
+        insert_ordered_factor(number,exp,i,&head,&tail);
+        exp=0;//resetta esponente
+    }
 	return head;
 }
 /*char factorize_num_B_smooth(int*array_factorization,int len_array,struct row *row){

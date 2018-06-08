@@ -240,7 +240,7 @@ int main(int argc,char*argv[]){
 			print_time_elapsed("time_to_create matrix_factorization main thread");
 			factor_matrix_f(n,M,thread_data[length_array_thread_data-1],cardinality_factor_base,a_default);//fattorizza numeri
 			print_time_elapsed("time_to_factor matrix_factorization main thread");
-			//print_thread_data(thread_data[length_array_thread_data-1],M);
+			print_thread_data(thread_data[length_array_thread_data-1],M);
 
 			//ricerca dei B_smooth potenziali,reali e fattorizzazione dei B_smooth reali
 			thread_data[length_array_thread_data-1].log_thresold=calculate_log_thresold(n,M);
