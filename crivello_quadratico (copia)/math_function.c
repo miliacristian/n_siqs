@@ -79,10 +79,21 @@ void create_num(mpz_t num,const mpz_t a,const mpz_t b,const mpz_t n,long j){
 }
 struct node_factorization*factorize_num(const mpz_t num,int first_index_f_base,int last_index_f_base,int index_min_a,int index_max_a,char*is_B_smooth){
 	if((first_index_f_base<0 && first_index_f_base!=-1)|| (last_index_f_base<0 && last_index_f_base!=-1)
+			){
+		handle_error_with_exit("error in factorize_num k\n");
+	}
+	if(index_min_a<0 || index_max_a<0 || is_B_smooth==NULL
+	   || first_index_f_base>last_index_f_base){
+		printf("index_min_a=%d,index_max_a=%d,pointer=%p\n",index_min_a,index_max_a,is_B_smooth);
+		printf("first_index_factor_base=%d,last_index=%d\n",first_index_f_base,last_index_f_base);
+		handle_error_with_exit("error in factorize_num m\n");
+	}
+	if((first_index_f_base<0 && first_index_f_base!=-1)|| (last_index_f_base<0 && last_index_f_base!=-1)
        || index_min_a<0 || index_max_a<0 || is_B_smooth==NULL
             || first_index_f_base>last_index_f_base){
 		handle_error_with_exit("error in factorize_num\n");
 	}
+
 	int number=0;
 	int exp=0;
 	mpz_t temp;
@@ -181,7 +192,6 @@ void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth
             }
         }
     }
-    printf("num_potential_B_smooth=%d,num_B_smooth=%d\n",*num_potential_B_smooth,*num_B_smooth);
 	mpz_clear(num);
 	return;
 }
