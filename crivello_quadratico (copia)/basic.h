@@ -73,6 +73,7 @@ struct number {
 struct square_relation {
     mpz_t square;
     struct node_factorization*head_factorization;
+    mpz_t num;
 };
 
 void print_time_elapsed(char*string);

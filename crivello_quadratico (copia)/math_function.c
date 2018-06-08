@@ -8,6 +8,7 @@
 #include "matrix_function.h"
 #include "print.h"
 #include "list_factorization.h"
+#include "list_square_relation.h"
 #include <unistd.h>
 #include <mpfr.h>
 
@@ -82,11 +83,11 @@ struct node_factorization*factorize_num(const mpz_t num,int first_index_f_base,i
             || first_index_f_base>last_index_f_base){
 		handle_error_with_exit("error in factorize_num\n");
 	}
-	printf("factorize num\n");
 	int number=0;
 	int exp=0;
 	mpz_t temp;
 	mpz_init(temp);
+	mpz_set(temp,num);
 	struct node_factorization*head=NULL;
 	struct node_factorization*tail=NULL;
 	if(first_index_f_base==-1 || last_index_f_base==-1){//nessun fattore trovato
@@ -99,14 +100,26 @@ struct node_factorization*factorize_num(const mpz_t num,int first_index_f_base,i
 	int min_index=min(first_index_f_base,index_min_a);//calcola indice minimo
 	int max_index=max(last_index_f_base,index_max_a);//calcola indice massimo
 	for(int i=min_index;i<max_index+1;i++){
+	    if(r.prime[i]==-1){
+	        continue;
+	    }
 	    number=r.prime[i];
         while(mpz_divisible_ui_p(temp,r.prime[i])!=0) {//se il numero è divisibile per un primo della fattor base
             mpz_divexact_ui(temp, temp, r.prime[i]);
             exp+=1;
         }
-        insert_ordered_factor(number,exp,i,&head,&tail);
+        if(exp>0) {
+            insert_ordered_factor(number, exp, i, &head, &tail);
+        }
         exp=0;//resetta esponente
     }
+    if(mpz_cmp_si(temp,1)==0){
+	    *is_B_smooth=1;
+	}
+	else{
+    	*is_B_smooth=0;
+    }
+    mpz_clear(temp);
 	return head;
 }
 /*char factorize_num_B_smooth(int*array_factorization,int len_array,struct row *row){
@@ -132,7 +145,12 @@ struct node_factorization*factorize_num(const mpz_t num,int first_index_f_base,i
 	mpz_clear(temp);
 	return 0;
 }*/
-
+void calculate_square(mpz_t square,const mpz_t a,int index,const mpz_t b){
+    // -M<index<M
+    mpz_mul_si(square,a,index);
+    mpz_add(square,square,b);
+    return;
+}
 void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth, int *num_potential_B_smooth, long M,
 							   struct node_square_relation **head, struct node_square_relation **tail,
 							   const mpz_t n,const mpz_t a,int index_min_a,int index_max_a) {
@@ -148,15 +166,23 @@ void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth
             //possibile B_smooth trovato
             (*num_potential_B_smooth)++;
             create_num(num,a,thread_data.b,n,thread_data.numbers[i].j);
-            gmp_printf("num=%Zd\n",num);
             head_factor=factorize_num(num,thread_data.numbers[i].first_index_f_base,thread_data.numbers[i].last_index_f_base,index_min_a,index_max_a,&is_B_smooth);
             print_factorization(num,head_factor);
             if(is_B_smooth){
-            	*num_B_smooth++;
-            	//crea relazioni quadratiche
+                (*num_B_smooth)++;
+                is_B_smooth=0;
+                struct square_relation square_relation;
+                square_relation.head_factorization=head_factor;
+                mpz_init(square_relation.square);
+                mpz_init(square_relation.num);
+                mpz_set(square_relation.num,num);
+                calculate_square(square_relation.square,a,i-M,thread_data.b);
+                insert_ordered_square_rel(square_relation,head,tail);
             }
         }
     }
+    printf("num_potential_B_smooth=%d,num_B_smooth=%d\n",*num_potential_B_smooth,*num_B_smooth);
+	mpz_clear(num);
 	return;
 }
 

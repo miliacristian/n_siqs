@@ -154,12 +154,13 @@ void insert_ordered_square_rel(struct square_relation square_relation, struct no
             if(square_relation.head_factorization==NULL){
                 handle_error_with_exit("error in insert_ordered\n");
             }
-    struct node_square_relation* temp = *tail;
-    struct node_square_relation* next_node = NULL;
-    struct node_square_relation* new_node = get_new_node_square_rel(square_relation);
     if(head==NULL || tail==NULL){
         handle_error_with_exit("error in insert_ordered,head or tail are NULL\n");
     }
+    struct node_square_relation* temp = *tail;
+    struct node_square_relation* next_node = NULL;
+    struct node_square_relation* new_node = get_new_node_square_rel(square_relation);
+
     if(*head == NULL){
         insert_first_square_rel(new_node, head, tail);
         return;

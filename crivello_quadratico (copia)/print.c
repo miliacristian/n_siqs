@@ -6,6 +6,7 @@
 #include <math.h>
 #include "basic.h"
 #include "list_factorization.h"
+#include "list_square_relation.h"
 #include <gmp.h>
 char not_print_array(long length){//ritorna 1 se non bisogna stampare 0 altrimenti
 	if(length<=THRESOLD_PRINT_ARRAY){
@@ -222,6 +223,26 @@ void print_list_factor(struct node_factor_base*head,int length){
 	printf("\n");
 	return;
 }
+void print_list_square_relation(struct node_square_relation*head,int length){
+    if (head==NULL || length<0){
+        printf("impossible print list head is NULL\n");
+        return;
+    }
+    if(length==0){
+        printf("list is empty\n");
+    }
+    if(not_print_list(length)==1){
+        return;
+    }
+    struct node_square_relation*p=head;
+    while(p!=NULL){
+        print_factorization(p->square_relation.num,p->square_relation.head_factorization);
+        gmp_printf("square=%Zd\n",p->square_relation.square);
+        p=p->next;
+    }
+    printf("\n");
+    return;
+}
 void print_index_B_smooth(struct node*head){
 	printf("list index_of number B_smooth:\n");
 	print_list(head);
@@ -353,11 +374,10 @@ void print_factorization(const mpz_t num,struct node_factorization*head_factor){
         return;
     }
     struct node_factorization*p=head_factor;
+    gmp_printf("%Zd=",num);
     while(p!=NULL){
-        gmp_printf("%Zd=\n",num);
-        printf("%d^%d\n",p->number,p->exp_of_number);
+        printf("%d^%d,",p->number,p->exp_of_number);
         p=p->next;
-        break;
     }
     printf("\n");
     return;
@@ -438,6 +458,9 @@ void print_matrix_factorization(mpz_t**matrix_factorization,int M,int cardinalit
 	return;
 }
 void print_thread_data(struct thread_data thread_data,long M){
+	if(M>THRESOLD_PRINT_ARRAY/2){
+		return;
+	}
 	for(int i=0;i<2*M+1;i++){
 		gmp_printf("b=%Zd,",thread_data.b);
 		printf("first_index=%d,last_index=%d,sum_log=%d,j=%d\n",thread_data.numbers[i].first_index_f_base,thread_data.numbers[i].last_index_f_base,thread_data.numbers[i].sum_log,thread_data.numbers[i].j);

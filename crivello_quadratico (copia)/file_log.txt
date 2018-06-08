@@ -155,3 +155,33 @@ n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=119 M_end=25
 mean_increment=0.000000
 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=119 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:873382
 mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=119 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=1 ns:798483
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=119 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=119 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=221 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=119 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=221 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=221 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=1 ns:836732
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=221 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=1 ns:726219
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=119 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:655956
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=119 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:717504
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=119 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:843169
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=119 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:769611
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=119 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:748325
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=1 ns:2003
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=221 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:846726
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=119 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:847545
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:824059
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=119 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:939327
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=221 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=119 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=221 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=221 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=221 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=221 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:830195
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=1 ns:4034
+mean_increment=0.000000

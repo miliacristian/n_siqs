@@ -63,7 +63,7 @@ int main(int argc,char*argv[]){
 		num_increment_M_and_B=0;
 		mpz_t a_default,b_default;//a,b sono i coefficienti del polinomio aj^2+2bj+c,thresold a serve per calcolare il valore di a
 		int*array_id=NULL;//array che contiene gli id dei nuovi thread creati a partire da 0
-		int num_B_smooth=-1,num_potential_B_smooth=-1;//numero di numeri b-smooth potenziali e reali trovati nell'array
+		int num_B_smooth=0,num_potential_B_smooth=0;//numero di numeri b-smooth potenziali e reali trovati nell'array
 		char*linear_system=NULL;//sistema lineare da risolvere per trovare a e b
 		int**base_matrix=NULL;//matrice che riporta per colonna i vettori che formano una base del sistema lineare
 		pthread_t *array_tid=NULL;
@@ -246,7 +246,7 @@ int main(int argc,char*argv[]){
 			thread_data[length_array_thread_data-1].log_thresold=calculate_log_thresold(n,M);
 			printf("log_thresold main thread=%f\n",thread_data[length_array_thread_data-1].log_thresold);
 			find_list_square_relation(thread_data[length_array_thread_data-1],&num_B_smooth,&num_potential_B_smooth,M,&head,&tail,n,a_default,0,0);
-
+            print_list_square_relation(head,num_B_smooth);
 			/*num_B_smooth=count_number_B_smooth_matrix_unsorted_f(mat,2*M+1);
 			printf("num_B_smooth=%d\n",num_B_smooth);
 			if(num_B_smooth>0){
