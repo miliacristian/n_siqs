@@ -178,7 +178,6 @@ void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth
             (*num_potential_B_smooth)++;
             create_num(num,a,thread_data.b,n,thread_data.numbers[i].j);
             head_factor=factorize_num(num,thread_data.numbers[i].first_index_f_base,thread_data.numbers[i].last_index_f_base,index_min_a,index_max_a,&is_B_smooth);
-            print_factorization(num,head_factor);
             if(is_B_smooth){
                 (*num_B_smooth)++;
                 is_B_smooth=0;
@@ -2187,6 +2186,9 @@ char divide_all_by_p_to_k_f(const mpz_t rad,long p,int index_of_prime,long k,lon
 		        else{//altrimenti modifica solamente last
                     thread_data.numbers[indexv].last_index_f_base=index_of_prime;
 		        }
+        if(thread_data.numbers[indexv].first_index_f_base>thread_data.numbers[indexv].last_index_f_base){
+            handle_error_with_exit("error in index\n");
+        }
 		//mpz_divexact_ui(mat.row[indexv].num,mat.row[indexv].num,p);
 		//mat.row[indexv].factorization[index_of_prime+1]+=1;
 		array_divided=1;//una divisione è stata effettuata
@@ -2218,6 +2220,9 @@ char divide_all_by_p_to_k_f(const mpz_t rad,long p,int index_of_prime,long k,lon
         }
         else{//altrimenti modifica solamente last
             thread_data.numbers[indexv].last_index_f_base=index_of_prime;
+        }
+        if(thread_data.numbers[indexv].first_index_f_base>thread_data.numbers[indexv].last_index_f_base){
+            handle_error_with_exit("error in index\n");
         }
 		//mpz_divexact_ui(mat.row[indexv].num,mat.row[indexv].num,p);
 		//mat.row[indexv].factorization[index_of_prime+1]+=1;
@@ -2271,6 +2276,9 @@ char divide_all_by_p_to_k_f(const mpz_t rad,long p,int index_of_prime,long k,lon
         else{//altrimenti modifica solamente last
             thread_data.numbers[indexv].last_index_f_base=index_of_prime;
         }
+        if(thread_data.numbers[indexv].first_index_f_base>thread_data.numbers[indexv].last_index_f_base){
+            handle_error_with_exit("error in index\n");
+        }
 		//mpz_divexact_ui(mat.row[indexv].num,mat.row[indexv].num,p);
 		//mat.row[indexv].factorization[index_of_prime+1]+=1;
 		array_divided=1;//una divisione è stata effettuata
@@ -2300,9 +2308,13 @@ char divide_all_by_p_to_k_f(const mpz_t rad,long p,int index_of_prime,long k,lon
         if(thread_data.numbers[indexv].first_index_f_base==-1){
             thread_data.numbers[indexv].first_index_f_base=index_of_prime;
             thread_data.numbers[indexv].last_index_f_base=index_of_prime;
+
         }
         else{//altrimenti modifica solamente last
             thread_data.numbers[indexv].last_index_f_base=index_of_prime;
+        }
+        if(thread_data.numbers[indexv].first_index_f_base>thread_data.numbers[indexv].last_index_f_base){
+            handle_error_with_exit("error in index\n");
         }
 		//mpz_divexact_ui(mat.row[indexv].num,mat.row[indexv].num,p);
 		//mat.row[indexv].factorization[index_of_prime+1]+=1;

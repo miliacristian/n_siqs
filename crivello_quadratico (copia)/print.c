@@ -224,7 +224,7 @@ void print_list_factor(struct node_factor_base*head,int length){
 	return;
 }
 void print_list_square_relation(struct node_square_relation*head,int length){
-    if (head==NULL || length<0){
+	if (head==NULL || length<0){
         printf("impossible print list head is NULL\n");
         return;
     }
@@ -236,9 +236,10 @@ void print_list_square_relation(struct node_square_relation*head,int length){
     }
     struct node_square_relation*p=head;
     while(p!=NULL){
-        print_factorization(p->square_relation.num,p->square_relation.head_factorization);
+        //print_factorization(p->square_relation.num,p->square_relation.head_factorization);
         gmp_printf("square=%Zd\n",p->square_relation.square);
         p=p->next;
+        //printf("iter\n");
     }
     printf("\n");
     return;

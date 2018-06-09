@@ -8,3 +8,4 @@ struct node_square_relation {
 };
 #endif //CRIVELLO_QUADRATICO_COPIA_1_LIST_SQUARE_RELATION_H
 void insert_ordered_square_rel(struct square_relation square_relation, struct node_square_relation** head, struct node_square_relation** tail);
+void union_list_square(struct node_square_relation**head,struct node_square_relation**tail,struct node_square_relation*head_square,struct node_square_relation*tail_square);

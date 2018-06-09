@@ -94,4 +94,5 @@ void print_time_elapsed_on_file_log(char*string);
 FILE*open_file(char*path);
 struct thread_data*alloc_array_thread_data(int length_array_thread_data,long M);
 void print_time_elapsed_local(char*string,struct timespec*timer_thread);
+void clear_struct_thread_data(struct thread_data t_data,int M);
 #endif
