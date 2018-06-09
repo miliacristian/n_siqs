@@ -156,7 +156,7 @@ int main(int argc,char*argv[]){
 			mpfr_out_str(stdout,10,0,thresold_a,MPFR_RNDN);
 			printf("\n");
 			print_time_elapsed("time to calculate thresold_a");
-	
+
 			//factor base
 			head_f_base_f=create_factor_base_f(&cardinality_factor_base,B,&tail_f_base_f,n,q,thresold_q);//crea lista dinamica con tutti i primi
 			//scrivere modo per appendere una factor base con un'altra in modo da non ricalcolare nulla da capo
@@ -165,7 +165,6 @@ int main(int argc,char*argv[]){
 			printf("cardinality factor_base %d\n",cardinality_factor_base);
 			fprintf(file_log,"card_f_base=%d ",cardinality_factor_base);
 			print_time_elapsed("time to calculate factor base");
-
 			//a,per siqs e generare tutti gli altri b,prodotto di primi dispari distinti
 			calculate_a_f2(a,thresold_a,&s,head_f_base_f,cardinality_factor_base,&index_prime_a,&number_prime_a);
 			calculate_index_min_max_a(number_prime_a,index_prime_a,s,&index_min_a,&index_max_a);
@@ -216,7 +215,7 @@ int main(int argc,char*argv[]){
 				length_array_thread_data=1;
 			}
 			printf("length_array_matrix_factorization=%d\n",length_array_thread_data);
-			thread_data=alloc_array_thread_data(length_array_thread_data,M);
+			//thread_data=alloc_array_thread_data(length_array_thread_data,M);
 			print_time_elapsed("time to create thread data");
 
 			//creazione della struttura row_factorization(che contiene primi factor base e log)
@@ -245,8 +244,8 @@ int main(int argc,char*argv[]){
 			//ricerca dei B_smooth potenziali,reali e fattorizzazione dei B_smooth reali
 			thread_data[length_array_thread_data-1].log_thresold=calculate_log_thresold(n,M);
 			printf("log_thresold main thread=%f\n",thread_data[length_array_thread_data-1].log_thresold);
-			sleep(5);
-			find_list_square_relation(thread_data[length_array_thread_data-1],&num_B_smooth,&num_potential_B_smooth,M,&head,&tail,n,a_default,0,0);
+
+			//find_list_square_relation(thread_data[length_array_thread_data-1],&num_B_smooth,&num_potential_B_smooth,M,&head,&tail,n,a_default,0,0);
 			//aspetta tutti i thread e libera memoria
 			if(length_array_thread_data!=1 && NUM_THREAD>0){
 				join_all_threads(array_tid,NUM_THREAD);//aspetta tutti i thread
@@ -272,7 +271,7 @@ int main(int argc,char*argv[]){
 				free_memory_array_mpz(array_bi,(int)pow(2,s-1));
 				array_bi=NULL;
 			}
-			printf("threads ended the job\n");
+			/*printf("threads ended the job\n");
 			print_time_elapsed("time to wait all threads");
 			printf("num_potential_B_smooth=%d,num_B_smooth=%d\n",num_potential_B_smooth,num_B_smooth);
 			for(int i=0;i<length_array_thread_data-1;i++){
@@ -283,8 +282,7 @@ int main(int argc,char*argv[]){
 				printf("num_potential_B_smooth=%d,num_B_smooth=%d\n",num_potential_B_smooth,num_B_smooth);
 			}
 			print_list_square_relation(head,num_B_smooth);
-			/*free(r.log_prime);
-			r.log_prime=NULL;
+
 			//concatenate_all_matrix_B_smooth(array_matrix_B_smooth,length_array_thread_data,&row_result);
 			printf("row_result=%d\n",row_result);
 			fprintf(file_log,"num potential B_smooth=%d ",row_result);
@@ -295,16 +293,14 @@ int main(int argc,char*argv[]){
 			print_time_elapsed("time to create matrix_B_smooth");
 			//linear_system=create_linear_system_f(array_matrix_B_smooth[0],cardinality_factor_base);
 			free(linear_system);
-			free(r.prime);
-			r.prime=NULL;
 			print_time_elapsed("time_to_create_linear_system");
 			//free_memory_matrix_factorization(array_matrix_B_smooth[0]);//libera la memoria
 			//della matrice concatenazione di matrici
 			//array_matrix_B_smooth[0]=NULL;
 			//free(array_matrix_B_smooth);//libera la memoria dell'array_matrix_mpz
-			//array_matrix_B_smooth=NULL;*/
+			//array_matrix_B_smooth=NULL;
 			break;
-			/*//crea sistema lineare dalla matrix_B_smooth
+			//crea sistema lineare dalla matrix_B_smooth
 			linear_system=create_linear_system(cardinality_factor_base,matrix_B_smooth,num_B_smooth);
 			//print_linear_system(linear_system,cardinality_factor_base,num_B_smooth);
 			if(check_if_matrix_is_reduce_mod_n(linear_system,cardinality_factor_base,num_B_smooth,2)==0){
@@ -346,9 +342,14 @@ int main(int argc,char*argv[]){
 				continue;
 			}
 			mean_increment_M_and_B+=num_increment_M_and_B;*/
+			break;
 		}
 		clean_memory://pulire memoria rimanente
 		free_memory_list_f(head_f_base_f);
+		free(r.log_prime);
+		r.log_prime=NULL;
+		free(r.prime);
+		r.prime=NULL;
 		head_f_base_f=NULL;
 		tail_f_base_f=NULL;
 		mpz_clear(n);
