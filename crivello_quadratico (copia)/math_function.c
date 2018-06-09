@@ -167,12 +167,15 @@ void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth
 							   const mpz_t n,const mpz_t a,int index_min_a,int index_max_a) {
 	mpz_t num;
 	struct node_factorization*head_factor=NULL;
+printf("a\n");
 	char is_B_smooth=-1;
 	if(num_B_smooth==NULL || num_potential_B_smooth==NULL || M<=0 || head==NULL || tail==NULL || index_min_a<0 || index_max_a<0){
 		handle_error_with_exit("error in find_list_square_relation");
 	}
 	mpz_init(num);
+	printf("b\n");
 	for(long i=0;i<2*M+1;i++){
+		printf("i=%d\n",i);
         if(thread_data.numbers[i].sum_log>=thread_data.log_thresold){
             //possibile B_smooth trovato
             (*num_potential_B_smooth)++;

@@ -56,6 +56,8 @@ struct matrix_relation_B_smooth{//matrice che contiene le relazioni B_smooth
 struct thread_data {
 	float log_thresold;//valore della soglia
 	mpz_t b;//coefficiente b
+    int num_potential_B_smooth;
+    int num_B_smooth;
 	struct number*numbers;//array di struct di numberi
 	struct node_square_relation*head;//ogni thread dopo il suo compito ha una lista di relazioni quadratiche
 	struct node_square_relation*tail;//ogni thread dopo il suo compito ha una lista di relazioni quadratiche

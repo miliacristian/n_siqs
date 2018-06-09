@@ -72,7 +72,7 @@ int main(int argc,char*argv[]){
 		int factorizations_founded=-1;//numero di fattorizazzioni trovate
 		char factorized=0;//indica se numero fattorizzato o no
 		char digit=-1;//numero cifre di n
-		struct node_square_relation*head=NULL,*tail=NULL;
+		struct node_square_relation*head=NULL,*tail=NULL;//contengono tutte le relazioni quadratiche
 
 		k=1;
 
@@ -235,7 +235,6 @@ int main(int argc,char*argv[]){
 				array_id=create_threads(array_tid,NUM_THREAD);//crea tutti i thread
 			}
 			print_time_elapsed("time to create thread");
-			sleep(5);
             //n.b. thread_data[length_array_thread_data-1]==struttura dati main thread
             mpz_set(thread_data[length_array_thread_data-1].b,b_default);//imposta b
 			print_time_elapsed("time_to_create matrix_factorization main thread");
@@ -246,20 +245,8 @@ int main(int argc,char*argv[]){
 			//ricerca dei B_smooth potenziali,reali e fattorizzazione dei B_smooth reali
 			thread_data[length_array_thread_data-1].log_thresold=calculate_log_thresold(n,M);
 			printf("log_thresold main thread=%f\n",thread_data[length_array_thread_data-1].log_thresold);
+			sleep(5);
 			find_list_square_relation(thread_data[length_array_thread_data-1],&num_B_smooth,&num_potential_B_smooth,M,&head,&tail,n,a_default,0,0);
-			/*num_B_smooth=count_number_B_smooth_matrix_unsorted_f(mat,2*M+1);
-			printf("num_B_smooth=%d\n",num_B_smooth);
-			if(num_B_smooth>0){
-					matrix_B_smooth=create_matrix_B_smooth_f(num_B_smooth,
-					*mat,2*M+1,cardinality_factor_base*2);
-			}
-			else{
-				num_B_smooth=0;
-				matrix_B_smooth=alloc_matrix_factorization(0);
-			}*/
-			//free_memory_matrix_factorization(mat);
-			//array_matrix_B_smooth[length_array_thread_data-1]=matrix_B_smooth;//aggiungi la matrice fattorizzazioni di default come ultima matrice
-
 			//aspetta tutti i thread e libera memoria
 			if(length_array_thread_data!=1 && NUM_THREAD>0){
 				join_all_threads(array_tid,NUM_THREAD);//aspetta tutti i thread
@@ -288,8 +275,12 @@ int main(int argc,char*argv[]){
 			printf("threads ended the job\n");
 			print_time_elapsed("time to wait all threads");
 			printf("num_potential_B_smooth=%d,num_B_smooth=%d\n",num_potential_B_smooth,num_B_smooth);
-			for(int i=0;NUM_THREAD;i++){
-				union_list_square(thread_data[]);
+			for(int i=0;i<length_array_thread_data-1;i++){
+				union_list_square(&head,&tail,
+								  thread_data[i].head,thread_data[i].tail);
+				num_B_smooth+=thread_data[i].num_B_smooth;
+				num_potential_B_smooth+=thread_data[i].num_potential_B_smooth;
+				printf("num_potential_B_smooth=%d,num_B_smooth=%d\n",num_potential_B_smooth,num_B_smooth);
 			}
 			print_list_square_relation(head,num_B_smooth);
 			/*free(r.log_prime);
@@ -401,48 +392,33 @@ int thread_job_criv_quad(int id_thread){//id inizia da 0,il lavoro di un thread 
 	}
     struct timespec timer_thread;//istante di tempo
 	int count=id_thread;//indica quale polinomio deve usare per fare il crivello quadratico
-	int num_B_smooth=0,num_potential_B_smooth=0;//numero di B_smooth e B_smooth potenziali trovati
     struct node_square_relation*head_square=NULL,*tail_square=NULL;
+
     //gettime
     gettime(&timer_thread);
-	thread_data[id_thread].log_thresold=calculate_log_thresold(n,M);
+	thread_data[count].log_thresold=calculate_log_thresold(n,M);
 	printf("log_thresold=%f\n",thread_data[id_thread].log_thresold);
 	print_time_elapsed_local("time to calculate log thresold",&timer_thread);
 
 	while(count<=length_array_thread_data-2){//ogni thread prende un sottoinsieme di compiti,il thread con id 0 farà i compiti 0,NUM_THREAD,2*NUM_THREAD,il thread 1 farà 1,NUM_THREAD+1,2*NUM_THREAD+1 ecc
-
 		//fattorizzazione
 		printf("thread=%d\n",count);
-        mpz_set(thread_data[id_thread].b,array_bi[count]);//imposta ad ogni ciclo il valore di b
-		print_time_elapsed_local("time_to_create matrix_factorization",&timer_thread);
-		factor_matrix_f(n,M,thread_data[id_thread],cardinality_factor_base,a);//fattorizza una nuova matrice
+        mpz_set(thread_data[count].b,array_bi[count]);//imposta ad ogni ciclo il valore di b
+		factor_matrix_f(n,M,thread_data[count],cardinality_factor_base,a);//fattorizza una nuova matrice
 		print_time_elapsed_local("time to factor matrix_factorization",&timer_thread);
-        //print_thread_data(thread_data[id_thread],M);
 
 		//ricerca dei B_smooth potenziali,reali e fattorizzazione dei B_smooth reali
-        find_list_square_relation(thread_data[id_thread],&num_B_smooth,&num_potential_B_smooth,M,&head_square,&tail_square,n,a,index_min_a,index_max_a);
-		printf("num_potential_B_smooth=%d,num_B_smooth=%d\n",num_potential_B_smooth,num_B_smooth);
-        print_list_square_relation(head_square,num_B_smooth);
-        clear_struct_thread_data(thread_data[id_thread],M);
-        union_list_square(&(thread_data[id_thread].head),&(thread_data[id_thread].tail),head_square,tail_square);
-		/*num_B_smooth=count_number_B_smooth_matrix_unsorted_f(matrix,2*M+1);
-		printf("num_B_smooth thread=%d\n",num_B_smooth);
-		if(num_B_smooth>0){
-			matrix_B_smooth=create_matrix_B_smooth_f(num_B_smooth,
-			*matrix,2*M+1,cardinality_factor_base*2);
-		}
-		else{
-			num_B_smooth=0;
-			matrix_B_smooth=alloc_matrix_factorization(0);
-		}
-		//array_matrix_B_smooth[count]=matrix_B_smooth;
-		free_memory_matrix_factorization(matrix);*/
+        find_list_square_relation(thread_data[count],&(thread_data[count].num_B_smooth),&(thread_data[count].num_potential_B_smooth),M,&head_square,&tail_square,n,a,index_min_a,index_max_a);
+		printf("num_potential_B_smooth=%d,num_B_smooth=%d\n",thread_data[count].num_potential_B_smooth,thread_data[count].num_B_smooth);
+        clear_struct_thread_data(thread_data[count],M);
+        print_time_elapsed_local("time to find_list_square_relation",&timer_thread);
+        union_list_square(&(thread_data[count].head),&(thread_data[count].tail),head_square,tail_square);
 		head_square=NULL;//resetta la lista locale delle relazioni quadratiche
 		tail_square=NULL;//resetta la lista locale delle relazioni quadratiche
 		count+=NUM_THREAD;//modulo numero dei thread
+		print_time_elapsed_local("time to union list",&timer_thread);
+		sleep(2);
 	}
-	printf("num tot_potential_B_smooth=%d,num_tot_B_smooth=%d,thread=%d\n",num_potential_B_smooth,num_B_smooth,id_thread);
-	print_list_square_relation(thread_data[id_thread].head,num_B_smooth);
 	return 0;
 }
 	

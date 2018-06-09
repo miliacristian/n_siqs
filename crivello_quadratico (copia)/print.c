@@ -223,11 +223,15 @@ void print_list_factor(struct node_factor_base*head,int length){
 	printf("\n");
 	return;
 }
+
 void print_list_square_relation(struct node_square_relation*head,int length){
-	if (head==NULL || length<0){
+	if (head==NULL){
         printf("impossible print list head is NULL\n");
         return;
     }
+    if(length<0){
+		handle_error_with_exit("error in print_list_square_relation\n");
+	}
     if(length==0){
         printf("list is empty\n");
     }

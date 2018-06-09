@@ -37,6 +37,8 @@ struct thread_data*alloc_array_thread_data(int length_array_thread_data,long M){
 	for(int i=0;i<length_array_thread_data;i++){
 		mpz_init(t_data[i].b);
 		t_data[i].log_thresold=0;
+		t_data[i].num_potential_B_smooth=0;
+		t_data[i].num_B_smooth=0;
 		t_data[i].head=NULL;
 		t_data[i].tail=NULL;
 		t_data[i].numbers=malloc(sizeof(struct number)*(2*M+1));
