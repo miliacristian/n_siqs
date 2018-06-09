@@ -97,4 +97,6 @@ FILE*open_file(char*path);
 struct thread_data*alloc_array_thread_data(int length_array_thread_data,long M);
 void print_time_elapsed_local(char*string,struct timespec*timer_thread);
 void clear_struct_thread_data(struct thread_data t_data,int M);
+void free_array_thread_data(struct thread_data*thread_data,int length_array_thread_data);
+void free_memory_list_square_relation(struct node_square_relation*head);
 #endif

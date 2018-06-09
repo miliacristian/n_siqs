@@ -46,6 +46,8 @@ float calculate_log_thresold(const mpz_t n,long M){
 	log_thresold=log_thresold*0.5;//log_thresold=log2(n)
     log_thresold=log_thresold+log2f((float)M);
     log_thresold=log_thresold-ERROR_LOG;
+    mpfr_free_cache();
+    mpfr_clear(log_n);
     return log_thresold;
 }
 void create_num(mpz_t num,const mpz_t a,const mpz_t b,const mpz_t n,long j){
@@ -102,6 +104,7 @@ struct node_factorization*factorize_num(const mpz_t num,int first_index_f_base,i
 	struct node_factorization*head=NULL;
 	struct node_factorization*tail=NULL;
 	if(first_index_f_base==-1 || last_index_f_base==-1){//nessun fattore trovato
+		mpz_clear(temp);
 	    return NULL;
 	}
 	if(mpz_cmp_si(num,0)<0){//valore negativo->divisibile per 1
@@ -171,6 +174,7 @@ void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth
 	if(num_B_smooth==NULL || num_potential_B_smooth==NULL || M<=0 || head==NULL || tail==NULL || index_min_a<0 || index_max_a<0){
 		handle_error_with_exit("error in find_list_square_relation");
 	}
+	struct square_relation square_relation;
 	mpz_init(num);
 	for(long i=0;i<2*M+1;i++){
         if(thread_data.numbers[i].sum_log>=thread_data.log_thresold){
@@ -181,13 +185,16 @@ void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth
             if(is_B_smooth){
                 (*num_B_smooth)++;
                 is_B_smooth=0;
-                struct square_relation square_relation;
+                square_relation;
                 square_relation.head_factorization=head_factor;
                 mpz_init(square_relation.square);
                 mpz_init(square_relation.num);
                 mpz_set(square_relation.num,num);
                 calculate_square(square_relation.square,a,i-M,thread_data.b);
                 insert_ordered_square_rel(square_relation,head,tail);
+            }
+            else{
+				free_memory_list_factor(head_factor);
             }
         }
     }
@@ -2464,7 +2471,6 @@ void factor_matrix_f(const mpz_t n,long M,struct thread_data thread_data,int car
 			}	
 		}
 	}
-	
 	mpz_clear(y);
 	mpz_clear(n_temp);
 	mpz_clear(rootpk);

@@ -12,11 +12,59 @@
 #include <pthread.h>
 #include "matrix_function.h"
 #include "main.h"
+#include "list_square_relation.h"
+#include "list_factorization.h"
 
 struct timespec;
 struct timespec timer;
 struct timespec time_start;
 FILE*file_log;
+
+void free_list_factorization(struct node_factorization*head_factorization){
+    if(head_factorization==NULL){
+    	return;
+    }
+    struct node_factorization*p=head_factorization;
+    struct node_factorization*q;
+    while(p!=NULL){
+        q=p->next;
+        free(p);
+        p=q;
+    }
+    return;
+}
+void free_memory_list_square_relation(struct node_square_relation*head){
+    if(head==NULL){
+    	return;
+    }
+    struct node_square_relation*p=head;
+    struct node_square_relation*q;
+    while(p!=NULL){
+        q=p->next;
+        mpz_clear(p->square_relation.square);
+        mpz_clear(p->square_relation.num);
+        free_list_factorization(p->square_relation.head_factorization);
+        free(p);
+        p=q;
+    }
+
+
+    return;
+}
+
+void free_array_thread_data(struct thread_data*thread_data,int length_array_thread_data){
+	if(thread_data==NULL || length_array_thread_data<=0){
+		handle_error_with_exit("error in free_array_thread_data\n");
+	}
+	for(int i=0;i<length_array_thread_data;i++){
+		mpz_clear(thread_data[i].b);
+		thread_data[i].head=NULL;
+		thread_data[i].tail=NULL;
+		free(thread_data[i].numbers);
+	}
+	free(thread_data);
+	return;
+}
 void clear_struct_thread_data(struct thread_data t_data,int M) {
 	for (int i = 0; i < 2 * M + 1; i++) {
 		t_data.numbers[i].j = i - M;

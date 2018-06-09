@@ -215,7 +215,7 @@ int main(int argc,char*argv[]){
 				length_array_thread_data=1;
 			}
 			printf("length_array_matrix_factorization=%d\n",length_array_thread_data);
-			//thread_data=alloc_array_thread_data(length_array_thread_data,M);
+			thread_data=alloc_array_thread_data(length_array_thread_data,M);
 			print_time_elapsed("time to create thread data");
 
 			//creazione della struttura row_factorization(che contiene primi factor base e log)
@@ -245,7 +245,7 @@ int main(int argc,char*argv[]){
 			thread_data[length_array_thread_data-1].log_thresold=calculate_log_thresold(n,M);
 			printf("log_thresold main thread=%f\n",thread_data[length_array_thread_data-1].log_thresold);
 
-			//find_list_square_relation(thread_data[length_array_thread_data-1],&num_B_smooth,&num_potential_B_smooth,M,&head,&tail,n,a_default,0,0);
+			find_list_square_relation(thread_data[length_array_thread_data-1],&num_B_smooth,&num_potential_B_smooth,M,&head,&tail,n,a_default,0,0);
 			//aspetta tutti i thread e libera memoria
 			if(length_array_thread_data!=1 && NUM_THREAD>0){
 				join_all_threads(array_tid,NUM_THREAD);//aspetta tutti i thread
@@ -271,7 +271,7 @@ int main(int argc,char*argv[]){
 				free_memory_array_mpz(array_bi,(int)pow(2,s-1));
 				array_bi=NULL;
 			}
-			/*printf("threads ended the job\n");
+			printf("threads ended the job\n");
 			print_time_elapsed("time to wait all threads");
 			printf("num_potential_B_smooth=%d,num_B_smooth=%d\n",num_potential_B_smooth,num_B_smooth);
 			for(int i=0;i<length_array_thread_data-1;i++){
@@ -283,7 +283,7 @@ int main(int argc,char*argv[]){
 			}
 			print_list_square_relation(head,num_B_smooth);
 
-			//concatenate_all_matrix_B_smooth(array_matrix_B_smooth,length_array_thread_data,&row_result);
+			/*//concatenate_all_matrix_B_smooth(array_matrix_B_smooth,length_array_thread_data,&row_result);
 			printf("row_result=%d\n",row_result);
 			fprintf(file_log,"num potential B_smooth=%d ",row_result);
 			print_time_elapsed("time to create single matrix factorization");
@@ -348,6 +348,10 @@ int main(int argc,char*argv[]){
 		free_memory_list_f(head_f_base_f);
 		free(r.log_prime);
 		r.log_prime=NULL;
+		free_array_thread_data(thread_data,length_array_thread_data);
+		thread_data=NULL;
+		free_memory_list_square_relation(head);
+		head=NULL;
 		free(r.prime);
 		r.prime=NULL;
 		head_f_base_f=NULL;
