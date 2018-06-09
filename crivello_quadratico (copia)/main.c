@@ -396,13 +396,13 @@ int thread_job_criv_quad(int id_thread){//id inizia da 0,il lavoro di un thread 
 
     //gettime
     gettime(&timer_thread);
-	thread_data[count].log_thresold=calculate_log_thresold(n,M);
-	printf("log_thresold=%f\n",thread_data[id_thread].log_thresold);
-	print_time_elapsed_local("time to calculate log thresold",&timer_thread);
 
 	while(count<=length_array_thread_data-2){//ogni thread prende un sottoinsieme di compiti,il thread con id 0 farà i compiti 0,NUM_THREAD,2*NUM_THREAD,il thread 1 farà 1,NUM_THREAD+1,2*NUM_THREAD+1 ecc
 		//fattorizzazione
 		printf("thread=%d\n",count);
+        thread_data[count].log_thresold=calculate_log_thresold(n,M);
+        printf("log_thresold=%f\n",thread_data[count].log_thresold);
+        print_time_elapsed_local("time to calculate log thresold",&timer_thread);
         mpz_set(thread_data[count].b,array_bi[count]);//imposta ad ogni ciclo il valore di b
 		factor_matrix_f(n,M,thread_data[count],cardinality_factor_base,a);//fattorizza una nuova matrice
 		print_time_elapsed_local("time to factor matrix_factorization",&timer_thread);
@@ -417,7 +417,6 @@ int thread_job_criv_quad(int id_thread){//id inizia da 0,il lavoro di un thread 
 		tail_square=NULL;//resetta la lista locale delle relazioni quadratiche
 		count+=NUM_THREAD;//modulo numero dei thread
 		print_time_elapsed_local("time to union list",&timer_thread);
-		sleep(2);
 	}
 	return 0;
 }
