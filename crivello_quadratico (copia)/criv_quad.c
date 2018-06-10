@@ -442,7 +442,7 @@ struct node_factor_base* create_factor_base_f(int*cardinality_factor_base,long B
 
 	mpz_set_si(p,2);//p=2
 	*cardinality_factor_base=1;
-	insert_ordered_f(2,&head,tail);//inserisce 2 nella factor base
+	insert_ordered_f(2,n,&head,tail);//inserisce 2 nella factor base
 	mpz_set_si(min,2);
 	for(long i=3;i<=B;){
 		mpz_set_si(p,i);//p=i
@@ -464,7 +464,7 @@ struct node_factor_base* create_factor_base_f(int*cardinality_factor_base,long B
 			m=mpz_get_si(value);//m=n^((p-1)/2) mod p
 			if(m==1){//n è quadrato modulo p
 				
-				node=get_new_node_f(mpz_get_si(p));
+				node=get_new_node_f(mpz_get_si(p),n);
 				insert_at_tail_f(node,&head,tail);
 				(*cardinality_factor_base)++;
 				if(mpz_cmp(p,thresold_q)<0){//p minore della soglia
@@ -485,7 +485,7 @@ struct node_factor_base* create_factor_base_f(int*cardinality_factor_base,long B
 		}
 	}
 	mpz_set_si(p,-1);//temp=-1
-	insert_ordered_f(-1,&head,tail);//inserisci -1
+	insert_ordered_f(-1,n,&head,tail);//inserisci -1
 	(*cardinality_factor_base)++;
 	if(mpz_cmp(delta_min,delta_max)<0 && mpz_cmp_si(min,2)!=0){//delta min è più piccolo di delta max
 		mpz_set(q,min);

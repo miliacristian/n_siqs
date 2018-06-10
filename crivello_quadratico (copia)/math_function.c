@@ -13,6 +13,7 @@
 #include <mpfr.h>
 
 extern struct row_factorization r;
+
 void calculate_index_min_max_a(int*number_prime_a,int*index_prime_a,int length,int*index_min_a,int*index_max_a){
 	if(number_prime_a==NULL || index_max_a==NULL || length<=0 || index_min_a==NULL || index_max_a==NULL){
 		handle_error_with_exit("error in calculate min_max_a\n");
@@ -185,7 +186,6 @@ void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth
             if(is_B_smooth){
                 (*num_B_smooth)++;
                 is_B_smooth=0;
-                square_relation;
                 square_relation.head_factorization=head_factor;
                 mpz_init(square_relation.square);
                 mpz_init(square_relation.num);
@@ -1369,7 +1369,7 @@ char divide_all_by_2_to_k_f(long M,struct thread_data thread_data,const mpz_t n,
 
 	//se n è congruo a 1 mod 8 allora n è congruo a 1 mod 4 e congruo a 1 mod 2
 	char count=0;//0 se non ci sono state divisioni 1 se ci sono state divisioni
-	long j=0;//elementi dell'array divisibili per 2^k + salti di 2^k 
+	/*long j=0;//elementi dell'array divisibili per 2^k + salti di 2^k
 
 	long l,h,t,z;//interi per generare multipli di 2^k
 	long indexv;//indice degli elementi nell'array divisibili per 2^k
@@ -1382,7 +1382,7 @@ char divide_all_by_2_to_k_f(long M,struct thread_data thread_data,const mpz_t n,
 	mpz_t rad,r2,r3,r4;//radici quadrate modulo 2^k
 	mpz_t ntemp,b_temp,p_to_k;
 	mpz_t j1t,j2t,j3t,j4t;
-	mpz_t l_temp,j_temp,index,h_temp,t_temp,z_temp;
+	mpz_t l_temp,j_temp,index,h_temp,t_temp,z_temp;*/
 	
 	if(n==NULL || a==NULL || b==NULL || y==NULL || M<=0 || mpz_sgn(n)<=0 || k<=0){
 		handle_error_with_exit("invalid parameter_divide_all_by_2_to_k\n");
@@ -2416,7 +2416,8 @@ char divide_all_by_p_to_k_f(const mpz_t rad,long p,int index_of_prime,long k,lon
 	mpz_clear(r1);
 	return;
 }*/
-void factor_matrix_f(const mpz_t n,long M,struct thread_data thread_data,int cardinality_factor_base,const mpz_t a){
+
+/*void factor_matrix_f(const mpz_t n,long M,struct thread_data thread_data,int cardinality_factor_base,const mpz_t a){
 	if(n==NULL || a==NULL || mpz_sgn(n)<=0 || M<=0 || cardinality_factor_base<=0){
 		handle_error_with_exit("error in factor matrix_f\n");
 	}
@@ -2434,18 +2435,18 @@ void factor_matrix_f(const mpz_t n,long M,struct thread_data thread_data,int car
 		count=1;
 		p=r.prime[i];//primo iesimo della factor base
 		if(p==-1){
-			divide_all_by_min1_f(M,thread_data);//divide la matrice di fattorizzazione per meno 1
+			//divide_all_by_min1_f(M,thread_data);//divide la matrice di fattorizzazione per meno 1
 			continue;
 		}
 		if(p==2){
 			mpz_set_si(y,0);//y1=0,necessario per calcolare le radici quadrate di n modulo 2^k
 			k=1;
 			while(count==1){
-				if(k>=4){
-					calculate_new_y(y,n,k);//k=4 calcolo-> y2 da y1,k=5 calcolo y3 da y2 ecc
-				}
+				//if(k>=4){
+				//	calculate_new_y(y,n,k);//k=4 calcolo-> y2 da y1,k=5 calcolo y3 da y2 ecc
+				//}
 				count=divide_all_by_2_to_k_f(M,thread_data,n,k,a,thread_data.b,y);
-				k++;
+				//k++;
 				break;
 			}
 		}
@@ -2453,7 +2454,7 @@ void factor_matrix_f(const mpz_t n,long M,struct thread_data thread_data,int car
 			mpz_set(n_temp,n);//n_temp=n
 			mpz_set_si(p_temp,p);//p_temp=p
 			mpz_mod(n_temp,n_temp,p_temp);//n_temp = n mod p
-			t=quadratic_residue(r1,n_temp,p_temp);//r1 radice quadrata di n mod p
+			t=quadratic_residue(r1,n_temp,p_temp);//r1=radice quadrata di n mod p
 			if(t==-1 || t==0){
 				handle_error_with_exit("error in calculate quadratic_residue\n");
 			}
@@ -2466,7 +2467,7 @@ void factor_matrix_f(const mpz_t n,long M,struct thread_data thread_data,int car
 					mpz_set(rootpk,r1);//rootpk=r1
 				}
 				count=divide_all_by_p_to_k_f(rootpk,p,i,k,M,thread_data,n,a,thread_data.b);
-				k++;//passa alla prossima potenza
+				//k++;//passa alla prossima potenza
 				break;
 			}	
 		}
@@ -2477,6 +2478,54 @@ void factor_matrix_f(const mpz_t n,long M,struct thread_data thread_data,int car
 	mpz_clear(p_temp);
 	mpz_clear(r1);
 	return;
+}*/
+void factor_matrix_f(const mpz_t n,long M,struct thread_data thread_data,int cardinality_factor_base,const mpz_t a){
+    if(n==NULL || a==NULL || mpz_sgn(n)<=0 || M<=0 || cardinality_factor_base<=0){
+        handle_error_with_exit("error in factor matrix_f\n");
+    }
+    long p;
+    char count,t;
+    mpz_t n_temp,rootpk,p_temp,r1;//r1 square root mod p,r==square root mod p^k
+    int k;
+    mpz_init(n_temp);
+    mpz_init(rootpk);
+    mpz_init(p_temp);
+    mpz_init(r1);
+    for (int i=0;i<cardinality_factor_base;i++){//per ogni elemento della factor base
+        p=r.prime[i];//primo iesimo della factor base
+        if(p==-1){
+            continue;
+        }
+        if(p==2){
+			count=divide_all_by_2_log(M,thread_data);
+        }
+        else{//p>2 e dispari
+            mpz_set(n_temp,n);//n_temp=n
+            mpz_set_si(p_temp,p);//p_temp=p
+            mpz_mod(n_temp,n_temp,p_temp);//n_temp = n mod p
+            t=quadratic_residue(r1,n_temp,p_temp);//r1=radice quadrata di n mod p
+            if(t==-1 || t==0){
+                handle_error_with_exit("error in calculate quadratic_residue\n");
+            }
+            k=1;
+            while(count==1){//finquando c'è stata almeno 1 divisione continua a dividere
+                if(k!=1){
+                    square_root_mod_p_to_k(rootpk,r1,p,n,k);//rootpk ottieni la radice modulo p alla k,con k>1
+                }
+                else{
+                    mpz_set(rootpk,r1);//rootpk=r1
+                }
+                count=divide_all_by_p_to_k_f(rootpk,p,i,k,M,thread_data,n,a,thread_data.b);
+                //k++;//passa alla prossima potenza
+                break;
+            }
+        }
+    }
+    mpz_clear(n_temp);
+    mpz_clear(rootpk);
+    mpz_clear(p_temp);
+    mpz_clear(r1);
+    return;
 }
 /*int count_number_B_smooth_in_matrix(mpz_t**potential_matrix_B_smooth,int card_factor_base,long size){
 //conta il numero di numeri B_smooth nell'array dei numeri e inserisce i valori sia nella lista degli indici B_smooth,sia nella lista delle radici quadrate dei numeri B_smoot

@@ -4,6 +4,7 @@
 #include <string.h>
 #include <math.h>
 #include "basic.h"
+#include "math_function.h"
 #include <gmp.h>
 
 int count_element_linked_list_f(struct node_factor_base*head){
@@ -46,14 +47,16 @@ void remove_after_node_f(struct node_factor_base**ppos,struct node_factor_base**
 	if(q==NULL){//fine della lista,bisogna aggiornare la coda
         *ppos=r->next;
         *tail=r->prev;
+        mpz_clear(r->root_n_mod_prime);
         free(r);
-	r=NULL;
+	    r=NULL;
     }
     else {
         q->prev = r->prev;
         *ppos = r->next;
+        mpz_clear(r->root_n_mod_prime);
         free(r);
-	r=NULL;
+	    r=NULL;
     }
     return;
 }
@@ -67,10 +70,12 @@ int delete_head_f(struct node_factor_base** head){//non è importante il valore 
         return -1;
     }
     if ((*head)-> next == NULL){//c'è un solo nodo in lista
+        mpz_clear((*head)->root_n_mod_prime);
         free(*head);
         *head = NULL;
     }else{
 	struct node_factor_base*temp=(*head)->next;
+        mpz_clear((*head)->root_n_mod_prime);
         free(*head);
         *head =temp;
         (*head)-> prev = NULL;
@@ -105,17 +110,33 @@ void insert_at_tail_f(struct node_factor_base *new_node,struct node_factor_base*
 
 
 //alloca e inizializza un nodo della lista dinamica ordinata
-struct node_factor_base* get_new_node_f(int num) {
+struct node_factor_base* get_new_node_f(int num,const mpz_t n) {
 	if(num<=0 && num!=-1){
 		handle_error_with_exit("error in get_new_node\n");
 	}
+	int t;
+	mpz_t n_temp,p_temp;
     struct node_factor_base* new_node = (struct node_factor_base*)malloc(sizeof(struct node_factor_base));
     if(new_node==NULL){
         handle_error_with_exit("error in malloc get_new_node\n");
     }
+    mpz_init(n_temp);
+    mpz_init(p_temp);
+
+    mpz_init(new_node->root_n_mod_prime);
+    mpz_set(n_temp,n);//n_temp=n
+    mpz_set_si(p_temp,num);//p_temp=p
+    mpz_mod(n_temp,n_temp,p_temp);//n_temp = n mod p
+    t=quadratic_residue(new_node->root_n_mod_prime,n_temp,p_temp);//r1=radice quadrata di n mod p
+    if(t==-1 || t==0){
+        handle_error_with_exit("error in calculate quadratic_residue\n");
+    }
     new_node->prime=num;
     new_node->prev = NULL;
     new_node->next = NULL;
+
+    mpz_clear(n_temp);
+    mpz_clear(p_temp);
     return new_node;
 }
 
@@ -145,11 +166,11 @@ char first_is_smaller_f(struct node_factor_base node1, struct node_factor_base n
     return 1;//node1 è più piccolo di node 2
 }
 
-void insert_ordered_f(int num, struct node_factor_base** head, struct node_factor_base** tail){
+void insert_ordered_f(int num,const mpz_t n, struct node_factor_base** head, struct node_factor_base** tail){
     //inserisce ordinatamente un nodo nella lista ordinata per istanti temporali
     struct node_factor_base* temp = *tail;
     struct node_factor_base* next_node = NULL;
-    struct node_factor_base* new_node = get_new_node_f(num);
+    struct node_factor_base* new_node = get_new_node_f(num,n);
     if(head==NULL || tail==NULL){
         handle_error_with_exit("error in insert_ordered,head or tail are NULL\n");
     }
@@ -185,6 +206,7 @@ void free_memory_list_f(struct node_factor_base*head){
 	struct node_factor_base*q;
 	while(p!=NULL){
 		q=p->next;
+		mpz_clear(p->root_n_mod_prime);
 		free(p);
 		p=q;
 	}

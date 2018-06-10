@@ -219,13 +219,13 @@ int main(int argc,char*argv[]){
             thread_data=alloc_array_thread_data(NUM_THREAD+1,M);
 			print_time_elapsed("time to create thread data");
 
-			//creazione della struttura row_factorization(che contiene primi factor base e log)
+			/*//creazione della struttura row_factorization(che contiene primi factor base e log)
 			r.prime=alloc_array_int(cardinality_factor_base);
 			r.log_prime=alloc_array_int(cardinality_factor_base);
 			create_row_factorization(head_f_base_f,cardinality_factor_base);
 			print_array_int(r.log_prime,cardinality_factor_base);
 			print_array_int(r.prime,cardinality_factor_base);
-
+			*/
 
 			print_time_elapsed("time to create row factorization");
 
