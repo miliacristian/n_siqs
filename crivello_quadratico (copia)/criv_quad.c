@@ -437,15 +437,12 @@ struct node_factor_base* create_factor_base_f(int*cardinality_factor_base,long B
 	mpz_set_si(p,2);//p=2
 	*cardinality_factor_base=1;
 	insert_ordered_f(2,n,&head,tail);//inserisce 2 nella factor base
-	printf("f_base\n");
 	for(long i=2;i<=B;){
 		mpz_set_si(p,i);//p=i,inizialmente p=2,ad ogni inizio ciclo deve essere pari
 		mpz_nextprime(p,p);//p=next_prime,ritorna il prossimo primo maggiore strettamente di p,è bene che p sia pari
 		if(mpz_cmp_si(p,B)<=0){//primo<=B
 			v=mpz_get_si(p);
-			printf("v1=%d\n",v);
 			v=(v-1)>>1;//shift a destra divide per 2
-			printf("v2=%d\n",v);
 			mpz_powm_ui(value,n,(unsigned long int)v,p);//value=n^v mod p
 			m=mpz_get_si(value);//m=n^((p-1)/2) mod p
 			if(m==1){//n è quadrato modulo p
