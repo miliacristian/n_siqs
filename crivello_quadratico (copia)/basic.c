@@ -67,7 +67,7 @@ void free_array_thread_data(struct thread_data*thread_data,int length_array_thre
 }
 void clear_struct_thread_data(struct thread_data t_data,int M) {
 	for (int i = 0; i < 2 * M + 1; i++) {
-		t_data.numbers[i].j = i - M;
+		//t_data.numbers[i].j = i - M;
 		t_data.numbers[i].first_index_f_base = -1;
 		t_data.numbers[i].sum_log = 0;
 		t_data.numbers[i].last_index_f_base = -1;
