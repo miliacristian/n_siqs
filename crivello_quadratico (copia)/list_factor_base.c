@@ -124,16 +124,19 @@ struct node_factor_base* get_new_node_f(int num,const mpz_t n) {
     mpz_init(p_temp);
 
     mpz_init(new_node->root_n_mod_prime);
-    mpz_set(n_temp,n);//n_temp=n
-    mpz_set_si(p_temp,num);//p_temp=p
-    mpz_mod(n_temp,n_temp,p_temp);//n_temp = n mod p
-    t=quadratic_residue(new_node->root_n_mod_prime,n_temp,p_temp);//r1=radice quadrata di n mod p
-    if(t==-1 || t==0){
-        handle_error_with_exit("error in calculate quadratic_residue\n");
-    }
     new_node->prime=num;
     new_node->prev = NULL;
     new_node->next = NULL;
+
+    if(num!=-1 && num!=2) {
+        mpz_set(n_temp, n);//n_temp=n
+        mpz_set_si(p_temp, num);//p_temp=p
+        mpz_mod(n_temp, n_temp, p_temp);//n_temp = n mod p
+        t = quadratic_residue(new_node->root_n_mod_prime, n_temp, p_temp);//r1=radice quadrata di n mod p
+        if (t == -1 || t == 0) {
+            handle_error_with_exit("error in calculate quadratic_residue\n");
+        }
+    }
 
     mpz_clear(n_temp);
     mpz_clear(p_temp);

@@ -165,6 +165,7 @@ int main(int argc,char*argv[]){
 			printf("cardinality factor_base %d\n",cardinality_factor_base);
 			fprintf(file_log,"card_f_base=%d ",cardinality_factor_base);
 			print_time_elapsed("time to calculate factor base");
+
 			//a,per siqs e generare tutti gli altri b,prodotto di primi dispari distinti
 			calculate_a_f2(a,thresold_a,&s,head_f_base_f,cardinality_factor_base,&index_prime_a,&number_prime_a);
 			calculate_index_min_max_a(number_prime_a,index_prime_a,s,&index_min_a,&index_max_a);
@@ -174,6 +175,7 @@ int main(int argc,char*argv[]){
 			fprintf(file_log," ");
 			printf("index_min_a=%d,index_max_a=%d\n",index_min_a,index_max_a);
 			printf("s=%d\n",s);
+
 			//number_prime_a e index_prime_a
 			if(s>0){
 				printf("number_prime_a=");
@@ -219,16 +221,16 @@ int main(int argc,char*argv[]){
             thread_data=alloc_array_thread_data(NUM_THREAD+1,M);
 			print_time_elapsed("time to create thread data");
 
-			/*//creazione della struttura row_factorization(che contiene primi factor base e log)
+			//creazione della struttura row_factorization(che contiene primi factor base e log)
 			r.prime=alloc_array_int(cardinality_factor_base);
 			r.log_prime=alloc_array_int(cardinality_factor_base);
+			r.root_n_mod_p=alloc_array_mpz(cardinality_factor_base);
 			create_row_factorization(head_f_base_f,cardinality_factor_base);
 			print_array_int(r.log_prime,cardinality_factor_base);
 			print_array_int(r.prime,cardinality_factor_base);
-			*/
+			print_array_mpz(r.root_n_mod_p,cardinality_factor_base);
 
 			print_time_elapsed("time to create row factorization");
-
 			//creazione e avvio thread
 			if(num_thread_job!=1){
 				array_tid=alloc_array_tid(NUM_THREAD);//alloca memoria per contenere tutti i tid
@@ -240,8 +242,7 @@ int main(int argc,char*argv[]){
 			print_time_elapsed("time_to_create matrix_factorization main thread");
 			factor_matrix_f(n,M,thread_data[NUM_THREAD],cardinality_factor_base,a_default);//fattorizza numeri
 			print_time_elapsed("time_to_factor matrix_factorization main thread");
-			//print_thread_data(thread_data[length_array_thread_data-1],M);
-
+			print_thread_data(thread_data[NUM_THREAD],M);
 			//ricerca dei B_smooth potenziali,reali e fattorizzazione dei B_smooth reali
 			thread_data[NUM_THREAD].log_thresold=calculate_log_thresold(n,M);
 			printf("log_thresold main thread=%f\n",thread_data[NUM_THREAD].log_thresold);
@@ -349,6 +350,7 @@ int main(int argc,char*argv[]){
 		free_memory_list_f(head_f_base_f);
 		free(r.log_prime);
 		r.log_prime=NULL;
+		free_memory_array_mpz(r.root_n_mod_p,cardinality_factor_base);
 		free_array_thread_data(thread_data,NUM_THREAD+1);
 		thread_data=NULL;
 		free_memory_list_square_relation(head);

@@ -158,10 +158,10 @@ void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B){
 	if(n==NULL || digit_n<=0 || M==NULL || B==NULL){
 		handle_error_with_exit("error in calculate best M and B\n");
 	}
+	//*B=20;
+	//*M=25;
 	*B=5000000;
 	*M=500000;
-	//*B=5000000;
-	//*M=500000;
 	return;
 	if(digit_n<7){
 		*M=25;

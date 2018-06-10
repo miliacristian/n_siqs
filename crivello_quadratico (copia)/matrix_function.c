@@ -79,6 +79,7 @@ void create_row_factorization(struct node_factor_base*head_f_base_f,int card_f_b
 	}
 	struct node_factor_base*p=head_f_base_f;
 	for(int i=0;i<card_f_base;i++){
+		mpz_set(r.root_n_mod_p[i],p->root_n_mod_prime);
 		r.prime[i]=p->prime;//metti il primo della factor base in posizione pari
 		if(p->prime!=-1){
 			r.log_prime[i]=(int)round(log2f((float)p->prime));

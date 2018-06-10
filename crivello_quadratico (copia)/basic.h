@@ -30,6 +30,7 @@ struct row_factorization{
 	int length;//card*2
 	int*prime;//contiene primo factor base e
 	int*log_prime;//valore del suo logaritmo
+    mpz_t*root_n_mod_p;
 };
 
 /*struct row{
