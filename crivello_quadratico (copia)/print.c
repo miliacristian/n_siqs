@@ -217,8 +217,7 @@ void print_list_factor(struct node_factor_base*head,int length){
 	}
 	struct node_factor_base *p=head;
 	while(p!=NULL){
-		printf("%d ",p->prime);
-		gmp_printf("sq %Zd,",p->root_n_mod_prime);
+		printf("%d sq=%d,",p->prime,p->root_n_mod_prime);
 		p=p->next;
 	}
 	printf("\n");

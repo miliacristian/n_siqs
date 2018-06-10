@@ -79,7 +79,7 @@ void create_row_factorization(struct node_factor_base*head_f_base_f,int card_f_b
 	}
 	struct node_factor_base*p=head_f_base_f;
 	for(int i=0;i<card_f_base;i++){
-		mpz_set(r.root_n_mod_p[i],p->root_n_mod_prime);
+		r.root_n_mod_p[i]=p->root_n_mod_prime;
 		r.prime[i]=p->prime;//metti il primo della factor base in posizione pari
 		if(p->prime!=-1){
 			r.log_prime[i]=(int)round(log2f((float)p->prime));
@@ -879,7 +879,7 @@ void find_max_array_mpz(mpz_t max,mpz_t*array,long length){
 		j++;
 	}
 	print_time_elapsed("durante");
-	/*for(long i=0;i<2*M+1;i++){
+	for(long i=0;i<2*M+1;i++){
 		if(mpz_cmp_si(matrix_factor[i][length],0)<0){//se gli elementi sono negativi
 			mpz_neg(matrix_factor[i][length],matrix_factor[i][length]);//inverti il segno
 		}

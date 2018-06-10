@@ -32,7 +32,7 @@
 	struct node_factor_base*head_f_base_f=NULL;//testa della lista dinamica factor base
 	struct node_factor_base*tail_f_base_f=NULL;//coda della lista dinamica factor base
 	mpz_t n,x0;//dichiarazione di n,n da fattorizzare,deve essere inizializzato a zero,e deve essere sovrascritto con il numero preso da riga 		di comando o da file
-	mpz_t a,thresold_q,q;//valore del coefficiente a del polinomio,soglia q e q
+	mpz_t a;//valore del coefficiente a del polinomio,soglia q e q
 	mpfr_t thresold_a;//soglia per il calcolo di a
 	mpz_t temp;//mpz temporaneo
 	int s=-1;//numero di primi della factor base distinti che compongono a
@@ -82,11 +82,9 @@ int main(int argc,char*argv[]){
 		mpz_init(temp);
 		mpz_init(x0);
 		mpfr_init(thresold_a);
-		mpz_init(thresold_q);
 		mpz_init(b_default);
 		mpz_init(b1);
 		mpz_init(a_default);
-		mpz_init(q);
 		
 		mpz_set_si(b1,-1);//b1=-1
 	
@@ -158,7 +156,7 @@ int main(int argc,char*argv[]){
 			print_time_elapsed("time to calculate thresold_a");
 
 			//factor base
-			head_f_base_f=create_factor_base_f(&cardinality_factor_base,B,&tail_f_base_f,n,q,thresold_q);//crea lista dinamica con tutti i primi
+			head_f_base_f=create_factor_base_f(&cardinality_factor_base,B,&tail_f_base_f,n);//crea lista dinamica con tutti i primi
 			//scrivere modo per appendere una factor base con un'altra in modo da non ricalcolare nulla da capo
 			printf("factor base=");
 			print_list_factor(head_f_base_f,cardinality_factor_base);
@@ -186,7 +184,7 @@ int main(int argc,char*argv[]){
 			print_time_elapsed("time to calculate a");
 
 			//array Bk
-			array_Bk=calculate_array_Bk_f(index_prime_a,number_prime_a,cardinality_factor_base,n,s,a,b1);
+			array_Bk=calculate_array_Bk_f(number_prime_a,cardinality_factor_base,n,s,a,b1);
 			if(array_Bk!=NULL){
 				gmp_printf("b1=%Zd\n",b1);
 				print_array_Bk(array_Bk,s);
@@ -224,11 +222,11 @@ int main(int argc,char*argv[]){
 			//creazione della struttura row_factorization(che contiene primi factor base e log)
 			r.prime=alloc_array_int(cardinality_factor_base);
 			r.log_prime=alloc_array_int(cardinality_factor_base);
-			r.root_n_mod_p=alloc_array_mpz(cardinality_factor_base);
+			r.root_n_mod_p=alloc_array_int(cardinality_factor_base);
 			create_row_factorization(head_f_base_f,cardinality_factor_base);
 			print_array_int(r.log_prime,cardinality_factor_base);
 			print_array_int(r.prime,cardinality_factor_base);
-			print_array_mpz(r.root_n_mod_p,cardinality_factor_base);
+			print_array_int(r.root_n_mod_p,cardinality_factor_base);
 
 			print_time_elapsed("time to create row factorization");
 			//creazione e avvio thread
@@ -350,7 +348,7 @@ int main(int argc,char*argv[]){
 		free_memory_list_f(head_f_base_f);
 		free(r.log_prime);
 		r.log_prime=NULL;
-		free_memory_array_mpz(r.root_n_mod_p,cardinality_factor_base);
+		free(r.root_n_mod_p);
 		free_array_thread_data(thread_data,NUM_THREAD+1);
 		thread_data=NULL;
 		free_memory_list_square_relation(head);
@@ -364,11 +362,9 @@ int main(int argc,char*argv[]){
 		mpz_clear(temp);
 		mpz_clear(x0);
 		mpfr_clear(thresold_a);
-		mpz_clear(thresold_q);
 		mpz_clear(b_default);
 		mpz_clear(b1);
 		mpz_clear(a_default);
-		mpz_clear(q);
 		fprintf(file_log,"M_end=%ld ",M);
 		fprintf(file_log,"B_end=%ld ",B);
 		fprintf(file_log,"num_increment=%d ",num_increment_M_and_B);

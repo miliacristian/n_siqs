@@ -420,65 +420,40 @@ void calculate_best_B(const mpz_t n,long*B){
 	mpz_clear(ten);
 	return;
 }*/
-struct node_factor_base* create_factor_base_f(int*cardinality_factor_base,long B,struct node_factor_base**tail,const mpz_t n,mpz_t q,const mpz_t thresold_q){//crea la factor base aggiungendo i numeri primi minori o uguali a B
-	if(B<2 || tail==NULL || cardinality_factor_base==NULL || n==NULL || q==NULL || thresold_q==NULL){
+struct node_factor_base* create_factor_base_f(int*cardinality_factor_base,long B,struct node_factor_base**tail,const mpz_t n){//crea la factor base aggiungendo i numeri primi minori o uguali a B
+	if(B<2 || tail==NULL || cardinality_factor_base==NULL || n==NULL){
 		handle_error_with_exit("error in parameter\n");
 	}
 	struct node_factor_base *head=NULL;
 	struct node_factor_base*node;
-	char found=0;
 	long v,m;
 	mpz_t p,pp,value;
-	mpz_t delta_min,delta_max,min,max;
 	
 
 	mpz_init(p);
 	mpz_init(pp);
 	mpz_init(value);
-	mpz_init(delta_min);
-	mpz_init(delta_max);
-	mpz_init(min);
-	mpz_init(max);
 
 	mpz_set_si(p,2);//p=2
 	*cardinality_factor_base=1;
 	insert_ordered_f(2,n,&head,tail);//inserisce 2 nella factor base
-	mpz_set_si(min,2);
-	for(long i=3;i<=B;){
-		mpz_set_si(p,i);//p=i
-		if(mpz_divisible_ui_p(p,2)!=0){//divisibile per 2,p è pari
-		}
-		else{
-			mpz_sub_ui(p,p,1);//p è dispari,p da dispari diventa pari
-		}
-		mpz_nextprime(p,p);//p=next_prime,ritorna il prossimo primo maggiore di p
+	printf("f_base\n");
+	for(long i=2;i<=B;){
+		mpz_set_si(p,i);//p=i,inizialmente p=2,ad ogni inizio ciclo deve essere pari
+		mpz_nextprime(p,p);//p=next_prime,ritorna il prossimo primo maggiore strettamente di p,è bene che p sia pari
 		if(mpz_cmp_si(p,B)<=0){//primo<=B
-			mpz_set(pp,p);//pp=p
-			mpz_sub_ui(pp,pp,1);//pp=(p-1)
-			if(mpz_divisible_ui_p(pp,2)==0){
-				handle_error_with_exit("error in mpz_divisible,create factor base\n");
-			}
-			mpz_divexact_ui(pp,pp,2);//p=(p-1)/2
-			v=mpz_get_si(pp);//v=(p-1)/2
-			mpz_powm_ui(value,n,(unsigned long int)v,p);
+			v=mpz_get_si(p);
+			printf("v1=%d\n",v);
+			v=(v-1)>>1;//shift a destra divide per 2
+			printf("v2=%d\n",v);
+			mpz_powm_ui(value,n,(unsigned long int)v,p);//value=n^v mod p
 			m=mpz_get_si(value);//m=n^((p-1)/2) mod p
 			if(m==1){//n è quadrato modulo p
-				
 				node=get_new_node_f(mpz_get_si(p),n);
 				insert_at_tail_f(node,&head,tail);
 				(*cardinality_factor_base)++;
-				if(mpz_cmp(p,thresold_q)<0){//p minore della soglia
-					mpz_set(min,p);//min=p
-					mpz_sub(delta_min,thresold_q,p);//delta_min=thresold_q-p
-				}
-				else if(found==0){//p maggiore della soglia
-					mpz_set(max,p);//max=p
-					mpz_sub(delta_max,p,thresold_q);//delta_max=p-thresold_q
-					found=1;
-				}
 			}
-			mpz_add_ui(p,p,1);
-			i=mpz_get_si(p);//il numero diventa pari e il prossimo numero primo sarà dispari
+			i=mpz_get_si(p)+1;//il numero diventa pari e il prossimo numero primo sarà dispari
 		}
 		else{//B è stato superato
 			break;
@@ -487,19 +462,9 @@ struct node_factor_base* create_factor_base_f(int*cardinality_factor_base,long B
 	mpz_set_si(p,-1);//temp=-1
 	insert_ordered_f(-1,n,&head,tail);//inserisci -1
 	(*cardinality_factor_base)++;
-	if(mpz_cmp(delta_min,delta_max)<0 && mpz_cmp_si(min,2)!=0){//delta min è più piccolo di delta max
-		mpz_set(q,min);
-	}
-	else{//se la distanza tra q e max è minore o se min era uguale a 2 scegli max
-		mpz_set(q,max);
-	}
 	mpz_clear(p);
 	mpz_clear(pp);
 	mpz_clear(value);
-	mpz_clear(delta_min);
-	mpz_clear(delta_max);
-	mpz_clear(min);
-	mpz_clear(max);
 	return head;
 }
 
@@ -1166,7 +1131,7 @@ void calculate_a_f2(mpz_t a,const mpfr_t target_a,int*s,struct node_factor_base*
 	mpz_clear(ak_inverse);
 	return array_Bk;
 }*/
-mpz_t*calculate_array_Bk_f(int*index_prime_a,int*number_prime_a,int card_factor_base,const mpz_t n,long s,const mpz_t a,mpz_t b1){
+mpz_t*calculate_array_Bk_f(int*number_prime_a,int card_factor_base,const mpz_t n,long s,const mpz_t a,mpz_t b1){
 	mpz_t*array_Bk=NULL;
 	long vpk;
 	char t;
@@ -1179,7 +1144,6 @@ mpz_t*calculate_array_Bk_f(int*index_prime_a,int*number_prime_a,int card_factor_
 	mpz_init(ak_inverse);
 	mpz_init(n_temp);
 	mpz_init(pk);
-	long length_array=2*card_factor_base;
 	if(n==NULL || a==NULL || b1==NULL || card_factor_base<=0){
 		handle_error_with_exit("error in calculate_array_Bk\n");
 	}
@@ -1199,7 +1163,6 @@ mpz_t*calculate_array_Bk_f(int*index_prime_a,int*number_prime_a,int card_factor_
 	array_Bk=alloc_array_mpz(s);
 	for(int k=0;k<s;k++){
 		vpk=number_prime_a[index];
-		//vpk=array_of_prime_chosen_for_a[2*index];//pk è "piccolo",vpk è valore del primo k-esimo di a
 		index++;
 		mpz_set_si(pk,vpk);//pk=vpk
 		if(mpz_divisible_p(a,pk)==0){

@@ -47,14 +47,12 @@ void remove_after_node_f(struct node_factor_base**ppos,struct node_factor_base**
 	if(q==NULL){//fine della lista,bisogna aggiornare la coda
         *ppos=r->next;
         *tail=r->prev;
-        mpz_clear(r->root_n_mod_prime);
         free(r);
 	    r=NULL;
     }
     else {
         q->prev = r->prev;
         *ppos = r->next;
-        mpz_clear(r->root_n_mod_prime);
         free(r);
 	    r=NULL;
     }
@@ -70,12 +68,10 @@ int delete_head_f(struct node_factor_base** head){//non è importante il valore 
         return -1;
     }
     if ((*head)-> next == NULL){//c'è un solo nodo in lista
-        mpz_clear((*head)->root_n_mod_prime);
         free(*head);
         *head = NULL;
     }else{
 	struct node_factor_base*temp=(*head)->next;
-        mpz_clear((*head)->root_n_mod_prime);
         free(*head);
         *head =temp;
         (*head)-> prev = NULL;
@@ -115,15 +111,15 @@ struct node_factor_base* get_new_node_f(int num,const mpz_t n) {
 		handle_error_with_exit("error in get_new_node\n");
 	}
 	int t;
-	mpz_t n_temp,p_temp;
+	mpz_t n_temp,p_temp,root;
     struct node_factor_base* new_node = (struct node_factor_base*)malloc(sizeof(struct node_factor_base));
     if(new_node==NULL){
         handle_error_with_exit("error in malloc get_new_node\n");
     }
     mpz_init(n_temp);
     mpz_init(p_temp);
+    mpz_init(root);
 
-    mpz_init(new_node->root_n_mod_prime);
     new_node->prime=num;
     new_node->prev = NULL;
     new_node->next = NULL;
@@ -132,14 +128,19 @@ struct node_factor_base* get_new_node_f(int num,const mpz_t n) {
         mpz_set(n_temp, n);//n_temp=n
         mpz_set_si(p_temp, num);//p_temp=p
         mpz_mod(n_temp, n_temp, p_temp);//n_temp = n mod p
-        t = quadratic_residue(new_node->root_n_mod_prime, n_temp, p_temp);//r1=radice quadrata di n mod p
+        t = quadratic_residue(root, n_temp, p_temp);//r1=radice quadrata di n mod p
         if (t == -1 || t == 0) {
             handle_error_with_exit("error in calculate quadratic_residue\n");
         }
+        new_node->root_n_mod_prime=mpz_get_si(root);
+    }
+    else{
+        new_node->root_n_mod_prime=0;
     }
 
     mpz_clear(n_temp);
     mpz_clear(p_temp);
+    mpz_clear(root);
     return new_node;
 }
 
@@ -209,7 +210,6 @@ void free_memory_list_f(struct node_factor_base*head){
 	struct node_factor_base*q;
 	while(p!=NULL){
 		q=p->next;
-		mpz_clear(p->root_n_mod_prime);
 		free(p);
 		p=q;
 	}

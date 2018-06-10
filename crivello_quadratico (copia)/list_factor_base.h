@@ -5,7 +5,7 @@ struct node_factor_base  {//struttura di un nodo della lista dinamica ordianta,l
     int prime;
     struct node_factor_base* next;//puntatore al prossimo
     struct node_factor_base* prev;//puntatore al precedente
-    mpz_t root_n_mod_prime;
+    int root_n_mod_prime;
 };
 
 #endif
