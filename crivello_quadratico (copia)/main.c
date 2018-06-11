@@ -171,9 +171,10 @@ int main(int argc,char*argv[]){
 			fprintf(file_log,"a=");
 			mpz_out_str(file_log,10,a);
 			fprintf(file_log," ");
+			print_time_elapsed("time to calculate a");
 			printf("index_min_a=%d,index_max_a=%d\n",index_min_a,index_max_a);
 			printf("s=%d\n",s);
-
+			print_time_elapsed("time to calculate index_min_a index_max_a");
 			//number_prime_a e index_prime_a
 			if(s>0){
 				printf("number_prime_a=");
@@ -181,7 +182,6 @@ int main(int argc,char*argv[]){
 				printf("index_prime_a=");
 				print_array_int(index_prime_a,s);
 			}
-			print_time_elapsed("time to calculate a");
 
 			//array Bk
 			array_Bk=calculate_array_Bk_f(number_prime_a,cardinality_factor_base,n,s,a,b1);
@@ -237,7 +237,6 @@ int main(int argc,char*argv[]){
 			print_time_elapsed("time to create thread");
             //n.b. thread_data[length_array_thread_data-1]==struttura dati main thread
             mpz_set(thread_data[NUM_THREAD].b,b_default);//imposta b
-			print_time_elapsed("time_to_create matrix_factorization main thread");
 			factor_matrix_f(n,M,thread_data[NUM_THREAD],cardinality_factor_base,a_default);//fattorizza numeri
 			print_time_elapsed("time_to_factor matrix_factorization main thread");
 			print_thread_data(thread_data[NUM_THREAD],M);
@@ -246,6 +245,7 @@ int main(int argc,char*argv[]){
 			printf("log_thresold main thread=%f\n",thread_data[NUM_THREAD].log_thresold);
 
 			find_list_square_relation(thread_data[NUM_THREAD],&num_B_smooth,&num_potential_B_smooth,M,&head,&tail,n,a_default,0,0);
+			print_time_elapsed("time_to find_list_square_relation");
 			//aspetta tutti i thread e libera memoria
 			if(num_thread_job!=1 && NUM_THREAD>0){
 				join_all_threads(array_tid,NUM_THREAD);//aspetta tutti i thread
@@ -273,7 +273,7 @@ int main(int argc,char*argv[]){
 			}
 			printf("threads ended the job\n");
 			print_time_elapsed("time to wait all threads");
-			printf("num_potential_B_smooth=%d,num_B_smooth=%d\n",num_potential_B_smooth,num_B_smooth);
+			printf("num_potential_B_smooth_main_thread=%d,num_B_smooth_main_thread=%d\n",num_potential_B_smooth,num_B_smooth);
 			for(int i=0;i<NUM_THREAD;i++){
 				union_list_square(&head,&tail,
 								  thread_data[i].head,thread_data[i].tail);
@@ -281,7 +281,7 @@ int main(int argc,char*argv[]){
 				num_potential_B_smooth+=thread_data[i].num_potential_B_smooth;
 				printf("num_potential_B_smooth=%d,num_B_smooth=%d\n",num_potential_B_smooth,num_B_smooth);
 			}
-			print_list_square_relation(head,num_B_smooth);
+			//print_list_square_relation(head,num_B_smooth);
 
 			/*//concatenate_all_matrix_B_smooth(array_matrix_B_smooth,length_array_thread_data,&row_result);
 			printf("row_result=%d\n",row_result);

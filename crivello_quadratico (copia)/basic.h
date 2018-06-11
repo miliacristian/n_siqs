@@ -6,16 +6,16 @@
 #define THRESOLD_PRINT_MATRIX 1000
 #define THRESOLD_PRINT_LIST 1000
 #define SIQS_MIN_PRIME_POLYNOMIAL 400 //parametri per il calcolo di a
-#define SIQS_MAX_PRIME_POLYNOMIAL 8000 //parametri per il calcolo di a
-#define NUM_ITER_FOR_CALCULATE_A 100 //parametri per il calcolo di a
+#define SIQS_MAX_PRIME_POLYNOMIAL 4000 //parametri per il calcolo di a
+#define NUM_ITER_FOR_CALCULATE_A 1000 //parametri per il calcolo di a
 #define THRESOLD_RELATION 0 
-#define NUM_THREAD 8 //numero di thread
+#define NUM_THREAD 10 //numero di thread
 #define S_MAX 10//corrisponde a 2^(S_MAX-1) polinomi diversi
 #define MAX_DIM_SOL 15 //dimensione soluzione massima
 #define PERC_INCREMENT_M 50 
 #define PERC_INCREMENT_B 50
-#define MAX_ITER 100 //iterazioni massime per calcolare a
-#define MAX_ITER2 100 //iterazioni massime per calcolare a
+#define MAX_ITER 1000 //iterazioni massime per calcolare a
+#define MAX_ITER2 1000 //iterazioni massime per calcolare a
 #define MAX_NUM_FOR_DIGIT 1
 #define PERCENT_B_SMOOTH 0.95
 #define ERROR_LOG 25//aumentare per trovare più numeri B_smooth potenziali,valore default=25
@@ -25,6 +25,7 @@
 #include <stdlib.h>
 #ifndef LINE_H
 #define LINE_H
+
 struct timespec;
 struct row_factorization{
 	int length;//card*2

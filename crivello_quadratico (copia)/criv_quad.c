@@ -64,7 +64,7 @@ void calculate_thresold_a(mpfr_t thresold_a,const mpz_t radn,long M){
 	mpfr_set_d(rad2,RAD2,MPFR_RNDN);//rad2=1.4142
 	mpfr_set_z(radnn,radn,MPFR_RNDN);//radn=rad(n)
 	mpfr_mul(t,radnn,rad2,MPFR_RNDN);//t=rad(n)*rad2
-	mpfr_div(t,t,m,MPFR_RNDN);//t2=x0*rad2/M
+	mpfr_div(t,t,m,MPFR_RNDN);//t2=rad(n)*rad2/M
 
 	mpfr_set(thresold_a,t,MPFR_RNDN);
 	mpfr_clear(t);
@@ -160,7 +160,7 @@ void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B){
 	}
 	//*B=20;
 	//*M=25;
-	*B=5000000;
+	*B=10*1000*1000;
 	*M=500000;
 	return;
 	if(digit_n<7){
@@ -888,13 +888,14 @@ void calculate_a_f2(mpz_t a,const mpfr_t target_a,int*s,struct node_factor_base*
 	if(s==NULL || target_a==NULL || mpfr_sgn(target_a)<0 || head_f_base_f==NULL || cardinality_factor_base<=0 || a==NULL || best_q==NULL || best_q_number==NULL){
 		handle_error_with_exit("error in calculate_a\n");
 	}
-	long p_min_i=0;//indice del massimo primo da scegliere rispetto alla factor base
-	long p_max_i=0;//indice del minimo primo da scegliere rispetto alla factor base
+	long p_min_i=0;//indice del minimo primo da scegliere rispetto alla factor base
+	long p_max_i=0;//indice del massimo primo da scegliere rispetto alla factor base
 	//p_max_i>p_min_i
+
 	int value;
 	int p_temp2;
 	long p_i;//indici dei primi scelti nella factor base per rappresentare a
-	long s_max;//valore massimo di s=pmax-pmin+1
+	long s_max;//valore massimo di s=pmax-pmin+1,numero massimo di primi da scegliere
 	mpz_t v;
 	int iter=0,iter2=0;
 	mpz_init(v);
@@ -937,7 +938,8 @@ void calculate_a_f2(mpz_t a,const mpfr_t target_a,int*s,struct node_factor_base*
 	mpfr_init(best_a);
 	mpfr_init(best_ratio);//double
 	mpfr_init(ratio);//double
-	
+
+
 	mpfr_set_si(best_a,0,MPFR_RNDN);//best_a=0
 	mpfr_set_si(best_ratio,0,MPFR_RNDN);//best_target=0
 
@@ -970,9 +972,10 @@ void calculate_a_f2(mpz_t a,const mpfr_t target_a,int*s,struct node_factor_base*
 	int count=0;//conta quante volte while(mpz_cmp(a,target_a1)<0) è verificata
 	int*q=alloc_array_int(s_max);//array che contiene gli indici dei primi scelti
 	int*q_number=alloc_array_int(s_max);//array che contiene i dei primi scelti
-	*best_q_number=alloc_array_int(s_max);//array che contiene i dei primi scelti
-	*best_q=alloc_array_int(s_max);
+	*best_q_number=alloc_array_int(s_max);//array che contiene i numeri dei primi scelti
+	*best_q=alloc_array_int(s_max);//array che contiene gli indici dei primi scelti
 	int length_best_q=0;
+
 	for(int i=0;i<NUM_ITER_FOR_CALCULATE_A;i++){//iterazioni per cercare di migliorare a
 		mpfr_set_si(a2,1,MPFR_RNDN);//a2=1 azzera a2
 		memset(q,0,sizeof(int)*s_max);//azzera q
@@ -1022,9 +1025,10 @@ void calculate_a_f2(mpz_t a,const mpfr_t target_a,int*s,struct node_factor_base*
 			length_best_q=count;//la lunghezza di best_q coincide con il numero di append fatte
 		}
 	}
-	
-	mpz_set_si(a,1);
-	for(int i=0;i<length_best_q;i++){
+
+
+	mpz_set_si(a,1);//a=1
+	for(int i=0;i<length_best_q;i++){//moltiplica tutti i fattori di a
 		mpz_mul_si(a,a,(*best_q_number)[i]);
 	}
 	*s=length_best_q;//imposta il valore di s
@@ -1033,7 +1037,8 @@ void calculate_a_f2(mpz_t a,const mpfr_t target_a,int*s,struct node_factor_base*
 	if(*s>s_max){
 		handle_error_with_exit("error in calculate a,s must be minor or equal to s_max\n");
 	}
-	//creazione array dei primi scelti
+
+
 	free(q);
 	free(q_number);
 	mpfr_clear(p_rational);

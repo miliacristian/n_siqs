@@ -87,8 +87,6 @@ struct node_factorization*factorize_num(const mpz_t num,int first_index_f_base,i
 	}
 	if(index_min_a<0 || index_max_a<0 || is_B_smooth==NULL
 	   || first_index_f_base>last_index_f_base){
-		printf("index_min_a=%d,index_max_a=%d,pointer=%p\n",index_min_a,index_max_a,is_B_smooth);
-		printf("first_index_factor_base=%d,last_index=%d\n",first_index_f_base,last_index_f_base);
 		handle_error_with_exit("error in factorize_num m\n");
 	}
 	if((first_index_f_base<0 && first_index_f_base!=-1)|| (last_index_f_base<0 && last_index_f_base!=-1)
@@ -123,20 +121,21 @@ struct node_factorization*factorize_num(const mpz_t num,int first_index_f_base,i
             mpz_divexact_ui(temp, temp, r.prime[i]);
             exp+=1;
         }
-        if(exp>0) {
+        if(exp>0) {//è stato diviso almeno 1 volta
             insert_ordered_factor(number, exp, i, &head, &tail);
         }
         exp=0;//resetta esponente
     }
-    if(mpz_cmp_si(temp,1)==0){
+    if(mpz_cmp_si(temp,1)==0){//se il residuo della divisione è 1 allora è B-smooth
 	    *is_B_smooth=1;
 	}
-	else{
+	else{//non è B-smooth
     	*is_B_smooth=0;
     }
     mpz_clear(temp);
 	return head;
 }
+
 /*char factorize_num_B_smooth(int*array_factorization,int len_array,struct row *row){
 	mpz_t temp;
 	mpz_init(temp);
@@ -162,8 +161,8 @@ struct node_factorization*factorize_num(const mpz_t num,int first_index_f_base,i
 }*/
 void calculate_square(mpz_t square,const mpz_t a,int index,const mpz_t b){
     // -M<index<M
-    mpz_mul_si(square,a,index);
-    mpz_add(square,square,b);
+    mpz_mul_si(square,a,index);//a*j
+    mpz_add(square,square,b);//a*j+b
     return;
 }
 void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth, int *num_potential_B_smooth, long M,
@@ -677,7 +676,7 @@ char divide_all_by_2_log(long M,struct thread_data thread_data){//divide gli ele
     }
     long i=-1;
     long count=0;
-    count=M+1;//a*j^2+2bj+c mod 2 =M+1+b,primo elemento ha j=-M=M mod 2
+    count=M+1;//a^2*j^2+2bj+c mod 2 =M+1+b,primo elemento ha j=-M=M mod 2
     //trovare il primo numero divisibile per 2 e poi a salti di 2 dividere gli altri
     if(mpz_divisible_2exp_p(thread_data.b,1)!=0){//b è divisibile per 2
     }
@@ -2422,8 +2421,9 @@ char divide_all_by_p_to_k_f(int rad,long p,int index_of_prime,long k,long M,stru
 	j1=mpz_get_si(j1t);//j1=j1t
 	j2=mpz_get_si(j2t);//j2=j2t
     j_temp2=j1;
+    indexv=j_temp2+M;
 	while(j_temp2<=M){//all'inizio j_temp=0*p+j1t,poi diventa k*p+j1t(a salti di p)
-		indexv=j_temp2+M;//siccome j_temp è sfalsato di -M si riaggiunge M
+		//indexv=j_temp2+M;//siccome j_temp è sfalsato di -M si riaggiunge M
 		thread_data.numbers[indexv].sum_log+=r.log_prime[index_of_prime];
 		//se il first_index_f_base non è stato modificato setta first e last
 		if(thread_data.numbers[indexv].first_index_f_base==-1){
@@ -2438,10 +2438,12 @@ char divide_all_by_p_to_k_f(int rad,long p,int index_of_prime,long k,long M,stru
 		}
 		array_divided=1;//una divisione è stata effettuata
 		j_temp2+=p;//ad ogni ciclo aggiungo p
+		indexv+=p;
 	}
 	j_temp2=-p+j1;//all'inizio j_temp=-p+j1t,poi diventa -k*p+j1t(a salti di p negativi)
+    indexv=j_temp2+M;
 	while(j_temp2>=-M){//all'inizio j_temp=0*p+j1t,poi diventa k*p+j1t(a salti di p)
-		indexv=j_temp2+M;//siccome j_temp è sfalsato di -M si riaggiunge M
+		//indexv=j_temp2+M;//siccome j_temp è sfalsato di -M si riaggiunge M
 		thread_data.numbers[indexv].sum_log+=r.log_prime[index_of_prime];
 		//se il first_index_f_base non è stato modificato setta first e last
 		if(thread_data.numbers[indexv].first_index_f_base==-1){
@@ -2456,6 +2458,7 @@ char divide_all_by_p_to_k_f(int rad,long p,int index_of_prime,long k,long M,stru
 		}
 		array_divided=1;//una divisione è stata effettuata
 		j_temp2-=p;//ad ogni ciclo tolgo p
+		indexv-=p;
 	}
     if(j==1){
         mpz_clear(p_to_k);
@@ -2478,8 +2481,9 @@ char divide_all_by_p_to_k_f(int rad,long p,int index_of_prime,long k,long M,stru
         return 0;//ritorna 0 se non ci sono state divisioni nell'array
     }
 	j_temp2=j2;//si passa alla secodna radice
-	while(j_temp2<=M && j==0){//all'inizio j_temp=0*p+j1t,poi diventa k*p+j1t(a salti di p)
-		indexv=j_temp2+M;//siccome j_temp è sfalsato di -M si riaggiunge M
+    indexv=j_temp2+M;
+	while(j_temp2<=M){//all'inizio j_temp=0*p+j1t,poi diventa k*p+j1t(a salti di p)
+		//indexv=j_temp2+M;//siccome j_temp è sfalsato di -M si riaggiunge M
 		thread_data.numbers[indexv].sum_log+=r.log_prime[index_of_prime];
 		//se il first_index_f_base non è stato modificato setta first e last
 		if(thread_data.numbers[indexv].first_index_f_base==-1){
@@ -2494,10 +2498,12 @@ char divide_all_by_p_to_k_f(int rad,long p,int index_of_prime,long k,long M,stru
 		}
 		array_divided=1;//una divisione è stata effettuata
 		j_temp2+=p;//ad ogni ciclo aggiungo p
+		indexv+=p;
 	}
 	j_temp2=-p+j2;//all'inizio j_temp=-p+j1t,poi diventa -k*p+j1t(a salti di p negativi)
-	while(j_temp2>=-M && j==0){//all'inizio j_temp=0*p+j1t,poi diventa k*p+j1t(a salti di p)
-		indexv=j_temp2+M;//siccome j_temp è sfalsato di -M si riaggiunge M
+    indexv=j_temp2+M;
+	while(j_temp2>=-M){//all'inizio j_temp=0*p+j1t,poi diventa k*p+j1t(a salti di p)
+		//indexv=j_temp2+M;//siccome j_temp è sfalsato di -M si riaggiunge M
 		thread_data.numbers[indexv].sum_log+=r.log_prime[index_of_prime];
 		//se il first_index_f_base non è stato modificato setta first e last
 		if(thread_data.numbers[indexv].first_index_f_base==-1){
@@ -2512,6 +2518,7 @@ char divide_all_by_p_to_k_f(int rad,long p,int index_of_prime,long k,long M,stru
 		}
 		array_divided=1;//una divisione è stata effettuata
 		j_temp2-=p;//ad ogni ciclo tolgo p
+		indexv-=p;
 	}
     mpz_clear(p_to_k);
     mpz_clear(r2);
@@ -2674,8 +2681,6 @@ void factor_matrix_f(const mpz_t n,long M,struct thread_data thread_data,int car
         }
         else{//p>2 e dispari
             divide_all_by_p_to_k_f(r.root_n_mod_p[i],p,i,1,M,thread_data,n,a,thread_data.b);
-            if(p==3){
-            }
         }
     }
     return;
