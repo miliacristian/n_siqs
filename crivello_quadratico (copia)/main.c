@@ -227,7 +227,10 @@ int main(int argc,char*argv[]){
 			print_array_int(r.log_prime,cardinality_factor_base);
 			print_array_int(r.prime,cardinality_factor_base);
 			print_array_int(r.root_n_mod_p,cardinality_factor_base);
-
+			mpz_t num;
+			mpz_init(num);
+			create_num(num,a_default,b_default,n,-M);
+			gmp_printf("num main thread=%Zd\n",num);
 			print_time_elapsed("time to create row factorization");
 			//creazione e avvio thread
 			if(num_thread_job!=1){
@@ -397,12 +400,15 @@ int thread_job_criv_quad(int id_thread){//id inizia da 0,il lavoro di un thread 
     struct timespec timer_thread;//istante di tempo
 	int count=id_thread;//indica quale polinomio deve usare per fare il crivello quadratico
     struct node_square_relation*head_square=NULL,*tail_square=NULL;
-
+	mpz_t num;
+	mpz_init(num);
     //gettime
     gettime(&timer_thread);
     thread_data[id_thread].log_thresold=calculate_log_thresold(n,M);
     printf("log_thresold=%f\n",thread_data[id_thread].log_thresold);
     print_time_elapsed_local("time to calculate log thresold",&timer_thread);
+	create_num(num,a,array_bi[count],n,-M);
+	gmp_printf("num=%Zd thread=%d\n",num,count);
 	while(count<=num_thread_job-2){//ogni thread prende un sottoinsieme di compiti,il thread con id 0 farà i compiti 0,NUM_THREAD,2*NUM_THREAD,il thread 1 farà 1,NUM_THREAD+1,2*NUM_THREAD+1 ecc
 		//fattorizzazione
 		printf("thread=%d\n",count);

@@ -22,7 +22,7 @@ void select_square_mod_p(struct node**p,struct node** tail,const mpz_t n);
 long tonelli_shanks(long n, long p);
 char is_prime(const mpz_t num,struct node*head);
 
-
+void create_num(mpz_t num,const mpz_t a,const mpz_t b,const mpz_t n,long j);
 char divide_all_by_p_to_k(const mpz_t r,long p,int index_of_prime,long k,mpz_t*array_of_number,long M,mpz_t**matrix_factorization,const mpz_t n,const mpz_t a,const mpz_t b);//r=square root mod p^k,ritorna zero se c'è stata almeno 1 divisione
 	
 char divide_all_by_min1(mpz_t*array_of_number,long M,mpz_t**matrix_factorization);//r=square root mod p^k,ritorna zero se c'è stata almeno 1 divisione	

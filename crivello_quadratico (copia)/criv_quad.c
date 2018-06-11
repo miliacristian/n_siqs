@@ -692,7 +692,7 @@ void calculate_target_a1_f(mpfr_t target_a1,const mpfr_t target_a,struct node_fa
 	if(count!=p_min_i){
 		handle_error_with_exit("error in calculate target_a1\n");
 	}
-	mpz_set_si(prime_min,p->prime);
+	mpz_set_si(prime_min,p->prime);//ottieni prime_min
 	while(count<p_max_i){
 		p=p->next;
 		count++;
@@ -700,15 +700,22 @@ void calculate_target_a1_f(mpfr_t target_a1,const mpfr_t target_a,struct node_fa
 	if(count!=p_max_i){
 		handle_error_with_exit("error in calculate target_a1\n");
 	}
-	mpz_set_si(prime_max,p->prime);
+	mpz_set_si(prime_max,p->prime);//ottieni prime_max
+
+
 	mpz_add(prime_sum,prime_max,prime_min);//prime_sum=prime_min+prime_max
 	mpfr_set_z(prime_avg,prime_sum,MPFR_RNDN);//prime_avg=prime_sum
 	mpfr_div_2ui(prime_avg,prime_avg,1,MPFR_RNDN);//prime_avg=(pmax+pmin)/2
-	mpfr_sqrt(sqrt_prime_avg,prime_avg,MPFR_RNDN);//rad((pmax+pmin)/2)
-	mpfr_set(temp,target_a,MPFR_RNDN);//temp=target
+	printf("prime_avg=");
+	mpfr_out_str(stdout,10,0,prime_avg,MPFR_RNDN);
+	printf("\n");
+	mpfr_sqrt(sqrt_prime_avg,prime_avg,MPFR_RNDN);//sqrt_prime=rad((pmax+pmin)/2)
+	mpfr_set(temp,target_a,MPFR_RNDN);//temp=target=rad(2*n)/M
 	mpfr_div(temp,temp,sqrt_prime_avg,MPFR_RNDN);//temp=target/rad((pmax+pmin)/2)
 	mpfr_set(target_a1,temp,MPFR_RNDN);//target_a1=temp=target/rad((pmax+pmin)/2)
-
+	printf("target_a1=");
+	mpfr_out_str(stdout,10,0,target_a1,MPFR_RNDN);
+	printf("\n");
 	mpz_clear(prime_min);
 	mpz_clear(prime_max);
 	mpz_clear(prime_sum);
@@ -974,7 +981,7 @@ void calculate_a_f2(mpz_t a,const mpfr_t target_a,int*s,struct node_factor_base*
 	int*q_number=alloc_array_int(s_max);//array che contiene i dei primi scelti
 	*best_q_number=alloc_array_int(s_max);//array che contiene i numeri dei primi scelti
 	*best_q=alloc_array_int(s_max);//array che contiene gli indici dei primi scelti
-	int length_best_q=0;
+	int length_best_q=0;//inizialmente la lunghezza della lista migliore è zero
 
 	for(int i=0;i<NUM_ITER_FOR_CALCULATE_A;i++){//iterazioni per cercare di migliorare a
 		mpfr_set_si(a2,1,MPFR_RNDN);//a2=1 azzera a2
