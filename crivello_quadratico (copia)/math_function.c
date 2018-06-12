@@ -126,10 +126,13 @@ struct node_factorization*factorize_num(const mpz_t num,int first_index_f_base,i
         }
         exp=0;//resetta esponente
     }
+    int count=0;
     if(mpz_cmp_si(temp,1)==0){//se il residuo della divisione è 1 allora è B-smooth
 	    *is_B_smooth=1;
 	}
 	else{//non è B-smooth
+    	gmp_printf("residuo=%Zd\n", temp);
+    	sleep(1);
     	*is_B_smooth=0;
     }
     mpz_clear(temp);

@@ -3,7 +3,7 @@ f(x)={ \\funzione con parametri
 	my (b = a^2); /*ciao*/
 	i=0;
 	for(a=0,10,i=i+a);\\10 iterazioni
-	if(i<=100,i=2,i=98);\\ if-else
+	if(i<=100,i=2,i=98);\\ if-else,se i<=100 allora i=2 altrimenti i=98
 	printf(i);
 	printf("      ");
 	printf(i);
@@ -15,10 +15,65 @@ fun_no_param()={ \\funzione senza parametri
 	i=123;
 	return (-1);
 }
+factor_base(B,n)={
+	list=List();
+	listput(list,-1);
+	listput(list,2);
+	count=2;
+	for(i=3,B,
+		p=nextprime(i);
+		v=(p-1)/2;
+		q=lift(Mod(n,p)^v);\\n^(p-1)/2 mod p
+		if(q==1,
+			listput(list,p);
+			count=count+1;
+		);
+		i=p+1;	
+	);
+	\\return [list,count];
+	return ([list,count]);\\ritorno di più valori
+}
+trial_division(list,len_list,num)={
+	b_smooth=0;
+	if(num<0,
+		num=-num;
+	);
+	for(i=2,len_list,
+		while(lift(Mod(num,list[i]))==0,
+			num=num/list[i];
+        	);
+	);
+	if(num==1,
+		b_smooth=1;
+	);
+	return (b_smooth);
+}
+
+sieve_array(M,B,a,b,n)={
+	ret=factor_base(B,n);
+	list=ret[1];
+	len_list=ret[2];
+	printf(len_list);
+	printf("\n");
+	num_b_smooth=0;
+	for(j=-M,M,
+		v=a*a*j*j+2*b*j+b*b-n;
+		b_smooth=trial_division(list,len_list,v);
+		if(b_smooth,
+			print(v,":b_smooth");
+			num_b_smooth=num_b_smooth+1;
+		);
+	);
+	printf(num_b_smooth);
+	return (0);
+}
+
+\\ se la console stampa "nome_variabile "+" valore_variabile" allora manca la dichiarazione della variabile nel codice
 
 
 \\variable name expected==è stato usato il nome di una funzione come variabile
 \\indici partono da 1(one based)
+\\not a function in function call,errore esecuzione,probabilmente mancano dei parametri alla funzione
 
 \\genera numeri semiprimi n=p*q in modo random
 random_biprime()={
