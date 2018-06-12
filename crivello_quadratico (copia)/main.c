@@ -149,7 +149,7 @@ int main(int argc,char*argv[]){
 			print_time_elapsed("time to adjust & multiply n for k");
 
 			//thresold_a per applicare siqs
-			calculate_thresold_a(thresold_a,x0,M);//a è circa rad(2*n)/M
+			calculate_thresold_a(thresold_a,n,M);//a è circa rad(2*n)/M
 			printf("thresold_a=");
 			mpfr_out_str(stdout,10,0,thresold_a,MPFR_RNDN);
 			printf("\n");

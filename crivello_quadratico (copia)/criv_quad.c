@@ -48,8 +48,8 @@ void adjust_array_bi(mpz_t *array_bi,int s,const mpz_t a){
 	return;
 }
 
-void calculate_thresold_a(mpfr_t thresold_a,const mpz_t radn,long M){
-	if(M<=0 || thresold_a==NULL || radn==NULL){
+void calculate_thresold_a(mpfr_t thresold_a,const mpz_t n,long M){
+	if(M<=0 || thresold_a==NULL || n==NULL){
 		handle_error_with_exit("error in calculate thresold_a\n");
 	}
 	mpfr_t rad2,radnn,m;
@@ -62,7 +62,8 @@ void calculate_thresold_a(mpfr_t thresold_a,const mpz_t radn,long M){
 
 	mpfr_set_si(m,M,MPFR_RNDN);//m=M
 	mpfr_set_d(rad2,RAD2,MPFR_RNDN);//rad2=1.4142
-	mpfr_set_z(radnn,radn,MPFR_RNDN);//radn=rad(n)
+	mpfr_set_z(radnn,n,MPFR_RNDN);//radn=n
+    mpfr_sqrt(radnn,radnn,MPFR_RNDN);//radn=rad(n)
 	mpfr_mul(t,radnn,rad2,MPFR_RNDN);//t=rad(n)*rad2
 	mpfr_div(t,t,m,MPFR_RNDN);//t2=rad(n)*rad2/M
 
@@ -160,7 +161,7 @@ void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B){
 	}
 	//*B=20;
 	//*M=25;
-	*B=10*1000*1000;
+	*B=1*1000*1000;
 	*M=500000;
 	return;
 	if(digit_n<7){
@@ -898,7 +899,8 @@ void calculate_a_f2(mpz_t a,const mpfr_t target_a,int*s,struct node_factor_base*
 	long p_min_i=0;//indice del minimo primo da scegliere rispetto alla factor base
 	long p_max_i=0;//indice del massimo primo da scegliere rispetto alla factor base
 	//p_max_i>p_min_i
-
+	char initialized=0;//se è zero la prima volta che si trova un a,anche se il rapporto a/target è pessimo si
+	        //prende quell'a
 	int value;
 	int p_temp2;
 	long p_i;//indici dei primi scelti nella factor base per rappresentare a
@@ -931,23 +933,26 @@ void calculate_a_f2(mpz_t a,const mpfr_t target_a,int*s,struct node_factor_base*
 	}
 	mpz_t p_temp;
 	mpfr_t target_a1;
-	mpfr_t best_a;
+	mpz_t best_a;
 	mpfr_t best_ratio;
+	double ratio_double=0,best_ratio_double=0;
 	mpfr_t ratio;
-	mpfr_t a2;
+	mpz_t a2_int;
+	mpfr_t a2_double;
 	mpfr_t p_rational;
-	
+	double dist_best,dist_ratio;
 	mpfr_init(p_rational);
-	mpfr_init(a2);
+	mpz_init(a2_int);
+	mpfr_init(a2_double);
 	mpz_init(p_temp);
 	mpfr_init(target_a1);
 
-	mpfr_init(best_a);
+	mpz_init(best_a);
 	mpfr_init(best_ratio);//double
 	mpfr_init(ratio);//double
 
 
-	mpfr_set_si(best_a,0,MPFR_RNDN);//best_a=0
+	mpz_set_si(best_a,0);//best_a=0
 	mpfr_set_si(best_ratio,0,MPFR_RNDN);//best_target=0
 
 	calculate_p_min_p_max_i_f(&p_min_i,&p_max_i,head_f_base_f,cardinality_factor_base);
@@ -959,15 +964,16 @@ void calculate_a_f2(mpz_t a,const mpfr_t target_a,int*s,struct node_factor_base*
 	}
 	printf("s_max=%ld\n",s_max);
 	calculate_target_a1_f(target_a1,target_a,head_f_base_f,p_min_i,p_max_i,cardinality_factor_base);
-	if(mpfr_cmp_si(target_a1,1)<=0){
+	if(mpfr_cmp_si(target_a1,1)<=0){//se target_a1<0 poni s=0 e ritorna
 		mpz_set_si(a,0);//poni a=0
 		*s=0;
 		mpz_clear(v);
 		mpfr_clear(p_rational);
-		mpfr_clear(a2);
+		mpz_clear(a2_int);
+		mpfr_clear(a2_double);
 		mpz_clear(p_temp);
 		mpfr_clear(target_a1);
-		mpfr_clear(best_a);
+		mpz_clear(best_a);
 		mpfr_clear(best_ratio);//double
 		mpfr_clear(ratio);//double
 		return;
@@ -975,7 +981,9 @@ void calculate_a_f2(mpz_t a,const mpfr_t target_a,int*s,struct node_factor_base*
 	printf("target_a1=");
 	mpfr_out_str(stdout,10,0,target_a1,MPFR_RNDN);
 	printf("\n");
-	char f,b,c,d;
+
+
+	char f,b,c,d,g;
 	int count=0;//conta quante volte while(mpz_cmp(a,target_a1)<0) è verificata
 	int*q=alloc_array_int(s_max);//array che contiene gli indici dei primi scelti
 	int*q_number=alloc_array_int(s_max);//array che contiene i dei primi scelti
@@ -984,12 +992,13 @@ void calculate_a_f2(mpz_t a,const mpfr_t target_a,int*s,struct node_factor_base*
 	int length_best_q=0;//inizialmente la lunghezza della lista migliore è zero
 
 	for(int i=0;i<NUM_ITER_FOR_CALCULATE_A;i++){//iterazioni per cercare di migliorare a
-		mpfr_set_si(a2,1,MPFR_RNDN);//a2=1 azzera a2
+		mpz_set_si(a2_int,1);//a2=1 azzera a2
 		memset(q,0,sizeof(int)*s_max);//azzera q
 		memset(q_number,0,sizeof(int)*s_max);//azzera q
 		count=0;//azzera le append a q
 		iter=0;
-		while(mpfr_cmp(a2,target_a1)<0 && iter<=MAX_ITER){//finquando a2<target_a1 oppure sono state raggiunte tot iterazioni
+		mpfr_set_z(a2_double,a2_int,MPFR_RNDN);
+		while(mpfr_cmp(a2_double,target_a1)<0 && iter<=MAX_ITER){//finquando a2<target_a1 oppure sono state raggiunte tot iterazioni
 			p_i=2;
 			iter2=0;
 			while((p_i==2 || is_in_array_int(q,s_max,p_i)) && iter2<=MAX_ITER2){//scegli un p_i che non è stato ancora scelto
@@ -1006,7 +1015,9 @@ void calculate_a_f2(mpz_t a,const mpfr_t target_a,int*s,struct node_factor_base*
 			get_element_linked_list_f(&p_temp2,head_f_base_f,p_i);//prendi l'elemento p_i-esimo dalla factor base
 			mpz_set_si(p_temp,p_temp2);
 			mpfr_set_z(p_rational,p_temp,MPFR_RNDN);//p_rational=p_temp
-			mpfr_mul(a2,a2,p_rational,MPFR_RNDN);//a2=a2*p
+			mpfr_mul(a2_double,a2_double,p_rational,MPFR_RNDN);//a2=a2*p
+			mpz_mul(a2_int,a2_int,p_temp);//a2=a2*p
+
 			if(count>=s_max){
 				handle_error_with_exit("error in calculate a,index out of bounds\n");
 			}
@@ -1019,24 +1030,43 @@ void calculate_a_f2(mpz_t a,const mpfr_t target_a,int*s,struct node_factor_base*
 			}
 		}
 		//una sequenza di numeri è stata scelta vediamo quanto è buona(vedendo i rapporti della migliore attualmente),se è buona la 			aggiorniamo
-		mpfr_div(ratio,a2,target_a,MPFR_RNDN);//ratio=a2/target_a
-		f=(mpfr_cmp_si(best_ratio,0)==0);
-		b=mpfr_cmp_d(best_ratio,0.9)<0;
-		c=mpfr_cmp(ratio,best_ratio)>0;
-		d=( (mpfr_cmp_d(ratio,0.9)>=0) && (mpfr_cmp(ratio,best_ratio)<0) );
-		if((f || d || b)  && c  ){
-			mpfr_set(best_a,a2,MPFR_RNDN);//best_a=a2
-			mpfr_set(best_ratio,ratio,MPFR_RNDN);//best_ratio=ratio
-			memcpy(*best_q,q,sizeof(int)*s_max);//best_q=q
-			memcpy(*best_q_number,q_number,sizeof(int)*s_max);//best_q=q
-			length_best_q=count;//la lunghezza di best_q coincide con il numero di append fatte
+		mpfr_div(ratio,a2_double,target_a,MPFR_RNDN);//ratio=a2/target_a
+		/*b=mpfr_cmp_d(best_ratio,0.9)<0;//best_ratio<0.9
+		c=mpfr_cmp(ratio,best_ratio)>0;//ratio>best_ratio
+		d=( (mpfr_cmp_d(ratio,0.9)>=0) && (mpfr_cmp(ratio,best_ratio)<0) );//ratio>=0.9 && ratio<best_ratio
+		g=(mpfr_cmp_d(ratio,1.0)<=0);//ratio<1*/
+
+		ratio_double=mpfr_get_d(ratio,MPFR_RNDN);
+		if(initialized==0){
+		            initialized=1;
+                    mpz_set(best_a,a2_int);//best_a=a2
+                    mpfr_set(best_ratio,ratio,MPFR_RNDN);//best_ratio=ratio
+                    best_ratio_double=ratio_double;
+                    memcpy(*best_q,q,sizeof(int)*s_max);//best_q=q
+                    memcpy(*best_q_number,q_number,sizeof(int)*s_max);//best_q=q
+                    length_best_q=count;//la lunghezza di best_q coincide con il numero di append fatte
 		}
+		dist_best=fabs(1-best_ratio_double);//distanza di best_ratio da 1
+        dist_ratio=fabs(1-ratio_double);//distanza di ratio_da 1
+        if(dist_ratio<dist_best){
+          mpz_set(best_a,a2_int);//best_a=a2
+          mpfr_set(best_ratio,ratio,MPFR_RNDN);//best_ratio=ratio
+          best_ratio_double=ratio_double;
+          memcpy(*best_q,q,sizeof(int)*s_max);//best_q=q
+          memcpy(*best_q_number,q_number,sizeof(int)*s_max);//best_q=q
+          length_best_q=count;//la lunghezza di best_q coincide con il numero di append fatte
+        }
 	}
 
 
 	mpz_set_si(a,1);//a=1
 	for(int i=0;i<length_best_q;i++){//moltiplica tutti i fattori di a
 		mpz_mul_si(a,a,(*best_q_number)[i]);
+	}
+	if(mpz_cmp(best_a,a)!=0){
+		gmp_printf("a=%Zd\n",a);
+		gmp_printf("best_a=%Zd\n",best_a);
+		handle_error_with_exit("error in calculate a\n");
 	}
 	*s=length_best_q;//imposta il valore di s
 	printf("s=%d,s_max=%ld\n",*s,s_max);
@@ -1051,8 +1081,9 @@ void calculate_a_f2(mpz_t a,const mpfr_t target_a,int*s,struct node_factor_base*
 	mpfr_clear(p_rational);
 	mpz_clear(p_temp);
 	mpfr_clear(target_a1);
-	mpfr_clear(a2);
-	mpfr_clear(best_a);
+	mpfr_clear(a2_double);
+	mpz_clear(a2_int);
+	mpz_clear(best_a);
 	mpfr_clear(best_ratio);
 	mpfr_clear(ratio);
 	mpz_clear(v);
@@ -1173,7 +1204,7 @@ mpz_t*calculate_array_Bk_f(int*number_prime_a,int card_factor_base,const mpz_t n
 	for(int k=0;k<s;k++){
 		vpk=number_prime_a[index];
 		index++;
-		mpz_set_si(pk,vpk);//pk=vpk
+		mpz_set_si(pk,vpk);//pk=vpk,pk=primo iesimo scelto per a
 		if(mpz_divisible_p(a,pk)==0){
 			handle_error_with_exit("error in mpz_divisible_calculate array_BK\n");
 		}
@@ -1181,7 +1212,7 @@ mpz_t*calculate_array_Bk_f(int*number_prime_a,int card_factor_base,const mpz_t n
 		mpz_invert(ak_inverse,ak,pk);//ak_inverse=(ak)^-1 mod pk
 		mpz_set(n_temp,n);//n_temp=n
 		mpz_mod(n_temp,n,pk);//n_temp=n mod pk
-		if(vpk==2){//la radice di n mod 2 è la riduzione di n mod 2
+		if(vpk==2){//la radice di n mod 2 è la riduzione di n mod 2,in realtà i numeri primi devono essere dispari
 			mpz_set(root,n_temp);//root =n_temp
 		}
 		else{
@@ -1191,7 +1222,7 @@ mpz_t*calculate_array_Bk_f(int*number_prime_a,int card_factor_base,const mpz_t n
 			}
 		}
 		mpz_mul(root,root,ak);//root=root*ak
-		mpz_mul(root,root,ak_inverse);//tk*ak*(ak)^-1
+		mpz_mul(root,root,ak_inverse);//tk*ak*(ak)^-1=root*ak*(ak)^-1
 		mpz_mod(root,root,a);//Bk può essere ridotto modulo a
 		mpz_set(array_Bk[k],root);//array_Bk[k]=root*ak*ak_inverse;
 		mpz_add(b1,b1,array_Bk[k]);//b1=(b1)+array_Bk[k],alla fine del for b1=somma di tutti i Bk
