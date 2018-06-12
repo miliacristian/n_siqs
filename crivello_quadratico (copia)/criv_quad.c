@@ -1218,13 +1218,14 @@ void multiply_n_for_k(mpz_t n,int *k,char*factorized){//n=n*k in modo tale che n
 		*factorized=1;
 		return;
 	}
-	mpz_t v;//valore temporaneo
+	return;
+	/*mpz_t v;//valore temporaneo
 	mpz_init_set_si(v,8);
 	mpz_mod(v,n,v);
 	*k=mpz_get_si(v);//k congruo a n mod 8,se n congruo a 1 mod 8 allora k=1
 	mpz_mul(n,n,v);//n=n*k
 	mpz_clear(v);
-	return;
+	return;*/
 }
 int calculate_v(int i){
 	int v=1;
