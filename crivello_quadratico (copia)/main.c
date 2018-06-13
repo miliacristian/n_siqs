@@ -289,8 +289,20 @@ int main(int argc,char*argv[]){
 				num_potential_B_smooth+=thread_data[i].num_potential_B_smooth;
 				printf("num_potential_B_smooth=%d,num_B_smooth=%d\n",num_potential_B_smooth,num_B_smooth);
 			}
-			//print_list_square_relation(head,num_B_smooth);
-
+			print_list_square_relation(head,num_B_smooth);
+            linear_system=create_linear_system_f(head,cardinality_factor_base,num_B_smooth);
+			print_linear_system(linear_system,cardinality_factor_base,num_B_smooth);
+            print_time_elapsed("time_to_create_linear_system");
+            //aggiustare calcolo della base del sistema lineare
+			//base_matrix=calculate_base_linear_system(linear_system,cardinality_factor_base,num_B_smooth,&dim_sol);
+			if(base_matrix==NULL){//non ci sono abbastanza soluzioni,ricomincia il crivello quadratico
+				calculate_news_M_and_B(&M,&B);
+				continue;
+			}
+			printf("dim_sol=%d\n",dim_sol);
+			print_time_elapsed("time to calculate base linear system");
+			free(base_matrix);
+			free(linear_system);
 			/*//concatenate_all_matrix_B_smooth(array_matrix_B_smooth,length_array_thread_data,&row_result);
 			printf("row_result=%d\n",row_result);
 			fprintf(file_log,"num potential B_smooth=%d ",row_result);

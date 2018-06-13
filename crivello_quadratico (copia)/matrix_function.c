@@ -5,6 +5,8 @@
 #include "matrix_function.h"
 #include "basic.h"
 #include "list_factor_base.h"
+#include "list_square_relation.h"
+#include "list_factorization.h"
 #include <mpfr.h>
 extern struct row_factorization r;
 extern struct timespec timer;
@@ -193,7 +195,7 @@ void copy_matrix(mpz_t**matrix1,mpz_t**matrix2,int num_row,int num_col){
 	}
 	return;
 }
-char*alloc_array_char(int length){
+char*alloc_array_char(long length){
 	if(length<=0){
 		handle_error_with_exit("error in parameter alloc_array_char\n");
 	}
@@ -1815,7 +1817,43 @@ char check_solution_base_matrix(int**linear_system,int num_row_system,int num_co
 	}
 	return 1;
 }
-
+long get_index(int index_row,int index_col,int num_col){
+	//ritorna l'indice della posizione numerica associata all'elemento index_row,index_col
+	long index;
+	if(index_col<0 || index_row<0 || num_col<=0){
+		handle_error_with_exit("error in get_index\n");
+	}
+	index=(long)index_row*num_col;//elemento della riga
+	index+=index_col;//shift della colonna
+	return index;
+}
+char*create_linear_system_f(struct node_square_relation*head,int cardinality_factor_base,int num_B_smooth){
+	if(head==NULL || cardinality_factor_base<=0 || num_B_smooth<=0){
+		handle_error_with_exit("error in create_linear_system\n");
+	}
+	char*linear_system=alloc_array_char(cardinality_factor_base*num_B_smooth);
+	struct node_square_relation*p=head;
+	int col_index=0;
+	long index;
+	while(p!=NULL){//cicla su tutte le relazioni quadratiche
+		struct node_factorization*sq=p->square_relation.head_factorization;
+		print_factorization(p->square_relation.num,sq);
+		while(sq!=NULL){//cicla su tutti i fattori della singola relazione quadratica
+			if((sq->exp_of_number & 1)!=0){//se l'esponente è divisibile per 2
+				//metti 1 in posizione indice nella colonna iesima
+				index=get_index(sq->index,col_index,num_B_smooth);
+				linear_system[index]=1;
+			}
+			sq=sq->next;
+		}
+		p=p->next;
+		col_index++;
+	}
+	if(col_index!=num_B_smooth){
+		handle_error_with_exit("error initialize_linear_system\n");
+	}
+	return linear_system;
+}
 /*char*create_linear_system_f(struct matrix_factorization *mat,int cardinality_factor_base){
 	//mat contiene solamente i B_smooth;
 	if(mat->num_row<=0 || cardinality_factor_base<=0 || mat==NULL){

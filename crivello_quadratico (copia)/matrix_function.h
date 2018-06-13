@@ -23,7 +23,7 @@ void divide_elem_multiple_of_2_by_x(mpz_t*vector,int length,double x);//vector =
 int**alloc_matrix_int(int num_row,int num_col);
 long**alloc_matrix_long(int num_row,int num_col);
 mpz_t**alloc_matrix_mpz(int num_row,int num_col);
-char*alloc_array_char(int lenght);
+char*alloc_array_char(long lenght);
 char find_pivot_not_null_in_column(int **matrix,int num_row,int num_col,int pivot[2]);
 int*get_coli(int **matrix,int num_row,int num_col,int index_col);
 int scan_array_to_find_element_not_null(int*array,int start,int lenght_array);
@@ -69,7 +69,7 @@ float*alloc_array_float(int length);
 void concatenate_all_matrix_B_smooth(struct matrix_factorization**array_matrix_factorization,int length_array_matrix,int *row_result);
 struct matrix_factorization* alloc_matrix_factorization(int num_row);
 char is_in_array_int(int*array,long length,long p_i);
-char*create_linear_system_f(struct matrix_factorization *mat,int cardinality_factor_base);
+char*create_linear_system_f(struct node_square_relation*head,int cardinality_factor_base,int num_B_smooth);
 #endif
 
 

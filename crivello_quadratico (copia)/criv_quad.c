@@ -159,10 +159,10 @@ void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B){
 	if(n==NULL || digit_n<=0 || M==NULL || B==NULL){
 		handle_error_with_exit("error in calculate best M and B\n");
 	}
-	//*B=20;
-	//*M=25;
-	*B=100*1000*1000;
-	*M=500000;
+	*B=20;
+	*M=25;
+	//*B=100*1000*1000;
+	//*M=500000;
 	return;
 	if(digit_n<7){
 		*M=25;
@@ -982,8 +982,6 @@ void calculate_a_f2(mpz_t a,const mpfr_t target_a,int*s,struct node_factor_base*
 	mpfr_out_str(stdout,10,0,target_a1,MPFR_RNDN);
 	printf("\n");
 
-
-	char f,b,c,d,g;
 	int count=0;//conta quante volte while(mpz_cmp(a,target_a1)<0) è verificata
 	int*q=alloc_array_int(s_max);//array che contiene gli indici dei primi scelti
 	int*q_number=alloc_array_int(s_max);//array che contiene i dei primi scelti

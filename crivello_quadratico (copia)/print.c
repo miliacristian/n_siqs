@@ -408,15 +408,19 @@ void print_matrix_B_smooth(mpz_t**matrix_B_smooth,int num_of_B_smooth,int cardin
 	print_matrix_mpz(matrix_B_smooth,num_of_B_smooth,cardinality_factor_base*2+1);
 	return;
 }
-void print_linear_system(int**linear_system,int cardinality_factor_base,int num_of_B_smooth){//parametri matrice,righe,colonne
-	if(linear_system==NULL || *linear_system==NULL){
+void print_linear_system(char*linear_system,int cardinality_factor_base,int num_of_B_smooth){//parametri matrice,righe,colonne
+	if(linear_system==NULL){
 		printf("linear system is empty\n");
 	}
 	if(num_of_B_smooth <=0 || cardinality_factor_base <=0){
 		handle_error_with_exit("error in print_linear_system\n");
 	}
 	printf("linear_system\n");
-	print_matrix_int(linear_system,cardinality_factor_base,num_of_B_smooth);
+	char*pointer=linear_system;
+	for(int i=0;i<cardinality_factor_base;i++) {
+		print_array_char(pointer, num_of_B_smooth);
+		pointer = pointer + num_of_B_smooth;
+	}
 	return;
 }
 

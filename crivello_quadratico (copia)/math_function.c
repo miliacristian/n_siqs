@@ -97,7 +97,7 @@ void create_num(mpz_t num,const mpz_t a,const mpz_t b,const mpz_t n,long j){
 	mpz_clear(a_mul_square_j);
 }
 struct node_factorization*factorize_num(const mpz_t num,int first_index_f_base,int last_index_f_base,
-        char*is_B_smooth,const mpz_t a,struct a_struct*array_a_struct,int s){
+        char*is_B_smooth,struct a_struct*array_a_struct,int s){
 	if((first_index_f_base<0 && first_index_f_base!=-1)|| (last_index_f_base<0 && last_index_f_base!=-1)
         || is_B_smooth==NULL
             || first_index_f_base>last_index_f_base || array_a_struct==NULL || s<0){
@@ -214,7 +214,7 @@ void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth
             //possibile B_smooth trovato
             (*num_potential_B_smooth)++;
             create_num(num,a,thread_data.b,n,thread_data.numbers[i].j);
-            head_factor=factorize_num(num,thread_data.numbers[i].first_index_f_base,thread_data.numbers[i].last_index_f_base,&is_B_smooth,a,array_a_struct,s);
+            head_factor=factorize_num(num,thread_data.numbers[i].first_index_f_base,thread_data.numbers[i].last_index_f_base,&is_B_smooth,array_a_struct,s);
             if(is_B_smooth){
                 (*num_B_smooth)++;
                 is_B_smooth=0;
