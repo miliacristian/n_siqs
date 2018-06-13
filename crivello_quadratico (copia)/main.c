@@ -170,14 +170,14 @@ int main(int argc,char*argv[]){
 			array_a_struct=create_array_a_struct(number_prime_a,index_prime_a,s);
 			qsort(array_a_struct,s,sizeof(struct a_struct),compare_a_struct);
 			print_array_a_struct(array_a_struct,s);
-			exit(0);
+
 			//calculate_index_min_max_a(number_prime_a,index_prime_a,s,&index_min_a,&index_max_a);
 			gmp_printf("a=%Zd\n",a);
 			fprintf(file_log,"a=");
 			mpz_out_str(file_log,10,a);
 			fprintf(file_log," ");
 			print_time_elapsed("time to calculate a");
-			printf("index_min_a=%d,index_max_a=%d\n",index_min_a,index_max_a);
+			printf("index_min_a=%d,index_max_a=%d\n",array_a_struct[0].index_prime_a,array_a_struct[s-1].index_prime_a);
 			printf("s=%d\n",s);
 			print_time_elapsed("time to calculate index_min_a index_max_a");
 			//number_prime_a e index_prime_a
@@ -252,7 +252,7 @@ int main(int argc,char*argv[]){
 			thread_data[NUM_THREAD].log_thresold=calculate_log_thresold(n,M);
 			printf("log_thresold main thread=%f\n",thread_data[NUM_THREAD].log_thresold);
 
-			find_list_square_relation(thread_data[NUM_THREAD],&num_B_smooth,&num_potential_B_smooth,M,&head,&tail,n,a_default,0,0);
+			find_list_square_relation(thread_data[NUM_THREAD],&num_B_smooth,&num_potential_B_smooth,M,&head,&tail,n,a_default,array_a_struct,0);
 			print_time_elapsed("time_to find_list_square_relation");
 			//aspetta tutti i thread e libera memoria
 			if(num_thread_job!=1 && NUM_THREAD>0){
@@ -422,7 +422,7 @@ int thread_job_criv_quad(int id_thread){//id inizia da 0,il lavoro di un thread 
 		print_time_elapsed_local("time to factor matrix_factorization",&timer_thread);
 
 		//ricerca dei B_smooth potenziali,reali e fattorizzazione dei B_smooth reali
-        find_list_square_relation(thread_data[id_thread],&(thread_data[id_thread].num_B_smooth),&(thread_data[id_thread].num_potential_B_smooth),M,&head_square,&tail_square,n,a,index_min_a,index_max_a);
+        find_list_square_relation(thread_data[id_thread],&(thread_data[id_thread].num_B_smooth),&(thread_data[id_thread].num_potential_B_smooth),M,&head_square,&tail_square,n,a,array_a_struct,s);
 		printf("num_potential_B_smooth=%d,num_B_smooth=%d\n",thread_data[id_thread].num_potential_B_smooth,thread_data[id_thread].num_B_smooth);
         clear_struct_thread_data(thread_data[id_thread],M);
         print_time_elapsed_local("time to find_list_square_relation",&timer_thread);

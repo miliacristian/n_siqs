@@ -94,18 +94,11 @@ void create_num(mpz_t num,const mpz_t a,const mpz_t b,const mpz_t n,long j){
 	mpz_clear(double_b_mul_j_mul_a);
 	mpz_clear(square_a_mul_square_j);
 }
-struct node_factorization*factorize_num(const mpz_t num,int first_index_f_base,int last_index_f_base,int index_min_a,int index_max_a,char*is_B_smooth,const mpz_t a){
+struct node_factorization*factorize_num(const mpz_t num,int first_index_f_base,int last_index_f_base,
+        char*is_B_smooth,const mpz_t a,struct a_struct*array_a_struct,int s){
 	if((first_index_f_base<0 && first_index_f_base!=-1)|| (last_index_f_base<0 && last_index_f_base!=-1)
-			){
-		handle_error_with_exit("error in factorize_num k\n");
-	}
-	if(index_min_a<0 || index_max_a<0 || is_B_smooth==NULL
-	   || first_index_f_base>last_index_f_base){
-		handle_error_with_exit("error in factorize_num m\n");
-	}
-	if((first_index_f_base<0 && first_index_f_base!=-1)|| (last_index_f_base<0 && last_index_f_base!=-1)
-       || index_min_a<0 || index_max_a<0 || is_B_smooth==NULL
-            || first_index_f_base>last_index_f_base){
+        || is_B_smooth==NULL
+            || first_index_f_base>last_index_f_base || array_a_struct==NULL || s<0){
 		handle_error_with_exit("error in factorize_num\n");
 	}
 
@@ -124,12 +117,14 @@ struct node_factorization*factorize_num(const mpz_t num,int first_index_f_base,i
 		mpz_neg(temp,temp);//rendilo positivo
 		insert_ordered_factor(-1,1,0,&head,&tail);//inserisci nodo -1
 	}
-	int min_index=min(first_index_f_base,index_min_a);//calcola indice minimo
-	int max_index=max(last_index_f_base,index_max_a);//calcola indice massimo
+	//int min_index=min(first_index_f_base,index_min_a);//calcola indice minimo
+	//int max_index=max(last_index_f_base,index_max_a);//calcola indice massimo
+	int min_index;
+	int max_index;
 	if(mpz_divisible_p(temp,a)==0){//non è divisibile per a
 	   handle_error_with_exit("error in create num\n");
 	}
-	mpz_divexact(temp,temp,a);
+	mpz_divexact(temp,temp,a);//il numero è già diviso per a
 	for(int i=min_index;i<max_index+1;i++){
 	    if(r.prime[i]==-1){
 	        continue;
@@ -144,13 +139,10 @@ struct node_factorization*factorize_num(const mpz_t num,int first_index_f_base,i
         }
         exp=0;//resetta esponente
     }
-    int count=0;
     if(mpz_cmp_si(temp,1)==0){//se il residuo della divisione è 1 allora è B-smooth
 	    *is_B_smooth=1;
 	}
 	else{//non è B-smooth
-    	//gmp_printf("residuo=%Zd\n", temp);
-    	//sleep(1);
     	*is_B_smooth=0;
     }
     mpz_clear(temp);
@@ -188,11 +180,11 @@ void calculate_square(mpz_t square,const mpz_t a,int index,const mpz_t b){
 }
 void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth, int *num_potential_B_smooth, long M,
 							   struct node_square_relation **head, struct node_square_relation **tail,
-							   const mpz_t n,const mpz_t a,int index_min_a,int index_max_a) {
+							   const mpz_t n,const mpz_t a,struct a_struct*array_a_struct,int s) {
 	mpz_t num;
 	struct node_factorization*head_factor=NULL;
 	char is_B_smooth=-1;
-	if(num_B_smooth==NULL || num_potential_B_smooth==NULL || M<=0 || head==NULL || tail==NULL || index_min_a<0 || index_max_a<0){
+	if(num_B_smooth==NULL || num_potential_B_smooth==NULL || M<=0 || head==NULL || tail==NULL || array_a_struct==NULL || s<0){
 		handle_error_with_exit("error in find_list_square_relation");
 	}
 	struct square_relation square_relation;
@@ -202,7 +194,7 @@ void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth
             //possibile B_smooth trovato
             (*num_potential_B_smooth)++;
             create_num(num,a,thread_data.b,n,thread_data.numbers[i].j);
-            head_factor=factorize_num(num,thread_data.numbers[i].first_index_f_base,thread_data.numbers[i].last_index_f_base,index_min_a,index_max_a,&is_B_smooth,a);
+            head_factor=factorize_num(num,thread_data.numbers[i].first_index_f_base,thread_data.numbers[i].last_index_f_base,&is_B_smooth,a,array_a_struct,s);
             if(is_B_smooth){
                 (*num_B_smooth)++;
                 is_B_smooth=0;

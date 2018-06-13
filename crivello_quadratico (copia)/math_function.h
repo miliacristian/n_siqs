@@ -2,6 +2,7 @@
 #include "print.h"
 #include <gmp.h>
 #include "list_factor_base.h"
+#include "basic.h"
 void square_root_mod_p_to_k(mpz_t rootpk,const mpz_t x,long p,const mpz_t n,int k);
 void reduce_mod_n(long *a,long n);//reduce a mod n
 void reduce_mod_n_int(int *a,int n);//reduce a mod n
@@ -46,7 +47,7 @@ void reduce_int_mod_n(int *a,int n);
 int reduce_mod_2(int a);
 int reduce_int_mod_n_v2(int a,int n);//reduce a mod n,rendendo a positivo maggiore o uguale a zero e minore di n,n è positivo
 float calculate_log_thresold(const mpz_t n,long M);
-void find_list_square_relation(struct thread_data thread_data,int*num_B_smooth,int*num_potential_B_smooth,long M,struct node_square_relation**head,struct node_square_relation**tail,const mpz_t n,const mpz_t a,int min_a,int max_a);
+void find_list_square_relation(struct thread_data thread_data,int*num_B_smooth,int*num_potential_B_smooth,long M,struct node_square_relation**head,struct node_square_relation**tail,const mpz_t n,const mpz_t a,struct a_struct*a_struct,int s);
 void calculate_index_min_max_a(int*number_prime_a,int*index_prime_a,int length,int*min_a,int*max_a);
 struct a_struct*create_array_a_struct(int*number_prime_a,int*index_number_a,int length);
 
