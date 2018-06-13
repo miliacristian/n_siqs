@@ -161,8 +161,8 @@ void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B){
 	}
 	//*B=20;
 	//*M=25;
-	*B=1*1000*1000;
-	*M=200000;
+	*B=100*1000*1000;
+	*M=500000;
 	return;
 	if(digit_n<7){
 		*M=25;
