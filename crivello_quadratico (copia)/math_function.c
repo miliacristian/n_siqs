@@ -13,7 +13,20 @@
 #include <mpfr.h>
 
 extern struct row_factorization r;
-
+struct a_struct*create_array_a_struct(int*number_prime_a,int*index_number_a,int length){
+    if(number_prime_a==NULL || index_number_a==NULL || length<=0){
+        handle_error_with_exit("error in create_array_a_struct\n");
+    }
+    struct a_struct*array_a_struct=malloc(sizeof(struct a_struct)*length);
+    if(array_a_struct==NULL){
+        handle_error_with_exit("error in malloc create array a struct\n");
+    }
+    for(int i=0;i<length;i++){
+        array_a_struct[i].number_prime_a=number_prime_a[i];
+        array_a_struct[i].index_prime_a=index_number_a[i];
+    }
+    return array_a_struct;
+}
 void calculate_index_min_max_a(int*number_prime_a,int*index_prime_a,int length,int*index_min_a,int*index_max_a){
 	if(number_prime_a==NULL || index_max_a==NULL || length<=0 || index_min_a==NULL || index_max_a==NULL){
 		handle_error_with_exit("error in calculate min_max_a\n");
@@ -53,34 +66,35 @@ float calculate_log_thresold(const mpz_t n,long M){
 }
 void create_num(mpz_t num,const mpz_t a,const mpz_t b,const mpz_t n,long j){
 	//num=a^2*j^2+2*bj+a*c
-	mpz_t a_mul_c,double_b_mul_j,square_a_mul_suqare_j;
+	mpz_t a_mul_c,double_b_mul_j_mul_a,square_a_mul_square_j;
 	mpz_init(a_mul_c);
-	mpz_init(double_b_mul_j);
-	mpz_init(square_a_mul_suqare_j);
+	mpz_init(double_b_mul_j_mul_a);
+	mpz_init(square_a_mul_square_j);
 
-	//square_a_mul_suqare_j=a
-	mpz_set(square_a_mul_suqare_j,a);//square_a_mul_suqare_j=a
-	mpz_mul(square_a_mul_suqare_j,square_a_mul_suqare_j,square_a_mul_suqare_j);//square_a_mul_suqare_j=a^2
-	mpz_mul_si(square_a_mul_suqare_j,square_a_mul_suqare_j,j);//square_a_mul_suqare_j=a^2*j
-	mpz_mul_si(square_a_mul_suqare_j,square_a_mul_suqare_j,j);//square_a_mul_suqare_j=a^2*j^2
+	//square_a_mul_square_j=a
+	mpz_set(square_a_mul_square_j,a);//square_a_mul_suqare_j=a
+	mpz_mul(square_a_mul_square_j,square_a_mul_square_j,square_a_mul_square_j);//square_a_mul_suqare_j=a^2
+	mpz_mul_si(square_a_mul_square_j,square_a_mul_square_j,j);//square_a_mul_suqare_j=a^2*j
+	mpz_mul_si(square_a_mul_square_j,square_a_mul_square_j,j);//square_a_mul_suqare_j=a^2*j^2
 
-	//double_b_mul_j
-	mpz_set(double_b_mul_j,b);//double_b_mul_j=b
-	mpz_mul_2exp(double_b_mul_j,double_b_mul_j,1);//double_b_mul_j=2*b
-	mpz_mul_si(double_b_mul_j,double_b_mul_j,j);//double_b_mul_j=2*b*j
+	//double_b_mul_j_mul_a
+	mpz_set(double_b_mul_j_mul_a,b);//double_b_mul_j=b
+	mpz_mul_2exp(double_b_mul_j_mul_a,double_b_mul_j_mul_a,1);//double_b_mul_j=2*b
+	mpz_mul_si(double_b_mul_j_mul_a,double_b_mul_j_mul_a,j);//double_b_mul_j=2*b*j
+    mpz_mul(double_b_mul_j_mul_a,double_b_mul_j_mul_a,a);//double_b_mul_j=2*b*j*a
 
 	//a_mul_c
 	mpz_mul(a_mul_c,b,b);//a_mul_c=b^2
 	mpz_sub(a_mul_c,a_mul_c,n);//a_mul_c=b^2-n
 
-	mpz_add(num,square_a_mul_suqare_j,double_b_mul_j);
-	mpz_add(num,num,a_mul_c);//num=a^2*j^2+2*bj+a*c
+	mpz_add(num,square_a_mul_square_j,double_b_mul_j_mul_a);
+	mpz_add(num,num,a_mul_c);//num=a^2*j^2+2*a*bj+a*c
 
 	mpz_clear(a_mul_c);
-	mpz_clear(double_b_mul_j);
-	mpz_clear(square_a_mul_suqare_j);
+	mpz_clear(double_b_mul_j_mul_a);
+	mpz_clear(square_a_mul_square_j);
 }
-struct node_factorization*factorize_num(const mpz_t num,int first_index_f_base,int last_index_f_base,int index_min_a,int index_max_a,char*is_B_smooth){
+struct node_factorization*factorize_num(const mpz_t num,int first_index_f_base,int last_index_f_base,int index_min_a,int index_max_a,char*is_B_smooth,const mpz_t a){
 	if((first_index_f_base<0 && first_index_f_base!=-1)|| (last_index_f_base<0 && last_index_f_base!=-1)
 			){
 		handle_error_with_exit("error in factorize_num k\n");
@@ -112,6 +126,10 @@ struct node_factorization*factorize_num(const mpz_t num,int first_index_f_base,i
 	}
 	int min_index=min(first_index_f_base,index_min_a);//calcola indice minimo
 	int max_index=max(last_index_f_base,index_max_a);//calcola indice massimo
+	if(mpz_divisible_p(temp,a)==0){//non è divisibile per a
+	   handle_error_with_exit("error in create num\n");
+	}
+	mpz_divexact(temp,temp,a);
 	for(int i=min_index;i<max_index+1;i++){
 	    if(r.prime[i]==-1){
 	        continue;
@@ -131,8 +149,8 @@ struct node_factorization*factorize_num(const mpz_t num,int first_index_f_base,i
 	    *is_B_smooth=1;
 	}
 	else{//non è B-smooth
-    	gmp_printf("residuo=%Zd\n", temp);
-    	sleep(1);
+    	//gmp_printf("residuo=%Zd\n", temp);
+    	//sleep(1);
     	*is_B_smooth=0;
     }
     mpz_clear(temp);
@@ -184,7 +202,7 @@ void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth
             //possibile B_smooth trovato
             (*num_potential_B_smooth)++;
             create_num(num,a,thread_data.b,n,thread_data.numbers[i].j);
-            head_factor=factorize_num(num,thread_data.numbers[i].first_index_f_base,thread_data.numbers[i].last_index_f_base,index_min_a,index_max_a,&is_B_smooth);
+            head_factor=factorize_num(num,thread_data.numbers[i].first_index_f_base,thread_data.numbers[i].last_index_f_base,index_min_a,index_max_a,&is_B_smooth,a);
             if(is_B_smooth){
                 (*num_B_smooth)++;
                 is_B_smooth=0;

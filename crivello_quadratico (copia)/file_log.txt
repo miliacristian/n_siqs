@@ -319,3 +319,19 @@ n=27611400114514623223914241646169233337268381127779 M_start=500000 B_start=1000
 mean_increment=0.000000
 n=27611400114514623223914241646169233337268381127779 M_start=500000 B_start=1000000 k=1 card_f_base=39517 p_min=42 p_max=267 a=14862573597027182977 M_end=500000 B_end=1000000 num_increment=0 time_total:hour=0 min=0 sec:11 ms=465 ns:164859
 mean_increment=0.000000
+n=27611400114514623223914241646169233337268381127779 M_start=500000 B_start=1000000 k=1 card_f_base=39517 p_min=42 p_max=267 a=14863618930046462539 M_end=500000 B_end=1000000 num_increment=0 time_total:hour=0 min=0 sec:9 ms=983 ns:45215
+mean_increment=0.000000
+n=4795987391651737054527889181 M_start=100000 B_start=100000 k=1 card_f_base=4780 p_min=39 p_max=270 a=977149429 M_end=100000 B_end=100000 num_increment=0 time_total:hour=0 min=0 sec:0 ms=673 ns:100515
+mean_increment=0.000000
+n=163197805698170863 M_start=20000 B_start=10000 k=1 card_f_base=613 p_min=38 p_max=263 a=3967 M_end=20000 B_end=10000 num_increment=0 time_total:hour=0 min=0 sec:0 ms=51 ns:374895
+mean_increment=0.000000
+n=163197805698170863 M_start=20000 B_start=10000 k=1 card_f_base=613 p_min=38 p_max=263 a=3967 error in create num
+n=163197805698170863 M_start=20000 B_start=10000 k=1 card_f_base=613 p_min=38 p_max=263 a=3967 M_end=20000 B_end=10000 num_increment=0 time_total:hour=0 min=0 sec:0 ms=66 ns:830270
+mean_increment=0.000000
+n=163197805698170863 M_start=20000 B_start=10000 k=1 card_f_base=613 p_min=38 p_max=263 a=3967 M_end=20000 B_end=10000 num_increment=0 time_total:hour=0 min=0 sec:0 ms=88 ns:297678
+mean_increment=0.000000
+n=27611400114514623223914241646169233337268381127779 M_start=200000 B_start=100000 k=1 card_f_base=4814 p_min=42 p_max=267 a=37157673866330225633 M_end=200000 B_end=100000 num_increment=0 time_total:hour=0 min=0 sec:0 ms=786 ns:127730
+mean_increment=0.000000
+n=27611400114514623223914241646169233337268381127779 M_start=200000 B_start=1000000 k=1 card_f_base=39517 p_min=42 p_max=267 a=37138082047782529969 M_end=200000 B_end=1000000 num_increment=0 time_total:hour=0 min=0 sec:4 ms=838 ns:146857
+mean_increment=0.000000
+n=27611400114514623223914241646169233337268381127779 M_start=200000 B_start=1000000 k=1 card_f_base=39517 p_min=42 p_max=267 n=27611400114514623223914241646169233337268381127779 M_start=200000 B_start=1000000 k=1 card_f_base=39517 p_min=42 p_max=267 

@@ -49,6 +49,7 @@
 	int*index_prime_a=NULL;//indice dei primi usati per ottenere a,rispetto alla factor base
 	int*number_prime_a=NULL;//numeri primi usati per ottenere a
 	int index_min_a=-1,index_max_a=-1;//minimo e massimo dei numeri primi scelti per a
+    struct a_struct*array_a_struct;
 
 int main(int argc,char*argv[]){
 	srand((unsigned int)time(NULL));//imposta seme casuale
@@ -166,7 +167,11 @@ int main(int argc,char*argv[]){
 
 			//a,per siqs e generare tutti gli altri b,prodotto di primi dispari distinti
 			calculate_a_f2(a,thresold_a,&s,head_f_base_f,cardinality_factor_base,&index_prime_a,&number_prime_a);
-			calculate_index_min_max_a(number_prime_a,index_prime_a,s,&index_min_a,&index_max_a);
+			array_a_struct=create_array_a_struct(number_prime_a,index_prime_a,s);
+			qsort(array_a_struct,s,sizeof(struct a_struct),compare_a_struct);
+			print_array_a_struct(array_a_struct,s);
+			exit(0);
+			//calculate_index_min_max_a(number_prime_a,index_prime_a,s,&index_min_a,&index_max_a);
 			gmp_printf("a=%Zd\n",a);
 			fprintf(file_log,"a=");
 			mpz_out_str(file_log,10,a);

@@ -66,7 +66,11 @@ struct thread_data {
 	//ogni volta che un thread analizza un dato appende la lista delle relazioni quadratiche a quella
 	// precedentemente calcolata
 };
-
+struct a_struct {
+    int number_prime_a;
+    int index_prime_a;
+};
+int compare_a_struct( const void* a, const void* b);
 struct number {
 	int j;//indice j va da -M a M
 	int sum_log;//somma del logaritmo

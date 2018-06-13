@@ -20,6 +20,15 @@ char not_print_matrix(long num_row,long num_col){
 	}
 	return 1;
 }
+void print_array_a_struct(struct a_struct*array_a_struct,int length){
+	if(array_a_struct==NULL || length<=0){
+		handle_error_with_exit("error in print_aray_a_struct\n");
+	}
+	for(int i=0;i<length;i++){
+		printf("number=%d,index=%d\n",array_a_struct[i].number_prime_a,array_a_struct[i].index_prime_a);
+	}
+	return;
+}
 void print_int(int a,char*string){
 	if(string==NULL){
 		handle_error_with_exit("error in print_int\n");

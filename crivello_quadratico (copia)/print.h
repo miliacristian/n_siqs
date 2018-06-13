@@ -37,3 +37,4 @@ void print_list_factor(struct node_factor_base*head,int length);
 void print_thread_data(struct thread_data thread_data,long M);
 void print_factorization(const mpz_t num,struct node_factorization*head_factor);
 void print_list_square_relation(struct node_square_relation*head,int length);
+void print_array_a_struct(struct a_struct*array_a_struct,int length);
