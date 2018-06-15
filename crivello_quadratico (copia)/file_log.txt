@@ -375,4 +375,11 @@ n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 M_end=25 
 mean_increment=0.000000
 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=4 ns:859819
 mean_increment=0.000000
-n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 dim_sol=2 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 dim_sol=2 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=5 ns:170554
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 dim_sol=2 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=3 ns:807999
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 dim_sol=2 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=3 ns:712865
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 dim_sol=2 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=5 ns:329623
+mean_increment=0.000000

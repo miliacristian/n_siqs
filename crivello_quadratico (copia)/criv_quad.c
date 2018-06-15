@@ -1435,7 +1435,43 @@ void calculate_a_and_b(int*solution,mpz_t**matrix_B_smooth,int num_B_smooth,int 
 	free_memory_array_mpz(v,card_f_base*2);
 	return;
 }
+void calculate_a_and_b_siqs(const int*solution,struct node_square_relation*head,int num_B_smooth,int card_f_base,mpz_t a,mpz_t b,const mpz_t n){
+    if(solution==NULL || head==NULL || num_B_smooth<=0 || card_f_base<=0 || num_B_smooth<card_f_base || a==NULL || b==NULL || n==NULL){
+        handle_error_with_exit("error in parameter calculate a and b\n");
+    }
+    //il vettore solution ci dice quali relazioni vanno moltiplicate,ogni elemento di solution che è 1 è una relazione da moltiplicare con le altre
+    mpz_t temp,v_temp;
+    mpz_t num_square;
 
+    mpz_init(num_square);
+    mpz_init(temp);
+    mpz_init(v_temp);
+
+    mpz_set_si(a,1);//a=1 temporaneo
+    mpz_set_si(b,1);//b=1 temporaneo
+    mpz_t*v=create_array_temp_factorization(card_f_base,matrix_B_smooth[0]);//-1 0 2 0 3 0 ecc primi della factor base con esponente zero
+    for(int i=0;i<num_B_smooth;i++){
+        if(solution[i]==1){//se solution==1 allora bisogna moltiplicare le relazioni
+            mpz_set(num_square,matrix_B_smooth[i][card_f_base*2]);//moltiplica le radici quadrate dei numeri B-smooth mod n
+            mpz_mul(a,a,num_square);//a=a*square
+            mpz_mod(a,a,n);//a=a*square mod n
+            sum_elem_multiple_of_2_mpz(v,matrix_B_smooth[i],card_f_base*2,card_f_base*2);//moltiplica le relazioni sommando opportunamente gli esponenti tra i 2 numeri
+        }
+    }
+    divide_elem_multiple_of_2_by_x(v,card_f_base*2,2);//divide gli esponenti per 2 per calcolare successivamente b
+    for(int j=2;j<card_f_base*2;j=j+2){//per ogni primo della factor base...
+        mpz_set(v_temp,v[j]);//v_temp=v[j]
+        mpz_powm(v_temp,v_temp,v[j+1],n);//v_temp=pow(v[j],v[j+1]) mod n
+        mpz_mul(b,b,v_temp);//b=primo factor base*esponente del primo della factor base
+        mpz_mod(b,b,n);//b mod n
+    }
+
+    mpz_clear(temp);
+    mpz_clear(num_square);
+    mpz_clear(v_temp);
+    free_memory_array_mpz(v,card_f_base*2);
+    return;
+}
 int try_to_factor(const mpz_t a,const mpz_t b,const mpz_t n,mpz_t factor1,mpz_t factor2){//dati a,b ed n in input prova a fattorizzare n con il crivello quadratico
 	//ritorna il numero di fattorizzazioni trovate usando a e b(0,1,2)
 	//se c'è almeno una fattorizzazione non banale imposta factor1 e factor2 come fattori
@@ -1496,7 +1532,7 @@ int try_to_factor(const mpz_t a,const mpz_t b,const mpz_t n,mpz_t factor1,mpz_t 
 	mpz_clear(n_temp);
 	return not_trivial_factor;
 }
-int find_factor_of_n_from_base_matrix(int **base_matrix,int num_row,int* num_column,int **matrix_linear_system,int num_row_matrix,int num_col_matrix,mpz_t n,mpz_t**matrix_B_smooth,int num_B_smooth,int card_f_base){
+/*int find_factor_of_n_from_base_matrix(int **base_matrix,int num_row,int* num_column,int **matrix_linear_system,int num_row_matrix,int num_col_matrix,mpz_t n,mpz_t**matrix_B_smooth,int num_B_smooth,int card_f_base){
 //calcola tutte le soluzioni una per una e per ognuna prova a vedere se trova una coppia a,b che fattorizza n se riesce allora ritorna al chiamante
 	if(base_matrix==NULL || *base_matrix==NULL || num_row<=0 || *num_column<=0 || matrix_linear_system==NULL || *matrix_linear_system==NULL
 		|| num_row_matrix<=0 || num_col_matrix<=0 || matrix_B_smooth==NULL || *matrix_B_smooth==NULL || card_f_base<=0){
@@ -1581,8 +1617,93 @@ int find_factor_of_n_from_base_matrix(int **base_matrix,int num_row,int* num_col
 	mpz_clear(factor2);
 	return 0;
 	
-}
+}*/
+int find_factor_of_n_from_base_matrix_char(int **base_matrix,int num_row,int* num_column,char*matrix_linear_system,int num_row_matrix,int num_col_matrix,mpz_t n,struct node_square_relation*head,int num_B_smooth,int card_f_base){
+//calcola tutte le soluzioni una per una e per ognuna prova a vedere se trova una coppia a,b che fattorizza n se riesce allora ritorna al chiamante
+    if(base_matrix==NULL || *base_matrix==NULL || num_row<=0 || *num_column<=0 || matrix_linear_system==NULL
+       || num_row_matrix<=0 || num_col_matrix<=0 || head==NULL || card_f_base<=0){
+        handle_error_with_exit("error in parameter find_factor_of_n_from_base_matrix\n");
+    }
+    mpz_t n_copy,a,b,factor1,factor2;
+    int*solution,num_col=*num_column;
+    char*combination;
+    int j;
+    int factor_founded_from_a_and_b=0;
+    int count_combination=0;
+    int*col_h=NULL,*vector_sum=NULL;
+    mpz_init(n_copy);
+    mpz_init(a);
+    mpz_init(b);
+    mpz_init(factor1);
+    mpz_init(factor2);
+    mpz_set(n_copy,n);
+    if(num_col>MAX_DIM_SOL){//troppe soluzioni portano ad una allocazione troppo grande della memoria considerare solo i primi 10 vettori della base
+        //ciò equivale ad allocare 2^10 soluzioni invece di 2^num_col,ciò in termini di soluzione corrisponde a considerare tutti i vettori
+        //non allocati ==0,quindi trova soluzioni riga del tipo=v1,v2,...v10,0,0,0,0,0...0
+        num_col=MAX_DIM_SOL;
+        *num_column=num_col;
+    }
+    solution=alloc_array_int(num_row);//alloca soluzione
+    combination=alloc_array_char(num_col);//alloca array per mantenere traccia delle combinazioni ottenute,è un array temporaneo
+    count_combination=0;//cont le combinazioni scansionate finora
+    while(!array_is_fill_of_value(combination,num_col,1)){//while combination !=11111111111
+        //somma binaria nell'array temporaneo
+        j=num_col-1;//indice dell'ultimo elemento di combination,si parte dalla fine dell'array e si somma sempre 1 in modo binario finquando non si arriva a 1111111111111...1111
+        combination[j]=combination[j]+1;
+        while(combination[j]==2){//trasporta il riporto dagli ultimi elementi ai primi
+            combination[j]=0;
+            combination[j-1]=combination[j-1]+1;
+            j--;//passa all'elemento più significativo dell'array
+        }
 
+        //creazione della combinazione
+        for(int h=0;h<num_col;h++){//scansiona l'array combination dall'inizio alla fine per generare la soluzione
+            if(combination[h]==0){
+                continue;
+            }
+            col_h=get_coli(base_matrix,num_row,num_col,h);
+            vector_sum=sum_vector(solution,col_h,num_row,num_row);//somma tutti gli array che hanno 					indice uguale a 1 nell'array combination
+            memcpy(solution,vector_sum,sizeof(int)*num_row);
+            free(vector_sum);
+            free(col_h);
+        }
+        count_combination++;
+        reduce_array_mod_n(solution,num_row,2);//riduce la matrice soluzione mod 2
+        if(check_if_array_is_reduce_mod_n(solution,num_row,2)==0){
+            handle_error_with_exit("error in calculate solution\n");
+        }
+        if(verify_solution_char(matrix_linear_system,num_row_matrix,num_col_matrix,solution)==0){
+            handle_error_with_exit("invalid solution in find_factor_of_n_from_base_matrix\n");
+        }
+        calculate_a_and_b_siqs(solution,head,num_B_smooth,card_f_base,a,b,n_copy);//calcola un a e un b
+        factor_founded_from_a_and_b=try_to_factor(a,b,n_copy,factor1,factor2);
+        if(factor_founded_from_a_and_b>0){
+            fprintf(file_log,"p=");
+            mpz_out_str(file_log,10,factor1);
+            fprintf(file_log," ");
+            fprintf(file_log,"q=");
+            mpz_out_str(file_log,10,factor2);
+            fprintf(file_log," ");
+            free(combination);
+            free(solution);
+            mpz_clear(n_copy);
+            mpz_clear(a);
+            mpz_clear(b);
+            mpz_clear(factor1);
+            mpz_clear(factor2);
+            return factor_founded_from_a_and_b;
+        }
+    }
+    free(combination);
+    free(solution);
+    mpz_clear(n_copy);
+    mpz_clear(a);
+    mpz_clear(b);
+    mpz_clear(factor1);
+    mpz_clear(factor2);
+    return 0;
+
+}
 /*int**generate_all_solution(int **base_matrix,int num_row,int* num_column,int **matrix_linear_system,int num_row_matrix,int num_col_matrix){//row della base matrix=num_b_smooth,num col della base matrix=num_b_smooth-rango_matrice
 	//base_matrix=v1,v2,vn vettori colonna
 

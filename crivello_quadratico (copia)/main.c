@@ -295,13 +295,20 @@ int main(int argc,char*argv[]){
             print_time_elapsed("time_to_create_linear_system");
             //aggiustare calcolo della base del sistema lineare
 			base_matrix=calculate_base_linear_system_char(linear_system,cardinality_factor_base,num_B_smooth,&dim_sol);
-			exit(0);
 			if(base_matrix==NULL){//non ci sono abbastanza soluzioni,ricomincia il crivello quadratico
 				calculate_news_M_and_B(&M,&B);
 				continue;
 			}
+			if(check_if_matrix_is_reduce_mod_n(base_matrix,num_B_smooth,dim_sol,2)==0){
+				handle_error_with_exit("error in main,calculate base_linear_system\n");
+			}
 			printf("dim_sol=%d\n",dim_sol);
 			print_time_elapsed("time to calculate base linear system");
+			if(check_solution_base_matrix_char(linear_system,cardinality_factor_base,num_B_smooth,base_matrix,num_B_smooth,dim_sol)==0){
+				handle_error_with_exit("error in main,invalid solution\n");
+			}
+			factorizations_founded=find_factor_of_n_from_base_matrix_char(base_matrix,num_B_smooth,&dim_sol,linear_system,
+																	 cardinality_factor_base,num_B_smooth,n,head,num_B_smooth,cardinality_factor_base);
 			free(base_matrix);
 			free(linear_system);
 			/*//concatenate_all_matrix_B_smooth(array_matrix_B_smooth,length_array_thread_data,&row_result);
