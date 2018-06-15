@@ -70,6 +70,9 @@ void concatenate_all_matrix_B_smooth(struct matrix_factorization**array_matrix_f
 struct matrix_factorization* alloc_matrix_factorization(int num_row);
 char is_in_array_int(int*array,long length,long p_i);
 char*create_linear_system_f(struct node_square_relation*head,int cardinality_factor_base,int num_B_smooth);
+int**calculate_base_linear_system_char(char*matrix_linear_system,int num_row,int num_col,int*dim_sol);
+long get_index(int index_row,int index_col,int num_col);
+void reduce_echelon_form_char(char*matrix,int num_row,int num_col);
 #endif
 
 

@@ -294,7 +294,8 @@ int main(int argc,char*argv[]){
 			print_linear_system(linear_system,cardinality_factor_base,num_B_smooth);
             print_time_elapsed("time_to_create_linear_system");
             //aggiustare calcolo della base del sistema lineare
-			//base_matrix=calculate_base_linear_system(linear_system,cardinality_factor_base,num_B_smooth,&dim_sol);
+			base_matrix=calculate_base_linear_system_char(linear_system,cardinality_factor_base,num_B_smooth,&dim_sol);
+			exit(0);
 			if(base_matrix==NULL){//non ci sono abbastanza soluzioni,ricomincia il crivello quadratico
 				calculate_news_M_and_B(&M,&B);
 				continue;

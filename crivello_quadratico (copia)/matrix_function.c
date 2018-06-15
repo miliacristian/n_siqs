@@ -1166,6 +1166,21 @@ void swap_row(int**matrix,int num_row,int num_col,int ind_row1,int ind_row2){//i
 	}
 	return;
 }
+void swap_row_char(char*matrix,int num_row,int num_col,int ind_row1,int ind_row2){//ind_row1,int ind_row2 start at 0
+    if(matrix==NULL || num_row<=0 || num_col<=0 || ind_row1==ind_row2 || ind_row1>=num_row || ind_row2>=num_row || ind_row1<0 || ind_row2<0){
+        handle_error_with_exit("error in parameter swap_row\n");
+    }
+    int temp;
+    long index1,index2;
+    for(int i=0;i<num_col;i++){//il numero di colonne corrisponde alla lunghezza di una riga
+        index1=get_index(ind_row1,i,num_col);
+        index2=get_index(ind_row2,i,num_col);
+        temp=matrix[index1];
+        matrix[index1]=matrix[index2];
+        matrix[index2]=temp;
+    }
+    return;
+}
 void reduce_matrix_mod_n(int**matrix,int num_row,int num_col,int n){//riduce gli elementi di una matrice a modulo n
 	if(matrix==NULL || *matrix==NULL || num_row<=0 || num_col<=0 || n<=0){
 		handle_error_with_exit("error in reduce matrix_mod_n\n");
@@ -1201,6 +1216,22 @@ int count_rows_not_null(int **matrix,int num_row,int num_col){//la matrice deve 
 	}
 	return count;
 }
+int count_rows_not_null_char(char*matrix,int num_row,int num_col){//la matrice deve essere ridotta a scala,conta righe non nulle sulla matrice ridotta a scala
+    if(matrix==NULL || num_row<=0 || num_col<=0){
+        handle_error_with_exit("error in parameter get_coli\n");
+    }
+    int count=0;//conta righe non nulle
+    for(int i=num_row-1;i>=0;i--){//ciclo inverso per le righe,scansiona prima le ultime righe poi le prime
+        for(int j=0;j<num_col;j++){//ciclo colonne
+            long index=get_index(i,j,num_col);
+            if(matrix[index]!=0){//la riga i-esima non è nulla aumenta il contatore e passa alla prossima riga
+                count++;
+                break;
+            }
+        }
+    }
+    return count;
+}
 int count_cols_not_null(int **matrix,int num_row,int num_col){//la matrice deve essere ridotta a scala,conta righe non nulle sulla matrice ridotta a scala
 	if(matrix==NULL || *matrix==NULL || num_row<=0 || num_col<=0){
 		handle_error_with_exit("error in parameter get_coli\n");
@@ -1216,6 +1247,22 @@ int count_cols_not_null(int **matrix,int num_row,int num_col){//la matrice deve 
 	}
 	return count;
 }
+int count_cols_not_null_char(char*matrix,int num_row,int num_col){//la matrice deve essere ridotta a scala,conta righe non nulle sulla matrice ridotta a scala
+	if(matrix==NULL || num_row<=0 || num_col<=0){
+		handle_error_with_exit("error in parameter get_coli\n");
+	}
+	int count=0;//conta colonne non nulle
+	for(int j=num_col-1;j>=0;j--){//ciclo inverso per le colonne,scansiona prima le ultime colonne poi le prime
+		for(int i=0;i<num_row;i++){//ciclo righe
+			long index=get_index(i,j,num_col);
+			if(matrix[index]!=0){//la colonna i-esima non è nulla aumenta il contatore e passa alla prossima colonna
+				count++;
+				break;
+			}
+		}
+	}
+	return count;
+}
 int calculate_dim_sol(int**matrix,int num_row,int num_col){//matrice deve essere ridotta a scala
 	if(matrix==NULL || *matrix==NULL || num_row<=0 || num_col<=0){
 		handle_error_with_exit("error in parameter get_col\n");
@@ -1223,6 +1270,14 @@ int calculate_dim_sol(int**matrix,int num_row,int num_col){//matrice deve essere
 	int num_row_not_null=count_rows_not_null(matrix,num_row,num_col);
 	int num_col_not_null=count_cols_not_null(matrix,num_row,num_col);
 	return num_col_not_null-num_row_not_null;//numero incognite-rango matrice
+}
+int calculate_dim_sol_char(char*matrix,int num_row,int num_col){//matrice deve essere ridotta a scala
+    if(matrix==NULL || num_row<=0 || num_col<=0){
+        handle_error_with_exit("error in parameter get_col\n");
+    }
+    int num_row_not_null=count_rows_not_null_char(matrix,num_row,num_col);
+    int num_col_not_null=count_cols_not_null_char(matrix,num_row,num_col);
+    return num_col_not_null-num_row_not_null;//numero incognite-rango matrice
 }
 int* sum_vector(int*vector1,int*vector2,int length1,int length2){//somma 2 vettori
 	if(vector1==NULL || vector2==NULL || length1<=0 || length2<=0 || length1!=length2){
@@ -1332,6 +1387,23 @@ char check_if_matrix_is_reduce_mod_n(int**matrix,int num_row,int num_col,int n){
 		}
 	}
 	return 1;
+}
+char check_if_matrix_char_is_reduce_mod_n(char*matrix,int num_row,int num_col,int n){
+//verifica che la matrice è ridotta modulo n
+    if(matrix==NULL || num_row<=0 || num_col<=0 || n<=0){
+        printf("num_row=%d num_col=%d n=%d\n",num_row,num_col,n);
+        handle_error_with_exit("error in check if matrix char is reduce mod n\n");
+    }
+    long index;
+    for(int i=0;i<num_row;i++){
+        for(int j=0;j<num_col;j++){
+            index=get_index(i,j,num_col);
+            if(matrix[index]>=n || matrix[index]<0){
+                return 0;
+            }
+        }
+    }
+    return 1;
 }
 char check_if_array_is_reduce_mod_n(int*array,int length,int n){
 //verifica che l'array è ridotto modulo n
@@ -1545,7 +1617,7 @@ char* find_free_var(int**matrix_linear_system,int num_row,int num_col){//matrice
 	return array_var;
 }
 
-int**calculate_base_linear_system(int**matrix_linear_system,int num_row,int num_col,int*dim_sol){//matrice ridotta modulo n,calcola una base del sistema lineare
+/*int**calculate_base_linear_system(int**matrix_linear_system,int num_row,int num_col,int*dim_sol){//matrice ridotta modulo n,calcola una base del sistema lineare
 	if(matrix_linear_system==NULL || *matrix_linear_system==NULL || num_row<=0 || num_col<=0 || dim_sol==NULL){
 		handle_error_with_exit("error in parameter get_coli\n");
 	}
@@ -1613,8 +1685,78 @@ int**calculate_base_linear_system(int**matrix_linear_system,int num_row,int num_
 	free(array_var_temp);
 	array_var_temp=NULL;
 	return base_linear_system;
+}*/
+int**calculate_base_linear_system_char(char*matrix_linear_system,int num_row,int num_col,int*dim_sol){//matrice ridotta modulo n,calcola una base del sistema lineare
+    if(matrix_linear_system==NULL || num_row<=0 || num_col<=0 || dim_sol==NULL){
+        handle_error_with_exit("error in parameter get_coli\n");
+    }
+    reduce_echelon_form_char(matrix_linear_system,num_row,num_col);//riduce la matrice a scala
+    if(check_if_matrix_char_is_reduce_mod_n(matrix_linear_system,num_row,num_col,2)==0){
+        handle_error_with_exit("matrix is not reduce mod n");
+    }
+    /*if(check_if_matrix_char_is_echelon_reduce(matrix_linear_system,num_row,num_col)==0){
+        handle_error_with_exit("error in calculate_base_linear_system\n");
+    }*/
+    printf("matrice_ridotta\n");
+    print_linear_system(matrix_linear_system,num_row,num_col);
+    *dim_sol=calculate_dim_sol_char(matrix_linear_system,num_row,num_col);//calcola la dimensione della base del sistema lineare
+    printf("dim_sol=%d\n",*dim_sol);
+    /*fprintf(file_log,"dim_sol=%d ",*dim_sol);
+    if(*dim_sol<0){
+        handle_error_with_exit("error in calculate dim sol linear system\n");
+    }
+    if(*dim_sol==0){
+        return NULL;
+    }
+    int free_var=*dim_sol;
+    if(*dim_sol>MAX_DIM_SOL){
+        *dim_sol=MAX_DIM_SOL;
+    }
+    int**base_linear_system=alloc_matrix_int(num_col,*dim_sol);//la base del sistema lineare ha come righe il numero di colonne della matrice 		(numero delle variabili) e come colonne il numero di vettori linearmente indipendenti
+    char*array_var=NULL;
+    array_var=find_free_var(matrix_linear_system,num_row,num_col);//calcola array delle variabili libere che specifica tutte le 				variabili che sono state impostate come libere per tutto il sistema,è lungo num_col,è necessario 				allocarlo ogni volta perchè viene sporcato
+    //dalla funzione calculate_vector_base
+    if(check_if_array_var_is_correct(array_var,num_col,free_var)==0){
+        handle_error_with_exit("error in calculate array_var\n");
+    }
+    if(check_if_array_var_is_valid(matrix_linear_system,num_row,num_col,array_var)==0){
+        printf("array :");
+        print_array_char(array_var,num_col);
+        handle_error_with_exit("array_var is not valid\n");
+    }
+    char*array_var_temp=alloc_array_char(num_col);
+    int s=0;//s==start,indice della posizione delle variabili libere
+    for(int i=0;i<*dim_sol;i++){//ripeti il procedimento per il numero di vettori linearmente indipendenti,e crea ad ogni ciclo un vettore
+        //di base
+        memcpy(array_var_temp,array_var,sizeof(char)*num_col);
+        //s non va resettato a zero altrimenti troverà sempre l'indice della prima variabile libera
+        while(array_var[s]!=1 && s<num_col){//finquando non si arriva ad una variabile libera vai avanti
+            s++;
+        }
+        if(array_var[s]==1){//per ogni variabile libera va calcolato un vettore di base
+            int*v=alloc_vector_base(array_var_temp,num_col,s);//alloca e inizializza vettore di base
+            //risolvi il sistema lineare per sostituzione sapendo che ogni vettore di base fornisce una soluzione parziale
+            calculate_vector_base(matrix_linear_system,num_row,num_col,array_var_temp,v);//memorizza in v la soluzione
+            //errore in calculate vector base
+            for(int j=0;j<num_col;j++){//copia l'array v nella colonna della matrice base_sistema_lineare
+                base_linear_system[j][i]=v[j];//ok
+                reduce_int_mod_n(&(base_linear_system[j][i]),2);//ridurre elemento modificato mod 2
+            }
+            free(v);
+            v=NULL;
+            s++;
+        }
+        else{//leggi handle_error
+            handle_error_with_exit("la lunghezza dell'array_var è stata superata e non sono stati trovati dim_sol vettori di base\n");
+        }
+    }
+    free(array_var);
+    array_var=NULL;
+    free(array_var_temp);
+    array_var_temp=NULL;
+    return base_linear_system;*/
+    return NULL;
 }
-
 int scan_array_to_find_element_not_null(int*array,int start,int lenght_array){//start=punto di partenza,inizia da 0 lenght=lunghezza vettore,
 //scansiona gli elementi del vettore e ritorna l'indice del primo diverso da zero se lo trova,altrimenti -1
 	//ritorna la prima occorrenza o -1 se nessuna occorrenza
@@ -1703,6 +1845,58 @@ void reduce_echelon_form(int**matrix,int num_row,int num_col){//versione rref,fa
 		lead=lead+1;
 	}
 	return;
+}
+void reduce_echelon_form_char(char*matrix,int num_row,int num_col){//versione rref,fare il test per verificare
+    // che è effettivamente ridotta in modo rref
+    int lead=0;
+    int i;
+    long index,index1;
+    if(matrix==NULL || num_row<=0 || num_col<=0){
+        handle_error_with_exit("error in parameter reduce echelon form\n");
+    }
+    if(check_if_matrix_char_is_reduce_mod_n(matrix,num_row,num_col,2)==0){
+        handle_error_with_exit("matrix is not reduce mod n");
+    }
+    for(int r=0;r<num_row;r++){
+        if(num_col<=lead){
+            return;
+        }
+        i=r;
+        index=get_index(i,lead,num_col);
+        while(matrix[index]==0){
+            i=i+1;
+            if(num_row==i){
+                i=r;
+                lead=lead+1;
+                if(num_col==lead){
+                    return;
+                }
+            }
+            index=get_index(i,lead,num_col);
+        }
+        if(i!=r){
+            swap_row_char(matrix,num_row,num_col,i,r);
+        }
+        index=get_index(r,lead,num_col);
+        if(matrix[index]==0){
+            handle_error_with_exit("invalid pivot\n");
+        }
+        for(int i=0;i<num_row;i++){//riduzione della matrice versione rref
+            if(i!=r){
+                index=get_index(i,lead,num_col);
+                if(matrix[index]!=0){
+                    for(int f=lead;f<num_col;f++){//in realtà il ciclo si può fare da lead a num_col,la parte prima di lead	sono sottrazioni per 0
+                        index=get_index(i,f,num_col);
+                        index1=get_index(r,f,num_col);
+                        matrix[index]=matrix[index]-matrix[index1];//si fa la differenza perchè il pivot è sempre 1
+                        matrix[index]=reduce_mod_2((int)matrix[index]);
+                    }
+                }
+            }
+        }
+        lead=lead+1;
+    }
+    return;
 }
 
 /*void reduce_echelon_form(int**matrix,int num_row,int num_col){//versione precedente della riduzione a scala,versione ref
