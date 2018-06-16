@@ -331,7 +331,7 @@ int main(int argc,char*argv[]){
             base_matrix,num_B_smooth,dim_sol)==0){
 				handle_error_with_exit("error in main,invalid solution\n");
 			}
-
+			print_time_elapsed("time to check solution base linear system");
             //algebra step:calcolo di tutti gli a,b del crivello quadratico
 			factorizations_founded=find_factor_of_n_from_base_matrix_char(base_matrix,num_B_smooth,&dim_sol,
 			linear_system,cardinality_factor_base,num_B_smooth,n,head,num_B_smooth,cardinality_factor_base);
@@ -339,11 +339,11 @@ int main(int argc,char*argv[]){
             linear_system=NULL;
 			free_memory_matrix_int(base_matrix,num_B_smooth,dim_sol);
 			base_matrix=NULL;
+			print_time_elapsed("time to calculate solution from base linear system");
 			if(factorizations_founded==0){
                 calculate_news_M_and_B(&M,&B);
                 continue;
 			}
-            print_time_elapsed("time to calculate solution from base linear system");
 		}
 		clean_memory://pulire memoria rimanente
 		if(head_f_base_f!=NULL) {
