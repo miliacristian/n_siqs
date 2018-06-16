@@ -1482,7 +1482,7 @@ void calculate_a_and_b_siqs(const int*solution,struct node_square_relation*head,
     }
     mpz_clear(square);
     mpz_clear(v_temp);
-
+	free(sum_exponent_relation);
     return;
 }
 int try_to_factor(const mpz_t a,const mpz_t b,const mpz_t n,mpz_t factor1,mpz_t factor2){//dati a,b ed n in input prova a fattorizzare n con il crivello quadratico

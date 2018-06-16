@@ -234,10 +234,6 @@ int main(int argc,char*argv[]){
 			print_array_int(r.log_prime,cardinality_factor_base);
 			print_array_int(r.prime,cardinality_factor_base);
 			print_array_int(r.root_n_mod_p,cardinality_factor_base);
-			mpz_t num;
-			mpz_init(num);
-			create_num(num,a_default,b_default,n,-M);
-			gmp_printf("num main thread=%Zd\n",num);
 			print_time_elapsed("time to create row factorization");
 			//creazione e avvio thread
 			if(num_thread_job!=1){
@@ -283,6 +279,8 @@ int main(int argc,char*argv[]){
 				free_memory_array_mpz(array_bi,(int)pow(2,s-1));
 				array_bi=NULL;
 			}
+			free(array_a_struct);
+			array_a_struct=NULL;
 			printf("threads ended the job\n");
 			print_time_elapsed("time to wait all threads");
 			printf("num_potential_B_smooth_main_thread=%d,num_B_smooth_main_thread=%d\n",num_potential_B_smooth,num_B_smooth);
@@ -296,6 +294,8 @@ int main(int argc,char*argv[]){
 			print_list_square_relation(head,num_B_smooth);
             if(num_B_smooth<cardinality_factor_base*ENOUGH_RELATION){
                 calculate_news_M_and_B(&M,&B);
+				free_array_thread_data(thread_data,NUM_THREAD+1);
+				thread_data=NULL;
                 continue;
             }
 			//algebra step:sistema lineare
@@ -326,7 +326,7 @@ int main(int argc,char*argv[]){
 			linear_system,cardinality_factor_base,num_B_smooth,n,head,num_B_smooth,cardinality_factor_base);
             free(linear_system);
             linear_system=NULL;
-			free(base_matrix);
+			free_memory_matrix_int(base_matrix,num_B_smooth,dim_sol);
 			base_matrix=NULL;
 			if(factorizations_founded==0){
                 calculate_news_M_and_B(&M,&B);
