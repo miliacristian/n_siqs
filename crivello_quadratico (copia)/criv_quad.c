@@ -34,7 +34,7 @@ void calculate_news_M_and_B(long*M,long*B){
 	num_increment_M_and_B++;
 	return;
 }
-void adjust_array_bi(mpz_t *array_bi,int s,const mpz_t a){
+void adjust_array_bi(mpz_t *array_bi,int s,const mpz_t a){//if 2*b>a ->b=a-b
 	if(array_bi==NULL || s<0 || a==NULL){
 		handle_error_with_exit("error in adjust array_bi\n");
 	}
@@ -424,7 +424,7 @@ void calculate_best_B(const mpz_t n,long*B){
 	mpz_clear(ten);
 	return;
 }*/
-struct node_factor_base* create_factor_base_f(int*cardinality_factor_base,long B,struct node_factor_base**tail,const mpz_t n){//crea la factor base aggiungendo i numeri primi minori o uguali a B
+/*struct node_factor_base* create_factor_base_f(int*cardinality_factor_base,long B,struct node_factor_base**tail,const mpz_t n,int *start_prime_factor_base){//crea la factor base aggiungendo i numeri primi minori o uguali a B
 	if(B<2 || tail==NULL || cardinality_factor_base==NULL || n==NULL){
 		handle_error_with_exit("error in parameter\n");
 	}
@@ -467,8 +467,69 @@ struct node_factor_base* create_factor_base_f(int*cardinality_factor_base,long B
 	mpz_clear(pp);
 	mpz_clear(value);
 	return head;
+}*/
+struct node_factor_base*initialize_factor_base(int*cardinality_factor_base,long B,struct node_factor_base**tail,const mpz_t n,int *last_prime_factor_base){
+	if(B<2 || tail==NULL || cardinality_factor_base==NULL || n==NULL || last_prime_factor_base==NULL){
+		handle_error_with_exit("error in parameter\n");
+	}
+	struct node_factor_base *head=NULL;
+	mpz_t p;
+	mpz_init(p);
+	mpz_set_si(p,-1);//temp=-1
+	insert_ordered_f(-1,n,&head,tail);//inserisci -1 nella factor base
+	(*cardinality_factor_base)++;
+	mpz_set_si(p,2);//p=2
+	(*cardinality_factor_base)++;
+	insert_ordered_f(2,n,&head,tail);//inserisce 2 nella factor base
+	*last_prime_factor_base=2;
+	mpz_clear(p);
+	return head;
 }
 
+void create_factor_base_f(int*cardinality_factor_base,long B,struct node_factor_base**head,struct node_factor_base**tail,const mpz_t n,int *last_prime_factor_base){//crea la factor base aggiungendo i numeri primi minori o uguali a B
+    if(B<2 || tail==NULL || head==NULL || cardinality_factor_base==NULL || n==NULL || last_prime_factor_base==NULL ){
+        handle_error_with_exit("error in parameter\n");
+    }
+    struct node_factor_base*node;
+    long v,m;
+    mpz_t p,pp,value;
+
+
+    mpz_init(p);
+    mpz_init(pp);
+    mpz_init(value);
+	long start;
+	if((*last_prime_factor_base & 1)==0){//start=last_prime_factor_base è pari==2
+		start=*last_prime_factor_base;
+	}
+	else{
+		start=*last_prime_factor_base-1;//start è pari
+	}
+    for(long i=start;i<=B;){
+        mpz_set_si(p,i);//p=i,inizialmente p=2,ad ogni inizio ciclo deve essere pari
+        mpz_nextprime(p,p);//p=next_prime,ritorna il prossimo primo maggiore strettamente di p,è bene che p sia pari
+        if(mpz_cmp_si(p,B)<=0){//primo<=B
+            v=mpz_get_si(p);
+            *last_prime_factor_base=v;
+            v=(v-1)>>1;//shift a destra divide per 2,v=(v-1/2)
+            mpz_powm_ui(value,n,(unsigned long int)v,p);//value=n^v mod p
+            m=mpz_get_si(value);//m=n^((p-1)/2) mod p
+            if(m==1){//n è quadrato modulo p
+                node=get_new_node_f(mpz_get_si(p),n);
+                insert_at_tail_f(node,head,tail);
+                (*cardinality_factor_base)++;
+            }
+            i=mpz_get_si(p)+1;//il numero diventa pari e il prossimo numero primo sarà dispari
+        }
+        else{//B è stato superato
+            break;
+        }
+    }
+    mpz_clear(p);
+    mpz_clear(pp);
+    mpz_clear(value);
+    return;
+}
 /*struct node* create_factor_base(int*cardinality_factor_base,long B,struct node**tail,const mpz_t n,mpz_t q,const mpz_t thresold_q){//crea la factor base aggiungendo i numeri primi minori o uguali a B
 	if(B<2 || tail==NULL || cardinality_factor_base==NULL || n==NULL || q==NULL || thresold_q==NULL){
 		handle_error_with_exit("error in parameter\n");

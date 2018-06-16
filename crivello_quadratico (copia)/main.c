@@ -73,7 +73,7 @@ int main(int argc,char*argv[]){
 		char factorized=0;//indica se numero fattorizzato o no
 		char digit=-1;//numero cifre di n
 		struct node_square_relation*head=NULL,*tail=NULL;//contengono tutte le relazioni quadratiche
-
+        int last_prime_factor_base=-1;//indica da quale primo si inizia a creare la factor base
 		k=1;
 
 		//mpz_init
@@ -143,6 +143,11 @@ int main(int argc,char*argv[]){
 		mpz_set(b_default,x0);
 		gmp_printf("b_default=%Zd\n",b_default);
 
+		head_f_base_f=initialize_factor_base(&cardinality_factor_base,B,&tail_f_base_f,n,&last_prime_factor_base);
+		print_list_factor(head_f_base_f,cardinality_factor_base);
+		printf("last_prime_factor_base=%d\n",last_prime_factor_base);
+		print_time_elapsed("time to initialize factor base");
+
 		while(factorizations_founded<=0){//finquando non sono stati trovati fattori:
 		    // calcola a,unisci le relazioni quadratiche vedi se puoi calcolare il sistema lineare,
             // trova souzioni sistema lineare e trova tutti gli a,b del crivello quadratico
@@ -159,7 +164,7 @@ int main(int argc,char*argv[]){
 			print_time_elapsed("time to calculate thresold_a");
 
 			//factor base
-			head_f_base_f=create_factor_base_f(&cardinality_factor_base,B,&tail_f_base_f,n);//crea lista dinamica con tutti i primi
+			create_factor_base_f(&cardinality_factor_base,B,&head_f_base_f,&tail_f_base_f,n,&last_prime_factor_base);//crea lista dinamica con tutti i primi
 			//scrivere modo per appendere una factor base con un'altra in modo da non ricalcolare nulla da capo
 			printf("factor base=");
 			print_list_factor(head_f_base_f,cardinality_factor_base);
@@ -189,7 +194,7 @@ int main(int argc,char*argv[]){
 				print_array_int(index_prime_a,s);
 			}
 
-			//array Bk
+			//array Bk,può essere ridotto modulo a
 			array_Bk=calculate_array_Bk_f(number_prime_a,cardinality_factor_base,n,s,a,b1);
 			if(array_Bk!=NULL){
 				gmp_printf("b1=%Zd\n",b1);
@@ -203,7 +208,7 @@ int main(int argc,char*argv[]){
 				free_memory_array_mpz(array_Bk,s);
 				array_Bk=NULL;
 			}
-			if(array_bi!=NULL){
+			if(array_bi!=NULL){//bi può essere ridotto modulo a
 				reduce_array_mpz_mod_n(array_bi,(int)pow(2,s-1),a);
 				adjust_array_bi(array_bi,s,a);
 				print_array_bi(array_bi,s);
