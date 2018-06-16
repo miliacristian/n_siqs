@@ -17,7 +17,8 @@
 #define MAX_ITER 100000000 //iterazioni massime per calcolare a
 #define MAX_ITER2 100000000 //iterazioni massime per calcolare a
 #define MAX_NUM_FOR_DIGIT 1
-#define PERCENT_B_SMOOTH 0.95
+#define ENOUGH_RELATION 1.00 //numero minore o uguale a 1 indica quante relazioni
+//vanno trovate in più rispetto alla cardinalità della factor base
 #define ERROR_LOG 25//aumentare per trovare più numeri B_smooth potenziali,valore default=25
 #include <gmp.h>
 #include <time.h>

@@ -909,7 +909,22 @@ void divide_elem_multiple_of_2_by_x(mpz_t*vector,int length,double x){//vector =
 	}
 	return;
 }
-
+void divide_vector_multiple_of_2_by_2(int*vector,int length){
+    //ogni elemento deve essere multiplo di 2
+    if(vector==NULL || length<=0){
+        handle_error_with_exit("divide_elem_by_2\n");
+    }
+    for(int i=0;i<length;i++){
+        if(vector[i]==0){
+            continue;
+        }
+        if((vector[i] & 1)!=0){
+            handle_error_with_exit("error in divde_elem_by_2\n");
+        }
+        vector[i]=vector[i]/2;
+    }
+    return;
+}
 /*int count_number_potential_B_smooth_matrix_sorted(mpz_t**single_matrix_factorization,int num_row,int num_col){
 	//assume che la matrice ha i residui ordinati
 	int potential_number_B_smooth=0;

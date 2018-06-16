@@ -76,6 +76,7 @@ void reduce_echelon_form_char(char*matrix,int num_row,int num_col);
 int count_rows_not_null_char(char*matrix,int num_row,int num_col);
 char check_solution_base_matrix_char(char*linear_system,int num_row_system,int num_col_system,int **base_matrix,int num_row_base,int num_col_base);
 char verify_solution_char(char*matrix_linear_system,int num_row,int num_col,const int*solution);
+void divide_vector_multiple_of_2_by_2(int*vector,int length);
 #endif
 
 

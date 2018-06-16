@@ -3,12 +3,15 @@
 #include <gmp.h>
 #include <mpfr.h>
 #include "list_factor_base.h"
+#include "list_square_relation.h"
+#include "list_factorization.h"
+
 extern long k;
 extern struct timespec timer;
 extern struct timespec time_start;
 extern FILE*file_log;
 extern int num_increment_M_and_B;
-
+extern struct row_factorization r;
 
 void calculate_news_M_and_B(long*M,long*B){
 	//calcola i valori nuovi di M e B secondo una formula scelta opportunamente
@@ -1440,36 +1443,46 @@ void calculate_a_and_b_siqs(const int*solution,struct node_square_relation*head,
         handle_error_with_exit("error in parameter calculate a and b\n");
     }
     //il vettore solution ci dice quali relazioni vanno moltiplicate,ogni elemento di solution che è 1 è una relazione da moltiplicare con le altre
-    mpz_t temp,v_temp;
-    mpz_t num_square;
+    mpz_t v_temp;
+    mpz_t square;
 
-    mpz_init(num_square);
-    mpz_init(temp);
+    mpz_init(square);
     mpz_init(v_temp);
 
+    int exponent,index;
     mpz_set_si(a,1);//a=1 temporaneo
     mpz_set_si(b,1);//b=1 temporaneo
-    mpz_t*v=create_array_temp_factorization(card_f_base,matrix_B_smooth[0]);//-1 0 2 0 3 0 ecc primi della factor base con esponente zero
+    struct node_square_relation*p=head;
+    int*sum_exponent_relation=alloc_array_int(card_f_base);//contiene la somma degli esponenti dei numeri usati per le relazioni che forniscono la soluzione del sistema lineare
+    //mpz_t*v=create_array_temp_factorization(card_f_base,matrix_B_smooth[0]);//-1 0 2 0 3 0 ecc primi della factor base con esponente zero
     for(int i=0;i<num_B_smooth;i++){
         if(solution[i]==1){//se solution==1 allora bisogna moltiplicare le relazioni
-            mpz_set(num_square,matrix_B_smooth[i][card_f_base*2]);//moltiplica le radici quadrate dei numeri B-smooth mod n
-            mpz_mul(a,a,num_square);//a=a*square
+            mpz_set(square,p->square_relation.square);//moltiplica le radici quadrate dei numeri B-smooth mod n
+            mpz_mul(a,a,square);//a=a*square
             mpz_mod(a,a,n);//a=a*square mod n
-            sum_elem_multiple_of_2_mpz(v,matrix_B_smooth[i],card_f_base*2,card_f_base*2);//moltiplica le relazioni sommando opportunamente gli esponenti tra i 2 numeri
+            struct node_factorization*q=p->square_relation.head_factorization;
+            while(q!=NULL){
+                exponent=q->exp_of_number;
+                index=q->index;
+                q=q->next;
+                sum_exponent_relation[index]+=exponent;
+            }
         }
+        p=p->next;//passa alla prossima relazione
     }
-    divide_elem_multiple_of_2_by_x(v,card_f_base*2,2);//divide gli esponenti per 2 per calcolare successivamente b
-    for(int j=2;j<card_f_base*2;j=j+2){//per ogni primo della factor base...
-        mpz_set(v_temp,v[j]);//v_temp=v[j]
-        mpz_powm(v_temp,v_temp,v[j+1],n);//v_temp=pow(v[j],v[j+1]) mod n
+    divide_vector_multiple_of_2_by_2(sum_exponent_relation,card_f_base);
+    for(int j=0;j<card_f_base;j++){//per ogni primo della factor base
+        if(sum_exponent_relation[j]==0){
+            continue;
+        }
+        mpz_set_si(v_temp,r.prime[j]);
+        mpz_powm_ui(v_temp,v_temp,sum_exponent_relation[j],n);//v_temp=primo^exp mod n
         mpz_mul(b,b,v_temp);//b=primo factor base*esponente del primo della factor base
         mpz_mod(b,b,n);//b mod n
     }
-
-    mpz_clear(temp);
-    mpz_clear(num_square);
+    mpz_clear(square);
     mpz_clear(v_temp);
-    free_memory_array_mpz(v,card_f_base*2);
+
     return;
 }
 int try_to_factor(const mpz_t a,const mpz_t b,const mpz_t n,mpz_t factor1,mpz_t factor2){//dati a,b ed n in input prova a fattorizzare n con il crivello quadratico

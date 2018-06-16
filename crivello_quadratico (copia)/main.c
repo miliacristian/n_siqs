@@ -144,7 +144,10 @@ int main(int argc,char*argv[]){
 		mpz_set(b_default,x0);
 		gmp_printf("b_default=%Zd\n",b_default);
 
-		while(factorizations_founded<=0){//finquando non sono stati trovati fattori
+		while(factorizations_founded<=0){//finquando non sono stati trovati fattori:
+		    // calcola a,unisci le relazioni quadratiche vedi se puoi calcolare il sistema lineare,
+            // trova souzioni sistema lineare e trova tutti gli a,b del crivello quadratico
+
 			adjust_n(n,&k);//aggiusta n per calcolare i suoi fattori(divide n per k)
 			multiply_n_for_k(n,&k,&factorized);//k,moltiplicatore di n per renderlo un quadrato modulo 8
 			print_time_elapsed("time to adjust & multiply n for k");
@@ -171,7 +174,6 @@ int main(int argc,char*argv[]){
 			qsort(array_a_struct,s,sizeof(struct a_struct),compare_a_struct);
 			print_array_a_struct(array_a_struct,s);
 
-			//calculate_index_min_max_a(number_prime_a,index_prime_a,s,&index_min_a,&index_max_a);
 			gmp_printf("a=%Zd\n",a);
 			fprintf(file_log,"a=");
 			mpz_out_str(file_log,10,a);
@@ -248,12 +250,14 @@ int main(int argc,char*argv[]){
 			factor_matrix_f(n,M,thread_data[NUM_THREAD],cardinality_factor_base,a_default);//fattorizza numeri
 			print_time_elapsed("time_to_factor matrix_factorization main thread");
 			print_thread_data(thread_data[NUM_THREAD],M);
+
 			//ricerca dei B_smooth potenziali,reali e fattorizzazione dei B_smooth reali
 			thread_data[NUM_THREAD].log_thresold=calculate_log_thresold(n,M);
 			printf("log_thresold main thread=%f\n",thread_data[NUM_THREAD].log_thresold);
 
 			find_list_square_relation(thread_data[NUM_THREAD],&num_B_smooth,&num_potential_B_smooth,M,&head,&tail,n,a_default,array_a_struct,0);
 			print_time_elapsed("time_to find_list_square_relation");
+
 			//aspetta tutti i thread e libera memoria
 			if(num_thread_job!=1 && NUM_THREAD>0){
 				join_all_threads(array_tid,NUM_THREAD);//aspetta tutti i thread
@@ -290,13 +294,21 @@ int main(int argc,char*argv[]){
 				printf("num_potential_B_smooth=%d,num_B_smooth=%d\n",num_potential_B_smooth,num_B_smooth);
 			}
 			print_list_square_relation(head,num_B_smooth);
+            if(num_B_smooth<cardinality_factor_base*ENOUGH_RELATION){
+                calculate_news_M_and_B(&M,&B);
+                continue;
+            }
+			//algebra step:sistema lineare
             linear_system=create_linear_system_f(head,cardinality_factor_base,num_B_smooth);
 			print_linear_system(linear_system,cardinality_factor_base,num_B_smooth);
             print_time_elapsed("time_to_create_linear_system");
-            //aggiustare calcolo della base del sistema lineare
+
+            //algebra step:base sistema lineare
 			base_matrix=calculate_base_linear_system_char(linear_system,cardinality_factor_base,num_B_smooth,&dim_sol);
 			if(base_matrix==NULL){//non ci sono abbastanza soluzioni,ricomincia il crivello quadratico
 				calculate_news_M_and_B(&M,&B);
+                free(linear_system);
+                linear_system=NULL;
 				continue;
 			}
 			if(check_if_matrix_is_reduce_mod_n(base_matrix,num_B_smooth,dim_sol,2)==0){
@@ -304,73 +316,23 @@ int main(int argc,char*argv[]){
 			}
 			printf("dim_sol=%d\n",dim_sol);
 			print_time_elapsed("time to calculate base linear system");
-			if(check_solution_base_matrix_char(linear_system,cardinality_factor_base,num_B_smooth,base_matrix,num_B_smooth,dim_sol)==0){
+			if(check_solution_base_matrix_char(linear_system,cardinality_factor_base,num_B_smooth,
+            base_matrix,num_B_smooth,dim_sol)==0){
 				handle_error_with_exit("error in main,invalid solution\n");
 			}
-			factorizations_founded=find_factor_of_n_from_base_matrix_char(base_matrix,num_B_smooth,&dim_sol,linear_system,
-																	 cardinality_factor_base,num_B_smooth,n,head,num_B_smooth,cardinality_factor_base);
-			free(base_matrix);
-			free(linear_system);
-			/*//concatenate_all_matrix_B_smooth(array_matrix_B_smooth,length_array_thread_data,&row_result);
-			printf("row_result=%d\n",row_result);
-			fprintf(file_log,"num potential B_smooth=%d ",row_result);
-			print_time_elapsed("time to create single matrix factorization");
-			//print_matrix_factorization_f(*(array_matrix_B_smooth[0]));
 
-			//crea matrice_fattorizzazioni_B_smooth
-			print_time_elapsed("time to create matrix_B_smooth");
-			//linear_system=create_linear_system_f(array_matrix_B_smooth[0],cardinality_factor_base);
-			free(linear_system);
-			print_time_elapsed("time_to_create_linear_system");
-			//free_memory_matrix_factorization(array_matrix_B_smooth[0]);//libera la memoria
-			//della matrice concatenazione di matrici
-			//array_matrix_B_smooth[0]=NULL;
-			//free(array_matrix_B_smooth);//libera la memoria dell'array_matrix_mpz
-			//array_matrix_B_smooth=NULL;
-			break;
-			//crea sistema lineare dalla matrix_B_smooth
-			linear_system=create_linear_system(cardinality_factor_base,matrix_B_smooth,num_B_smooth);
-			//print_linear_system(linear_system,cardinality_factor_base,num_B_smooth);
-			if(check_if_matrix_is_reduce_mod_n(linear_system,cardinality_factor_base,num_B_smooth,2)==0){
-				handle_error_with_exit("error in main,create linear system\n");
-			}
-			print_time_elapsed("time to calculate linear system");
-			//calcola una base della matrice
-			base_matrix=calculate_base_linear_system(linear_system,cardinality_factor_base,num_B_smooth,&dim_sol);
-			if(base_matrix==NULL){//non ci sono abbastanza soluzioni,ricomincia il crivello quadratico
-				free_memory_matrix_mpz(matrix_B_smooth,num_B_smooth,cardinality_factor_base*2+1);
-				matrix_B_smooth=NULL;
-				calculate_news_M_and_B(&M,&B);
-				continue;
-			}
-			if(check_if_matrix_is_reduce_mod_n(base_matrix,num_B_smooth,dim_sol,2)==0){
-				handle_error_with_exit("error in main,calculate base_linear_system\n");
-			}
-			//print_base_linear_system(base_matrix,num_B_smooth,dim_sol);
-			printf("dim_sol=%d\n",dim_sol);
-			print_time_elapsed("time to calculate base linear system");
-			if(check_solution_base_matrix(linear_system,cardinality_factor_base,num_B_smooth,base_matrix,num_B_smooth,dim_sol)==0){
-				handle_error_with_exit("error in main,invalid solution\n");
-			}
-			//prova a fattorizzare n
-			adjust_n(n,&k);//aggiusta n per calcolare i suoi fattori(divide n per k)
-			factorizations_founded=find_factor_of_n_from_base_matrix(base_matrix,num_B_smooth,&dim_sol,linear_system,
-			cardinality_factor_base,num_B_smooth,n,matrix_B_smooth,num_B_smooth,cardinality_factor_base);
-			free_memory_matrix_int(linear_system,cardinality_factor_base,num_B_smooth);
-			linear_system=NULL;
-			free_memory_matrix_int(base_matrix,num_B_smooth,dim_sol);
+            //algebra step:calcolo di tutti gli a,b del crivello quadratico
+			factorizations_founded=find_factor_of_n_from_base_matrix_char(base_matrix,num_B_smooth,&dim_sol,
+			linear_system,cardinality_factor_base,num_B_smooth,n,head,num_B_smooth,cardinality_factor_base);
+            free(linear_system);
+            linear_system=NULL;
+			free(base_matrix);
 			base_matrix=NULL;
-			print_time_elapsed("time to calculate all solution linear system");
-			free_memory_matrix_mpz(matrix_B_smooth,num_B_smooth,cardinality_factor_base*2+1);
-			matrix_B_smooth=NULL;
-			printf("factorizations founded=%d\n",factorizations_founded);
-			print_time_elapsed("time to calculate factor of n from solutions");
-			if(factorizations_founded==0){//nessuna fattorizzazione trovata,ricomincia il crivello quadratico
-				calculate_news_M_and_B(&M,&B);
-				continue;
+			if(factorizations_founded==0){
+                calculate_news_M_and_B(&M,&B);
+                continue;
 			}
-			mean_increment_M_and_B+=num_increment_M_and_B;*/
-			break;
+            print_time_elapsed("time to calculate solution from base linear system");
 		}
 		clean_memory://pulire memoria rimanente
 		free_memory_list_f(head_f_base_f);
@@ -425,18 +387,20 @@ int thread_job_criv_quad(int id_thread){//id inizia da 0,il lavoro di un thread 
     struct timespec timer_thread;//istante di tempo
 	int count=id_thread;//indica quale polinomio deve usare per fare il crivello quadratico
     struct node_square_relation*head_square=NULL,*tail_square=NULL;
-	mpz_t num;
-	mpz_init(num);
+
     //gettime
     gettime(&timer_thread);
     thread_data[id_thread].log_thresold=calculate_log_thresold(n,M);
+
+    //log_thresold
     printf("log_thresold=%f\n",thread_data[id_thread].log_thresold);
     print_time_elapsed_local("time to calculate log thresold",&timer_thread);
-	create_num(num,a,array_bi[count],n,-M);
-	gmp_printf("num=%Zd thread=%d\n",num,count);
+
 	while(count<=num_thread_job-2){//ogni thread prende un sottoinsieme di compiti,il thread con id 0 farà i compiti 0,NUM_THREAD,2*NUM_THREAD,il thread 1 farà 1,NUM_THREAD+1,2*NUM_THREAD+1 ecc
 		//fattorizzazione
 		printf("thread=%d\n",count);
+
+		//factorization
         mpz_set(thread_data[id_thread].b,array_bi[count]);//imposta ad ogni ciclo il valore di b
 		factor_matrix_f(n,M,thread_data[id_thread],cardinality_factor_base,a);//fattorizza una nuova matrice
 		print_time_elapsed_local("time to factor matrix_factorization",&timer_thread);
