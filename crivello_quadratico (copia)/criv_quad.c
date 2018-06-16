@@ -787,7 +787,6 @@ void calculate_target_a1_f(mpfr_t target_a1,const mpfr_t target_a,struct node_fa
 	mpfr_clear(prime_avg);
 	mpfr_clear(sqrt_prime_avg);
 	mpfr_clear(temp);
-	print_time_elapsed("time to calculate target_a1");
 	return;
 }
 
@@ -978,8 +977,6 @@ void calculate_a_f2(mpz_t a,const mpfr_t target_a,int*s,struct node_factor_base*
 		mpz_clear(v);
 		*best_q=NULL;
 		*best_q_number=NULL;
-		best_q=NULL;
-		best_q_number=NULL;
 		fprintf(file_log,"pmin=0,p_max=0 ");
 		return;//ritorna array_of_prime_chosen_for_a==NULL e a=0
 	}
@@ -1045,6 +1042,7 @@ void calculate_a_f2(mpz_t a,const mpfr_t target_a,int*s,struct node_factor_base*
 	printf("target_a1=");
 	mpfr_out_str(stdout,10,0,target_a1,MPFR_RNDN);
 	printf("\n");
+    print_time_elapsed("time to calculate target_a1");
 
 	int count=0;//conta quante volte while(mpz_cmp(a,target_a1)<0) è verificata
 	int*q=alloc_array_int(s_max);//array che contiene gli indici dei primi scelti
@@ -1059,6 +1057,7 @@ void calculate_a_f2(mpz_t a,const mpfr_t target_a,int*s,struct node_factor_base*
 		memset(q_number,0,sizeof(int)*s_max);//azzera q
 		count=0;//azzera le append a q
 		iter=0;
+		printf("l\n");
 		mpfr_set_z(a2_double,a2_int,MPFR_RNDN);
 		while(mpfr_cmp(a2_double,target_a1)<0 && iter<=MAX_ITER){//finquando a2<target_a1 oppure sono state raggiunte tot iterazioni
 			p_i=2;
@@ -1093,10 +1092,6 @@ void calculate_a_f2(mpz_t a,const mpfr_t target_a,int*s,struct node_factor_base*
 		}
 		//una sequenza di numeri è stata scelta vediamo quanto è buona(vedendo i rapporti della migliore attualmente),se è buona la 			aggiorniamo
 		mpfr_div(ratio,a2_double,target_a,MPFR_RNDN);//ratio=a2/target_a
-		/*b=mpfr_cmp_d(best_ratio,0.9)<0;//best_ratio<0.9
-		c=mpfr_cmp(ratio,best_ratio)>0;//ratio>best_ratio
-		d=( (mpfr_cmp_d(ratio,0.9)>=0) && (mpfr_cmp(ratio,best_ratio)<0) );//ratio>=0.9 && ratio<best_ratio
-		g=(mpfr_cmp_d(ratio,1.0)<=0);//ratio<1*/
 
 		ratio_double=mpfr_get_d(ratio,MPFR_RNDN);
 		if(initialized==0){
@@ -1119,7 +1114,7 @@ void calculate_a_f2(mpz_t a,const mpfr_t target_a,int*s,struct node_factor_base*
           length_best_q=count;//la lunghezza di best_q coincide con il numero di append fatte
         }
 	}
-
+    printf("ciao\n");
 
 	mpz_set_si(a,1);//a=1
 	for(int i=0;i<length_best_q;i++){//moltiplica tutti i fattori di a

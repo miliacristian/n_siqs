@@ -100,7 +100,7 @@ struct node_factorization*factorize_num(const mpz_t num,int first_index_f_base,i
         char*is_B_smooth,struct a_struct*array_a_struct,int s){
 	if((first_index_f_base<0 && first_index_f_base!=-1)|| (last_index_f_base<0 && last_index_f_base!=-1)
         || is_B_smooth==NULL
-            || first_index_f_base>last_index_f_base || array_a_struct==NULL || s<0){
+            || first_index_f_base>last_index_f_base || (array_a_struct==NULL && s>0)){
 		handle_error_with_exit("error in factorize_num\n");
 	}
 
@@ -204,7 +204,7 @@ void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth
 	mpz_t num;
 	struct node_factorization*head_factor=NULL;
 	char is_B_smooth=-1;
-	if(num_B_smooth==NULL || num_potential_B_smooth==NULL || M<=0 || head==NULL || tail==NULL || array_a_struct==NULL || s<0){
+	if(num_B_smooth==NULL || num_potential_B_smooth==NULL || M<=0 || head==NULL || tail==NULL || (array_a_struct==NULL && s>0)){
 		handle_error_with_exit("error in find_list_square_relation");
 	}
 	struct square_relation square_relation;

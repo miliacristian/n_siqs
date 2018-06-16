@@ -174,16 +174,20 @@ int main(int argc,char*argv[]){
 
 			//a,per siqs e generare tutti gli altri b,prodotto di primi dispari distinti
 			calculate_a_f2(a,thresold_a,&s,head_f_base_f,cardinality_factor_base,&index_prime_a,&number_prime_a);
-			array_a_struct=create_array_a_struct(number_prime_a,index_prime_a,s);
-			qsort(array_a_struct,s,sizeof(struct a_struct),compare_a_struct);
-			print_array_a_struct(array_a_struct,s);
-
+			if(s>0) {
+                array_a_struct = create_array_a_struct(number_prime_a, index_prime_a, s);
+                qsort(array_a_struct, s, sizeof(struct a_struct), compare_a_struct);
+                print_array_a_struct(array_a_struct, s);
+            }
 			gmp_printf("a=%Zd\n",a);
 			fprintf(file_log,"a=");
 			mpz_out_str(file_log,10,a);
 			fprintf(file_log," ");
 			print_time_elapsed("time to calculate a");
-			printf("index_min_a=%d,index_max_a=%d\n",array_a_struct[0].index_prime_a,array_a_struct[s-1].index_prime_a);
+			if(s>0) {
+                printf("index_min_a=%d,index_max_a=%d\n", array_a_struct[0].index_prime_a,
+                       array_a_struct[s - 1].index_prime_a);
+            }
 			printf("s=%d\n",s);
 			print_time_elapsed("time to calculate index_min_a index_max_a");
 			//number_prime_a e index_prime_a
