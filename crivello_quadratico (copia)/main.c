@@ -48,7 +48,6 @@
 	int num_increment_M_and_B=0;
 	int*index_prime_a=NULL;//indice dei primi usati per ottenere a,rispetto alla factor base
 	int*number_prime_a=NULL;//numeri primi usati per ottenere a
-	int index_min_a=-1,index_max_a=-1;//minimo e massimo dei numeri primi scelti per a
     struct a_struct*array_a_struct;
 
 int main(int argc,char*argv[]){
@@ -291,7 +290,8 @@ int main(int argc,char*argv[]){
 				num_potential_B_smooth+=thread_data[i].num_potential_B_smooth;
 				printf("num_potential_B_smooth=%d,num_B_smooth=%d\n",num_potential_B_smooth,num_B_smooth);
 			}
-			print_list_square_relation(head,num_B_smooth);
+            fprintf(file_log,"num_pot_B_smooth=%d num_B_smooth=%d ",num_potential_B_smooth,num_B_smooth);
+            print_list_square_relation(head,num_B_smooth);
             if(num_B_smooth<cardinality_factor_base*ENOUGH_RELATION){
                 calculate_news_M_and_B(&M,&B);
 				free_array_thread_data(thread_data,NUM_THREAD+1);
@@ -335,18 +335,28 @@ int main(int argc,char*argv[]){
             print_time_elapsed("time to calculate solution from base linear system");
 		}
 		clean_memory://pulire memoria rimanente
-		free_memory_list_f(head_f_base_f);
-		free(r.log_prime);
-		r.log_prime=NULL;
-		free(r.root_n_mod_p);
-		free_array_thread_data(thread_data,NUM_THREAD+1);
-		thread_data=NULL;
-		free_memory_list_square_relation(head);
-		head=NULL;
-		free(r.prime);
-		r.prime=NULL;
-		head_f_base_f=NULL;
-		tail_f_base_f=NULL;
+		if(head_f_base_f!=NULL) {
+			free_memory_list_f(head_f_base_f);
+			head_f_base_f = NULL;
+			tail_f_base_f = NULL;
+		}
+		if(r.log_prime!=NULL && r.prime!=NULL && r.root_n_mod_p!=NULL) {
+			free(r.log_prime);
+			r.log_prime = NULL;
+			free(r.prime);
+			r.prime=NULL;
+			free(r.root_n_mod_p);
+			r.root_n_mod_p=NULL;
+		}
+		if(thread_data!=NULL) {
+			free_array_thread_data(thread_data, NUM_THREAD + 1);
+			thread_data = NULL;
+		}
+		if(head!=NULL) {
+			free_memory_list_square_relation(head);
+			head = NULL;
+		}
+
 		mpz_clear(n);
 		mpz_clear(a);
 		mpz_clear(temp);
