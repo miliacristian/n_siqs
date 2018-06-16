@@ -7,15 +7,15 @@
 #define THRESOLD_PRINT_LIST 1000
 #define SIQS_MIN_PRIME_POLYNOMIAL 400 //parametri per il calcolo di a
 #define SIQS_MAX_PRIME_POLYNOMIAL 4000 //parametri per il calcolo di a
-#define NUM_ITER_FOR_CALCULATE_A 10000 //parametri per il calcolo di a
+#define NUM_ITER_FOR_CALCULATE_A 1000 //parametri per il calcolo di a
 #define THRESOLD_RELATION 0 
-#define NUM_THREAD 10 //numero di thread
+#define NUM_THREAD 0 //numero di thread
 #define S_MAX 10//corrisponde a 2^(S_MAX-1) polinomi diversi
 #define MAX_DIM_SOL 15 //dimensione soluzione massima
 #define PERC_INCREMENT_M 50 
 #define PERC_INCREMENT_B 50
-#define MAX_ITER 100000000 //iterazioni massime per calcolare a
-#define MAX_ITER2 100000000 //iterazioni massime per calcolare a
+#define MAX_ITER 10000 //iterazioni massime per calcolare a
+#define MAX_ITER2 10000 //iterazioni massime per calcolare a
 #define MAX_NUM_FOR_DIGIT 1
 #define ENOUGH_RELATION 1.00 //numero minore o uguale a 1 indica quante relazioni
 //vanno trovate in più rispetto alla cardinalità della factor base
@@ -35,27 +35,6 @@ struct row_factorization{
     int*root_n_mod_p;
 };
 
-/*struct row{
-	int index_first_prime;
-	int index_last_prime;
-	mpz_t num;
-	mpz_t square;
-	float sum_log;//somma dei logaritmi
-	float log;//logaritmo di num
-};*/
-/*struct matrix_factorization {//matrice che contiene tutte le fattorizazzioni
-	struct row*row;//2*M+1
-	int num_row;
-};
-struct row_relation_B_smooth{//riga che contiene relazioni B_smooth
-	int*factorization;
-	mpz_t square;
-	int length;
-};
-struct matrix_relation_B_smooth{//matrice che contiene le relazioni B_smooth
-	struct row_relation_B_smooth*row;
-	int num_row;
-};*/
 struct thread_data {
 	float log_thresold;//valore della soglia
 	mpz_t b;//coefficiente b

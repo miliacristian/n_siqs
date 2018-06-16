@@ -62,6 +62,7 @@ int main(int argc,char*argv[]){
 		//apertura file e dichiarazione variabili
 		file_log=open_file_log();//apri file di log
 		num_increment_M_and_B=0;
+		cardinality_factor_base=0;
 		mpz_t a_default,b_default;//a,b sono i coefficienti del polinomio aj^2+2bj+c,thresold a serve per calcolare il valore di a
 		int*array_id=NULL;//array che contiene gli id dei nuovi thread creati a partire da 0
 		int num_B_smooth=0,num_potential_B_smooth=0;//numero di numeri b-smooth potenziali e reali trovati nell'array
@@ -151,6 +152,7 @@ int main(int argc,char*argv[]){
 		while(factorizations_founded<=0){//finquando non sono stati trovati fattori:
 		    // calcola a,unisci le relazioni quadratiche vedi se puoi calcolare il sistema lineare,
             // trova souzioni sistema lineare e trova tutti gli a,b del crivello quadratico
+			printf("inizio ciclo\n");
 
 			adjust_n(n,&k);//aggiusta n per calcolare i suoi fattori(divide n per k)
 			multiply_n_for_k(n,&k,&factorized);//k,moltiplicatore di n per renderlo un quadrato modulo 8
@@ -259,7 +261,7 @@ int main(int argc,char*argv[]){
 			thread_data[NUM_THREAD].log_thresold=calculate_log_thresold(n,M);
 			printf("log_thresold main thread=%f\n",thread_data[NUM_THREAD].log_thresold);
 
-			find_list_square_relation(thread_data[NUM_THREAD],&num_B_smooth,&num_potential_B_smooth,M,&head,&tail,n,a_default,array_a_struct,0);
+			find_list_square_relation(thread_data[NUM_THREAD],&num_B_smooth,&num_potential_B_smooth,M,&head,&tail,n,a_default,NULL,0);
 			print_time_elapsed("time_to find_list_square_relation");
 
 			//aspetta tutti i thread e libera memoria

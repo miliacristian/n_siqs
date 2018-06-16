@@ -757,6 +757,7 @@ void calculate_target_a1_f(mpfr_t target_a1,const mpfr_t target_a,struct node_fa
 	if(count!=p_min_i){
 		handle_error_with_exit("error in calculate target_a1\n");
 	}
+
 	mpz_set_si(prime_min,p->prime);//ottieni prime_min
 	while(count<p_max_i){
 		p=p->next;
@@ -766,7 +767,6 @@ void calculate_target_a1_f(mpfr_t target_a1,const mpfr_t target_a,struct node_fa
 		handle_error_with_exit("error in calculate target_a1\n");
 	}
 	mpz_set_si(prime_max,p->prime);//ottieni prime_max
-
 
 	mpz_add(prime_sum,prime_max,prime_min);//prime_sum=prime_min+prime_max
 	mpfr_set_z(prime_avg,prime_sum,MPFR_RNDN);//prime_avg=prime_sum
@@ -1057,7 +1057,6 @@ void calculate_a_f2(mpz_t a,const mpfr_t target_a,int*s,struct node_factor_base*
 		memset(q_number,0,sizeof(int)*s_max);//azzera q
 		count=0;//azzera le append a q
 		iter=0;
-		printf("l\n");
 		mpfr_set_z(a2_double,a2_int,MPFR_RNDN);
 		while(mpfr_cmp(a2_double,target_a1)<0 && iter<=MAX_ITER){//finquando a2<target_a1 oppure sono state raggiunte tot iterazioni
 			p_i=2;
@@ -1114,7 +1113,6 @@ void calculate_a_f2(mpz_t a,const mpfr_t target_a,int*s,struct node_factor_base*
           length_best_q=count;//la lunghezza di best_q coincide con il numero di append fatte
         }
 	}
-    printf("ciao\n");
 
 	mpz_set_si(a,1);//a=1
 	for(int i=0;i<length_best_q;i++){//moltiplica tutti i fattori di a

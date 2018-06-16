@@ -1,36 +1,99 @@
-n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 dim_sol=2 p=547 q=2011 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=6 ns:808139
+n=55 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=0 num_pot_B_smooth=51 num_B_smooth=21 dim_sol=14 p=11 q=5 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=1 ns:628501
+n=10 M_start=25 B_start=20 p=2 q=5 M_end=25 B_end=8 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:63443
+n=10 M_start=25 B_start=20 p=2 q=5 M_end=25 B_end=8 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:46268
+n=14 M_start=25 B_start=20 p=2 q=7 M_end=25 B_end=12 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:41859
+n=49 M_start=25 B_start=20 k=1 p=7 q=7 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:65740
+n=55 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=0 num_pot_B_smooth=51 num_B_smooth=21 dim_sol=14 p=11 q=5 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=1 ns:363911
+n=121 M_start=25 B_start=20 k=1 p=11 q=11 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:73220
+n=901 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=0 num_pot_B_smooth=51 num_B_smooth=13 dim_sol=9 p=53 q=17 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=1 ns:143869
+n=1027 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=0 num_pot_B_smooth=51 num_B_smooth=8 dim_sol=4 p=79 q=13 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=1 ns:27986
+n=1711 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=0 num_pot_B_smooth=51 num_B_smooth=9 dim_sol=5 p=29 q=59 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=1 ns:62811
+n=5293 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=7 num_pot_B_smooth=51 num_B_smooth=8 dim_sol=4 p=67 q=79 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=44 ns:332132
+n=5963 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=13 num_pot_B_smooth=51 num_B_smooth=5 card_f_base=16 p_min=2 p_max=15 a=0 num_pot_B_smooth=276 num_B_smooth=57 dim_sol=42 p=67 q=89 M_end=112 B_end=105 num_increment=1 time_total:hour=0 min=0 sec:0 ms=24 ns:193498
+n=6241 M_start=25 B_start=20 k=1 p=79 q=79 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:34637
+n=48133 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=7 num_pot_B_smooth=51 num_B_smooth=4 card_f_base=16 p_min=2 p_max=15 a=0 num_pot_B_smooth=276 num_B_smooth=57 dim_sol=43 p=127 q=379 M_end=112 B_end=105 num_increment=1 time_total:hour=0 min=0 sec:0 ms=20 ns:410190
+n=50467 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=13 num_pot_B_smooth=51 num_B_smooth=3 card_f_base=21 p_min=2 p_max=20 a=0 num_pot_B_smooth=276 num_B_smooth=72 dim_sol=52 p=109 q=463 M_end=112 B_end=105 num_increment=1 time_total:hour=0 min=0 sec:0 ms=20 ns:164168
+n=135767 M_start=25 B_start=20 k=1 card_f_base=4 p_min=2 p_max=3 a=11 num_pot_B_smooth=51 num_B_smooth=2 card_f_base=15 p_min=2 p_max=14 a=0 num_pot_B_smooth=276 num_B_smooth=31 dim_sol=18 p=137 q=991 M_end=112 B_end=105 num_increment=1 time_total:hour=0 min=0 sec:0 ms=20 ns:620778
+n=154093 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=13 num_pot_B_smooth=51 num_B_smooth=6 dim_sol=2 p=691 q=223 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=18 ns:210370
+n=173441 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=19 num_pot_B_smooth=51 num_B_smooth=8 dim_sol=3 p=251 q=691 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=16 ns:131125
+n=318341 M_start=25 B_start=20 k=1 card_f_base=7 p_min=2 p_max=6 a=17 num_pot_B_smooth=51 num_B_smooth=8 dim_sol=2 p=449 q=709 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=16 ns:640379
+n=55 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=0 num_pot_B_smooth=51 num_B_smooth=21 dim_sol=14 p=11 q=5 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=1 ns:309391
+n=10 M_start=25 B_start=20 p=2 q=5 M_end=25 B_end=8 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:48986
+n=10 M_start=25 B_start=20 p=2 q=5 M_end=25 B_end=8 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:42219
+n=14 M_start=25 B_start=20 p=2 q=7 M_end=25 B_end=12 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:39296
+n=49 M_start=25 B_start=20 k=1 p=7 q=7 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:56321
+n=55 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=0 num_pot_B_smooth=51 num_B_smooth=21 dim_sol=14 p=11 q=5 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=1 ns:99536
+n=121 M_start=25 B_start=20 k=1 p=11 q=11 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:62050
+n=901 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=0 num_pot_B_smooth=51 num_B_smooth=13 dim_sol=9 p=53 q=17 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:956308
+n=1027 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=0 num_pot_B_smooth=51 num_B_smooth=8 dim_sol=4 p=79 q=13 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:858557
+n=1711 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=0 num_pot_B_smooth=51 num_B_smooth=9 dim_sol=5 p=29 q=59 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:859648
+n=5293 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=7 num_pot_B_smooth=51 num_B_smooth=8 dim_sol=4 p=67 q=79 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=42 ns:271427
+n=5963 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=13 num_pot_B_smooth=51 num_B_smooth=5 card_f_base=16 p_min=2 p_max=15 a=0 num_pot_B_smooth=276 num_B_smooth=57 dim_sol=42 p=67 q=89 M_end=112 B_end=105 num_increment=1 time_total:hour=0 min=0 sec:0 ms=47 ns:189928
+n=6241 M_start=25 B_start=20 k=1 p=79 q=79 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:106519
+n=48133 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=7 num_pot_B_smooth=51 num_B_smooth=4 card_f_base=16 p_min=2 p_max=15 a=0 num_pot_B_smooth=276 num_B_smooth=57 dim_sol=43 p=127 q=379 M_end=112 B_end=105 num_increment=1 time_total:hour=0 min=0 sec:0 ms=36 ns:567221
+n=50467 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=13 num_pot_B_smooth=51 num_B_smooth=3 card_f_base=21 p_min=2 p_max=20 a=0 num_pot_B_smooth=276 num_B_smooth=72 dim_sol=52 p=109 q=463 M_end=112 B_end=105 num_increment=1 time_total:hour=0 min=0 sec:0 ms=25 ns:810571
+n=135767 M_start=25 B_start=20 k=1 card_f_base=4 p_min=2 p_max=3 a=11 num_pot_B_smooth=51 num_B_smooth=2 card_f_base=15 p_min=2 p_max=14 a=0 num_pot_B_smooth=276 num_B_smooth=31 dim_sol=18 p=137 q=991 M_end=112 B_end=105 num_increment=1 time_total:hour=0 min=0 sec:0 ms=20 ns:89121
+n=154093 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=13 num_pot_B_smooth=51 num_B_smooth=6 dim_sol=2 p=691 q=223 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=22 ns:704714
+n=173441 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=19 num_pot_B_smooth=51 num_B_smooth=8 dim_sol=3 p=251 q=691 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=34 ns:254179
+n=318341 M_start=25 B_start=20 k=1 card_f_base=7 p_min=2 p_max=6 a=17 num_pot_B_smooth=51 num_B_smooth=8 dim_sol=2 p=449 q=709 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=21 ns:708884
+n=55 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=0 num_pot_B_smooth=51 num_B_smooth=21 dim_sol=14 p=11 q=5 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=1 ns:635252
+n=10 M_start=25 B_start=20 p=2 q=5 M_end=25 B_end=8 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:56537
+n=10 M_start=25 B_start=20 p=2 q=5 M_end=25 B_end=8 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:44227
+n=14 M_start=25 B_start=20 p=2 q=7 M_end=25 B_end=12 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:40402
+n=49 M_start=25 B_start=20 k=1 p=7 q=7 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:65314
+n=55 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=0 num_pot_B_smooth=51 num_B_smooth=21 dim_sol=14 p=11 q=5 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=1 ns:331933
+n=121 M_start=25 B_start=20 k=1 p=11 q=11 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:73712
+n=901 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=0 num_pot_B_smooth=51 num_B_smooth=13 dim_sol=9 p=53 q=17 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=1 ns:155255
+n=1027 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=0 num_pot_B_smooth=51 num_B_smooth=8 dim_sol=4 p=79 q=13 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=1 ns:38485
+n=1711 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=0 num_pot_B_smooth=51 num_B_smooth=9 dim_sol=5 p=29 q=59 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=1 ns:57800
+n=5293 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=7 num_pot_B_smooth=51 num_B_smooth=8 dim_sol=4 p=67 q=79 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=44 ns:250018
+n=5963 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=13 num_pot_B_smooth=51 num_B_smooth=5 card_f_base=16 p_min=2 p_max=15 a=0 num_pot_B_smooth=276 num_B_smooth=57 dim_sol=42 p=67 q=89 M_end=112 B_end=105 num_increment=1 time_total:hour=0 min=0 sec:0 ms=25 ns:188229
+n=6241 M_start=25 B_start=20 k=1 p=79 q=79 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:35656
+n=48133 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=7 num_pot_B_smooth=51 num_B_smooth=4 card_f_base=16 p_min=2 p_max=15 a=0 num_pot_B_smooth=276 num_B_smooth=57 dim_sol=43 p=127 q=379 M_end=112 B_end=105 num_increment=1 time_total:hour=0 min=0 sec:0 ms=28 ns:105101
+n=50467 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=13 num_pot_B_smooth=51 num_B_smooth=3 card_f_base=21 p_min=2 p_max=20 a=0 num_pot_B_smooth=276 num_B_smooth=72 dim_sol=52 p=109 q=463 M_end=112 B_end=105 num_increment=1 time_total:hour=0 min=0 sec:0 ms=44 ns:100227
+n=135767 M_start=25 B_start=20 k=1 card_f_base=4 p_min=2 p_max=3 a=11 num_pot_B_smooth=51 num_B_smooth=2 card_f_base=15 p_min=2 p_max=14 a=0 num_pot_B_smooth=276 num_B_smooth=31 dim_sol=18 p=137 q=991 M_end=112 B_end=105 num_increment=1 time_total:hour=0 min=0 sec:0 ms=44 ns:204640
+n=154093 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=13 num_pot_B_smooth=51 num_B_smooth=6 dim_sol=2 p=691 q=223 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=37 ns:716169
+n=173441 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=19 num_pot_B_smooth=51 num_B_smooth=8 dim_sol=3 p=251 q=691 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=36 ns:944407
+n=318341 M_start=25 B_start=20 k=1 card_f_base=7 p_min=2 p_max=6 a=17 num_pot_B_smooth=51 num_B_smooth=8 dim_sol=2 p=449 q=709 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=39 ns:987624
+n=55 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=0 num_pot_B_smooth=51 num_B_smooth=21 dim_sol=14 p=11 q=5 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=1 ns:389475
+n=10 M_start=25 B_start=20 p=2 q=5 M_end=25 B_end=8 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:52032
+n=10 M_start=25 B_start=20 p=2 q=5 M_end=25 B_end=8 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:43773
+n=14 M_start=25 B_start=20 p=2 q=7 M_end=25 B_end=12 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:41703
+n=49 M_start=25 B_start=20 k=1 p=7 q=7 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:58875
+n=55 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=0 num_pot_B_smooth=51 num_B_smooth=21 dim_sol=14 p=11 q=5 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=1 ns:217046
+n=121 M_start=25 B_start=20 k=1 p=11 q=11 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:65412
+n=901 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=0 num_pot_B_smooth=51 num_B_smooth=13 dim_sol=9 p=53 q=17 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=1 ns:30942
+n=1027 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=0 num_pot_B_smooth=51 num_B_smooth=8 dim_sol=4 p=79 q=13 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:934195
+n=1711 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=0 num_pot_B_smooth=51 num_B_smooth=9 dim_sol=5 p=29 q=59 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:971031
+n=5293 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=7 num_pot_B_smooth=51 num_B_smooth=8 dim_sol=4 p=67 q=79 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=4 ns:666190
+n=5963 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=13 num_pot_B_smooth=51 num_B_smooth=5 card_f_base=16 p_min=2 p_max=15 a=0 num_pot_B_smooth=276 num_B_smooth=57 dim_sol=42 p=67 q=89 M_end=112 B_end=105 num_increment=1 time_total:hour=0 min=0 sec:0 ms=11 ns:725427
+n=6241 M_start=25 B_start=20 k=1 p=79 q=79 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:76641
+n=48133 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=7 num_pot_B_smooth=51 num_B_smooth=4 card_f_base=16 p_min=2 p_max=15 a=0 num_pot_B_smooth=276 num_B_smooth=57 dim_sol=43 p=127 q=379 M_end=112 B_end=105 num_increment=1 time_total:hour=0 min=0 sec:0 ms=10 ns:187586
+n=50467 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=13 num_pot_B_smooth=51 num_B_smooth=3 card_f_base=21 p_min=2 p_max=20 a=0 num_pot_B_smooth=276 num_B_smooth=72 dim_sol=52 p=109 q=463 M_end=112 B_end=105 num_increment=1 time_total:hour=0 min=0 sec:0 ms=8 ns:891394
+n=135767 M_start=25 B_start=20 k=1 card_f_base=4 p_min=2 p_max=3 a=11 num_pot_B_smooth=51 num_B_smooth=2 card_f_base=15 p_min=2 p_max=14 a=0 num_pot_B_smooth=276 num_B_smooth=31 dim_sol=18 p=137 q=991 M_end=112 B_end=105 num_increment=1 time_total:hour=0 min=0 sec:0 ms=9 ns:71513
+n=154093 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=13 num_pot_B_smooth=51 num_B_smooth=6 dim_sol=2 p=691 q=223 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=5 ns:136471
+n=173441 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=19 num_pot_B_smooth=51 num_B_smooth=8 dim_sol=3 p=251 q=691 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=4 ns:287373
+n=318341 M_start=25 B_start=20 k=1 card_f_base=7 p_min=2 p_max=6 a=17 num_pot_B_smooth=51 num_B_smooth=8 dim_sol=2 p=449 q=709 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=4 ns:925730
+n=55 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=0 num_pot_B_smooth=51 num_B_smooth=21 dim_sol=14 p=11 q=5 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:703315
+n=10 M_start=25 B_start=20 p=2 q=5 M_end=25 B_end=8 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:23519
+n=10 M_start=25 B_start=20 p=2 q=5 M_end=25 B_end=8 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:37472
+n=14 M_start=25 B_start=20 p=2 q=7 M_end=25 B_end=12 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:36673
+n=49 M_start=25 B_start=20 k=1 p=7 q=7 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:57008
+n=55 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=0 num_pot_B_smooth=51 num_B_smooth=21 dim_sol=14 p=11 q=5 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:593501
+n=121 M_start=25 B_start=20 k=1 p=11 q=11 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:40790
+n=901 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=0 num_pot_B_smooth=51 num_B_smooth=13 dim_sol=9 p=53 q=17 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:458170
+n=1027 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=0 num_pot_B_smooth=51 num_B_smooth=8 dim_sol=4 p=79 q=13 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:414314
+n=1711 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=0 num_pot_B_smooth=51 num_B_smooth=9 dim_sol=5 p=29 q=59 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:424913
+n=5293 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=7 num_pot_B_smooth=51 num_B_smooth=8 dim_sol=4 p=67 q=79 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=2 ns:136285
+n=5963 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=13 num_pot_B_smooth=51 num_B_smooth=5 card_f_base=16 p_min=2 p_max=15 a=0 num_pot_B_smooth=276 num_B_smooth=57 dim_sol=42 p=67 q=89 M_end=112 B_end=105 num_increment=1 time_total:hour=0 min=0 sec:0 ms=3 ns:540624
+n=6241 M_start=25 B_start=20 k=1 p=79 q=79 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:47724
+n=48133 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=7 num_pot_B_smooth=51 num_B_smooth=4 card_f_base=16 p_min=2 p_max=15 a=0 num_pot_B_smooth=276 num_B_smooth=57 dim_sol=43 p=127 q=379 M_end=112 B_end=105 num_increment=1 time_total:hour=0 min=0 sec:0 ms=5 ns:971146
+n=50467 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=13 num_pot_B_smooth=51 num_B_smooth=3 card_f_base=21 p_min=2 p_max=20 a=0 num_pot_B_smooth=276 num_B_smooth=72 dim_sol=52 p=109 q=463 M_end=112 B_end=105 num_increment=1 time_total:hour=0 min=0 sec:0 ms=3 ns:983401
+n=135767 M_start=25 B_start=20 k=1 card_f_base=4 p_min=2 p_max=3 a=11 num_pot_B_smooth=51 num_B_smooth=2 card_f_base=15 p_min=2 p_max=14 a=0 num_pot_B_smooth=276 num_B_smooth=31 dim_sol=18 p=137 q=991 M_end=112 B_end=105 num_increment=1 time_total:hour=0 min=0 sec:0 ms=3 ns:329631
+n=154093 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=13 num_pot_B_smooth=51 num_B_smooth=6 dim_sol=2 p=691 q=223 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=2 ns:560787
+n=173441 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=19 num_pot_B_smooth=51 num_B_smooth=8 dim_sol=3 p=251 q=691 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=2 ns:143944
+n=318341 M_start=25 B_start=20 k=1 card_f_base=7 p_min=2 p_max=6 a=17 num_pot_B_smooth=51 num_B_smooth=8 dim_sol=2 p=449 q=709 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=2 ns:438062
+n=3616177 M_start=25 B_start=20 k=1 card_f_base=4 p_min=2 p_max=3 a=11 num_pot_B_smooth=51 num_B_smooth=2 card_f_base=15 p_min=2 p_max=14 a=23 num_pot_B_smooth=276 num_B_smooth=33 dim_sol=18 p=2657 q=1361 M_end=112 B_end=105 num_increment=1 time_total:hour=0 min=0 sec:2 ms=586 ns:357070
 mean_increment=0.000000
-n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 num_pot_B_smooth=51 num_B_smooth=7 dim_sol=2 p=547 q=2011 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=10 ns:610058
-mean_increment=0.000000
-n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 num_pot_B_smooth=51 num_B_smooth=7 dim_sol=2 p=547 q=2011 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=11 ns:23556
-n=1100018 M_start=25 B_start=20 p=2 q=550009 error in free_array_thread_data
-n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 num_pot_B_smooth=51 num_B_smooth=7 dim_sol=2 p=547 q=2011 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=3 ns:643789
-n=1100018 M_start=25 B_start=20 p=2 q=550009 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:20909
-n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 num_pot_B_smooth=51 num_B_smooth=7 dim_sol=2 p=547 q=2011 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=3 ns:504972
-mean_increment=0.000000
-n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 num_pot_B_smooth=51 num_B_smooth=7 dim_sol=2 p=547 q=2011 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=553 ns:635001
-n=1100018 M_start=25 B_start=20 p=2 q=550009 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=1 ns:391386
-n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 num_pot_B_smooth=51 num_B_smooth=7 dim_sol=2 p=547 q=2011 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=245 ns:174543
-mean_increment=0.000000
-n=1100017 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=91 num_pot_B_smooth=153 num_B_smooth=11 dim_sol=7 p=2011 q=547 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:1 ms=405 ns:324169
-n=1100018 M_start=25 B_start=20 p=2 q=550009 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=3 ns:71302
-n=1100017 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=91 num_pot_B_smooth=153 num_B_smooth=11 dim_sol=7 p=2011 q=547 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=828 ns:525331
-mean_increment=0.000000
-n=1100017 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=91 num_pot_B_smooth=153 num_B_smooth=11 dim_sol=7 p=2011 q=547 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:1 ms=294 ns:958141
-mean_increment=0.000000
-n=1100017 M_start=25 B_start=20 k=1 n=1100017 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=91 num_pot_B_smooth=153 num_B_smooth=11 dim_sol=7 p=2011 q=547 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=4 ns:174076
-mean_increment=0.000000
-n=1100017 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=91 num_pot_B_smooth=153 num_B_smooth=11 dim_sol=7 p=2011 q=547 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=9 ns:277031
-mean_increment=0.000000
-n=1100017 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=91 num_pot_B_smooth=153 num_B_smooth=11 dim_sol=7 p=2011 q=547 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:1 ms=325 ns:682858
-mean_increment=0.000000
-n=2019 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 error in create_array_a_struct
-n=2019 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 error in create_array_a_struct
-n=2019 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 error in create_array_a_struct
-n=2019 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 error in create_array_a_struct
-n=2019 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 error in create_array_a_struct
-n=2019 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 error in create_array_a_struct
-n=2019 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=0 error in find_list_square_relationn=2019 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=0 error in find_list_square_relationn=2019 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=0 num_pot_B_smooth=51 num_B_smooth=3 card_f_base=17 p_min=2 p_max=16 a=0 num_pot_B_smooth=276 num_B_smooth=65 dim_sol=51 p=673 q=3 M_end=112 B_end=105 num_increment=1 time_total:hour=0 min=0 sec:0 ms=5 ns:843150
-mean_increment=0.000000
-n=2019 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=0 num_pot_B_smooth=51 num_B_smooth=3 card_f_base=17 p_min=2 p_max=16 a=0 num_pot_B_smooth=276 num_B_smooth=65 dim_sol=51 p=673 q=3 M_end=112 B_end=105 num_increment=1 time_total:hour=0 min=0 sec:0 ms=5 ns:272208
+n=3616177 M_start=25 B_start=20 k=1 card_f_base=4 p_min=2 p_max=3 a=11 num_pot_B_smooth=51 num_B_smooth=2 card_f_base=15 p_min=2 p_max=14 a=23 num_pot_B_smooth=276 num_B_smooth=33 dim_sol=18 p=2657 q=1361 M_end=112 B_end=105 num_increment=1 time_total:hour=0 min=0 sec:0 ms=360 ns:772300
 mean_increment=0.000000
