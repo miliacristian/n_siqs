@@ -312,6 +312,18 @@ int main(int argc,char*argv[]){
                 calculate_news_M_and_B(&M,&B);
 				free_array_thread_data(thread_data,NUM_THREAD+1);
 				thread_data=NULL;
+				if(r.log_prime!=NULL && r.prime!=NULL && r.root_n_mod_p!=NULL) {
+					free(r.log_prime);
+					r.log_prime = NULL;
+					free(r.prime);
+					r.prime=NULL;
+					free(r.root_n_mod_p);
+					r.root_n_mod_p=NULL;
+				}
+				if(thread_data!=NULL) {
+					free_array_thread_data(thread_data, NUM_THREAD + 1);
+					thread_data = NULL;
+				}
                 continue;
             }
 			//algebra step:sistema lineare
@@ -325,6 +337,18 @@ int main(int argc,char*argv[]){
 				calculate_news_M_and_B(&M,&B);
                 free(linear_system);
                 linear_system=NULL;
+				if(r.log_prime!=NULL && r.prime!=NULL && r.root_n_mod_p!=NULL) {
+					free(r.log_prime);
+					r.log_prime = NULL;
+					free(r.prime);
+					r.prime=NULL;
+					free(r.root_n_mod_p);
+					r.root_n_mod_p=NULL;
+				}
+				if(thread_data!=NULL) {
+					free_array_thread_data(thread_data, NUM_THREAD + 1);
+					thread_data = NULL;
+				}
 				continue;
 			}
 			if(check_if_matrix_is_reduce_mod_n(base_matrix,num_B_smooth,dim_sol,2)==0){
@@ -347,6 +371,18 @@ int main(int argc,char*argv[]){
 			print_time_elapsed("time to calculate solution from base linear system");
 			if(factorizations_founded==0){
                 calculate_news_M_and_B(&M,&B);
+				if(r.log_prime!=NULL && r.prime!=NULL && r.root_n_mod_p!=NULL) {
+					free(r.log_prime);
+					r.log_prime = NULL;
+					free(r.prime);
+					r.prime=NULL;
+					free(r.root_n_mod_p);
+					r.root_n_mod_p=NULL;
+				}
+				if(thread_data!=NULL) {
+					free_array_thread_data(thread_data, NUM_THREAD + 1);
+					thread_data = NULL;
+				}
                 continue;
 			}
 		}
