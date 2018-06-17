@@ -1577,6 +1577,10 @@ int try_to_factor(const mpz_t a,const mpz_t b,const mpz_t n,mpz_t factor1,mpz_t 
 		gmp_printf("factorization of n=%Zd*%Zd\n",gcd_diff,n_temp);
 		mpz_set(factor1,gcd_diff);
 		mpz_set(factor2,n_temp);
+		mpz_mul(n_temp,factor1,factor2);
+		if(mpz_cmp(n_temp,n)!=0){
+			handle_error_with_exit("invalid factorization of n gcd diff\n");
+		}
 	}
 	if(mpz_cmp_si(gcd_sum,1)!=0 && mpz_cmp(gcd_sum,n)!=0){//gcd_sum !=1 && gcd_sum!=n
 		mpz_set(n_temp,n);//n_temp==n
@@ -1588,6 +1592,10 @@ int try_to_factor(const mpz_t a,const mpz_t b,const mpz_t n,mpz_t factor1,mpz_t 
 		gmp_printf("factorization of n=%Zd*%Zd\n",gcd_sum,n_temp);
 		mpz_set(factor1,gcd_sum);
 		mpz_set(factor2,n_temp);
+		mpz_mul(n_temp,factor1,factor2);
+		if(mpz_cmp(n_temp,n)!=0){
+			handle_error_with_exit("invalid factorization of n gcd sum\n");
+		}
 	}
 	mpz_clear(sum);
 	mpz_clear(diff);
@@ -1702,7 +1710,7 @@ int find_factor_of_n_from_base_matrix_char(int **base_matrix,int num_row,int* nu
     mpz_init(factor2);
     mpz_set(n_copy,n);
     if(num_col>MAX_DIM_SOL){//troppe soluzioni portano ad una allocazione troppo grande della memoria considerare solo i primi 10 vettori della base
-        //ciò equivale ad allocare 2^10 soluzioni invece di 2^num_col,ciò in termini di soluzione corrisponde a considerare tutti i vettori
+        //ciò equivale ad allocare 2^MAX_DIM_SOL soluzioni invece di 2^num_col,ciò in termini di soluzione corrisponde a considerare tutti i vettori
         //non allocati ==0,quindi trova soluzioni riga del tipo=v1,v2,...v10,0,0,0,0,0...0
         num_col=MAX_DIM_SOL;
         *num_column=num_col;

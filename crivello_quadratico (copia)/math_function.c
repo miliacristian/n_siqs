@@ -65,8 +65,9 @@ float calculate_log_thresold(const mpz_t n,long M){
     return log_thresold;
 }
 void create_num(mpz_t num,const mpz_t a,const mpz_t b,const mpz_t n,long j){
-	//num=a^2*j^2+2*bj+a*c
+	//num=a*j^2+2*bj+c mod n
 	mpz_t c,double_b_mul_j,a_mul_square_j;
+
 	mpz_init(c);
 	mpz_init(double_b_mul_j);
 	mpz_init(a_mul_square_j);
@@ -91,6 +92,7 @@ void create_num(mpz_t num,const mpz_t a,const mpz_t b,const mpz_t n,long j){
 
 	mpz_add(num,a_mul_square_j,double_b_mul_j);
 	mpz_add(num,num,c);//num=a*j^2+2*bj+c
+    mpz_mod(num,num,n);
 
 	mpz_clear(c);
 	mpz_clear(double_b_mul_j);
@@ -192,10 +194,11 @@ struct node_factorization*factorize_num(const mpz_t num,int first_index_f_base,i
 	mpz_clear(temp);
 	return 0;
 }*/
-void calculate_square(mpz_t square,const mpz_t a,int index,const mpz_t b){
+void calculate_square(mpz_t square,const mpz_t a,int index,const mpz_t b,const mpz_t n){
     // -M<index<M
     mpz_mul_si(square,a,index);//a*j
     mpz_add(square,square,b);//a*j+b
+	mpz_mod(square,square,n);// a*j+b mod n
     return;
 }
 void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth, int *num_potential_B_smooth, long M,
@@ -228,7 +231,7 @@ void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth
                 mpz_init(square_relation.square);
                 mpz_init(square_relation.num);
                 mpz_set(square_relation.num,num);
-                calculate_square(square_relation.square,a,i-M,thread_data.b);
+                calculate_square(square_relation.square,a,i-M,thread_data.b,n);
                 insert_ordered_square_rel(square_relation,head,tail);
             }
             else{

@@ -1356,7 +1356,6 @@ int calculate_dim_sol_char(char*matrix,int num_row,int num_col){//matrice deve e
     }
     int num_row_not_null=count_rows_not_null_char(matrix,num_row,num_col);
     int num_col_not_null=count_cols_not_null_char(matrix,num_row,num_col);
-    printf("num_col_not_null=%d,num_row_not_null=%d\n",num_col_not_null,num_row_not_null);
     return num_col_not_null-num_row_not_null;//numero incognite-rango matrice
 }
 int* sum_vector(int*vector1,int*vector2,int length1,int length2){//somma 2 vettori
