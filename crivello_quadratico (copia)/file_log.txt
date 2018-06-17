@@ -329,3 +329,5 @@ n=5435375879 M_start=125 B_start=59 k=1 card_f_base=11 p_min=2 p_max=10 a=799 nu
 mean_increment=0.000000
 n=5435375879 M_start=125 B_start=59 k=1 card_f_base=11 p_min=2 p_max=10 a=799 num_pot_B_smooth=753 num_B_smooth=5 card_f_base=24 p_min=2 p_max=23 a=493 num_pot_B_smooth=2328 num_B_smooth=37 dim_sol=17 p=55163 q=98533 M_end=262 B_end=163 num_increment=1 time_total:hour=0 min=0 sec:0 ms=2 ns:961668
 mean_increment=0.000000
+n=5435375879 M_start=125 B_start=59 k=1 card_f_base=11 p_min=2 p_max=10 a=799 num_pot_B_smooth=251 num_B_smooth=1 card_f_base=23 p_min=2 p_max=22 a=391 num_pot_B_smooth=776 num_B_smooth=13 card_f_base=35 p_min=2 p_max=34 a=227 num_pot_B_smooth=1596 num_B_smooth=44 error initialize_linear_system
+n=5435375879 M_start=125 B_start=59 k=1 card_f_base=11 p_min=2 p_max=10 a=799 num_pot_B_smooth=251 num_B_smooth=1 card_f_base=23 p_min=2 p_max=22 a=391 num_pot_B_smooth=776 num_B_smooth=13 card_f_base=35 p_min=2 p_max=34 a=227 num_pot_B_smooth=1596 num_B_smooth=44 error initialize_linear_system

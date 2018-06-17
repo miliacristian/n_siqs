@@ -301,7 +301,10 @@ int main(int argc,char*argv[]){
 				num_potential_B_smooth+=thread_data[i].num_potential_B_smooth;
 				printf("num_potential_B_smooth=%d,num_B_smooth=%d\n",num_potential_B_smooth,num_B_smooth);
 			}
+            print_list_square_relation(head,num_B_smooth);
+			remove_same_square(&head,&tail,&num_B_smooth);
             fprintf(file_log,"num_pot_B_smooth=%d num_B_smooth=%d ",num_potential_B_smooth,num_B_smooth);
+            printf("list after remove\n");
             print_list_square_relation(head,num_B_smooth);
             if(num_B_smooth<cardinality_factor_base*ENOUGH_RELATION){
                 calculate_news_M_and_B(&M,&B);

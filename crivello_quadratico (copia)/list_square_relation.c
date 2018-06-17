@@ -170,6 +170,20 @@ char first_is_smaller_square_rel(struct node_square_relation node1, struct node_
     *tail=tail_square;//la coda punta alla coda dell'altra lista
     return;
 }*/
+void remove_same_square(struct node_square_relation**head,struct node_square_relation**tail,int*num_B_smooth){
+    struct node_square_relation*l=*head;
+    while(l!=NULL){
+        if(l->next==NULL){//se il prossimo è NULL,quello attuale non va confrontato con nessun altro
+            return;
+        }
+        while(mpz_cmp(l->square_relation.square,l->next->square_relation.square)==0){
+            //nodi uguali
+            remove_after_node_square_rel(&l->next,tail);
+        }
+        l=l->next;
+    }
+    return;
+}
 void union_list_square(struct node_square_relation**head,struct node_square_relation**tail,struct node_square_relation*head_square,struct node_square_relation*tail_square){
     //concatena la prima lista e la seconda lista =L1 unito L2=L1,L2
     if(head==NULL){
