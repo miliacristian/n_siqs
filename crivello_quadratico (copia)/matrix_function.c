@@ -1356,6 +1356,7 @@ int calculate_dim_sol_char(char*matrix,int num_row,int num_col){//matrice deve e
     }
     int num_row_not_null=count_rows_not_null_char(matrix,num_row,num_col);
     int num_col_not_null=count_cols_not_null_char(matrix,num_row,num_col);
+    printf("num_col_not_null=%d,num_row_not_null=%d\n",num_col_not_null,num_row_not_null);
     return num_col_not_null-num_row_not_null;//numero incognite-rango matrice
 }
 int* sum_vector(int*vector1,int*vector2,int length1,int length2){//somma 2 vettori
@@ -1977,7 +1978,6 @@ int**calculate_base_linear_system_char(char*matrix_linear_system,int num_row,int
     free(array_var_temp);
     array_var_temp=NULL;
     return base_linear_system;
-    return NULL;
 }
 int scan_array_to_find_element_not_null(int*array,int start,int lenght_array){//start=punto di partenza,inizia da 0 lenght=lunghezza vettore,
 //scansiona gli elementi del vettore e ritorna l'indice del primo diverso da zero se lo trova,altrimenti -1
@@ -2271,16 +2271,15 @@ char*create_linear_system_f(struct node_square_relation*head,int cardinality_fac
 	long index;
 	while(p!=NULL){//cicla su tutte le relazioni quadratiche
 		struct node_factorization*sq=p->square_relation.head_factorization;
-		print_factorization(p->square_relation.num,sq);
 		while(sq!=NULL){//cicla su tutti i fattori della singola relazione quadratica
-			if((sq->exp_of_number & 1)!=0){//se l'esponente è divisibile per 2
+			if((sq->exp_of_number & 1)!=0){//se l'esponente non è divisibile per 2
 				//metti 1 in posizione indice nella colonna iesima
 				index=get_index(sq->index,col_index,num_B_smooth);
 				linear_system[index]=1;
 			}
 			sq=sq->next;
 		}
-		p=p->next;
+		p=p->next;//passa alla prossima relazione quadratica
 		col_index++;
 	}
 	if(col_index!=num_B_smooth){

@@ -241,9 +241,9 @@ int main(int argc,char*argv[]){
 			r.log_prime=alloc_array_int(cardinality_factor_base);
 			r.root_n_mod_p=alloc_array_int(cardinality_factor_base);
 			create_row_factorization(head_f_base_f,cardinality_factor_base);
-			print_array_int(r.log_prime,cardinality_factor_base);
-			print_array_int(r.prime,cardinality_factor_base);
-			print_array_int(r.root_n_mod_p,cardinality_factor_base);
+			//print_array_int(r.log_prime,cardinality_factor_base);
+			//print_array_int(r.prime,cardinality_factor_base);
+			//print_array_int(r.root_n_mod_p,cardinality_factor_base);
 			print_time_elapsed("time to create row factorization");
 			//creazione e avvio thread
 			if(num_thread_job!=1){
@@ -255,7 +255,7 @@ int main(int argc,char*argv[]){
             mpz_set(thread_data[NUM_THREAD].b,b_default);//imposta b
 			factor_matrix_f(n,M,thread_data[NUM_THREAD],cardinality_factor_base,a_default);//fattorizza numeri
 			print_time_elapsed("time_to_factor matrix_factorization main thread");
-			print_thread_data(thread_data[NUM_THREAD],M);
+			//print_thread_data(thread_data[NUM_THREAD],M);
 
 			//ricerca dei B_smooth potenziali,reali e fattorizzazione dei B_smooth reali
 			thread_data[NUM_THREAD].log_thresold=calculate_log_thresold(n,M);
@@ -311,7 +311,7 @@ int main(int argc,char*argv[]){
             }
 			//algebra step:sistema lineare
             linear_system=create_linear_system_f(head,cardinality_factor_base,num_B_smooth);
-			print_linear_system(linear_system,cardinality_factor_base,num_B_smooth);
+			//print_linear_system(linear_system,cardinality_factor_base,num_B_smooth);
             print_time_elapsed("time_to_create_linear_system");
 
             //algebra step:base sistema lineare

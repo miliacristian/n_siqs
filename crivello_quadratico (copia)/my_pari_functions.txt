@@ -81,7 +81,7 @@ random_biprime()={
 	p;
 	q;
 	MAX_DIGIT_N=80;
-	MAX_NUM_FOR_DIGIT=6;
+	MAX_NUM_FOR_DIGIT=20;
 	cardinality=MAX_DIGIT_N/2*MAX_NUM_FOR_DIGIT;
 	l=List();
 	for(digit=1,MAX_DIGIT_N/2,

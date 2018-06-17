@@ -499,8 +499,8 @@ void create_factor_base_f(int*cardinality_factor_base,long B,struct node_factor_
 	if((*last_prime_factor_base & 1)==0){//start=last_prime_factor_base è pari==2
 		start=*last_prime_factor_base;
 	}
-	else{
-		start=*last_prime_factor_base-1;//start è pari
+	else{//last_prime_factor_base è dispari
+		start=*last_prime_factor_base+1;//start è pari
 	}
     for(long i=start;i<=B;){
         mpz_set_si(p,i);//p=i,inizialmente p=2,ad ogni inizio ciclo deve essere pari
