@@ -48,6 +48,8 @@ void remove_after_node_square_rel(struct node_square_relation**ppos,struct node_
     if(q==NULL){//fine della lista,bisogna aggiornare la coda
         *ppos=r->next;
         *tail=r->prev;
+        mpz_clear(r->square_relation.num);
+        mpz_clear(r->square_relation.square);
         free_memory_list_factor((r)->square_relation.head_factorization);
         free(r);
         r=NULL;
@@ -55,6 +57,8 @@ void remove_after_node_square_rel(struct node_square_relation**ppos,struct node_
     else {
         q->prev = r->prev;
         *ppos = r->next;
+        mpz_clear(r->square_relation.num);
+        mpz_clear(r->square_relation.square);
         free_memory_list_factor((r)->square_relation.head_factorization);
         free(r);
         r=NULL;
@@ -144,7 +148,7 @@ void insert_at_head_square_rel(struct node_square_relation* new_node,struct node
 
 
 char first_is_smaller_square_rel(struct node_square_relation node1, struct node_square_relation node2){//verifica se il primo nodo contiene tempi più piccoli del secondo nodo
-    if(mpz_cmp(node1.square_relation.square,node2.square_relation.square)>=0){//node1 è più grande di node2
+    if(mpz_cmp(node1.square_relation.num,node2.square_relation.num)>=0){//node1 è più grande di node2
         return 0;
     }
     return 1;//node1 è più piccolo di node 2
@@ -170,16 +174,18 @@ char first_is_smaller_square_rel(struct node_square_relation node1, struct node_
     *tail=tail_square;//la coda punta alla coda dell'altra lista
     return;
 }*/
-void remove_same_square(struct node_square_relation**head,struct node_square_relation**tail,int*num_B_smooth){
+void remove_same_num(struct node_square_relation**head,struct node_square_relation**tail,int*num_B_smooth){
+    if(head==NULL || tail==NULL || num_B_smooth==NULL){
+        handle_error_with_exit("error in remove_same_num\n");
+    }
     struct node_square_relation*l=*head;
     while(l!=NULL){
-        if(l->next==NULL){//se il prossimo è NULL,quello attuale non va confrontato con nessun altro
-            return;
-        }
-        while(mpz_cmp(l->square_relation.square,l->next->square_relation.square)==0){
-            //nodi uguali
+        while(l->next!=NULL && (mpz_cmp(l->square_relation.num,(l->next)->square_relation.num)==0) ){
             (*num_B_smooth)--;
-            remove_after_node_square_rel(&l->next,tail);
+            remove_after_node_square_rel(&(l->next),tail);
+        }
+        if(l->next==NULL){
+            return;
         }
         l=l->next;
     }

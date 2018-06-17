@@ -1920,7 +1920,7 @@ int**calculate_base_linear_system_char(char*matrix_linear_system,int num_row,int
         handle_error_with_exit("error in calculate_base_linear_system\n");
     }
     printf("matrice_ridotta\n");
-    print_linear_system(matrix_linear_system,num_row,num_col);
+    //print_linear_system(matrix_linear_system,num_row,num_col);
     *dim_sol=calculate_dim_sol_char(matrix_linear_system,num_row,num_col);//calcola la dimensione della base del sistema lineare
     printf("dim_sol=%d\n",*dim_sol);
     fprintf(file_log,"dim_sol=%d ",*dim_sol);

@@ -301,11 +301,13 @@ int main(int argc,char*argv[]){
 				num_potential_B_smooth+=thread_data[i].num_potential_B_smooth;
 				printf("num_potential_B_smooth=%d,num_B_smooth=%d\n",num_potential_B_smooth,num_B_smooth);
 			}
+            print_time_elapsed("time to union all lists");
             print_list_square_relation(head,num_B_smooth);
-			remove_same_square(&head,&tail,&num_B_smooth);
+			remove_same_num(&head,&tail,&num_B_smooth);
+            print_time_elapsed("time to remove same num");
             fprintf(file_log,"num_pot_B_smooth=%d num_B_smooth=%d ",num_potential_B_smooth,num_B_smooth);
-            printf("list after remove\n");
-            print_list_square_relation(head,num_B_smooth);
+            //printf("list after remove\n");
+            //print_list_square_relation(head,num_B_smooth);
             if(num_B_smooth<cardinality_factor_base*ENOUGH_RELATION){
                 calculate_news_M_and_B(&M,&B);
 				free_array_thread_data(thread_data,NUM_THREAD+1);
@@ -314,7 +316,7 @@ int main(int argc,char*argv[]){
             }
 			//algebra step:sistema lineare
             linear_system=create_linear_system_f(head,cardinality_factor_base,num_B_smooth);
-			print_linear_system(linear_system,cardinality_factor_base,num_B_smooth);
+			//print_linear_system(linear_system,cardinality_factor_base,num_B_smooth);
             print_time_elapsed("time_to_create_linear_system");
 
             //algebra step:base sistema lineare

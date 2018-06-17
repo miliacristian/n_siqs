@@ -92,7 +92,6 @@ void create_num(mpz_t num,const mpz_t a,const mpz_t b,const mpz_t n,long j){
 
 	mpz_add(num,a_mul_square_j,double_b_mul_j);
 	mpz_add(num,num,c);//num=a*j^2+2*bj+c
-    mpz_mod(num,num,n);
 
 	mpz_clear(c);
 	mpz_clear(double_b_mul_j);

@@ -251,6 +251,7 @@ void print_list_square_relation(struct node_square_relation*head,int length){
     while(p!=NULL){
         //print_factorization(p->square_relation.num,p->square_relation.head_factorization);
         gmp_printf("square=%Zd\n",p->square_relation.square);
+        print_factorization(p->square_relation.num,p->square_relation.head_factorization);
         p=p->next;
         //printf("iter\n");
     }
