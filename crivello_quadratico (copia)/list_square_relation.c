@@ -144,12 +144,12 @@ void insert_at_head_square_rel(struct node_square_relation* new_node,struct node
 
 
 char first_is_smaller_square_rel(struct node_square_relation node1, struct node_square_relation node2){//verifica se il primo nodo contiene tempi più piccoli del secondo nodo
-    if(node1.square_relation.square>node2.square_relation.square){//node1 è più grande di node2
+    if(mpz_cmp(node1.square_relation.square,node2.square_relation.square)>=0){//node1 è più grande di node2
         return 0;
     }
     return 1;//node1 è più piccolo di node 2
 }
-void union_list_square(struct node_square_relation**head,struct node_square_relation**tail,struct node_square_relation*head_square,struct node_square_relation*tail_square){
+/*void union_list_square(struct node_square_relation**head,struct node_square_relation**tail,struct node_square_relation*head_square,struct node_square_relation*tail_square){
     //concatena la prima lista e la seconda lista =L1 unito L2=L1,L2
     if(head==NULL){
         handle_error_with_exit("error in union_list_square\n");
@@ -169,12 +169,35 @@ void union_list_square(struct node_square_relation**head,struct node_square_rela
     (*tail)->next=head_square;//l'ultimo nodo punta al primo nodo dell'altra lista
     *tail=tail_square;//la coda punta alla coda dell'altra lista
     return;
+}*/
+void union_list_square(struct node_square_relation**head,struct node_square_relation**tail,struct node_square_relation*head_square,struct node_square_relation*tail_square){
+    //concatena la prima lista e la seconda lista =L1 unito L2=L1,L2
+    if(head==NULL){
+        handle_error_with_exit("error in union_list_square\n");
+    }
+    if(tail==NULL){
+        handle_error_with_exit("error in union_list_square\n");
+    }
+    if(head_square==NULL){
+        return;
+    }
+    if(*tail==NULL){//lista vuota,prendi l'altra lista
+        *head=head_square;
+        *tail=tail_square;
+        return;
+    }
+    struct node_square_relation*p=head_square;
+    while(p!=NULL){
+        insert_ordered_square_rel(p->square_relation,head,tail);
+        p=p->next;
+    }
+    return;
 }
 void insert_ordered_square_rel(struct square_relation square_relation, struct node_square_relation** head, struct node_square_relation** tail){
     //inserisce ordinatamente un nodo nella lista ordinata per istanti temporali
-            if(square_relation.head_factorization==NULL){
-                handle_error_with_exit("error in insert_ordered\n");
-            }
+     if(square_relation.head_factorization==NULL){
+        handle_error_with_exit("error in insert_ordered\n");
+     }
     if(head==NULL || tail==NULL){
         handle_error_with_exit("error in insert_ordered,head or tail are NULL\n");
     }

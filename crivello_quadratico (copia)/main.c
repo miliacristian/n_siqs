@@ -311,7 +311,7 @@ int main(int argc,char*argv[]){
             }
 			//algebra step:sistema lineare
             linear_system=create_linear_system_f(head,cardinality_factor_base,num_B_smooth);
-			//print_linear_system(linear_system,cardinality_factor_base,num_B_smooth);
+			print_linear_system(linear_system,cardinality_factor_base,num_B_smooth);
             print_time_elapsed("time_to_create_linear_system");
 
             //algebra step:base sistema lineare
