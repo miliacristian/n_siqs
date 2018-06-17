@@ -178,6 +178,7 @@ void remove_same_square(struct node_square_relation**head,struct node_square_rel
         }
         while(mpz_cmp(l->square_relation.square,l->next->square_relation.square)==0){
             //nodi uguali
+            (*num_B_smooth)--;
             remove_after_node_square_rel(&l->next,tail);
         }
         l=l->next;
