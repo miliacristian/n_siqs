@@ -86,7 +86,18 @@ void clear_struct_thread_data(struct thread_data t_data,int M) {
 	}
 	return;
 }
-struct thread_data*alloc_array_thread_data(int length_array_thread_data,long M){
+struct node_factor_base**alloc_array_factor_base_data(int length){
+	if(length<=0){
+		handle_error_with_exit("error in alloc_array_factor_base_data\n");
+	}
+	struct node_factor_base**array_factor_base=malloc(sizeof(struct node_factor_base*)*length);
+	if(array_factor_base==NULL){
+		handle_error_with_exit("error in malloc array_factor_base\n");
+	}
+	memset(array_factor_base,0, sizeof(struct node_factor_base*)*length);
+	return array_factor_base;
+}
+struct thread_data*alloc_array_polynomial_thread_data(int length_array_thread_data,long M){
 	if(length_array_thread_data<=0 || M<=0){
 		handle_error_with_exit("error in alloc_array_thread_data\n");
 	}
@@ -131,9 +142,15 @@ void test(){
 	handle_error_with_exit("\n");
 }
 
-void*thread_job(void*arg){
+void*thread_job_polynomial(void*arg){
 	int*id=arg;
 	thread_job_criv_quad(*id);
+	pthread_exit(NULL);
+	return NULL;
+}
+void*thread_job_factor_base(void*arg){
+	int*id=arg;
+	thread_job_to_create_factor_base(*id);
 	pthread_exit(NULL);
 	return NULL;
 }
@@ -148,13 +165,28 @@ int* create_threads(pthread_t*array_tid,int num_thread){//ritorna il numero di t
 	int*array_id=alloc_array_int(num_thread);
 	for(int i=0;i<num_thread;i++){
 		array_id[i]=i;
-		if(pthread_create(&(array_tid[i]),NULL,thread_job,&(array_id[i]))!=0){
+		if(pthread_create(&(array_tid[i]),NULL,thread_job_polynomial,&(array_id[i]))!=0){
 			handle_error_with_exit("error in pthred_create create_thread\n");
 		}
 	}
 	return array_id;
 }
-
+int* create_factor_base_threads(pthread_t*array_tid,int num_thread,long B){//ritorna il numero di thread creati con successo
+	if(num_thread<0 || array_tid==NULL){
+		handle_error_with_exit("error in create_thread\n");
+	}
+	if(num_thread==0){
+		return NULL;
+	}
+	int*array_id=alloc_array_int(num_thread);
+	for(int i=0;i<num_thread;i++){
+		array_id[i]=i;
+		if(pthread_create(&(array_tid[i]),NULL,thread_job_factor_base,&(array_id[i]))!=0){
+			handle_error_with_exit("error in pthred_create create_thread\n");
+		}
+	}
+	return array_id;
+}
 void join_all_threads(pthread_t*array_tid,int length_array){
 	if(array_tid==NULL){
 		return;//no thread to wait

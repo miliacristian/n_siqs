@@ -8,8 +8,9 @@
 #define SIQS_MIN_PRIME_POLYNOMIAL 400 //parametri per il calcolo di a
 #define SIQS_MAX_PRIME_POLYNOMIAL 4000 //parametri per il calcolo di a
 #define NUM_ITER_FOR_CALCULATE_A 1000 //parametri per il calcolo di a
-#define THRESOLD_RELATION 0 
-#define NUM_THREAD 0 //numero di thread
+#define THRESOLD_RELATION 0
+#define NUM_THREAD_FACTOR_BASE 1
+#define NUM_THREAD_POLYNOMIAL 0 //numero di thread
 #define S_MAX 10//corrisponde a 2^(S_MAX-1) polinomi diversi
 #define MAX_DIM_SOL 15 //dimensione soluzione massima
 #define PERC_INCREMENT_M 50 
@@ -80,9 +81,11 @@ void test();
 FILE*open_file_log();
 void print_time_elapsed_on_file_log(char*string);
 FILE*open_file(char*path);
-struct thread_data*alloc_array_thread_data(int length_array_thread_data,long M);
+struct thread_data*alloc_array_polynomial_thread_data(int length_array_thread_data,long M);
 void print_time_elapsed_local(char*string,struct timespec*timer_thread);
 void clear_struct_thread_data(struct thread_data t_data,int M);
 void free_array_thread_data(struct thread_data*thread_data,int length_array_thread_data);
 void free_memory_list_square_relation(struct node_square_relation*head);
+struct node_factor_base**alloc_array_factor_base_data(int length);
+int* create_factor_base_threads(pthread_t*array_tid,int num_thread,long B);
 #endif
