@@ -496,6 +496,9 @@ void create_factor_base_f(int*cardinality_factor_base,long B,struct node_factor_
     mpz_init(pp);
     mpz_init(value);
 	long start;
+	if(*last_prime_factor_base==1) {
+		*head= initialize_factor_base(cardinality_factor_base, B,tail, n,last_prime_factor_base);
+	}
 	if((*last_prime_factor_base & 1)==0){//start=last_prime_factor_base è pari==2
 		start=*last_prime_factor_base;
 	}

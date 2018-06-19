@@ -51,6 +51,12 @@
 	int*number_prime_a=NULL;//numeri primi usati per ottenere a
     struct a_struct*array_a_struct;
 
+int calculate_start_factor_base(int id_thread){
+    long remainder=reduce_int_mod_n_v2(NUM_THREAD_FACTOR_BASE+1,B);
+    long length=(B-remainder)/(NUM_THREAD_FACTOR_BASE+1);
+    int start=id_thread*length+1;
+    return start;
+}
 int main(int argc,char*argv[]){
 	srand((unsigned int)time(NULL));//imposta seme casuale
 	if(argc!=2){//se non c'è esattamente un parametro,termina
@@ -77,6 +83,7 @@ int main(int argc,char*argv[]){
 		struct node_square_relation*head=NULL,*tail=NULL;//contengono tutte le relazioni quadratiche
         int last_prime_factor_base=-1;//indica da quale primo si inizia a creare la factor base
         char factor_base_already_exist=0;
+        int start=0;
 		k=1;
 
 		//mpz_init
@@ -182,16 +189,24 @@ int main(int argc,char*argv[]){
 						free(array_id);
 						array_id = NULL;
 					}
+					start=calculate_start_factor_base(NUM_THREAD_FACTOR_BASE);
 				create_factor_base_f(&cardinality_factor_base,B,&head_f_base_f,&tail_f_base_f,n,&start);
-				for(int i=0;i<NUM_THREAD_FACTOR_BASE;i++){//unisci le liste tranne la lista del main thread
+				for(int i=0;i<NUM_THREAD_FACTOR_BASE;i++){//unisci tutte le liste nella prima lista tranne la lista del main thread
 					union_list_factor_base(&(thread_factor_base_data[0].head),&(thread_factor_base_data[0].tail),&(thread_factor_base_data[0].cardinality_factor_base),&(thread_factor_base_data[0].last_prime_factor_base),
 										   (thread_factor_base_data[i].head),(thread_factor_base_data[i].tail),thread_factor_base_data[i].cardinality_factor_base,thread_factor_base_data[0].last_prime_factor_base);
 				}
-				factor_base_already_exist=1;
+				//unisci la prima lista con la lista del main thread
+				union_list_factor_base(&(thread_factor_base_data[0].head),&(thread_factor_base_data[0].tail),&(thread_factor_base_data[0].cardinality_factor_base),&(thread_factor_base_data[0].last_prime_factor_base),head_f_base_f,tail_f_base_f,cardinality_factor_base,last_prime_factor_base);
+				//reimposta valori globali
+				head_f_base_f=thread_factor_base_data[0].head;
+				tail_f_base_f=thread_factor_base_data[0].tail;
+				cardinality_factor_base=thread_factor_base_data[0].cardinality_factor_base;
+				last_prime_factor_base=thread_factor_base_data[0].last_prime_factor_base;
 				if(thread_factor_base_data!=NULL){
 					free(thread_factor_base_data);
 					thread_factor_base_data=NULL;
 				}
+                factor_base_already_exist=1;
 			}
 			else if(B<=THRESOLD_B){
 				//crea factor base da 0 a B,-1 e 2 sono già presenti,alle prossime iterazioni calcola la lista appendendo la sottolista
@@ -477,10 +492,12 @@ int main(int argc,char*argv[]){
 	}
 	return 0;
 }
+
 int thread_job_to_create_factor_base(int id_thread){
 	long remainder=reduce_int_mod_n_v2(NUM_THREAD_FACTOR_BASE+1,B);
 	long length=(B-remainder)/(NUM_THREAD_FACTOR_BASE+1);
 	int start=id_thread*length+1;
+	start=calculate_start_factor_base(id_thread);
 	int end=start+length-1;
 	if(id_thread==0){//se è il primo thread parti da 2
 		start=2;
