@@ -103,7 +103,32 @@ void insert_at_tail_f(struct node_factor_base *new_node,struct node_factor_base*
     new_node->prev = *tail;
     *tail = new_node;
 }
-
+void union_list_factor_base(struct node_factor_base**head1,struct node_factor_base**tail1,int*cardinality_factor_base1,int*last_prime_factor_base1,
+        struct node_factor_base*head2,struct node_factor_base*tail2,int cardinality_factor_base2,int last_prime_factor_base2){
+    //concatena la prima lista e la seconda lista ----> L1 unito L2=L1,L2 suppone che la lista 1 contenga primi minori della lista 2
+    if(head1==NULL || tail1==NULL || cardinality_factor_base1==NULL || *cardinality_factor_base1<0 || last_prime_factor_base1<=0 || cardinality_factor_base2<0 || last_prime_factor_base2<=0){
+        handle_error_with_exit("error in union_list_square\n");
+    }
+    if(tail1==NULL){
+        handle_error_with_exit("error in union_list_square\n");
+    }
+    if(head2==NULL){
+        return;
+    }
+    if(*tail1==NULL){//lista vuota,prendi l'altra lista
+        *head1=head2;
+        *tail1=tail2;
+        *cardinality_factor_base1=cardinality_factor_base2;
+        *last_prime_factor_base1=last_prime_factor_base2;
+        return;
+    }
+    head2->prev=(*tail1);//il primo nodo della seconda lista punta al nodo ultimo della lista
+    (*tail1)->next=head2;//l'ultimo nodo punta al primo nodo dell'altra lista
+    *tail1=tail2;//la coda punta alla coda dell'altra lista
+    *cardinality_factor_base1=*cardinality_factor_base1+cardinality_factor_base2;
+    *last_prime_factor_base1=last_prime_factor_base2;
+    return;
+}
 
 //alloca e inizializza un nodo della lista dinamica ordinata
 struct node_factor_base* get_new_node_f(int num,const mpz_t n) {

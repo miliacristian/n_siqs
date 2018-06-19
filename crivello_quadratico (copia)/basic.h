@@ -21,6 +21,7 @@
 #define ENOUGH_RELATION 1.00 //numero minore o uguale a 1 indica quante relazioni
 //vanno trovate in più rispetto alla cardinalità della factor base
 #define ERROR_LOG 25//aumentare per trovare più numeri B_smooth potenziali,valore default=25
+#define THRESOLD_B 20000 //se B è minore di thresold b non dividere il processo di creazione factor base
 #include <gmp.h>
 #include <time.h>
 #include <stdio.h>
@@ -64,6 +65,12 @@ struct square_relation {
     struct node_factorization*head_factorization;
     mpz_t num;
 };
+struct factor_base_data {
+	struct node_factor_base*head;
+	struct node_factor_base*tail;
+	int cardinality_factor_base;
+	int last_prime_factor_base;
+};
 
 void print_time_elapsed(char*string);
 void handle_error_with_exit(char*error_string);
@@ -86,6 +93,6 @@ void print_time_elapsed_local(char*string,struct timespec*timer_thread);
 void clear_struct_thread_data(struct thread_data t_data,int M);
 void free_array_thread_data(struct thread_data*thread_data,int length_array_thread_data);
 void free_memory_list_square_relation(struct node_square_relation*head);
-struct node_factor_base**alloc_array_factor_base_data(int length);
+struct factor_base_data*alloc_array_factor_base_data(int length);
 int* create_factor_base_threads(pthread_t*array_tid,int num_thread,long B);
 #endif

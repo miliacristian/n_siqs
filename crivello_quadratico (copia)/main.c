@@ -44,7 +44,7 @@
 	int dim_sol=-1;//numero di vettori linearmente indpendenti ottenuti dalla risoluzione del sistema lineare,combinandoli opportunamente 		calcolano tutte le possibili combinazioni/soluzioni del sistema
 	int cardinality_factor_base=-1;//cardinalità factor base
 	struct thread_data*thread_polynomial_data=NULL;//struttura dati globale per far svolgere la computazione ai thread
-	struct node_factor_base**thread_factor_base_data=NULL;
+	struct factor_base_data*thread_factor_base_data=NULL;
 	int num_thread_job=-1;//lunghezza dell'array di matrici,ogni thread riceve una matrice per fare la computazione
 	int num_increment_M_and_B=0;
 	int*index_prime_a=NULL;//indice dei primi usati per ottenere a,rispetto alla factor base
@@ -168,15 +168,12 @@ int main(int argc,char*argv[]){
 			print_time_elapsed("time to calculate thresold_a");
 
 			//factor base
-			if(factor_base_already_exist==0) {
+			if(factor_base_already_exist==0 && B>THRESOLD_B && NUM_THREAD_FACTOR_BASE>0) {//se la factor base non è mai stata creata
+				// e se B è maggiore del valore soglia
 				thread_factor_base_data = alloc_array_factor_base_data(NUM_THREAD_FACTOR_BASE + 1);
-				if (NUM_THREAD_FACTOR_BASE > 0) {
 					array_tid = alloc_array_tid(NUM_THREAD_FACTOR_BASE);//alloca memoria per contenere tutti i tid
 					array_id = create_factor_base_threads(array_tid, NUM_THREAD_FACTOR_BASE,B);//crea tutti i thread
-				}
-				if (NUM_THREAD_FACTOR_BASE > 0) {
 					join_all_threads(array_tid, NUM_THREAD_FACTOR_BASE);//aspetta tutti i thread
-
 					if (array_tid != NULL) {//libera memoria allocata
 						free(array_tid);
 						array_tid = NULL;
@@ -185,13 +182,25 @@ int main(int argc,char*argv[]){
 						free(array_id);
 						array_id = NULL;
 					}
-					if(thread_factor_base_data!=NULL){
-						free(thread_factor_base_data);
-						thread_factor_base_data=NULL;
-					}
+				create_factor_base_f(&cardinality_factor_base,B,&head_f_base_f,&tail_f_base_f,n,&start);
+				for(int i=0;i<NUM_THREAD_FACTOR_BASE;i++){//unisci le liste tranne la lista del main thread
+					union_list_factor_base(&(thread_factor_base_data[0].head),&(thread_factor_base_data[0].tail),&(thread_factor_base_data[0].cardinality_factor_base),&(thread_factor_base_data[0].last_prime_factor_base),
+										   (thread_factor_base_data[i].head),(thread_factor_base_data[i].tail),thread_factor_base_data[i].cardinality_factor_base,thread_factor_base_data[0].last_prime_factor_base);
 				}
 				factor_base_already_exist=1;
+				if(thread_factor_base_data!=NULL){
+					free(thread_factor_base_data);
+					thread_factor_base_data=NULL;
+				}
 			}
+			else if(B<=THRESOLD_B){
+				//crea factor base da 0 a B,-1 e 2 sono già presenti,alle prossime iterazioni calcola la lista appendendo la sottolista
+				create_factor_base_f(&cardinality_factor_base,B,&head_f_base_f,&tail_f_base_f,n,&last_prime_factor_base);//crea lista dinamica con tutti i primi
+			}
+			else{//factor base è già stata creata parti da start=last_prime_factor_base fino a B e appendi la sottolista alla lista precedente
+				create_factor_base_f(&cardinality_factor_base,B,&head_f_base_f,&tail_f_base_f,n,&last_prime_factor_base);//crea lista dinamica con tutti i primi
+			}
+			//factor base già creata
 			create_factor_base_f(&cardinality_factor_base,B,&head_f_base_f,&tail_f_base_f,n,&last_prime_factor_base);//crea lista dinamica con tutti i primi
 			//scrivere modo per appendere una factor base con un'altra in modo da non ricalcolare nulla da capo
 			printf("factor base=");
@@ -469,7 +478,15 @@ int main(int argc,char*argv[]){
 	return 0;
 }
 int thread_job_to_create_factor_base(int id_thread){
-
+	long remainder=reduce_int_mod_n_v2(NUM_THREAD_FACTOR_BASE+1,B);
+	long length=(B-remainder)/(NUM_THREAD_FACTOR_BASE+1);
+	int start=id_thread*length+1;
+	int end=start+length-1;
+	if(id_thread==0){//se è il primo thread parti da 2
+		start=2;
+	}
+	//es remainder=0 thread=5 B=500.000 -> len=100.000 start=0*100000+1,end=1+100000-1=100000,start2=100001,end2=200000
+    return 0;
 }
 int thread_job_criv_quad(int id_thread){//id inizia da 0,il lavoro di un thread rimane uguale anche se non si riesce a fattorizzare n
 	if(id_thread+1>num_thread_job-1){//l'indice del thread eccede il numero di job da fare

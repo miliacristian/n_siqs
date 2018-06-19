@@ -86,17 +86,18 @@ void clear_struct_thread_data(struct thread_data t_data,int M) {
 	}
 	return;
 }
-struct node_factor_base**alloc_array_factor_base_data(int length){
+struct factor_base_data*alloc_array_factor_base_data(int length){
 	if(length<=0){
 		handle_error_with_exit("error in alloc_array_factor_base_data\n");
 	}
-	struct node_factor_base**array_factor_base=malloc(sizeof(struct node_factor_base*)*length);
+	struct factor_base_data*array_factor_base=malloc(sizeof(struct factor_base_data)*length);
 	if(array_factor_base==NULL){
 		handle_error_with_exit("error in malloc array_factor_base\n");
 	}
-	memset(array_factor_base,0, sizeof(struct node_factor_base*)*length);
+	memset(array_factor_base,0, sizeof(struct factor_base_data)*length);
 	return array_factor_base;
 }
+
 struct thread_data*alloc_array_polynomial_thread_data(int length_array_thread_data,long M){
 	if(length_array_thread_data<=0 || M<=0){
 		handle_error_with_exit("error in alloc_array_thread_data\n");
