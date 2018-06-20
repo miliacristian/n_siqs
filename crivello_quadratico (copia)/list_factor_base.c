@@ -107,10 +107,7 @@ void union_list_factor_base(struct node_factor_base**head1,struct node_factor_ba
         struct node_factor_base*head2,struct node_factor_base*tail2,int cardinality_factor_base2,int last_prime_factor_base2){
     //concatena la prima lista e la seconda lista ----> L1 unito L2=L1,L2 suppone che la lista 1 contenga primi minori della lista 2
     if(head1==NULL || tail1==NULL || cardinality_factor_base1==NULL || (*cardinality_factor_base1)<0 || (*last_prime_factor_base1)<=0 || cardinality_factor_base2<0 || last_prime_factor_base2<=0){
-        handle_error_with_exit("error in union_list_square\n");
-    }
-    if(tail1==NULL){
-        handle_error_with_exit("error in union_list_square\n");
+        handle_error_with_exit("error in union_list_factor base\n");
     }
     if(head2==NULL){
         return;

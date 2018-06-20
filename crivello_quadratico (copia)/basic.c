@@ -172,7 +172,7 @@ int* create_threads(pthread_t*array_tid,int num_thread){//ritorna il numero di t
 	}
 	return array_id;
 }
-int* create_factor_base_threads(pthread_t*array_tid,int num_thread,long B){//ritorna il numero di thread creati con successo
+int* create_factor_base_threads(pthread_t*array_tid,int num_thread){//ritorna il numero di thread creati con successo
 	if(num_thread<0 || array_tid==NULL){
 		handle_error_with_exit("error in create_thread\n");
 	}

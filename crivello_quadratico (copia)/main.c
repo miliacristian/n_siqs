@@ -179,7 +179,7 @@ int main(int argc,char*argv[]){
 				// e se B è maggiore del valore soglia
 				thread_factor_base_data = alloc_array_factor_base_data(NUM_THREAD_FACTOR_BASE + 1);
 					array_tid = alloc_array_tid(NUM_THREAD_FACTOR_BASE);//alloca memoria per contenere tutti i tid
-					array_id = create_factor_base_threads(array_tid, NUM_THREAD_FACTOR_BASE,B);//crea tutti i thread
+					array_id = create_factor_base_threads(array_tid, NUM_THREAD_FACTOR_BASE);//crea tutti i thread
 					join_all_threads(array_tid, NUM_THREAD_FACTOR_BASE);//aspetta tutti i thread
 					if (array_tid != NULL) {//libera memoria allocata
 						free(array_tid);
@@ -223,7 +223,7 @@ int main(int argc,char*argv[]){
 			printf("cardinality factor_base %d\n",cardinality_factor_base);
 			fprintf(file_log,"card_f_base=%d ",cardinality_factor_base);
 			print_time_elapsed("time to calculate factor base");
-
+            exit(0);
 			//a,per siqs e generare tutti gli altri b,prodotto di primi dispari distinti
 			calculate_a_f2(a,thresold_a,&s,head_f_base_f,cardinality_factor_base,&index_prime_a,&number_prime_a);
 			if(s>0) {
@@ -494,6 +494,7 @@ int main(int argc,char*argv[]){
 }
 
 int thread_job_to_create_factor_base(int id_thread){
+	printf("id_thread=%d\n",id_thread);
 	long remainder=reduce_int_mod_n_v2(NUM_THREAD_FACTOR_BASE+1,B);
 	long length=(B-remainder)/(NUM_THREAD_FACTOR_BASE+1);
 	int start=id_thread*length+1;
@@ -503,7 +504,11 @@ int thread_job_to_create_factor_base(int id_thread){
 		start=2;
 	}
 	//es remainder=0 thread=5 B=500.000 -> len=100.000 start=0*100000+1,end=1+100000-1=100000,start2=100001,end2=200000
-    return 0;
+	thread_factor_base_data[id_thread].last_prime_factor_base=start;
+	create_factor_base_f(&(thread_factor_base_data[id_thread].cardinality_factor_base),end,&thread_factor_base_data[id_thread].head,&thread_factor_base_data[id_thread].tail,n,&(thread_factor_base_data[id_thread].last_prime_factor_base));
+	printf("id_thread=%d,card_factor_base=%d,last_prime=%d\n",id_thread,thread_factor_base_data[id_thread].cardinality_factor_base,thread_factor_base_data[id_thread].last_prime_factor_base);
+	print_list_factor(thread_factor_base_data[id_thread].head,thread_factor_base_data[id_thread].cardinality_factor_base);
+	return 0;
 }
 int thread_job_criv_quad(int id_thread){//id inizia da 0,il lavoro di un thread rimane uguale anche se non si riesce a fattorizzare n
 	if(id_thread+1>num_thread_job-1){//l'indice del thread eccede il numero di job da fare
