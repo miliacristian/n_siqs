@@ -365,6 +365,21 @@ void print_matrix_double(double**matrix,int num_row,int num_col){
 	}
 	return;
 }
+void print_matrix_char(char**matrix,int num_row,int num_col){
+	if(matrix==NULL || *matrix==NULL){
+		printf("empty matrix\n");
+	}
+	if(num_row <=0 || num_col <=0){
+		handle_error_with_exit("error in print_matrix_double\n");
+	}
+	if(not_print_matrix(num_row,num_col)==1){
+		return;
+	}
+	for(int i=0;i<num_row;i++){
+		print_array_char(matrix[i],num_col);
+	}
+	return;
+}
 void print_matrix_mpz(mpz_t**matrix,int num_row,int num_col){
 	if(matrix==NULL){
 		handle_error_with_exit("pointer null\n");

@@ -77,6 +77,9 @@ int count_rows_not_null_char(char*matrix,int num_row,int num_col);
 char check_solution_base_matrix_char(char*linear_system,int num_row_system,int num_col_system,int **base_matrix,int num_row_base,int num_col_base);
 char verify_solution_char(char*matrix_linear_system,int num_row,int num_col,const int*solution);
 void divide_vector_multiple_of_2_by_2(int*vector,int length);
+char**alloc_matrix_char(int num_row,int num_col);
+void copy_matrix_with_array(char**linear_system2,char*linear_system,int num_row,int num_col);
+void reduce_echelon_form_matrix_char(char**matrix,int num_row,int num_col);
 #endif
 
 

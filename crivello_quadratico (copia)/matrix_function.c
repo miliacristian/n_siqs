@@ -12,7 +12,19 @@ extern struct row_factorization r;
 extern struct timespec timer;
 extern struct timespec time_start;
 extern FILE*file_log;
-
+void copy_matrix_with_array(char**linear_system2,char*linear_system,int num_row,int num_col){
+    if(linear_system2==NULL || *linear_system2==NULL || linear_system==NULL || num_row<=0 || num_col<=0){
+        handle_error_with_exit("error in copy_matrix_with_array\n");
+    }
+    long index;
+    for(int i=0;i<num_row;i++){
+        for(int j=0;j<num_col;j++){
+            index=get_index(i,j,num_col);
+            linear_system2[i][j]=linear_system[index];
+        }
+    }
+    return;
+}
 /*void free_memory_matrix_factorization(struct matrix_factorization *mat){
 	if(mat==NULL){
 		handle_error_with_exit("error in free memory matrix factorization\n");
@@ -1266,6 +1278,18 @@ void swap_row(int**matrix,int num_row,int num_col,int ind_row1,int ind_row2){//i
 	}
 	return;
 }
+void swap_row_char2(char**matrix,int num_row,int num_col,int ind_row1,int ind_row2){//ind_row1,int ind_row2 start at 0
+	if(matrix==NULL || *matrix==NULL || num_row<=0 || num_col<=0 || ind_row1==ind_row2 || ind_row1>=num_row || ind_row2>=num_row || ind_row1<0 || ind_row2<0){
+		handle_error_with_exit("error in parameter swap_row\n");
+	}
+	char temp;
+	for(int i=0;i<num_col;i++){//il numero di colonne corrisponde alla lunghezza di una riga
+		temp=matrix[ind_row1][i];
+		matrix[ind_row1][i]=matrix[ind_row2][i];
+		matrix[ind_row2][i]=temp;
+	}
+	return;
+}
 void swap_row_char(char*matrix,int num_row,int num_col,int ind_row1,int ind_row2){//ind_row1,int ind_row2 start at 0
     if(matrix==NULL || num_row<=0 || num_col<=0 || ind_row1==ind_row2 || ind_row1>=num_row || ind_row2>=num_row || ind_row1<0 || ind_row2<0){
         handle_error_with_exit("error in parameter swap_row\n");
@@ -2084,6 +2108,52 @@ void reduce_echelon_form(int**matrix,int num_row,int num_col){//versione rref,fa
 					}
 				}
 			}			
+		}
+		lead=lead+1;
+	}
+	return;
+}
+void reduce_echelon_form_matrix_char(char**matrix,int num_row,int num_col){//versione rref,fare il test per verificare
+	// che è effettivamente ridotta in modo rref
+	int lead=0;
+	int i;
+	if(matrix==NULL || *matrix==NULL || num_row<=0 || num_col<=0){
+		handle_error_with_exit("error in parameter reduce echelon form\n");
+	}
+	/*if(check_if_matrix_is_reduce_mod_n(matrix,num_row,num_col,2)==0){
+		handle_error_with_exit("matrix is not reduce mod n");
+	}*/
+	for(int r=0;r<num_row;r++){
+		printf("r=%d,num_row=%d\n",r,num_row);
+		if(num_col<=lead){
+			return;
+		}
+		i=r;
+		while(matrix[i][lead]==0){
+			i=i+1;
+			if(num_row==i){
+				i=r;
+				lead=lead+1;
+				if(num_col==lead){
+					return;
+				}
+			}
+		}
+		if(i!=r){
+			swap_row_char2(matrix,num_row,num_col,i,r);
+		}
+		if(matrix[r][lead]==0){
+			handle_error_with_exit("invalid pivot\n");
+		}
+		for(int i=0;i<num_row;i++){//riduzione della matrice versione rref
+			if(i!=r){
+				if(matrix[i][lead]!=0){
+					for(int f=lead;f<num_col;f++){//in realtà il ciclo si può fare da lead a num_col,la parte prima di lead 						sono sottrazioni per 0
+						matrix[i][f]=matrix[i][f]-matrix[r][f];//si fa la differenza perchè il pivot è sempre 1
+						matrix[i][f]=(char)reduce_mod_2((char)matrix[i][f]);
+					}
+				}
+			}
 		}
 		lead=lead+1;
 	}
