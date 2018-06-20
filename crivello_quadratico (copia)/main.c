@@ -219,7 +219,6 @@ int main(int argc,char*argv[]){
 			printf("cardinality factor_base %d\n",cardinality_factor_base);
 			fprintf(file_log,"card_f_base=%d ",cardinality_factor_base);
 			print_time_elapsed("time to calculate factor base");
-
 			//a,per siqs e generare tutti gli altri b,prodotto di primi dispari distinti
 			calculate_a_f2(a,thresold_a,&s,head_f_base_f,cardinality_factor_base,&index_prime_a,&number_prime_a);
 			if(s>0) {
@@ -353,8 +352,8 @@ int main(int argc,char*argv[]){
 			remove_same_num(&head,&tail,&num_B_smooth);
             print_time_elapsed("time to remove same num");
             fprintf(file_log,"num_pot_B_smooth=%d num_B_smooth=%d ",num_potential_B_smooth,num_B_smooth);
-            //printf("list after remove\n");
-            //print_list_square_relation(head,num_B_smooth);
+            printf("list after remove\n");
+            print_list_square_relation(head,num_B_smooth);
             if(num_B_smooth<cardinality_factor_base*ENOUGH_RELATION){
                 calculate_news_M_and_B(&M,&B);
 				free_array_thread_data(thread_polynomial_data,NUM_THREAD_POLYNOMIAL+1);
