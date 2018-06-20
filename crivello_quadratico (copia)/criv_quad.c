@@ -223,11 +223,6 @@ void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B){
 		*B=3940;
 		return;
 	}
-	if(digit_n>=23){
-		*M=9922;
-		*B=1668;
-		return;
-	}
 	handle_error_with_exit("num_too long\n");
 	return;
 }

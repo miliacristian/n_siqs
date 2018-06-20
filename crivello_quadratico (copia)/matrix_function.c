@@ -353,6 +353,17 @@ double**alloc_array_pointer_to_double(int length){
 	memset(array,0,sizeof(double*)*(length));
 	return array;
 }
+char**alloc_array_pointer_to_char(int length){
+    if(length<=0){
+        handle_error_with_exit("error in parameter alloc_array_pointer_to_char\n");
+    }
+    char **array=malloc(sizeof(char*)*(length));
+    if(array==NULL){
+        handle_error_with_exit("error in malloc alloc array pointer to char\n");
+    }
+    memset(array,0,sizeof(char*)*(length));
+    return array;
+}
 double**alloc_matrix_double(int num_row,int num_col){
 	if(num_row<=0 || num_col <=0){
 		handle_error_with_exit("error in alloc_matrix_double\n");
@@ -364,7 +375,17 @@ double**alloc_matrix_double(int num_row,int num_col){
 	}
 	return matrix;
 }
-
+char**alloc_matrix_char(int num_row,int num_col){
+    if(num_row<=0 || num_col <=0){
+        handle_error_with_exit("error in alloc_matrix_char\n");
+    }
+    char**matrix;
+    matrix=alloc_array_pointer_to_char(num_row);
+    for(int i=0;i<num_row;i++){
+        matrix[i]=alloc_array_char(num_col);
+    }
+    return matrix;
+}
 int**alloc_matrix_int(int num_row,int num_col){
 	if(num_row<=0 || num_col <=0){
 		handle_error_with_exit("error in alloc_matrix_int\n");
@@ -1252,8 +1273,8 @@ void swap_row_char(char*matrix,int num_row,int num_col,int ind_row1,int ind_row2
     int temp;
     long index1,index2;
     for(int i=0;i<num_col;i++){//il numero di colonne corrisponde alla lunghezza di una riga
-        index1=get_index(ind_row1,i,num_col);
-        index2=get_index(ind_row2,i,num_col);
+        index1=get_index(ind_row1,i,num_col);//moltiplicazione
+        index2=get_index(ind_row2,i,num_col);//moltiplicazione
         temp=matrix[index1];
         matrix[index1]=matrix[index2];
         matrix[index2]=temp;
@@ -1916,6 +1937,7 @@ int**calculate_base_linear_system_char(char*matrix_linear_system,int num_row,int
     if(check_if_matrix_char_is_reduce_mod_n(matrix_linear_system,num_row,num_col,2)==0){
         handle_error_with_exit("matrix is not reduce mod n");
     }
+    printf("fine reduce echelon form\n");
     if(check_if_matrix_char_is_echelon_reduce(matrix_linear_system,num_row,num_col)==0){
         handle_error_with_exit("error in calculate_base_linear_system\n");
     }
@@ -2078,12 +2100,14 @@ void reduce_echelon_form_char(char*matrix,int num_row,int num_col){//versione rr
     if(check_if_matrix_char_is_reduce_mod_n(matrix,num_row,num_col,2)==0){
         handle_error_with_exit("matrix is not reduce mod n");
     }
+    printf("inizio echelon form\n");
     for(int r=0;r<num_row;r++){
+        printf("r=%d,num_row=%d\n",r,num_row);
         if(num_col<=lead){
             return;
         }
         i=r;
-        index=get_index(i,lead,num_col);
+        index=get_index(i,lead,num_col);//moltiplicazione
         while(matrix[index]==0){
             i=i+1;
             if(num_row==i){
@@ -2093,7 +2117,7 @@ void reduce_echelon_form_char(char*matrix,int num_row,int num_col){//versione rr
                     return;
                 }
             }
-            index=get_index(i,lead,num_col);
+            index=get_index(i,lead,num_col);//moltiplicazione
         }
         if(i!=r){
             swap_row_char(matrix,num_row,num_col,i,r);

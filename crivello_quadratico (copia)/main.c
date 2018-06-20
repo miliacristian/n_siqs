@@ -189,6 +189,7 @@ int main(int argc,char*argv[]){
 				start=calculate_start_factor_base(NUM_THREAD_FACTOR_BASE);
 				last_prime_factor_base=start;
 				create_factor_base_f(&cardinality_factor_base,B,&head_f_base_f,&tail_f_base_f,n,&last_prime_factor_base);
+				printf("time to create factor base main thread");
 				for(int i=1;i<NUM_THREAD_FACTOR_BASE;i++){//unisci tutte le liste nella prima lista tranne la lista del main thread
 					union_list_factor_base(&(thread_factor_base_data[0].head),&(thread_factor_base_data[0].tail),&(thread_factor_base_data[0].cardinality_factor_base),&(thread_factor_base_data[0].last_prime_factor_base),
 										   (thread_factor_base_data[i].head),(thread_factor_base_data[i].tail),thread_factor_base_data[i].cardinality_factor_base,thread_factor_base_data[0].last_prime_factor_base);
@@ -201,6 +202,7 @@ int main(int argc,char*argv[]){
 				tail_f_base_f=thread_factor_base_data[0].tail;
 				cardinality_factor_base=thread_factor_base_data[0].cardinality_factor_base;
 				last_prime_factor_base=thread_factor_base_data[0].last_prime_factor_base;
+				print_time_elapsed("time to union all lists");
 				if(thread_factor_base_data!=NULL){
 					free(thread_factor_base_data);
 					thread_factor_base_data=NULL;
@@ -215,7 +217,7 @@ int main(int argc,char*argv[]){
 				create_factor_base_f(&cardinality_factor_base,B,&head_f_base_f,&tail_f_base_f,n,&last_prime_factor_base);//crea lista dinamica con tutti i primi
 			}
 			printf("factor base=");
-			print_list_factor(head_f_base_f,cardinality_factor_base);
+			//print_list_factor(head_f_base_f,cardinality_factor_base);
 			printf("cardinality factor_base %d\n",cardinality_factor_base);
 			fprintf(file_log,"card_f_base=%d ",cardinality_factor_base);
 			print_time_elapsed("time to calculate factor base");
@@ -348,12 +350,13 @@ int main(int argc,char*argv[]){
 				printf("num_potential_B_smooth=%d,num_B_smooth=%d\n",num_potential_B_smooth,num_B_smooth);
 			}
             print_time_elapsed("time to union all lists");
-            print_list_square_relation(head,num_B_smooth);
+            //print_list_square_relation(head,num_B_smooth);
 			remove_same_num(&head,&tail,&num_B_smooth);
             print_time_elapsed("time to remove same num");
             fprintf(file_log,"num_pot_B_smooth=%d num_B_smooth=%d ",num_potential_B_smooth,num_B_smooth);
-            printf("list after remove\n");
-            print_list_square_relation(head,num_B_smooth);
+            //printf("list after remove\n");
+            //print_list_square_relation(head,num_B_smooth);
+
             if(num_B_smooth<cardinality_factor_base*ENOUGH_RELATION){
                 calculate_news_M_and_B(&M,&B);
 				free_array_thread_data(thread_polynomial_data,NUM_THREAD_POLYNOMIAL+1);
@@ -378,7 +381,10 @@ int main(int argc,char*argv[]){
             print_time_elapsed("time_to_create_linear_system");
 
             //algebra step:base sistema lineare
+            char **linear_system2=alloc_matrix_char(cardinality_factor_base,num_B_smooth);
+            }
 			base_matrix=calculate_base_linear_system_char(linear_system,cardinality_factor_base,num_B_smooth,&dim_sol);
+
 			if(base_matrix==NULL){//non ci sono abbastanza soluzioni,ricomincia il crivello quadratico
 				calculate_news_M_and_B(&M,&B);
                 free(linear_system);

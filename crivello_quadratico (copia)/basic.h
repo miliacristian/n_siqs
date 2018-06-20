@@ -10,14 +10,14 @@
 #define NUM_ITER_FOR_CALCULATE_A 1000 //parametri per il calcolo di a
 #define THRESOLD_RELATION 0
 #define NUM_THREAD_FACTOR_BASE 8
-#define NUM_THREAD_POLYNOMIAL 0 //numero di thread
+#define NUM_THREAD_POLYNOMIAL 10 //numero di thread
 #define S_MAX 11//corrisponde a 2^(S_MAX-1) polinomi diversi
 #define MAX_DIM_SOL 16 //dimensione soluzione massima
 #define PERC_INCREMENT_M 50 
 #define PERC_INCREMENT_B 50
 #define MAX_ITER 10000 //iterazioni massime per calcolare a
 #define MAX_ITER2 10000 //iterazioni massime per calcolare a
-#define MAX_NUM_FOR_DIGIT 80
+#define MAX_NUM_FOR_DIGIT 1
 #define ENOUGH_RELATION 1.00 //numero minore o uguale a 1 indica quante relazioni
 //vanno trovate in più rispetto alla cardinalità della factor base
 #define ERROR_LOG 25//aumentare per trovare più numeri B_smooth potenziali,valore default=25
