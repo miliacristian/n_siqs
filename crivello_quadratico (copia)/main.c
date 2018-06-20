@@ -356,7 +356,12 @@ int main(int argc,char*argv[]){
             fprintf(file_log,"num_pot_B_smooth=%d num_B_smooth=%d ",num_potential_B_smooth,num_B_smooth);
             //printf("list after remove\n");
             //print_list_square_relation(head,num_B_smooth);
-
+            printf("cardinality factor base=%d\n",cardinality_factor_base);
+            timer.tv_nsec=time_start.tv_nsec;//timer=time_start
+            timer.tv_sec=time_start.tv_sec;//timer=time_start
+            print_time_elapsed_on_file_log("time_total");
+            print_time_elapsed("time_total");
+            exit(0);
             if(num_B_smooth<cardinality_factor_base*ENOUGH_RELATION){
                 calculate_news_M_and_B(&M,&B);
 				free_array_thread_data(thread_polynomial_data,NUM_THREAD_POLYNOMIAL+1);

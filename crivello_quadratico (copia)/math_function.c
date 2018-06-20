@@ -140,6 +140,8 @@ struct node_factorization*factorize_num(const mpz_t num,int first_index_f_base,i
 	    	index++;//aumneta l'indice
 	    }
 	    number=r.prime[i];
+	    //invece di mpz_divisible
+	            //bisogna vedere se j ridotto modulo p è congruo a j1t o j2t
         while(mpz_divisible_ui_p(temp,r.prime[i])!=0) {//se il numero è divisibile per un primo della fattor base
             mpz_divexact_ui(temp, temp, r.prime[i]);
             exp+=1;
@@ -2434,7 +2436,7 @@ char divide_all_by_p_to_k_f(int rad,long p,int index_of_prime,long k,long M,stru
         mpz_mul(j1t,j1t,inverse_a);//j1=(-b+r)*inverse_a;
         mpz_mul(j2t,j2t,inverse_a);//j2=(-b+r2)*inverse_a;
     }
-    else{//p divide a,esiste solo una soluzione,si usa solo j1
+    else{//p divide a,esiste solo una soluzione,si usa solo j1,succede solamente poche volte(circa 10)
         //calcolo di c
         mpz_mul(v,b,b);//v=b^2
         mpz_sub(v,v,n);//v=b^2-n
