@@ -1282,12 +1282,14 @@ void swap_row_char2(char**matrix,int num_row,int num_col,int ind_row1,int ind_ro
 	if(matrix==NULL || *matrix==NULL || num_row<=0 || num_col<=0 || ind_row1==ind_row2 || ind_row1>=num_row || ind_row2>=num_row || ind_row1<0 || ind_row2<0){
 		handle_error_with_exit("error in parameter swap_row\n");
 	}
-	char temp;
-	for(int i=0;i<num_col;i++){//il numero di colonne corrisponde alla lunghezza di una riga
+	char*temp=matrix[ind_row1];
+	matrix[ind_row1]=matrix[ind_row2];
+	matrix[ind_row2]=temp;
+	/*for(int i=0;i<num_col;i++){//il numero di colonne corrisponde alla lunghezza di una riga
 		temp=matrix[ind_row1][i];
 		matrix[ind_row1][i]=matrix[ind_row2][i];
 		matrix[ind_row2][i]=temp;
-	}
+	}*/
 	return;
 }
 void swap_row_char(char*matrix,int num_row,int num_col,int ind_row1,int ind_row2){//ind_row1,int ind_row2 start at 0
@@ -2145,12 +2147,20 @@ void reduce_echelon_form_matrix_char(char**matrix,int num_row,int num_col){//ver
 		if(matrix[r][lead]==0){
 			handle_error_with_exit("invalid pivot\n");
 		}
-		for(int i=0;i<num_row;i++){//riduzione della matrice versione rref
+		//in r,lead c'è il pivot sottrai tutta la sottomatrice
+        for(int i=r+1;i<num_row;i++){//versione ref
+		//for(int i=0;i<num_row;i++){//riduzione della matrice versione rref
 			if(i!=r){
 				if(matrix[i][lead]!=0){
 					for(int f=lead;f<num_col;f++){//in realtà il ciclo si può fare da lead a num_col,la parte prima di lead 						sono sottrazioni per 0
-						matrix[i][f]=matrix[i][f]-matrix[r][f];//si fa la differenza perchè il pivot è sempre 1
-						matrix[i][f]=(char)reduce_mod_2((char)matrix[i][f]);
+						//matrix[i][f]=matrix[i][f]-matrix[r][f];//si fa la differenza perchè il pivot è sempre 1,nessun moltiplicatore
+						//matrix[i][f]=(char)reduce_mod_2((char)matrix[i][f]);
+						if(matrix[i][f]!=matrix[r][f]){
+							matrix[i][f]=1;
+						}
+						else{
+							matrix[i][f]=0;
+						}
 					}
 				}
 			}
@@ -2196,7 +2206,8 @@ void reduce_echelon_form_char(char*matrix,int num_row,int num_col){//versione rr
         if(matrix[index]==0){
             handle_error_with_exit("invalid pivot\n");
         }
-        for(int i=0;i<num_row;i++){//riduzione della matrice versione rref
+        for(int i=r+1;i<num_row;i++){//versione ref
+        //for(int i=0;i<num_row;i++){//riduzione della matrice versione rref
             if(i!=r){
                 index=get_index(i,lead,num_col);
                 if(matrix[index]!=0){
