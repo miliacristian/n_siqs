@@ -1553,4 +1553,19 @@ n=135767 M_start=25 B_start=2000 k=1 error in union_list_factor base
 n=135767 M_start=25 B_start=2000 k=1 error in union_list_factor base
 n=135767 M_start=25 B_start=2000 k=1 error in union_list_factor base
 n=135767 M_start=25 B_start=2000 k=1 error in union_list_factor base
-n=135767 M_start=25 B_start=2000 k=1 card_f_base=371 
+n=135767 M_start=25 B_start=2000 k=1 card_f_base=371 n=135767 M_start=25 B_start=2000 k=1 card_f_base=371 n=135767 M_start=25 B_start=200 k=1 card_f_base=55 n=135767 M_start=25 B_start=200 k=1 card_f_base=55 n=135767 M_start=25 B_start=200 k=1 error in union_list_factor base
+n=135767 M_start=25 B_start=200 k=1 error in union_list_factor base
+n=135767 M_start=25 B_start=200 k=1 error in union_list_factor base
+n=135767 M_start=25 B_start=200 k=1 error in union_list_factor base
+n=135767 M_start=25 B_start=200 k=1 error in union_list_factor base
+n=135767 M_start=25 B_start=200 k=1 error in union_list_factor base
+n=135767 M_start=25 B_start=200 k=1 error in union_list_factor base
+n=135767 M_start=25 B_start=200 k=1 error in union_list_factor base
+n=135767 M_start=25 B_start=200 k=1 error in union_list_factor base
+n=135767 M_start=25 B_start=200 k=1 error in union_list_factor base
+n=135767 M_start=25 B_start=200 k=1 error in union_list_factor base
+n=135767 M_start=25 B_start=200 k=1 error in union_list_factor base
+n=135767 M_start=25 B_start=200 k=1 error in union_list_factor base
+n=135767 M_start=25 B_start=200 k=1 error in union_list_factor base
+n=135767 M_start=25 B_start=200 k=1 error in union_list_factor base
+n=135767 M_start=25 B_start=200 k=1 card_f_base=24 n=135767 M_start=25 B_start=200 k=1 card_f_base=24 n=135767 M_start=25 B_start=200 k=1 card_f_base=23 

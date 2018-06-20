@@ -165,7 +165,7 @@ void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B){
 	//*B=100*1000*1000;
 	//*M=5000000
     *M=25;
-	*B=2000;
+	*B=200;
     return;
 	if(digit_n<7){
 		*M=25;
@@ -500,13 +500,14 @@ void create_factor_base_f(int*cardinality_factor_base,long B,struct node_factor_
     mpz_init(value);
 	long start;
 	if(*last_prime_factor_base==1) {
-		*head= initialize_factor_base(cardinality_factor_base, B,tail, n,last_prime_factor_base);
+		printf("start=1\n");
+		*head=initialize_factor_base(cardinality_factor_base, B,tail, n,last_prime_factor_base);
 	}
 	if((*last_prime_factor_base & 1)==0){//start=last_prime_factor_base è pari==2
 		start=*last_prime_factor_base;
 	}
 	else{//last_prime_factor_base è dispari
-		start=*last_prime_factor_base+1;//start è pari
+		start=*last_prime_factor_base-1;//start è pari
 	}
     for(long i=start;i<=B;){
         mpz_set_si(p,i);//p=i,inizialmente p=2,ad ogni inizio ciclo deve essere pari

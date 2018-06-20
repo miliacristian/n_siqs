@@ -52,7 +52,7 @@
     struct a_struct*array_a_struct;
 
 int calculate_start_factor_base(int id_thread){
-    long remainder=reduce_int_mod_n_v2(NUM_THREAD_FACTOR_BASE+1,B);
+    long remainder=reduce_int_mod_n_v2(B,NUM_THREAD_FACTOR_BASE+1);
     long length=(B-remainder)/(NUM_THREAD_FACTOR_BASE+1);
     int start=id_thread*length+1;
     return start;
@@ -153,9 +153,9 @@ int main(int argc,char*argv[]){
 		mpz_set(b_default,x0);
 		gmp_printf("b_default=%Zd\n",b_default);
 
-		head_f_base_f=initialize_factor_base(&cardinality_factor_base,B,&tail_f_base_f,n,&last_prime_factor_base);
-		print_list_factor(head_f_base_f,cardinality_factor_base);
-		printf("last_prime_factor_base=%d\n",last_prime_factor_base);
+		//head_f_base_f=initialize_factor_base(&cardinality_factor_base,B,&tail_f_base_f,n,&last_prime_factor_base);
+		//print_list_factor(head_f_base_f,cardinality_factor_base);
+		//printf("last_prime_factor_base=%d\n",last_prime_factor_base);
 		print_time_elapsed("time to initialize factor base");
 		factor_base_already_exist=0;
 		while(factorizations_founded<=0){//finquando non sono stati trovati fattori:
@@ -190,13 +190,21 @@ int main(int argc,char*argv[]){
 						array_id = NULL;
 					}
 					start=calculate_start_factor_base(NUM_THREAD_FACTOR_BASE);
-				create_factor_base_f(&cardinality_factor_base,B,&head_f_base_f,&tail_f_base_f,n,&start);
-				for(int i=0;i<NUM_THREAD_FACTOR_BASE;i++){//unisci tutte le liste nella prima lista tranne la lista del main thread
+					printf("start main thread=%d\n",start);
+					last_prime_factor_base=start;
+				create_factor_base_f(&cardinality_factor_base,B,&head_f_base_f,&tail_f_base_f,n,&last_prime_factor_base);
+                printf("factor base main thread=");
+                print_list_factor(head_f_base_f,cardinality_factor_base);
+                printf("cardinality factor_base main thread=%d\n",cardinality_factor_base);
+				for(int i=1;i<NUM_THREAD_FACTOR_BASE;i++){//unisci tutte le liste nella prima lista tranne la lista del main thread
+				    printf("entrato for\n");
 					union_list_factor_base(&(thread_factor_base_data[0].head),&(thread_factor_base_data[0].tail),&(thread_factor_base_data[0].cardinality_factor_base),&(thread_factor_base_data[0].last_prime_factor_base),
 										   (thread_factor_base_data[i].head),(thread_factor_base_data[i].tail),thread_factor_base_data[i].cardinality_factor_base,thread_factor_base_data[0].last_prime_factor_base);
 				}
 				//unisci la prima lista con la lista del main thread
-				union_list_factor_base(&(thread_factor_base_data[0].head),&(thread_factor_base_data[0].tail),&(thread_factor_base_data[0].cardinality_factor_base),&(thread_factor_base_data[0].last_prime_factor_base),head_f_base_f,tail_f_base_f,cardinality_factor_base,last_prime_factor_base);
+				        printf("union first list and main list\n");
+				union_list_factor_base(&(thread_factor_base_data[0].head),&(thread_factor_base_data[0].tail),&(thread_factor_base_data[0].cardinality_factor_base),&(thread_factor_base_data[0].last_prime_factor_base),
+                      head_f_base_f,tail_f_base_f,cardinality_factor_base,last_prime_factor_base);
 				//reimposta valori globali
 				head_f_base_f=thread_factor_base_data[0].head;
 				tail_f_base_f=thread_factor_base_data[0].tail;
@@ -216,8 +224,8 @@ int main(int argc,char*argv[]){
 				create_factor_base_f(&cardinality_factor_base,B,&head_f_base_f,&tail_f_base_f,n,&last_prime_factor_base);//crea lista dinamica con tutti i primi
 			}
 			//factor base già creata
-			create_factor_base_f(&cardinality_factor_base,B,&head_f_base_f,&tail_f_base_f,n,&last_prime_factor_base);//crea lista dinamica con tutti i primi
-			//scrivere modo per appendere una factor base con un'altra in modo da non ricalcolare nulla da capo
+			//create_factor_base_f(&cardinality_factor_base,B,&head_f_base_f,&tail_f_base_f,n,&last_prime_factor_base);//crea lista dinamica con tutti i primi
+
 			printf("factor base=");
 			print_list_factor(head_f_base_f,cardinality_factor_base);
 			printf("cardinality factor_base %d\n",cardinality_factor_base);
@@ -495,17 +503,16 @@ int main(int argc,char*argv[]){
 
 int thread_job_to_create_factor_base(int id_thread){
 	printf("id_thread=%d\n",id_thread);
-	long remainder=reduce_int_mod_n_v2(NUM_THREAD_FACTOR_BASE+1,B);
+    long remainder=reduce_int_mod_n_v2(B,NUM_THREAD_FACTOR_BASE+1);
 	long length=(B-remainder)/(NUM_THREAD_FACTOR_BASE+1);
 	int start=id_thread*length+1;
 	start=calculate_start_factor_base(id_thread);
 	int end=start+length-1;
-	if(id_thread==0){//se è il primo thread parti da 2
-		start=2;
-	}
 	//es remainder=0 thread=5 B=500.000 -> len=100.000 start=0*100000+1,end=1+100000-1=100000,start2=100001,end2=200000
 	thread_factor_base_data[id_thread].last_prime_factor_base=start;
-	create_factor_base_f(&(thread_factor_base_data[id_thread].cardinality_factor_base),end,&thread_factor_base_data[id_thread].head,&thread_factor_base_data[id_thread].tail,n,&(thread_factor_base_data[id_thread].last_prime_factor_base));
+	printf("start=%d,end=%d\n",start,end);
+    printf("card_f_base=%d\n",thread_factor_base_data[id_thread].cardinality_factor_base);
+    create_factor_base_f(&(thread_factor_base_data[id_thread].cardinality_factor_base),end,&thread_factor_base_data[id_thread].head,&thread_factor_base_data[id_thread].tail,n,&(thread_factor_base_data[id_thread].last_prime_factor_base));
 	printf("id_thread=%d,card_factor_base=%d,last_prime=%d\n",id_thread,thread_factor_base_data[id_thread].cardinality_factor_base,thread_factor_base_data[id_thread].last_prime_factor_base);
 	print_list_factor(thread_factor_base_data[id_thread].head,thread_factor_base_data[id_thread].cardinality_factor_base);
 	return 0;
