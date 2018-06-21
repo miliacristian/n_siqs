@@ -10,8 +10,8 @@
 #define NUM_ITER_FOR_CALCULATE_A 1000 //parametri per il calcolo di a
 #define THRESOLD_RELATION 0
 #define NUM_THREAD_FACTOR_BASE 8
-#define NUM_THREAD_POLYNOMIAL 0 //numero di thread
-#define NUM_THREAD_FACTORIZATION 5
+#define NUM_THREAD_POLYNOMIAL 10 //numero di thread
+#define NUM_THREAD_FACTORIZATION 1
 #define S_MAX 11//corrisponde a 2^(S_MAX-1) polinomi diversi
 #define MAX_DIM_SOL 16 //dimensione soluzione massima
 #define PERC_INCREMENT_M 50 

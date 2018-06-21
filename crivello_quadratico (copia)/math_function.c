@@ -2441,6 +2441,8 @@ char divide_all_by_p_to_k_with_thread(pthread_mutex_t*mtx,int rad,long p,int ind
 	}
 	else if(!value_is_in_sorted_array(index_of_prime,array_a_struct,s)){//p non divide a
 		if(r.inverse_a_mod_p[index_of_prime]==-1){
+			print_array_a_struct(array_a_struct,s);
+			printf("index_of_prime=%d\n",index_of_prime);
 			handle_error_with_exit("error in factorize_matrix,inverse not found\n");
 		}
 		mpz_set_si(inverse_a,r.inverse_a_mod_p[index_of_prime]);////inverse_a=a^-1 mod p^k

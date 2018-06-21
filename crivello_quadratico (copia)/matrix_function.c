@@ -34,7 +34,7 @@ char value_is_in_sorted_array(int index_of_prime,struct a_struct*array_a_struct,
         return 0;
     }
     //se sono uguali ritorna 1 altrimenti 0
-    for(int i=1;i<length-1;i++){
+    for(int i=0;i<length;i++){
         if(index_of_prime==array_a_struct[i].index_prime_a){
             return 1;
         }
