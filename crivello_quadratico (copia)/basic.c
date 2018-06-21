@@ -173,30 +173,41 @@ int* create_threads(pthread_t*array_tid,int num_thread){//ritorna il numero di t
 	}
 	return array_id;
 }
-int* create_factorization_threads(pthread_t*array_tid,struct thread_data thread_data,int num_thread){//ritorna il numero di thread creati con successo
+struct factorization_thread_data* create_factorization_threads(pthread_t*array_tid,struct thread_data thread_data,const mpz_t a,int num_thread){//ritorna il numero di thread creati con successo
     if(num_thread<0 || array_tid==NULL){
         handle_error_with_exit("error in create_thread\n");
     }
     if(num_thread==0){
         return NULL;
     }
-    struct factorization_thread_data factorization_data;
-    int*array_id=alloc_array_int(num_thread);
+    struct factorization_thread_data*factorization_data=malloc(sizeof(struct factorization_thread_data)*1);
+    if(factorization_data==NULL){
+    	handle_error_with_exit("error in malloc factorization_data\n");
+    }
     for(int id=0;id<num_thread;id++){
         long remainder=reduce_int_mod_n_v2(cardinality_factor_base,num_thread);
         long length=(cardinality_factor_base-remainder)/(num_thread);
         int start=id*length+1;
         int end=start+length-1;
-        factorization_data.thread_data=thread_data;//assegna a tutti i thread la stessa struct
-        factorization_data.id_thread=id;//assegna ad ogni thread l'indice
-        factorization_data.start=start;
-        factorization_data.end=end;
-        if(pthread_create(&(array_tid[id]),NULL,thread_factorization_job,&factorization_data)!=0){
+        factorization_data[0].thread_data=thread_data;
+        gmp_printf("b=%Zd\n",thread_data.b);
+		gmp_printf("b=%Zd\n",factorization_data[0].thread_data.b);
+        factorization_data[0].id_thread=id;//assegna ad ogni thread l'indice
+        factorization_data[0].start=start;
+        factorization_data[0].end=end;
+        if(mpz_cmp_si(a,1)==0) {
+			factorization_data[0].is_a_default = 1;
+		}
+		else{
+			factorization_data[0].is_a_default = 0;
+        }
+        if(pthread_create(&(array_tid[id]),NULL,thread_factorization_job,factorization_data)!=0){
             handle_error_with_exit("error in pthread_create create_thread\n");
         }
     }
-    return array_id;
+    return factorization_data;
 }
+
 int* create_factor_base_threads(pthread_t*array_tid,int num_thread){//ritorna il numero di thread creati con successo
 	if(num_thread<0 || array_tid==NULL){
 		handle_error_with_exit("error in create_thread\n");

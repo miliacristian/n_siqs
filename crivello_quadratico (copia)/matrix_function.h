@@ -80,6 +80,7 @@ void divide_vector_multiple_of_2_by_2(int*vector,int length);
 char**alloc_matrix_char(int num_row,int num_col);
 void copy_matrix_with_array(char**linear_system2,char*linear_system,int num_row,int num_col);
 void reduce_echelon_form_matrix_char(char**matrix,int num_row,int num_col);
+char value_is_in_sorted_array(int index_of_prime,struct a_struct*array_a_struct,int length);
 #endif
 
 

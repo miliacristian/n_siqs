@@ -2428,19 +2428,23 @@ char divide_all_by_p_to_k_with_thread(int rad,long p,int index_of_prime,long k,l
 	mpz_init(j_temp);
 	mpz_init(h_temp);
 	mpz_init(index);
-
+	printf("here\n");
 	mpz_set_si(p_to_k,p);//p^k=p
 	//mpz_ui_pow_ui(p_to_k,p,k);//p_to_k=p^k
 	//mpz_sub_ui(r2,p_to_k,rad);
 	mpz_set_si(r2,r.root2_n_mod_p[index_of_prime]);//r2=p^k-r seconda radice quadrata di n modulo p^k
 	long j=0;//indici dell'array divisibile per p^k,se j!=0 j2 non esiste
 	if(mpz_cmp_si(a,1)==0){//se a=1,infatti a^-1 mod p =1
+		printf("b\n");
 		mpz_neg(j1t,b);//j1=-b
 		mpz_neg(j2t,b);//j2=-b
+		printf("b1\n");
 		mpz_add_ui(j1t,j1t,rad);//j1=-b+r
 		mpz_add(j2t,j2t,r2);//j2=-b+r2
 	}
+
 	else if(!value_is_in_sorted_array(index_of_prime,array_a_struct,s)){
+		printf("c\n");
 	//else if(array_a_struct[*index_array_a_struct].index_prime_a!=index_of_prime){//p non divide a
 		if(r.inverse_a_mod_p[index_of_prime]==-1){
 			handle_error_with_exit("error in factorize_matrix,inverse not found\n");
@@ -2455,6 +2459,7 @@ char divide_all_by_p_to_k_with_thread(int rad,long p,int index_of_prime,long k,l
 	}
 	else{//p divide a,esiste solo una soluzione,si usa solo j1,succede solamente poche volte(circa 10)
 		//calcolo di c
+		printf("d\n");
 		mpz_mul(v,b,b);//v=b^2
 		mpz_sub(v,v,n);//v=b^2-n
 		if(mpz_divisible_p(v,a)==0){//v non divide a
@@ -2476,6 +2481,7 @@ char divide_all_by_p_to_k_with_thread(int rad,long p,int index_of_prime,long k,l
 			j=1;//solo 1 soluzione
 		}
 	}
+	printf("a\n");
 	mpz_mod(j1t,j1t,p_to_k);//j1t ridotto modulo p^k
 	mpz_mod(j2t,j2t,p_to_k);//j1_t ridotto modulo p^k
 	j1=mpz_get_si(j1t);//j1=j1t
@@ -2933,10 +2939,23 @@ void*thread_factorization_job(void*arg){
     struct factorization_thread_data*factorization_thread_data=arg;
     int start=(*factorization_thread_data).start;
     int end=(*factorization_thread_data).end;
+    printf("start=%d\n",start);
+	printf("end=%d\n",end);
+	printf("is_a_default=%d\n",(*factorization_thread_data).is_a_default);
+	printf("id_thread=%d\n",(*factorization_thread_data).id_thread);
+    mpz_t a1;
+    mpz_init(a1);
+    if((*factorization_thread_data).is_a_default==1){
+    	mpz_set_si(a1,1);
+    }
+    else{
+    	mpz_set(a1,a);
+    }
     for(int i=start;i<end;i++){
         p=r.prime[i];//primo iesimo della factor base
-        divide_all_by_p_to_k_with_thread(r.root_n_mod_p[i],p,i,1,M,(*factorization_thread_data).thread_data,n,a,(*factorization_thread_data).thread_data.b,array_a_struct);
+        divide_all_by_p_to_k_with_thread(r.root_n_mod_p[i],p,i,1,M,(*factorization_thread_data).thread_data,n,a1,(*factorization_thread_data).thread_data.b,array_a_struct);
     }
+    mpz_clear(a1);
     return NULL;
 }
 void factor_matrix_f(const mpz_t n,long M,struct thread_data thread_data,int cardinality_factor_base,const mpz_t a,
@@ -2945,20 +2964,19 @@ void factor_matrix_f(const mpz_t n,long M,struct thread_data thread_data,int car
         handle_error_with_exit("error in factor matrix_f\n");
     }
     pthread_t *array_tid=NULL;
-    int*array_id=NULL;
+    struct factorization_thread_data*factorization_thread_data=NULL;
     divide_all_by_2_log(M,thread_data);
     array_tid = alloc_array_tid(NUM_THREAD_FACTORIZATION);//alloca memoria per contenere tutti i tid
-    array_id = create_factorization_threads(array_tid,thread_data, NUM_THREAD_FACTORIZATION);//crea tutti i thread
+    factorization_thread_data = create_factorization_threads(array_tid,thread_data,a, NUM_THREAD_FACTORIZATION);//crea tutti i thread
     join_all_threads(array_tid, NUM_THREAD_FACTORIZATION);//aspetta tutti i thread
     if (array_tid != NULL) {//libera memoria allocata
         free(array_tid);
         array_tid = NULL;
     }
-    if (array_id != NULL) {
-        free(array_id);
-        array_id = NULL;
+    if (factorization_thread_data != NULL) {
+        free(factorization_thread_data);
+        factorization_thread_data = NULL;
     }
-    //divide_all_by_p_to_k_f(r.root_n_mod_p[i],p,i,1,M,thread_data,n,a,thread_data.b,array_a_struct,&index_array_a_struct);
     return;
 }
 /*void factor_matrix_f(const mpz_t n,long M,struct thread_data thread_data,int cardinality_factor_base,const mpz_t a,
