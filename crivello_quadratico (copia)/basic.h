@@ -11,6 +11,7 @@
 #define THRESOLD_RELATION 0
 #define NUM_THREAD_FACTOR_BASE 8
 #define NUM_THREAD_POLYNOMIAL 10 //numero di thread
+#define NUM_THREAD_FACTORIZATION 1
 #define S_MAX 11//corrisponde a 2^(S_MAX-1) polinomi diversi
 #define MAX_DIM_SOL 16 //dimensione soluzione massima
 #define PERC_INCREMENT_M 50 
@@ -73,6 +74,12 @@ struct factor_base_data {
 	int cardinality_factor_base;
 	int last_prime_factor_base;
 };
+struct factorization_thread_data{
+    int id_thread;
+    int start;
+    int end;
+    struct thread_data thread_data;
+};
 
 void print_time_elapsed(char*string);
 void handle_error_with_exit(char*error_string);
@@ -97,4 +104,5 @@ void free_array_thread_data(struct thread_data*thread_data,int length_array_thre
 void free_memory_list_square_relation(struct node_square_relation*head);
 struct factor_base_data*alloc_array_factor_base_data(int length);
 int* create_factor_base_threads(pthread_t*array_tid,int num_thread);
+int* create_factorization_threads(pthread_t*array_tid,struct thread_data thread_data,int num_thread);
 #endif

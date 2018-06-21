@@ -19,6 +19,7 @@ struct timespec;
 struct timespec timer;
 struct timespec time_start;
 FILE*file_log;
+extern int cardinality_factor_base;
 int compare_a_struct( const void* a, const void* b)
 {
 	struct a_struct s_a = * ( (struct a_struct*) a );
@@ -171,6 +172,30 @@ int* create_threads(pthread_t*array_tid,int num_thread){//ritorna il numero di t
 		}
 	}
 	return array_id;
+}
+int* create_factorization_threads(pthread_t*array_tid,struct thread_data thread_data,int num_thread){//ritorna il numero di thread creati con successo
+    if(num_thread<0 || array_tid==NULL){
+        handle_error_with_exit("error in create_thread\n");
+    }
+    if(num_thread==0){
+        return NULL;
+    }
+    struct factorization_thread_data factorization_data;
+    int*array_id=alloc_array_int(num_thread);
+    for(int id=0;id<num_thread;id++){
+        long remainder=reduce_int_mod_n_v2(cardinality_factor_base,num_thread);
+        long length=(cardinality_factor_base-remainder)/(num_thread);
+        int start=id*length+1;
+        int end=start+length-1;
+        factorization_data.thread_data=thread_data;//assegna a tutti i thread la stessa struct
+        factorization_data.id_thread=id;//assegna ad ogni thread l'indice
+        factorization_data.start=start;
+        factorization_data.end=end;
+        if(pthread_create(&(array_tid[id]),NULL,thread_factorization_job,&factorization_data)!=0){
+            handle_error_with_exit("error in pthread_create create_thread\n");
+        }
+    }
+    return array_id;
 }
 int* create_factor_base_threads(pthread_t*array_tid,int num_thread){//ritorna il numero di thread creati con successo
 	if(num_thread<0 || array_tid==NULL){

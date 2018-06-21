@@ -13,6 +13,12 @@
 #include <mpfr.h>
 
 extern struct row_factorization r;
+extern long M;
+extern mpz_t n;
+extern mpz_t a;
+extern struct a_struct*array_a_struct;
+extern int cardinality_factor_base;
+extern int s;
 struct a_struct*create_array_a_struct(int*number_prime_a,int*index_number_a,int length){
     if(number_prime_a==NULL || index_number_a==NULL || length<=0){
         handle_error_with_exit("error in create_array_a_struct\n");
@@ -2394,6 +2400,205 @@ void calculate_root_poly_second_degree_mod_p_to_k(mpz_t j1t,const mpz_t p_to_k,l
 	return 0;//ritorna 0 se non ci sono state divisioni nell'array
 }
  */
+char divide_all_by_p_to_k_with_thread(int rad,long p,int index_of_prime,long k,long M,struct thread_data thread_data,const mpz_t n,const mpz_t a,const mpz_t b,struct a_struct*array_a_struct){//r=square root di n mod p^k,ritorna >zero se c'è stata almeno 1 divisione
+//a(j)=aj^2+2bj+c,se polinomio forma semplice a=1 e b=x0
+//(x0+j)^2==n mod p^k r:r^2==n mod p^k -> r=x0+j ->j=r-x0
+//una volta trovate le soluzioni r1 e r2 e una volta trovati j e t le altre soluzioni sono della forma j+l*p^k t+h*p^k,cioè a salti di p^k rispetto a t e j,dove l ed h sono interi
+//n.b j+l*p^k è sempre diverso da t+h*p^k per ogni l ed h interi,quindi non bisogna memorizzare quali elementi dell'array sono stati divisi per p
+
+	//j1=r-x0;
+	//j2=-r-x0;
+	if((p<=1 && p!=-1 ) || n==NULL || a==NULL || b==NULL || k<=0 || M<=0 || array_a_struct==NULL){
+		handle_error_with_exit("invalid parameter divide all by p to k\n");
+	}
+	char array_divided=0;//0 se nessuna divisione effettuata,1 se sono state effettutate divisioni per p^k
+	long indexv,j1,j2,j_temp2;
+	mpz_t p_to_k,r2,a_temp,inverse_a,inverse2b,j1t,j2t,c,b_temp,v,l_temp,j_temp,index,h_temp;
+	mpz_init(p_to_k);
+	mpz_init(r2);
+	mpz_init(a_temp);
+	mpz_init(inverse_a);
+	mpz_init(inverse2b);
+	mpz_init(j1t);
+	mpz_init(j2t);
+	mpz_init(c);
+	mpz_init(b_temp);
+	mpz_init(v);
+	mpz_init(l_temp);
+	mpz_init(j_temp);
+	mpz_init(h_temp);
+	mpz_init(index);
+
+	mpz_set_si(p_to_k,p);//p^k=p
+	//mpz_ui_pow_ui(p_to_k,p,k);//p_to_k=p^k
+	//mpz_sub_ui(r2,p_to_k,rad);
+	mpz_set_si(r2,r.root2_n_mod_p[index_of_prime]);//r2=p^k-r seconda radice quadrata di n modulo p^k
+	long j=0;//indici dell'array divisibile per p^k,se j!=0 j2 non esiste
+	if(mpz_cmp_si(a,1)==0){//se a=1,infatti a^-1 mod p =1
+		mpz_neg(j1t,b);//j1=-b
+		mpz_neg(j2t,b);//j2=-b
+		mpz_add_ui(j1t,j1t,rad);//j1=-b+r
+		mpz_add(j2t,j2t,r2);//j2=-b+r2
+	}
+	else if(!value_is_in_sorted_array(index_of_prime,array_a_struct,s)){
+	//else if(array_a_struct[*index_array_a_struct].index_prime_a!=index_of_prime){//p non divide a
+		if(r.inverse_a_mod_p[index_of_prime]==-1){
+			handle_error_with_exit("error in factorize_matrix,inverse not found\n");
+		}
+		mpz_set_si(inverse_a,r.inverse_a_mod_p[index_of_prime]);////inverse_a=a^-1 mod p^k
+		mpz_neg(j1t,b);//j1=-b
+		mpz_neg(j2t,b);//j2=-b
+		mpz_add_ui(j1t,j1t,rad);//j1=-b+r
+		mpz_add(j2t,j2t,r2);//j2=-b+r2
+		mpz_mul(j1t,j1t,inverse_a);//j1=(-b+r)*inverse_a;
+		mpz_mul(j2t,j2t,inverse_a);//j2=(-b+r2)*inverse_a;
+	}
+	else{//p divide a,esiste solo una soluzione,si usa solo j1,succede solamente poche volte(circa 10)
+		//calcolo di c
+		mpz_mul(v,b,b);//v=b^2
+		mpz_sub(v,v,n);//v=b^2-n
+		if(mpz_divisible_p(v,a)==0){//v non divide a
+			handle_error_with_exit("error in mpz_divisible divide all by p_to_k\n");
+		}
+		mpz_divexact(c,v,a);//c=(b^2-n)/a
+
+		if(k==1){//p_to_k=p,esiste solo una soluzione mod p
+			mpz_set(b_temp,b);
+			mpz_mul_ui(b_temp,b_temp,2);//b_temp=2*b
+			mpz_invert(inverse2b,b_temp,p_to_k);//(2b)^-1 mod p^k
+			mpz_neg(j1t,c);//j1=-c
+			mpz_mul(j1t,j1t,inverse2b);//j1=-c*inverse2b;
+			j=1;
+		}
+		else{//k>1,p_to_k>p,gcd(a,p^k)=p,gcd(a/p,p^k)=1
+			handle_error_with_exit("error in divide all by p_to_k k>1\n");
+			calculate_root_poly_second_degree_mod_p_to_k(j1t,p_to_k,p,k,a,b,n);
+			j=1;//solo 1 soluzione
+		}
+	}
+	mpz_mod(j1t,j1t,p_to_k);//j1t ridotto modulo p^k
+	mpz_mod(j2t,j2t,p_to_k);//j1_t ridotto modulo p^k
+	j1=mpz_get_si(j1t);//j1=j1t
+	j2=mpz_get_si(j2t);//j2=j2t
+	j_temp2=j1;
+	indexv=j_temp2+M;//l'indice deve essere positivo
+	while(j_temp2<=M){//all'inizio j_temp=0*p+j1t,poi diventa k*p+j1t(a salti di p)
+		//indexv=j_temp2+M;//siccome j_temp è sfalsato di -M si riaggiunge M
+		thread_data.numbers[indexv].sum_log+=r.log_prime[index_of_prime];
+		//se il first_index_f_base non è stato modificato setta first e last
+		if(thread_data.numbers[indexv].first_index_f_base==-1){
+			thread_data.numbers[indexv].first_index_f_base=index_of_prime;
+			thread_data.numbers[indexv].last_index_f_base=index_of_prime;
+		}
+		else{//altrimenti modifica solamente last
+			thread_data.numbers[indexv].last_index_f_base=index_of_prime;
+		}
+		if(thread_data.numbers[indexv].first_index_f_base>thread_data.numbers[indexv].last_index_f_base){
+			handle_error_with_exit("error in index\n");
+		}
+		array_divided=1;//una divisione è stata effettuata
+		j_temp2+=p;//ad ogni ciclo aggiungo p
+		indexv+=p;
+	}
+	j_temp2=-p+j1;//all'inizio j_temp=-p+j1t,poi diventa -k*p+j1t(a salti di p negativi)
+	indexv=j_temp2+M;
+	while(j_temp2>=-M){//all'inizio j_temp=0*p+j1t,poi diventa k*p+j1t(a salti di p)
+		//indexv=j_temp2+M;//siccome j_temp è sfalsato di -M si riaggiunge M
+		thread_data.numbers[indexv].sum_log+=r.log_prime[index_of_prime];
+		//se il first_index_f_base non è stato modificato setta first e last
+		if(thread_data.numbers[indexv].first_index_f_base==-1){
+			thread_data.numbers[indexv].first_index_f_base=index_of_prime;
+			thread_data.numbers[indexv].last_index_f_base=index_of_prime;
+		}
+		else{//altrimenti modifica solamente last
+			thread_data.numbers[indexv].last_index_f_base=index_of_prime;
+		}
+		if(thread_data.numbers[indexv].first_index_f_base>thread_data.numbers[indexv].last_index_f_base){
+			handle_error_with_exit("error in index\n");
+		}
+		array_divided=1;//una divisione è stata effettuata
+		j_temp2-=p;//ad ogni ciclo tolgo p
+		indexv-=p;
+	}
+	if(j==1){
+		mpz_clear(p_to_k);
+		mpz_clear(r2);
+		mpz_clear(a_temp);
+		mpz_clear(inverse_a);
+		mpz_clear(inverse2b);
+		mpz_clear(j1t);
+		mpz_clear(j2t);
+		mpz_clear(c);
+		mpz_clear(b_temp);
+		mpz_clear(v);
+		mpz_clear(l_temp);
+		mpz_clear(j_temp);
+		mpz_clear(h_temp);
+		mpz_clear(index);
+		if(array_divided==1){
+			return 1;//ritorna 1 se c'è stata almeno 1 divisione
+		}
+		return 0;//ritorna 0 se non ci sono state divisioni nell'array
+	}
+	j_temp2=j2;//si passa alla secodna radice
+	indexv=j_temp2+M;
+	while(j_temp2<=M){//all'inizio j_temp=0*p+j1t,poi diventa k*p+j1t(a salti di p)
+		//indexv=j_temp2+M;//siccome j_temp è sfalsato di -M si riaggiunge M
+		thread_data.numbers[indexv].sum_log+=r.log_prime[index_of_prime];
+		//se il first_index_f_base non è stato modificato setta first e last
+		if(thread_data.numbers[indexv].first_index_f_base==-1){
+			thread_data.numbers[indexv].first_index_f_base=index_of_prime;
+			thread_data.numbers[indexv].last_index_f_base=index_of_prime;
+		}
+		else{//altrimenti modifica solamente last
+			thread_data.numbers[indexv].last_index_f_base=index_of_prime;
+		}
+		if(thread_data.numbers[indexv].first_index_f_base>thread_data.numbers[indexv].last_index_f_base){
+			handle_error_with_exit("error in index\n");
+		}
+		array_divided=1;//una divisione è stata effettuata
+		j_temp2+=p;//ad ogni ciclo aggiungo p
+		indexv+=p;
+	}
+	j_temp2=-p+j2;//all'inizio j_temp=-p+j1t,poi diventa -k*p+j1t(a salti di p negativi)
+	indexv=j_temp2+M;
+	while(j_temp2>=-M){//all'inizio j_temp=0*p+j1t,poi diventa k*p+j1t(a salti di p)
+		//indexv=j_temp2+M;//siccome j_temp è sfalsato di -M si riaggiunge M
+		thread_data.numbers[indexv].sum_log+=r.log_prime[index_of_prime];
+		//se il first_index_f_base non è stato modificato setta first e last
+		if(thread_data.numbers[indexv].first_index_f_base==-1){
+			thread_data.numbers[indexv].first_index_f_base=index_of_prime;
+			thread_data.numbers[indexv].last_index_f_base=index_of_prime;
+		}
+		else{//altrimenti modifica solamente last
+			thread_data.numbers[indexv].last_index_f_base=index_of_prime;
+		}
+		if(thread_data.numbers[indexv].first_index_f_base>thread_data.numbers[indexv].last_index_f_base){
+			handle_error_with_exit("error in index\n");
+		}
+		array_divided=1;//una divisione è stata effettuata
+		j_temp2-=p;//ad ogni ciclo tolgo p
+		indexv-=p;
+	}
+	mpz_clear(p_to_k);
+	mpz_clear(r2);
+	mpz_clear(a_temp);
+	mpz_clear(inverse_a);
+	mpz_clear(inverse2b);
+	mpz_clear(j1t);
+	mpz_clear(j2t);
+	mpz_clear(c);
+	mpz_clear(b_temp);
+	mpz_clear(v);
+	mpz_clear(l_temp);
+	mpz_clear(j_temp);
+	mpz_clear(h_temp);
+	mpz_clear(index);
+	if(array_divided==1){
+		return 1;//ritorna 1 se c'è stata almeno 1 divisione
+	}
+	return 0;//ritorna 0 se non ci sono state divisioni nell'array
+}
 char divide_all_by_p_to_k_f(int rad,long p,int index_of_prime,long k,long M,struct thread_data thread_data,const mpz_t n,const mpz_t a,const mpz_t b,struct a_struct*array_a_struct,int*index_array_a_struct){//r=square root di n mod p^k,ritorna >zero se c'è stata almeno 1 divisione
 //a(j)=aj^2+2bj+c,se polinomio forma semplice a=1 e b=x0
 //(x0+j)^2==n mod p^k r:r^2==n mod p^k -> r=x0+j ->j=r-x0
@@ -2723,8 +2928,41 @@ char divide_all_by_p_to_k_f(int rad,long p,int index_of_prime,long k,long M,stru
 	mpz_clear(r1);
 	return;
 }*/
+void*thread_factorization_job(void*arg){
+    long p;
+    struct factorization_thread_data*factorization_thread_data=arg;
+    int start=(*factorization_thread_data).start;
+    int end=(*factorization_thread_data).end;
+    for(int i=start;i<end;i++){
+        p=r.prime[i];//primo iesimo della factor base
+        divide_all_by_p_to_k_with_thread(r.root_n_mod_p[i],p,i,1,M,(*factorization_thread_data).thread_data,n,a,(*factorization_thread_data).thread_data.b,array_a_struct);
+    }
+    return NULL;
+}
 void factor_matrix_f(const mpz_t n,long M,struct thread_data thread_data,int cardinality_factor_base,const mpz_t a,
 		struct a_struct*array_a_struct,int s){
+    if(n==NULL || a==NULL || mpz_sgn(n)<=0 || M<=0 || cardinality_factor_base<=0 || array_a_struct==NULL || s<0){
+        handle_error_with_exit("error in factor matrix_f\n");
+    }
+    pthread_t *array_tid=NULL;
+    int*array_id=NULL;
+    divide_all_by_2_log(M,thread_data);
+    array_tid = alloc_array_tid(NUM_THREAD_FACTORIZATION);//alloca memoria per contenere tutti i tid
+    array_id = create_factorization_threads(array_tid,thread_data, NUM_THREAD_FACTORIZATION);//crea tutti i thread
+    join_all_threads(array_tid, NUM_THREAD_FACTORIZATION);//aspetta tutti i thread
+    if (array_tid != NULL) {//libera memoria allocata
+        free(array_tid);
+        array_tid = NULL;
+    }
+    if (array_id != NULL) {
+        free(array_id);
+        array_id = NULL;
+    }
+    //divide_all_by_p_to_k_f(r.root_n_mod_p[i],p,i,1,M,thread_data,n,a,thread_data.b,array_a_struct,&index_array_a_struct);
+    return;
+}
+/*void factor_matrix_f(const mpz_t n,long M,struct thread_data thread_data,int cardinality_factor_base,const mpz_t a,
+                     struct a_struct*array_a_struct,int s){
     if(n==NULL || a==NULL || mpz_sgn(n)<=0 || M<=0 || cardinality_factor_base<=0 || array_a_struct==NULL || s<0){
         handle_error_with_exit("error in factor matrix_f\n");
     }
@@ -2736,14 +2974,14 @@ void factor_matrix_f(const mpz_t n,long M,struct thread_data thread_data,int car
             continue;
         }
         if(p==2){
-			divide_all_by_2_log(M,thread_data);
+            divide_all_by_2_log(M,thread_data);
         }
         else{//p>2 e dispari
             divide_all_by_p_to_k_f(r.root_n_mod_p[i],p,i,1,M,thread_data,n,a,thread_data.b,array_a_struct,&index_array_a_struct);
         }
     }
     return;
-}
+}*/
 /*int count_number_B_smooth_in_matrix(mpz_t**potential_matrix_B_smooth,int card_factor_base,long size){
 //conta il numero di numeri B_smooth nell'array dei numeri e inserisce i valori sia nella lista degli indici B_smooth,sia nella lista delle radici quadrate dei numeri B_smoot
 	mpz_t temp,i_temp;

@@ -51,6 +51,8 @@ float calculate_log_thresold(const mpz_t n,long M);
 void find_list_square_relation(struct thread_data thread_data,int*num_B_smooth,int*num_potential_B_smooth,long M,struct node_square_relation**head,struct node_square_relation**tail,const mpz_t n,const mpz_t a,struct a_struct*a_struct,int s);
 void calculate_index_min_max_a(int*number_prime_a,int*index_prime_a,int length,int*min_a,int*max_a);
 struct a_struct*create_array_a_struct(int*number_prime_a,int*index_number_a,int length);
+void*thread_factorization_job(void*arg);
+char divide_all_by_p_to_k_with_thread(int rad,long p,int index_of_prime,long k,long M,struct thread_data thread_data,const mpz_t n,const mpz_t a,const mpz_t b,struct a_struct*array_a_struct);
 
 
 

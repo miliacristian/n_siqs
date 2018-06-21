@@ -529,7 +529,6 @@ int thread_job_to_create_factor_base(int id_thread){
     long remainder=reduce_int_mod_n_v2(B,NUM_THREAD_FACTOR_BASE+1);
 	long length=(B-remainder)/(NUM_THREAD_FACTOR_BASE+1);
 	int start=id_thread*length+1;
-	start=calculate_start_factor_base(id_thread);
 	int end=start+length-1;
 	//es remainder=0 thread=5 B=500.000 -> len=100.000 start=0*100000+1,end=1+100000-1=100000,start2=100001,end2=200000
 	thread_factor_base_data[id_thread].last_prime_factor_base=start;

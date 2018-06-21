@@ -25,6 +25,23 @@ void copy_matrix_with_array(char**linear_system2,char*linear_system,int num_row,
     }
     return;
 }
+char value_is_in_sorted_array(int index_of_prime,struct a_struct*array_a_struct,int length){
+    if(array_a_struct==NULL || length<0){
+        handle_error_with_exit("error in value is in sorted_array\n");
+    }
+    //se è minore del primo o maggiore dell'ultimo allora non è nell'array
+    if(index_of_prime<array_a_struct[0].index_prime_a || index_of_prime>array_a_struct[length-1].index_prime_a){
+        return 0;
+    }
+    //se sono uguali ritorna 1 altrimenti 0
+    for(int i=1;i<length-1;i++){
+        if(index_of_prime==array_a_struct[i].index_prime_a){
+            return 1;
+        }
+    }
+    return 0;
+}
+
 /*void free_memory_matrix_factorization(struct matrix_factorization *mat){
 	if(mat==NULL){
 		handle_error_with_exit("error in free memory matrix factorization\n");
