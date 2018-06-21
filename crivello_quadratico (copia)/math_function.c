@@ -719,14 +719,15 @@ char divide_all_by_2_log(long M,struct thread_data thread_data){//divide gli ele
     }
     long i=-1;
     long count=0;
-    count=M+1;//a^2*j^2+2bj+c mod 2 =M+1+b,primo elemento ha j=-M=M mod 2
+    count=M & 1;//se M dispari count =1 altrimenti count=0
+    count+=1;//a^2*j^2+2bj+c mod 2 =M+1+b,primo elemento ha j=-M=M mod 2
     //trovare il primo numero divisibile per 2 e poi a salti di 2 dividere gli altri
     if(mpz_divisible_2exp_p(thread_data.b,1)!=0){//b è divisibile per 2
     }
     else{
         count+=1;
     }
-    //i=1 indice dispari,il primo elemento è dispari,i=0 indice pari,il primo elemento è pari
+    //i=1 indice dispari,il primo elemento è dispari,i=0 indice pari,il primo elemento è pari*/
     if(count%2==0){
         i=0;
     }
@@ -736,7 +737,7 @@ char divide_all_by_2_log(long M,struct thread_data thread_data){//divide gli ele
     for(;i<2*M+1;i=i+2){
         thread_data.numbers[i].last_index_f_base=1;
         thread_data.numbers[i].first_index_f_base=1;
-        thread_data.numbers[i].sum_log+=r.log_prime[1];
+        thread_data.numbers[i].sum_log=r.log_prime[1];
     }
     return 1;
 }
@@ -2434,8 +2435,6 @@ char divide_all_by_p_to_k_f(int rad,long p,int index_of_prime,long k,long M,stru
 		mpz_add(j2t,j2t,r2);//j2=-b+r2
     }
     else if(array_a_struct[*index_array_a_struct].index_prime_a!=index_of_prime){//p non divide a
-    //else if(mpz_divisible_ui_p(a,p)==0){//se p non divide a
-        //mpz_invert(inverse_a,a,p_to_k);//inverse_a=a^-1 mod p^k
         if(r.inverse_a_mod_p[index_of_prime]==-1){
             printf("p=%ld,index_of_prime=%d,index_array_a_struct=%d\n",p,index_of_prime,array_a_struct[*index_array_a_struct].index_prime_a);
             handle_error_with_exit("error in factorize_matrix,inverse not found\n");
@@ -2478,7 +2477,7 @@ char divide_all_by_p_to_k_f(int rad,long p,int index_of_prime,long k,long M,stru
 	j1=mpz_get_si(j1t);//j1=j1t
 	j2=mpz_get_si(j2t);//j2=j2t
     j_temp2=j1;
-    indexv=j_temp2+M;
+    indexv=j_temp2+M;//l'indice deve essere positivo
 	while(j_temp2<=M){//all'inizio j_temp=0*p+j1t,poi diventa k*p+j1t(a salti di p)
 		//indexv=j_temp2+M;//siccome j_temp è sfalsato di -M si riaggiunge M
 		thread_data.numbers[indexv].sum_log+=r.log_prime[index_of_prime];
