@@ -19,6 +19,7 @@ struct timespec;
 struct timespec timer;
 struct timespec time_start;
 FILE*file_log;
+extern int M;
 extern int cardinality_factor_base;
 int compare_a_struct( const void* a, const void* b)
 {
@@ -180,18 +181,17 @@ struct factorization_thread_data* create_factorization_threads(pthread_t*array_t
     if(num_thread==0){
         return NULL;
     }
-    struct factorization_thread_data*factorization_data=malloc(sizeof(struct factorization_thread_data)*1);
+    struct factorization_thread_data*factorization_data=malloc(sizeof(struct factorization_thread_data)*num_thread);
     if(factorization_data==NULL){
     	handle_error_with_exit("error in malloc factorization_data\n");
     }
+	print_thread_data(thread_data,M);
     for(int id=0;id<num_thread;id++){
         long remainder=reduce_int_mod_n_v2(cardinality_factor_base,num_thread);
         long length=(cardinality_factor_base-remainder)/(num_thread);
         int start=id*length+1;
         int end=start+length-1;
         factorization_data[0].thread_data=thread_data;
-        gmp_printf("b=%Zd\n",thread_data.b);
-		gmp_printf("b=%Zd\n",factorization_data[0].thread_data.b);
         factorization_data[0].id_thread=id;//assegna ad ogni thread l'indice
         factorization_data[0].start=start;
         factorization_data[0].end=end;
@@ -201,7 +201,7 @@ struct factorization_thread_data* create_factorization_threads(pthread_t*array_t
 		else{
 			factorization_data[0].is_a_default = 0;
         }
-        if(pthread_create(&(array_tid[id]),NULL,thread_factorization_job,factorization_data)!=0){
+        if(pthread_create(&(array_tid[id]),NULL,thread_factorization_job,&(factorization_data[id]))!=0){
             handle_error_with_exit("error in pthread_create create_thread\n");
         }
     }
@@ -433,6 +433,17 @@ void free_memory_matrix_long(long **matrix,int num_row,int num_col){
 	return;
 }
 void free_memory_matrix_int(int **matrix,int num_row,int num_col){
+	if(matrix==NULL || *matrix==NULL || num_row<=0 || num_col<=0){
+		handle_error_with_exit("error in free memory matrix int\n");
+	}
+	for(int i=0;i<num_row;i++){
+		free(matrix[i]);
+	}
+	free(matrix);
+	matrix=NULL;
+	return;
+}
+void free_memory_matrix_char(char **matrix,int num_row,int num_col){
 	if(matrix==NULL || *matrix==NULL || num_row<=0 || num_col<=0){
 		handle_error_with_exit("error in free memory matrix int\n");
 	}

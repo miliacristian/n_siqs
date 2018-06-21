@@ -106,4 +106,5 @@ void free_memory_list_square_relation(struct node_square_relation*head);
 struct factor_base_data*alloc_array_factor_base_data(int length);
 int* create_factor_base_threads(pthread_t*array_tid,int num_thread);
 struct factorization_thread_data* create_factorization_threads(pthread_t*array_tid,struct thread_data thread_data,const mpz_t a,int num_thread);
+void free_memory_matrix_char(char **matrix,int num_row,int num_col);
 #endif

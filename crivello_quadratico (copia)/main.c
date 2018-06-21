@@ -217,7 +217,7 @@ int main(int argc,char*argv[]){
 				create_factor_base_f(&cardinality_factor_base,B,&head_f_base_f,&tail_f_base_f,n,&last_prime_factor_base);//crea lista dinamica con tutti i primi
 			}
 			printf("factor base=");
-			//print_list_factor(head_f_base_f,cardinality_factor_base);
+			print_list_factor(head_f_base_f,cardinality_factor_base);
 			printf("cardinality factor_base %d\n",cardinality_factor_base);
 			fprintf(file_log,"card_f_base=%d ",cardinality_factor_base);
 			print_time_elapsed("time to calculate factor base");
@@ -309,7 +309,7 @@ int main(int argc,char*argv[]){
 			thread_polynomial_data[NUM_THREAD_POLYNOMIAL].log_thresold=calculate_log_thresold(n,M);
 			printf("log_thresold main thread=%f\n",thread_polynomial_data[NUM_THREAD_POLYNOMIAL].log_thresold);
 
-			//find_list_square_relation(thread_polynomial_data[NUM_THREAD_POLYNOMIAL],&num_B_smooth,&num_potential_B_smooth,M,&head,&tail,n,a_default,NULL,0);
+			find_list_square_relation(thread_polynomial_data[NUM_THREAD_POLYNOMIAL],&num_B_smooth,&num_potential_B_smooth,M,&head,&tail,n,a_default,NULL,0);
 			print_time_elapsed("time_to find_list_square_relation");
 
 			//aspetta tutti i thread e libera memoria
@@ -350,18 +350,15 @@ int main(int argc,char*argv[]){
 				printf("num_potential_B_smooth=%d,num_B_smooth=%d\n",num_potential_B_smooth,num_B_smooth);
 			}
             print_time_elapsed("time to union all lists");
-            //print_list_square_relation(head,num_B_smooth);
 			remove_same_num(&head,&tail,&num_B_smooth);
             print_time_elapsed("time to remove same num");
             fprintf(file_log,"num_pot_B_smooth=%d num_B_smooth=%d ",num_potential_B_smooth,num_B_smooth);
-            //printf("list after remove\n");
-            //print_list_square_relation(head,num_B_smooth);
+            print_list_square_relation(head,num_B_smooth);
             printf("cardinality factor base=%d\n",cardinality_factor_base);
-            timer.tv_nsec=time_start.tv_nsec;//timer=time_start
+            /*timer.tv_nsec=time_start.tv_nsec;//timer=time_start
             timer.tv_sec=time_start.tv_sec;//timer=time_start
             print_time_elapsed_on_file_log("time_total");
-            print_time_elapsed("time_total");
-            exit(0);
+            print_time_elapsed("time_total");*/
             if(num_B_smooth<cardinality_factor_base*ENOUGH_RELATION){
                 calculate_news_M_and_B(&M,&B);
 				free_array_thread_data(thread_polynomial_data,NUM_THREAD_POLYNOMIAL+1);
@@ -398,9 +395,9 @@ int main(int argc,char*argv[]){
             reduce_echelon_form_matrix_char(linear_system2,cardinality_factor_base,num_B_smooth);
             printf("fine riduzione a scala\n");
             print_time_elapsed("time to reduce echelon form");
-            //exit(0);
 			base_matrix=calculate_base_linear_system_char(linear_system,cardinality_factor_base,num_B_smooth,&dim_sol);
-
+			free_memory_matrix_char(linear_system2,cardinality_factor_base,num_B_smooth);
+			linear_system2=NULL;
 			if(base_matrix==NULL){//non ci sono abbastanza soluzioni,ricomincia il crivello quadratico
 				calculate_news_M_and_B(&M,&B);
                 free(linear_system);
