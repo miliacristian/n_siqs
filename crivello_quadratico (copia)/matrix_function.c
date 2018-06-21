@@ -87,19 +87,42 @@ struct matrix_factorization**alloc_array_matrix_factorization(int length_array_m
 	return array_matrix_factorization;
 }
 */
-void create_row_factorization(struct node_factor_base*head_f_base_f,int card_f_base){
-	if(head_f_base_f==NULL || card_f_base<=0){
+
+//scriverla in modo parallelizzato
+void create_row_factorization(struct node_factor_base*head_f_base_f,int card_f_base,const mpz_t a,struct a_struct*array_a_struct,int s){
+	if(head_f_base_f==NULL || card_f_base<=0 || array_a_struct==NULL || s<0){
 		handle_error_with_exit("error in create row factorization\n");
 	}
+	mpz_t temp;
+	int index=0;
+	mpz_init(temp);
 	struct node_factor_base*p=head_f_base_f;
 	for(int i=0;i<card_f_base;i++){
+        r.prime[i]=p->prime;//metti il primo della factor base in posizione pari
 		r.root_n_mod_p[i]=p->root_n_mod_prime;
-		r.prime[i]=p->prime;//metti il primo della factor base in posizione pari
+		r.root2_n_mod_p[i]= r.prime[i]-r.root_n_mod_p[i];//rad2=p-rad1 mod p
+		if(i==array_a_struct[index].index_prime_a) {//p divide a non esiste inverso modulo p
+            r.inverse_a_mod_p[i]=-1;
+            index++;
+        }
+        else{
+		    mpz_set_si(temp,r.prime[i]);//temp=p
+            if(mpz_invert(temp,a,temp)==0){
+            	printf("i=%d\n",i);
+            	print_array_a_struct(array_a_struct,s);
+            	handle_error_with_exit("error in mpz_invert create_row_factorization\n");
+            }//temp=inverse of a mod p
+			r.inverse_a_mod_p[i]=mpz_get_si(temp);
+		}
 		if(p->prime!=-1){
 			r.log_prime[i]=(int)round(log2f((float)p->prime));
 		}
 		p=p->next;
 	}
+	if(index!=s){
+	    handle_error_with_exit("error in initialize inverse mod p create_row_factorization\n");
+	}
+	mpz_clear(temp);
 	return;
 }
 /*struct matrix_factorization*create_matrix_factorization_f(int M,int card_f_base,const mpz_t a,const mpz_t b,const mpz_t n){

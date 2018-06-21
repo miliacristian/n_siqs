@@ -31,10 +31,12 @@
 
 struct timespec;
 struct row_factorization{
-	int length;//card*2
+    int length;
 	int*prime;//contiene primo factor base e
 	int*log_prime;//valore del suo logaritmo
     int*root_n_mod_p;
+    int*root2_n_mod_p;
+    int*inverse_a_mod_p;
 };
 
 struct thread_data {

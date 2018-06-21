@@ -1262,7 +1262,9 @@ mpz_t*calculate_array_Bk_f(int*number_prime_a,int card_factor_base,const mpz_t n
 			handle_error_with_exit("error in mpz_divisible_calculate array_BK\n");
 		}
 		mpz_divexact(ak,a,pk);//ak=a/pk
-		mpz_invert(ak_inverse,ak,pk);//ak_inverse=(ak)^-1 mod pk
+		if(mpz_invert(ak_inverse,ak,pk)==0){
+		    handle_error_with_exit("error in mpz_invert calculate array_Bk\n");
+		}//ak_inverse=(ak)^-1 mod pk
 		mpz_set(n_temp,n);//n_temp=n
 		mpz_mod(n_temp,n,pk);//n_temp=n mod pk
 		if(vpk==2){//la radice di n mod 2 è la riduzione di n mod 2,in realtà i numeri primi devono essere dispari

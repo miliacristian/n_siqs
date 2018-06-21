@@ -58,7 +58,7 @@ char check_if_array_is_reduce_mod_n(int*array,int length,int n);
 void reduce_array_mod_n(int*array,int length,int n);
 struct matrix_factorization*create_matrix_factorization_f(int M,int card_f_base,const mpz_t a,
 const mpz_t b,const mpz_t n);
-void create_row_factorization(struct node_factor_base*head_f_base_f,int card_f_base);
+void create_row_factorization(struct node_factor_base*head_f_base_f,int card_f_base,const mpz_t a,struct a_struct*array_a_struct,int s);
 struct matrix_factorization**alloc_array_matrix_factorization(int length_array_matrix);
 void concatenate_all_matrix_factorization_same_dimension(struct matrix_factorization**array_matrix_factorization,int length_array_matrix,int *row_result,int num_row_matrix);
 int count_number_B_smooth_matrix_unsorted_f(struct matrix_factorization *single_matrix_factorization,int num_row);

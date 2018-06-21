@@ -241,10 +241,7 @@ int main(int argc,char*argv[]){
 			print_time_elapsed("time to calculate index_min_a index_max_a");
 			//number_prime_a e index_prime_a
 			if(s>0){
-				printf("number_prime_a=");
-				print_array_int(number_prime_a,s);
-				printf("index_prime_a=");
-				print_array_int(index_prime_a,s);
+				print_array_a_struct(array_a_struct,s);
 			}
 
 			//array Bk,può essere ridotto modulo a
@@ -288,7 +285,9 @@ int main(int argc,char*argv[]){
 			r.prime=alloc_array_int(cardinality_factor_base);
 			r.log_prime=alloc_array_int(cardinality_factor_base);
 			r.root_n_mod_p=alloc_array_int(cardinality_factor_base);
-			create_row_factorization(head_f_base_f,cardinality_factor_base);
+			r.root2_n_mod_p=alloc_array_int(cardinality_factor_base);
+			r.inverse_a_mod_p=alloc_array_int(cardinality_factor_base);
+			create_row_factorization(head_f_base_f,cardinality_factor_base,a,array_a_struct,s);
 			//print_array_int(r.log_prime,cardinality_factor_base);
 			//print_array_int(r.prime,cardinality_factor_base);
 			//print_array_int(r.root_n_mod_p,cardinality_factor_base);
@@ -366,13 +365,18 @@ int main(int argc,char*argv[]){
                 calculate_news_M_and_B(&M,&B);
 				free_array_thread_data(thread_polynomial_data,NUM_THREAD_POLYNOMIAL+1);
 				thread_polynomial_data=NULL;
-				if(r.log_prime!=NULL && r.prime!=NULL && r.root_n_mod_p!=NULL) {
+				if(r.log_prime!=NULL && r.prime!=NULL && r.root_n_mod_p!=NULL && r.inverse_a_mod_p!=NULL &&
+						r.root2_n_mod_p!=NULL) {
 					free(r.log_prime);
 					r.log_prime = NULL;
 					free(r.prime);
 					r.prime=NULL;
 					free(r.root_n_mod_p);
 					r.root_n_mod_p=NULL;
+					free(r.root2_n_mod_p);
+					r.root2_n_mod_p=NULL;
+					free(r.inverse_a_mod_p);
+					r.inverse_a_mod_p=NULL;
 				}
 				if(thread_polynomial_data!=NULL) {
 					free_array_thread_data(thread_polynomial_data, NUM_THREAD_POLYNOMIAL + 1);
@@ -393,20 +397,25 @@ int main(int argc,char*argv[]){
             reduce_echelon_form_matrix_char(linear_system2,cardinality_factor_base,num_B_smooth);
             printf("fine riduzione a scala\n");
             print_time_elapsed("time to reduce echelon form");
-            exit(0);
+            //exit(0);
 			base_matrix=calculate_base_linear_system_char(linear_system,cardinality_factor_base,num_B_smooth,&dim_sol);
 
 			if(base_matrix==NULL){//non ci sono abbastanza soluzioni,ricomincia il crivello quadratico
 				calculate_news_M_and_B(&M,&B);
                 free(linear_system);
                 linear_system=NULL;
-				if(r.log_prime!=NULL && r.prime!=NULL && r.root_n_mod_p!=NULL) {
+				if(r.log_prime!=NULL && r.prime!=NULL && r.root_n_mod_p!=NULL && r.inverse_a_mod_p!=NULL &&
+														 r.root2_n_mod_p!=NULL) {
 					free(r.log_prime);
 					r.log_prime = NULL;
 					free(r.prime);
 					r.prime=NULL;
 					free(r.root_n_mod_p);
 					r.root_n_mod_p=NULL;
+					free(r.root2_n_mod_p);
+					r.root2_n_mod_p=NULL;
+					free(r.inverse_a_mod_p);
+					r.inverse_a_mod_p=NULL;
 				}
 				if(thread_polynomial_data!=NULL) {
 					free_array_thread_data(thread_polynomial_data, NUM_THREAD_POLYNOMIAL + 1);
@@ -434,13 +443,18 @@ int main(int argc,char*argv[]){
 			print_time_elapsed("time to calculate solution from base linear system");
 			if(factorizations_founded==0){
                 calculate_news_M_and_B(&M,&B);
-				if(r.log_prime!=NULL && r.prime!=NULL && r.root_n_mod_p!=NULL) {
+				if(r.log_prime!=NULL && r.prime!=NULL && r.root_n_mod_p!=NULL && r.inverse_a_mod_p!=NULL &&
+														 r.root2_n_mod_p!=NULL) {
 					free(r.log_prime);
 					r.log_prime = NULL;
 					free(r.prime);
 					r.prime=NULL;
 					free(r.root_n_mod_p);
 					r.root_n_mod_p=NULL;
+					free(r.root2_n_mod_p);
+					r.root2_n_mod_p=NULL;
+					free(r.inverse_a_mod_p);
+					r.inverse_a_mod_p=NULL;
 				}
 				if(thread_polynomial_data!=NULL) {
 					free_array_thread_data(thread_polynomial_data, NUM_THREAD_POLYNOMIAL + 1);
@@ -455,13 +469,18 @@ int main(int argc,char*argv[]){
 			head_f_base_f = NULL;
 			tail_f_base_f = NULL;
 		}
-		if(r.log_prime!=NULL && r.prime!=NULL && r.root_n_mod_p!=NULL) {
+		if(r.log_prime!=NULL && r.prime!=NULL && r.root_n_mod_p!=NULL && r.inverse_a_mod_p!=NULL &&
+												 r.root2_n_mod_p!=NULL) {
 			free(r.log_prime);
 			r.log_prime = NULL;
 			free(r.prime);
 			r.prime=NULL;
 			free(r.root_n_mod_p);
 			r.root_n_mod_p=NULL;
+			free(r.root2_n_mod_p);
+			r.root2_n_mod_p=NULL;
+			free(r.inverse_a_mod_p);
+			r.inverse_a_mod_p=NULL;
 		}
 		if(thread_polynomial_data!=NULL) {
 			free_array_thread_data(thread_polynomial_data, NUM_THREAD_POLYNOMIAL + 1);
