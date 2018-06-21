@@ -118,13 +118,14 @@ void create_row_factorization(struct node_factor_base*head_f_base_f,int card_f_b
         r.prime[i]=p->prime;//metti il primo della factor base in posizione pari
 		r.root_n_mod_p[i]=p->root_n_mod_prime;
 		r.root2_n_mod_p[i]= r.prime[i]-r.root_n_mod_p[i];//rad2=p-rad1 mod p
-		if((i==array_a_struct[index].index_prime_a) || (i==0) || (i==1)) {//p divide a non esiste inverso modulo p
-            r.inverse_a_mod_p[i]=-1;
+		if((i==0) || (i==1) ||
+		   (index<s && i==array_a_struct[index].index_prime_a) ) {//p divide a non esiste inverso modulo p
+			r.inverse_a_mod_p[i]=-1;
             if(i!=0 && i!=1) {
 				index++;
 			}
         }
-        else{
+        else{//p non divide a ->esiste l'inverso
 		    mpz_set_si(temp,r.prime[i]);//temp=p
             if(mpz_invert(temp,a,temp)==0){//temp=inverse of a mod p
 				if(i==array_a_struct[index].index_prime_a){

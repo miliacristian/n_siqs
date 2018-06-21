@@ -49,7 +49,7 @@
 	int num_increment_M_and_B=0;
 	int*index_prime_a=NULL;//indice dei primi usati per ottenere a,rispetto alla factor base
 	int*number_prime_a=NULL;//numeri primi usati per ottenere a
-    struct a_struct*array_a_struct;
+    struct a_struct*array_a_struct=NULL;
 
 int calculate_start_factor_base(int id_thread){
     long remainder=reduce_int_mod_n_v2(B,NUM_THREAD_FACTOR_BASE+1);
@@ -225,7 +225,7 @@ int main(int argc,char*argv[]){
 			calculate_a_f2(a,thresold_a,&s,head_f_base_f,cardinality_factor_base,&index_prime_a,&number_prime_a);
 			if(s>0) {
                 array_a_struct = create_array_a_struct(number_prime_a, index_prime_a, s);
-                qsort(array_a_struct, s, sizeof(struct a_struct), compare_a_struct);
+                qsort(array_a_struct, (size_t)s, sizeof(struct a_struct), compare_a_struct);
                 print_array_a_struct(array_a_struct, s);
             }
 			gmp_printf("a=%Zd\n",a);
@@ -359,6 +359,7 @@ int main(int argc,char*argv[]){
             timer.tv_sec=time_start.tv_sec;//timer=time_start
             print_time_elapsed_on_file_log("time_total");
             print_time_elapsed("time_total");*/
+            exit(0);
             if(num_B_smooth<cardinality_factor_base*ENOUGH_RELATION){
                 calculate_news_M_and_B(&M,&B);
 				free_array_thread_data(thread_polynomial_data,NUM_THREAD_POLYNOMIAL+1);

@@ -21,6 +21,42 @@ struct timespec time_start;
 FILE*file_log;
 extern int M;
 extern int cardinality_factor_base;
+void destroy_mtx(pthread_mutex_t *mtx){
+	if(mtx==NULL){
+		handle_error_with_exit("error in destroy_mtx mtx is NULL\n");
+	}
+	if(pthread_mutex_destroy(mtx)!=0){
+		handle_error_with_exit("error in pthread_mutex_destroy\n");
+	}
+	return;
+}
+void initialize_mtx(pthread_mutex_t *mtx){//inizializza mutex
+	if(mtx==NULL){
+		handle_error_with_exit("error in initialize_mtx mtx is NULL\n");
+	}
+	if(pthread_mutex_init(mtx,NULL)!=0){
+		handle_error_with_exit("error in initialize mtx\n");
+	}
+	return;
+}
+void lock_mtx(pthread_mutex_t *mtx){//lock mutex
+	if(mtx==NULL){
+		handle_error_with_exit("error in lock_mtx mtx is NULL\n");
+	}
+	if(pthread_mutex_lock(mtx)!=0){
+		handle_error_with_exit("error in pthread_mutex_lock\n");
+	}
+	return;
+}
+void unlock_mtx(pthread_mutex_t *mtx){//unlock mutex
+	if(mtx==NULL){
+		handle_error_with_exit("error in unlock_mtx mtx is NULL\n");
+	}
+	if(pthread_mutex_unlock(mtx)!=0){
+		handle_error_with_exit("error in pthread_mutex_unlock\n");
+	}
+	return;
+}
 int compare_a_struct( const void* a, const void* b)
 {
 	struct a_struct s_a = * ( (struct a_struct*) a );
@@ -181,26 +217,39 @@ struct factorization_thread_data* create_factorization_threads(pthread_t*array_t
     if(num_thread==0){
         return NULL;
     }
+    pthread_mutex_t*mtx=malloc(sizeof(pthread_mutex_t)*1);
+    if(mtx==NULL){
+    	handle_error_with_exit("error in alloc mutex\n");
+    }
+    initialize_mtx(mtx);
     struct factorization_thread_data*factorization_data=malloc(sizeof(struct factorization_thread_data)*num_thread);
     if(factorization_data==NULL){
     	handle_error_with_exit("error in malloc factorization_data\n");
     }
-	print_thread_data(thread_data,M);
+	long remainder=reduce_int_mod_n_v2(cardinality_factor_base,num_thread);
+	long length=(cardinality_factor_base-remainder)/(num_thread);
     for(int id=0;id<num_thread;id++){
-        long remainder=reduce_int_mod_n_v2(cardinality_factor_base,num_thread);
-        long length=(cardinality_factor_base-remainder)/(num_thread);
-        int start=id*length+1;
+        int start=id*length;
         int end=start+length-1;
-        factorization_data[0].thread_data=thread_data;
-        factorization_data[0].id_thread=id;//assegna ad ogni thread l'indice
-        factorization_data[0].start=start;
-        factorization_data[0].end=end;
+        if(id==num_thread-1){//se è l'ultimo thread aggiungi anche il resto
+        	end+=remainder;
+        }
+        printf("start=%d,end=%d\n",start,end);
+        if(start>end && id!=0){
+        	handle_error_with_exit("error in calculate start,end\n");
+        }
+        factorization_data[id].thread_data=thread_data;
+        factorization_data[id].id_thread=id;//assegna ad ogni thread l'indice
+        factorization_data[id].start=start;
+        factorization_data[id].end=end;
+        factorization_data[id].mtx=mtx;
         if(mpz_cmp_si(a,1)==0) {
-			factorization_data[0].is_a_default = 1;
+			factorization_data[id].is_a_default = 1;
 		}
 		else{
-			factorization_data[0].is_a_default = 0;
+			factorization_data[id].is_a_default = 0;
         }
+		printf("is_a_default=%d\n",factorization_data[id].is_a_default);
         if(pthread_create(&(array_tid[id]),NULL,thread_factorization_job,&(factorization_data[id]))!=0){
             handle_error_with_exit("error in pthread_create create_thread\n");
         }
