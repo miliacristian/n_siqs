@@ -62,6 +62,9 @@ int main(int argc,char*argv[]){
 	if(argc!=2){//se non c'è esattamente un parametro,termina
 		handle_error_with_exit("usage<path>\n");
 	}
+	if(NUM_THREAD_FACTORIZATION<1){
+		handle_error_with_exit("choose another num_thread_factorization\n");
+	}
 	FILE*file_number=open_file(argv[1]);//apri file in cui risiede il numero n da fattorizzare
 	double mean_increment_M_and_B=0;
 	for(int i=0;i<MAX_NUM_FOR_DIGIT;i++){
@@ -359,7 +362,6 @@ int main(int argc,char*argv[]){
             timer.tv_sec=time_start.tv_sec;//timer=time_start
             print_time_elapsed_on_file_log("time_total");
             print_time_elapsed("time_total");*/
-            exit(0);
             if(num_B_smooth<cardinality_factor_base*ENOUGH_RELATION){
                 calculate_news_M_and_B(&M,&B);
 				free_array_thread_data(thread_polynomial_data,NUM_THREAD_POLYNOMIAL+1);

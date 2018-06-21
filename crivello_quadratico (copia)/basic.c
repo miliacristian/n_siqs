@@ -234,8 +234,7 @@ struct factorization_thread_data* create_factorization_threads(pthread_t*array_t
         if(id==num_thread-1){//se è l'ultimo thread aggiungi anche il resto
         	end+=remainder;
         }
-        printf("start=%d,end=%d\n",start,end);
-        if(start>end && id!=0){
+        if(start>end){
         	handle_error_with_exit("error in calculate start,end\n");
         }
         factorization_data[id].thread_data=thread_data;
@@ -249,7 +248,6 @@ struct factorization_thread_data* create_factorization_threads(pthread_t*array_t
 		else{
 			factorization_data[id].is_a_default = 0;
         }
-		printf("is_a_default=%d\n",factorization_data[id].is_a_default);
         if(pthread_create(&(array_tid[id]),NULL,thread_factorization_job,&(factorization_data[id]))!=0){
             handle_error_with_exit("error in pthread_create create_thread\n");
         }

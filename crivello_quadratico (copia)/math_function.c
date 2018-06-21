@@ -2431,12 +2431,9 @@ char divide_all_by_p_to_k_with_thread(pthread_mutex_t*mtx,int rad,long p,int ind
 	mpz_set_si(p_to_k,p);//p^k=p
 	//mpz_ui_pow_ui(p_to_k,p,k);//p_to_k=p^k
 	//mpz_sub_ui(r2,p_to_k,rad);
-	printf("divide all\n");
-	printf("p=%ld\n",p);
 	mpz_set_si(r2,r.root2_n_mod_p[index_of_prime]);//r2=p^k-r seconda radice quadrata di n modulo p^k
 	long j=0;//indici dell'array divisibile per p^k,se j!=0 j2 non esiste
 	if(mpz_cmp_si(a,1)==0){//se a=1,infatti a^-1 mod p =1
-		printf("a uguale 1\n");
 		mpz_neg(j1t,b);//j1=-b
 		mpz_neg(j2t,b);//j2=-b
 		mpz_add_ui(j1t,j1t,rad);//j1=-b+r
@@ -2972,8 +2969,6 @@ void*thread_factorization_job(void*arg){
     else{
     	mpz_set(a1,a);
     }
-    printf("start=%d,end=%d,id_thread=%d\n",start,end,(*factorization_thread_data).id_thread);
-
     for(int i=start;i<=end;i++){
     	if(i==0 || i==1){//skippa indice 0 e indice 1
     		continue;
@@ -2992,9 +2987,16 @@ void factor_matrix_f(const mpz_t n,long M,struct thread_data thread_data,int car
     pthread_t *array_tid=NULL;
     struct factorization_thread_data*factorization_thread_data=NULL;
     divide_all_by_2_log(M,thread_data);
-    array_tid = alloc_array_tid(NUM_THREAD_FACTORIZATION);//alloca memoria per contenere tutti i tid
-    factorization_thread_data = create_factorization_threads(array_tid,thread_data,a, NUM_THREAD_FACTORIZATION);//crea tutti i thread
-    join_all_threads(array_tid, NUM_THREAD_FACTORIZATION);//aspetta tutti i thread
+    int num_thread;
+    if(NUM_THREAD_FACTORIZATION>cardinality_factor_base){
+    	num_thread=cardinality_factor_base;
+    }
+    else{
+    	num_thread=NUM_THREAD_FACTORIZATION;
+    }
+    array_tid = alloc_array_tid(num_thread);//alloca memoria per contenere tutti i tid
+    factorization_thread_data = create_factorization_threads(array_tid,thread_data,a,num_thread);//crea tutti i thread
+    join_all_threads(array_tid,num_thread);//aspetta tutti i thread
     if (array_tid != NULL) {//libera memoria allocata
         free(array_tid);
         array_tid = NULL;
