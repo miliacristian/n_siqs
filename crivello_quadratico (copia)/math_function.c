@@ -2434,6 +2434,7 @@ char divide_all_by_p_to_k_f(int rad,long p,int index_of_prime,long k,long M,stru
 		mpz_add_ui(j1t,j1t,rad);//j1=-b+r
 		mpz_add(j2t,j2t,r2);//j2=-b+r2
     }
+    //
     else if(array_a_struct[*index_array_a_struct].index_prime_a!=index_of_prime){//p non divide a
         if(r.inverse_a_mod_p[index_of_prime]==-1){
             printf("p=%ld,index_of_prime=%d,index_array_a_struct=%d\n",p,index_of_prime,array_a_struct[*index_array_a_struct].index_prime_a);
