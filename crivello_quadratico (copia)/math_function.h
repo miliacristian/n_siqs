@@ -34,7 +34,8 @@ long**save_element_B_smooth(const mpz_t*array_number,mpz_t**matrix_factorization
 long calculate_mod_n(long a,long n);
 int max(int i,int j);
 int min(int i,int j);
-void factor_matrix_f(const mpz_t n,long M,struct thread_data thread_data,int cardinality_factor_base,const mpz_t a);
+void factor_matrix_f(const mpz_t n,long M,struct thread_data thread_data,int cardinality_factor_base,const mpz_t a,
+                     struct a_struct*array_a_struct,int s);
 int quadratic_residue(mpz_t x,const mpz_t q,const mpz_t n);
 void add_exponent_of_a(long**matrix_B_smooth,int num_B_smooth,int s,const mpz_t a,long* array_of_prime_chosen_for_a);
 void adjust_n(mpz_t n,int *k);

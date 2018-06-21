@@ -2393,7 +2393,7 @@ void calculate_root_poly_second_degree_mod_p_to_k(mpz_t j1t,const mpz_t p_to_k,l
 	return 0;//ritorna 0 se non ci sono state divisioni nell'array
 }
  */
-char divide_all_by_p_to_k_f(int rad,long p,int index_of_prime,long k,long M,struct thread_data thread_data,const mpz_t n,const mpz_t a,const mpz_t b){//r=square root di n mod p^k,ritorna >zero se c'è stata almeno 1 divisione
+char divide_all_by_p_to_k_f(int rad,long p,int index_of_prime,long k,long M,struct thread_data thread_data,const mpz_t n,const mpz_t a,const mpz_t b,struct a_struct*array_a_struct,int*index_array_a_struct){//r=square root di n mod p^k,ritorna >zero se c'è stata almeno 1 divisione
 //a(j)=aj^2+2bj+c,se polinomio forma semplice a=1 e b=x0
 //(x0+j)^2==n mod p^k r:r^2==n mod p^k -> r=x0+j ->j=r-x0
 //una volta trovate le soluzioni r1 e r2 e una volta trovati j e t le altre soluzioni sono della forma j+l*p^k t+h*p^k,cioè a salti di p^k rispetto a t e j,dove l ed h sono interi
@@ -2401,13 +2401,12 @@ char divide_all_by_p_to_k_f(int rad,long p,int index_of_prime,long k,long M,stru
 
     //j1=r-x0;
     //j2=-r-x0;
-    if((p<=1 && p!=-1 ) || n==NULL || a==NULL || b==NULL || k<=0){
+    if((p<=1 && p!=-1 ) || n==NULL || a==NULL || b==NULL || k<=0 || M<=0 || array_a_struct==NULL || index_array_a_struct==NULL){
         handle_error_with_exit("invalid parameter divide all by p to k\n");
     }
     char array_divided=0;//0 se nessuna divisione effettuata,1 se sono state effettutate divisioni per p^k
     long indexv,j1,j2,j_temp2;
     mpz_t p_to_k,r2,a_temp,inverse_a,inverse2b,j1t,j2t,c,b_temp,v,l_temp,j_temp,index,h_temp;
-
     mpz_init(p_to_k);
     mpz_init(r2);
     mpz_init(a_temp);
@@ -2428,10 +2427,17 @@ char divide_all_by_p_to_k_f(int rad,long p,int index_of_prime,long k,long M,stru
     //mpz_sub_ui(r2,p_to_k,rad);
     mpz_set_si(r2,r.root2_n_mod_p[index_of_prime]);//r2=p^k-r seconda radice quadrata di n modulo p^k
     long j=0;//indici dell'array divisibile per p^k,se j!=0 j2 non esiste
-    if(mpz_divisible_ui_p(a,p)==0){//se p non divide a
+    if(mpz_cmp_si(a,1)==0){//se a=1,infatti a^-1 mod p =1
+		mpz_neg(j1t,b);//j1=-b
+		mpz_neg(j2t,b);//j2=-b
+		mpz_add_ui(j1t,j1t,rad);//j1=-b+r
+		mpz_add(j2t,j2t,r2);//j2=-b+r2
+    }
+    else if(array_a_struct[*index_array_a_struct].index_prime_a!=index_of_prime){//p non divide a
+    //else if(mpz_divisible_ui_p(a,p)==0){//se p non divide a
         //mpz_invert(inverse_a,a,p_to_k);//inverse_a=a^-1 mod p^k
         if(r.inverse_a_mod_p[index_of_prime]==-1){
-            printf("p=%ld,index_of_prime=%d\n",p,index_of_prime);
+            printf("p=%ld,index_of_prime=%d,index_array_a_struct=%d\n",p,index_of_prime,array_a_struct[*index_array_a_struct].index_prime_a);
             handle_error_with_exit("error in factorize_matrix,inverse not found\n");
         }
         mpz_set_si(inverse_a,r.inverse_a_mod_p[index_of_prime]);////inverse_a=a^-1 mod p^k
@@ -2444,6 +2450,8 @@ char divide_all_by_p_to_k_f(int rad,long p,int index_of_prime,long k,long M,stru
     }
     else{//p divide a,esiste solo una soluzione,si usa solo j1,succede solamente poche volte(circa 10)
         //calcolo di c
+		(*index_array_a_struct)++;
+
         mpz_mul(v,b,b);//v=b^2
         mpz_sub(v,v,n);//v=b^2-n
         if(mpz_divisible_p(v,a)==0){//v non divide a
@@ -2715,11 +2723,13 @@ char divide_all_by_p_to_k_f(int rad,long p,int index_of_prime,long k,long M,stru
 	mpz_clear(r1);
 	return;
 }*/
-void factor_matrix_f(const mpz_t n,long M,struct thread_data thread_data,int cardinality_factor_base,const mpz_t a){
-    if(n==NULL || a==NULL || mpz_sgn(n)<=0 || M<=0 || cardinality_factor_base<=0){
+void factor_matrix_f(const mpz_t n,long M,struct thread_data thread_data,int cardinality_factor_base,const mpz_t a,
+		struct a_struct*array_a_struct,int s){
+    if(n==NULL || a==NULL || mpz_sgn(n)<=0 || M<=0 || cardinality_factor_base<=0 || array_a_struct==NULL || s<0){
         handle_error_with_exit("error in factor matrix_f\n");
     }
     long p;
+    int index_array_a_struct=0;
     for (int i=0;i<cardinality_factor_base;i++){//per ogni elemento della factor base
         p=r.prime[i];//primo iesimo della factor base
         if(p==-1){
@@ -2729,7 +2739,7 @@ void factor_matrix_f(const mpz_t n,long M,struct thread_data thread_data,int car
 			divide_all_by_2_log(M,thread_data);
         }
         else{//p>2 e dispari
-            divide_all_by_p_to_k_f(r.root_n_mod_p[i],p,i,1,M,thread_data,n,a,thread_data.b);
+            divide_all_by_p_to_k_f(r.root_n_mod_p[i],p,i,1,M,thread_data,n,a,thread_data.b,array_a_struct,&index_array_a_struct);
         }
     }
     return;

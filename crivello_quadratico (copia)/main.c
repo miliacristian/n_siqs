@@ -292,6 +292,7 @@ int main(int argc,char*argv[]){
 			//print_array_int(r.prime,cardinality_factor_base);
 			//print_array_int(r.root_n_mod_p,cardinality_factor_base);
 			print_time_elapsed("time to create row factorization");
+
 			//creazione e avvio thread
 			if(num_thread_job!=1){
 				array_tid=alloc_array_tid(NUM_THREAD_POLYNOMIAL);//alloca memoria per contenere tutti i tid
@@ -300,7 +301,7 @@ int main(int argc,char*argv[]){
 			print_time_elapsed("time to create thread");
             //n.b. thread_data[length_array_thread_data-1]==struttura dati main thread
             mpz_set(thread_polynomial_data[NUM_THREAD_POLYNOMIAL].b,b_default);//imposta b
-			factor_matrix_f(n,M,thread_polynomial_data[NUM_THREAD_POLYNOMIAL],cardinality_factor_base,a_default);//fattorizza numeri
+			factor_matrix_f(n,M,thread_polynomial_data[NUM_THREAD_POLYNOMIAL],cardinality_factor_base,a_default,array_a_struct,s);//fattorizza numeri
 			print_time_elapsed("time_to_factor matrix_factorization main thread");
 			//print_thread_data(thread_data[NUM_THREAD],M);
 
@@ -308,7 +309,7 @@ int main(int argc,char*argv[]){
 			thread_polynomial_data[NUM_THREAD_POLYNOMIAL].log_thresold=calculate_log_thresold(n,M);
 			printf("log_thresold main thread=%f\n",thread_polynomial_data[NUM_THREAD_POLYNOMIAL].log_thresold);
 
-			find_list_square_relation(thread_polynomial_data[NUM_THREAD_POLYNOMIAL],&num_B_smooth,&num_potential_B_smooth,M,&head,&tail,n,a_default,NULL,0);
+			//find_list_square_relation(thread_polynomial_data[NUM_THREAD_POLYNOMIAL],&num_B_smooth,&num_potential_B_smooth,M,&head,&tail,n,a_default,NULL,0);
 			print_time_elapsed("time_to find_list_square_relation");
 
 			//aspetta tutti i thread e libera memoria
@@ -557,19 +558,20 @@ int thread_job_criv_quad(int id_thread){//id inizia da 0,il lavoro di un thread 
 
 		//factorization
         mpz_set(thread_polynomial_data[id_thread].b,array_bi[count]);//imposta ad ogni ciclo il valore di b
-		factor_matrix_f(n,M,thread_polynomial_data[id_thread],cardinality_factor_base,a);//fattorizza una nuova matrice
+		factor_matrix_f(n,M,thread_polynomial_data[id_thread],cardinality_factor_base,a,array_a_struct,s);//fattorizza una nuova matrice
 		print_time_elapsed_local("time to factor matrix_factorization",&timer_thread);
 
 		//ricerca dei B_smooth potenziali,reali e fattorizzazione dei B_smooth reali
         find_list_square_relation(thread_polynomial_data[id_thread],&(thread_polynomial_data[id_thread].num_B_smooth),&(thread_polynomial_data[id_thread].num_potential_B_smooth),M,&head_square,&tail_square,n,a,array_a_struct,s);
 		printf("num_potential_B_smooth=%d,num_B_smooth=%d\n",thread_polynomial_data[id_thread].num_potential_B_smooth,thread_polynomial_data[id_thread].num_B_smooth);
-        clear_struct_thread_data(thread_polynomial_data[id_thread],M);
-        print_time_elapsed_local("time to find_list_square_relation",&timer_thread);
+		print_time_elapsed_local("time to find_list_square_relation",&timer_thread);
+		clear_struct_thread_data(thread_polynomial_data[id_thread],M);
+		print_time_elapsed_local("time to clear struct thread_data",&timer_thread);
         union_list_square(&(thread_polynomial_data[id_thread].head),&(thread_polynomial_data[id_thread].tail),head_square,tail_square);
 		head_square=NULL;//resetta la lista locale delle relazioni quadratiche
 		tail_square=NULL;//resetta la lista locale delle relazioni quadratiche
+		 print_time_elapsed_local("time to union list",&timer_thread);
 		count+=NUM_THREAD_POLYNOMIAL;//modulo numero dei thread
-		print_time_elapsed_local("time to union list",&timer_thread);
 	}
 	return 0;
 }
