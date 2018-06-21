@@ -2482,9 +2482,10 @@ char divide_all_by_p_to_k_with_thread(pthread_mutex_t*mtx,int rad,long p,int ind
 	j2=mpz_get_si(j2t);//j2=j2t
 	j_temp2=j1;
 	indexv=j_temp2+M;//l'indice deve essere positivo
+    //lock_mtx(mtx);
 	while(j_temp2<=M){//all'inizio j_temp=0*p+j1t,poi diventa k*p+j1t(a salti di p)
 		//indexv=j_temp2+M;//siccome j_temp è sfalsato di -M si riaggiunge M
-		lock_mtx(mtx);
+
 		thread_data.numbers[indexv].sum_log+=r.log_prime[index_of_prime];
 		//se il first_index_f_base non è stato modificato setta first e last
 		if(thread_data.numbers[indexv].first_index_f_base==-1){
@@ -2502,7 +2503,7 @@ char divide_all_by_p_to_k_with_thread(pthread_mutex_t*mtx,int rad,long p,int ind
 		if(thread_data.numbers[indexv].first_index_f_base>thread_data.numbers[indexv].last_index_f_base){
 			handle_error_with_exit("error in index\n");
 		}
-		unlock_mtx(mtx);
+
 		array_divided=1;//una divisione è stata effettuata
 		j_temp2+=p;//ad ogni ciclo aggiungo p
 		indexv+=p;
@@ -2511,7 +2512,7 @@ char divide_all_by_p_to_k_with_thread(pthread_mutex_t*mtx,int rad,long p,int ind
 	indexv=j_temp2+M;
 	while(j_temp2>=-M){//all'inizio j_temp=0*p+j1t,poi diventa k*p+j1t(a salti di p)
 		//indexv=j_temp2+M;//siccome j_temp è sfalsato di -M si riaggiunge M
-        lock_mtx(mtx);
+
 		thread_data.numbers[indexv].sum_log+=r.log_prime[index_of_prime];
 		//se il first_index_f_base non è stato modificato setta first e last
 		if(thread_data.numbers[indexv].first_index_f_base==-1){
@@ -2529,11 +2530,12 @@ char divide_all_by_p_to_k_with_thread(pthread_mutex_t*mtx,int rad,long p,int ind
 		if(thread_data.numbers[indexv].first_index_f_base>thread_data.numbers[indexv].last_index_f_base){
 			handle_error_with_exit("error in index\n");
 		}
-        unlock_mtx(mtx);
+
 		array_divided=1;//una divisione è stata effettuata
 		j_temp2-=p;//ad ogni ciclo tolgo p
 		indexv-=p;
 	}
+    //unlock_mtx(mtx);
 	if(j==1){
 		mpz_clear(p_to_k);
 		mpz_clear(r2);
@@ -2556,9 +2558,10 @@ char divide_all_by_p_to_k_with_thread(pthread_mutex_t*mtx,int rad,long p,int ind
 	}
 	j_temp2=j2;//si passa alla secodna radice
 	indexv=j_temp2+M;
+    //lock_mtx(mtx);
 	while(j_temp2<=M){//all'inizio j_temp=0*p+j1t,poi diventa k*p+j1t(a salti di p)
 		//indexv=j_temp2+M;//siccome j_temp è sfalsato di -M si riaggiunge M
-        lock_mtx(mtx);
+
 		thread_data.numbers[indexv].sum_log+=r.log_prime[index_of_prime];
 		//se il first_index_f_base non è stato modificato setta first e last
 		if(thread_data.numbers[indexv].first_index_f_base==-1){
@@ -2576,7 +2579,7 @@ char divide_all_by_p_to_k_with_thread(pthread_mutex_t*mtx,int rad,long p,int ind
 		if(thread_data.numbers[indexv].first_index_f_base>thread_data.numbers[indexv].last_index_f_base){
 			handle_error_with_exit("error in index\n");
 		}
-        unlock_mtx(mtx);
+
 		array_divided=1;//una divisione è stata effettuata
 		j_temp2+=p;//ad ogni ciclo aggiungo p
 		indexv+=p;
@@ -2585,7 +2588,7 @@ char divide_all_by_p_to_k_with_thread(pthread_mutex_t*mtx,int rad,long p,int ind
 	indexv=j_temp2+M;
 	while(j_temp2>=-M){//all'inizio j_temp=0*p+j1t,poi diventa k*p+j1t(a salti di p)
 		//indexv=j_temp2+M;//siccome j_temp è sfalsato di -M si riaggiunge M
-        lock_mtx(mtx);
+
 		thread_data.numbers[indexv].sum_log+=r.log_prime[index_of_prime];
 		//se il first_index_f_base non è stato modificato setta first e last
 		if(thread_data.numbers[indexv].first_index_f_base==-1){
@@ -2603,11 +2606,12 @@ char divide_all_by_p_to_k_with_thread(pthread_mutex_t*mtx,int rad,long p,int ind
 		if(thread_data.numbers[indexv].first_index_f_base>thread_data.numbers[indexv].last_index_f_base){
 			handle_error_with_exit("error in index\n");
 		}
-        unlock_mtx(mtx);
+
 		array_divided=1;//una divisione è stata effettuata
 		j_temp2-=p;//ad ogni ciclo tolgo p
 		indexv-=p;
 	}
+    //unlock_mtx(mtx);
 	mpz_clear(p_to_k);
 	mpz_clear(r2);
 	mpz_clear(a_temp);
