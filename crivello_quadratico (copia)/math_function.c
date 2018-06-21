@@ -2425,10 +2425,16 @@ char divide_all_by_p_to_k_f(int rad,long p,int index_of_prime,long k,long M,stru
 
     mpz_set_si(p_to_k,p);//p^k=p
     //mpz_ui_pow_ui(p_to_k,p,k);//p_to_k=p^k
-    mpz_sub_ui(r2,p_to_k,rad);//r2=p^k-r seconda radice quadrata di n modulo p^k
+    //mpz_sub_ui(r2,p_to_k,rad);
+    mpz_set_si(r2,r.root2_n_mod_p[index_of_prime]);//r2=p^k-r seconda radice quadrata di n modulo p^k
     long j=0;//indici dell'array divisibile per p^k,se j!=0 j2 non esiste
     if(mpz_divisible_ui_p(a,p)==0){//se p non divide a
-        mpz_invert(inverse_a,a,p_to_k);//a_temp=a^-1 mod p^k
+        //mpz_invert(inverse_a,a,p_to_k);//inverse_a=a^-1 mod p^k
+        if(r.inverse_a_mod_p[index_of_prime]==-1){
+            printf("p=%ld,index_of_prime=%d\n",p,index_of_prime);
+            handle_error_with_exit("error in factorize_matrix,inverse not found\n");
+        }
+        mpz_set_si(inverse_a,r.inverse_a_mod_p[index_of_prime]);////inverse_a=a^-1 mod p^k
         mpz_neg(j1t,b);//j1=-b
         mpz_neg(j2t,b);//j2=-b
         mpz_add_ui(j1t,j1t,rad);//j1=-b+r
