@@ -62,9 +62,6 @@ int main(int argc,char*argv[]){
 	if(argc!=2){//se non c'è esattamente un parametro,termina
 		handle_error_with_exit("usage<path>\n");
 	}
-	if(NUM_THREAD_FACTORIZATION<1){
-		handle_error_with_exit("choose another num_thread_factorization\n");
-	}
 	FILE*file_number=open_file(argv[1]);//apri file in cui risiede il numero n da fattorizzare
 	double mean_increment_M_and_B=0;
 	for(int i=0;i<MAX_NUM_FOR_DIGIT;i++){
@@ -77,6 +74,8 @@ int main(int argc,char*argv[]){
 		int*array_id=NULL;//array che contiene gli id dei nuovi thread creati a partire da 0
 		int num_B_smooth=0,num_potential_B_smooth=0;//numero di numeri b-smooth potenziali e reali trovati nell'array
 		char*linear_system=NULL;//sistema lineare da risolvere per trovare a e b
+		unsigned long**binary_linear_system=NULL;
+		int num_col_binary_matrix;
 		int**base_matrix=NULL;//matrice che riporta per colonna i vettori che formano una base del sistema lineare
 		pthread_t *array_tid=NULL;
 		//int row_result=-1;//numero di righe risultanti dalla concatenazione di tutte le matrici
@@ -304,9 +303,9 @@ int main(int argc,char*argv[]){
 			print_time_elapsed("time to create thread");
             //n.b. thread_data[length_array_thread_data-1]==struttura dati main thread
             mpz_set(thread_polynomial_data[NUM_THREAD_POLYNOMIAL].b,b_default);//imposta b
-			factor_matrix_f(n,M,thread_polynomial_data[NUM_THREAD_POLYNOMIAL],cardinality_factor_base,a_default,array_a_struct,s);//fattorizza numeri
+			factor_matrix_f(n,M,(thread_polynomial_data[NUM_THREAD_POLYNOMIAL]),cardinality_factor_base,a_default,array_a_struct,s);//fattorizza numeri
 			print_time_elapsed("time_to_factor matrix_factorization main thread");
-			//print_thread_data(thread_data[NUM_THREAD],M);
+			print_thread_data(thread_polynomial_data[NUM_THREAD_POLYNOMIAL],M);
 
 			//ricerca dei B_smooth potenziali,reali e fattorizzazione dei B_smooth reali
 			thread_polynomial_data[NUM_THREAD_POLYNOMIAL].log_thresold=calculate_log_thresold(n,M);
@@ -356,13 +355,12 @@ int main(int argc,char*argv[]){
 			remove_same_num(&head,&tail,&num_B_smooth);
             print_time_elapsed("time to remove same num");
             fprintf(file_log,"num_pot_B_smooth=%d num_B_smooth=%d ",num_potential_B_smooth,num_B_smooth);
-            print_list_square_relation(head,num_B_smooth);
+            //print_list_square_relation(head,num_B_smooth);
             printf("cardinality factor base=%d\n",cardinality_factor_base);
             timer.tv_nsec=time_start.tv_nsec;//timer=time_start
             timer.tv_sec=time_start.tv_sec;//timer=time_start
             print_time_elapsed_on_file_log("time_total");
             print_time_elapsed("time_total");
-            exit(0);
             if(num_B_smooth<cardinality_factor_base*ENOUGH_RELATION){
                 calculate_news_M_and_B(&M,&B);
 				free_array_thread_data(thread_polynomial_data,NUM_THREAD_POLYNOMIAL+1);
@@ -387,7 +385,10 @@ int main(int argc,char*argv[]){
                 continue;
             }
 			//algebra step:sistema lineare
-            linear_system=create_linear_system_f(head,cardinality_factor_base,num_B_smooth);
+            binary_linear_system=create_linear_system_f(head,cardinality_factor_base,num_B_smooth,&num_col_binary_matrix);
+            reduce_echelon_form_binary_matrix(binary_linear_system,cardinality_factor_base,num_col_binary_matrix);
+            print_binary_matrix(binary_linear_system,cardinality_factor_base,num_col_binary_matrix);
+            exit(0);
 			print_linear_system(linear_system,cardinality_factor_base,num_B_smooth);
             print_time_elapsed("time_to_create_linear_system");
 
@@ -397,6 +398,7 @@ int main(int argc,char*argv[]){
             print_matrix_char(linear_system2,cardinality_factor_base,num_B_smooth);
             printf("inizio riduzione a scala\n");
             reduce_echelon_form_matrix_char(linear_system2,cardinality_factor_base,num_B_smooth);
+			print_matrix_char(linear_system2,cardinality_factor_base,num_B_smooth);
             printf("fine riduzione a scala\n");
             print_time_elapsed("time to reduce echelon form");
 			base_matrix=calculate_base_linear_system_char(linear_system,cardinality_factor_base,num_B_smooth,&dim_sol);
@@ -558,7 +560,7 @@ int thread_job_criv_quad(int id_thread){//id inizia da 0,il lavoro di un thread 
 
 		//factorization
         mpz_set(thread_polynomial_data[id_thread].b,array_bi[count]);//imposta ad ogni ciclo il valore di b
-		factor_matrix_f(n,M,thread_polynomial_data[id_thread],cardinality_factor_base,a,array_a_struct,s);//fattorizza una nuova matrice
+		factor_matrix_f(n,M,(thread_polynomial_data[id_thread]),cardinality_factor_base,a,array_a_struct,s);//fattorizza una nuova matrice
 		print_time_elapsed_local("time to factor matrix_factorization",&timer_thread);
 
 		//ricerca dei B_smooth potenziali,reali e fattorizzazione dei B_smooth reali

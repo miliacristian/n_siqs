@@ -164,10 +164,10 @@ void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B){
 	}
 	//*B=100*1000*1000;
 	//*M=5000000
-    *M=300000;
-	*B=3000000;
-    //*M=25;
-	//*B=20;
+    //*M=400000;
+	//*B=4000000;
+    *M=25;
+	*B=20;
     return;
 	if(digit_n<7){
 		*M=25;
@@ -1102,8 +1102,8 @@ void calculate_a_f2(mpz_t a,const mpfr_t target_a,int*s,struct node_factor_base*
                     memcpy(*best_q_number,q_number,sizeof(int)*s_max);//best_q=q
                     length_best_q=count;//la lunghezza di best_q coincide con il numero di append fatte
 		}
-		dist_best=fabs(1-best_ratio_double);//distanza di best_ratio da 1
-        dist_ratio=fabs(1-ratio_double);//distanza di ratio_da 1
+		dist_best=fabs(RATIO_A-best_ratio_double);//distanza di best_ratio da 1
+        dist_ratio=fabs(RATIO_A-ratio_double);//distanza di ratio_da 1
         if(dist_ratio<dist_best){
           mpz_set(best_a,a2_int);//best_a=a2
           mpfr_set(best_ratio,ratio,MPFR_RNDN);//best_ratio=ratio

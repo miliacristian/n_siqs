@@ -300,6 +300,17 @@ long*alloc_array_long(int length){
 	memset(array,0,sizeof(long)*length);
 	return array;
 }
+unsigned long*alloc_array_unsigned_long(int length){
+	if(length<=0){
+		handle_error_with_exit("error in parameter alloc aray_long\n");
+	}
+	unsigned long *array=malloc(sizeof(unsigned long)*(length));
+	if(array==NULL){
+		handle_error_with_exit("error in malloc alloc array long\n");
+	}
+	memset(array,0,sizeof(unsigned long)*length);
+	return array;
+}
 int*alloc_array_int(int length){
 	if(length<=0){
 		handle_error_with_exit("error in parameter alloc array int\n");
@@ -342,6 +353,17 @@ long**alloc_array_pointer_to_long(int length){
 		handle_error_with_exit("error in malloc alloc array pointer to long\n");
 	}
 	memset(array,0,sizeof(long*)*(length));
+	return array;
+}
+unsigned long**alloc_array_pointer_to_unsigned_long(int length){
+	if(length<=0){
+		handle_error_with_exit("error in parameteralloc array pointer to unsigned long\n");
+	}
+	unsigned long **array=malloc(sizeof(unsigned long*)*(length));
+	if(array==NULL){
+		handle_error_with_exit("error in malloc alloc array pointer to unsigned long\n");
+	}
+	memset(array,0,sizeof(unsigned long*)*(length));
 	return array;
 }
 int**alloc_array_pointer_to_int(int length){
@@ -461,6 +483,17 @@ long**alloc_matrix_long(int num_row,int num_col){
 	matrix=alloc_array_pointer_to_long(num_row);
 	for(int i=0;i<num_row;i++){
 		matrix[i]=alloc_array_long(num_col);
+	}
+	return matrix;
+}
+unsigned long**alloc_matrix_unsigned_long(int num_row,int num_col){
+	if(num_row<=0 || num_col <=0){
+		handle_error_with_exit("error in alloc_matrix_unsigned_long\n");
+	}
+	unsigned long**matrix;
+	matrix=alloc_array_pointer_to_unsigned_long(num_row);
+	for(int i=0;i<num_row;i++){
+		matrix[i]=alloc_array_unsigned_long(num_col);
 	}
 	return matrix;
 }
@@ -1329,11 +1362,15 @@ void swap_row_char2(char**matrix,int num_row,int num_col,int ind_row1,int ind_ro
 	char*temp=matrix[ind_row1];
 	matrix[ind_row1]=matrix[ind_row2];
 	matrix[ind_row2]=temp;
-	/*for(int i=0;i<num_col;i++){//il numero di colonne corrisponde alla lunghezza di una riga
-		temp=matrix[ind_row1][i];
-		matrix[ind_row1][i]=matrix[ind_row2][i];
-		matrix[ind_row2][i]=temp;
-	}*/
+	return;
+}
+void swap_row_unsigned_long(unsigned long**matrix,int num_row,int ind_row1,int ind_row2){//ind_row1,int ind_row2 start at 0
+	if(matrix==NULL || *matrix==NULL || num_row<=0 || ind_row1==ind_row2 || ind_row1>=num_row || ind_row2>=num_row || ind_row1<0 || ind_row2<0){
+		handle_error_with_exit("error in parameter swap_row\n");
+	}
+	unsigned long*temp=matrix[ind_row1];
+	matrix[ind_row1]=matrix[ind_row2];
+	matrix[ind_row2]=temp;
 	return;
 }
 void swap_row_char(char*matrix,int num_row,int num_col,int ind_row1,int ind_row2){//ind_row1,int ind_row2 start at 0
@@ -2159,6 +2196,61 @@ void reduce_echelon_form(int**matrix,int num_row,int num_col){//versione rref,fa
 	}
 	return;
 }
+void reduce_echelon_form_binary_matrix(unsigned long**binary_matrix,int num_row,int num_col){
+	if(binary_matrix==NULL || *binary_matrix==NULL || num_row<=0 || num_col<=0){
+		handle_error_with_exit("error in parameter reduce echelon form binary matrix\n");
+	}
+	int remainder;
+	int index_element;
+	unsigned long bit;
+	int lead=0;//colonna
+	int i;//indice di riga dove è il pivot
+	for(int r=0;r<num_row;r++){//r riga
+		if(num_col*BIT_OF_UNSIGNED_LONG<=lead){
+			return;
+		}
+		i=r;
+		remainder=lead%BIT_OF_UNSIGNED_LONG;
+		index_element=lead/BIT_OF_UNSIGNED_LONG;
+		bit = (binary_matrix[i][index_element] >> (BIT_OF_UNSIGNED_LONG-remainder-1)) & 1U;
+		while(bit==0){
+			i=i+1;
+			if(num_row==i){//se sei arrivato alla fine della matrice ricomincia ma vai alla colonna successiva
+				i=r;//rimettiti alla riga r-esima
+				lead=lead+1;//colonna successiva
+				if(num_col*BIT_OF_UNSIGNED_LONG==lead){
+					return;
+				}
+			}
+			remainder=lead%BIT_OF_UNSIGNED_LONG;
+			index_element=lead/BIT_OF_UNSIGNED_LONG;
+			bit = (binary_matrix[i][index_element] >> (BIT_OF_UNSIGNED_LONG-remainder-1)) & 1U;
+		}
+		if(i!=r){//se gli indici di riga sono diversi swappa le righe
+			swap_row_unsigned_long(binary_matrix,num_row,i,r);
+		}
+		//if(binary_matrix[r][lead]==0){
+		//	handle_error_with_exit("invalid pivot\n");
+		//}
+
+		//in r,lead c'è il pivot sottrai tutta la sottomatrice
+		for(int i=r+1;i<num_row;i++){//versione ref,sottrai sottomatrice sotto pivot
+		//for(int i=0;i<num_row;i++){//riduzione della matrice versione rref
+			if(i!=r){
+				remainder=lead%BIT_OF_UNSIGNED_LONG;
+				index_element=lead/BIT_OF_UNSIGNED_LONG;
+				bit = (binary_matrix[i][index_element] >> (BIT_OF_UNSIGNED_LONG-remainder-1)) & 1U;
+				if(bit!=0){
+					for(int j1=0;j1<num_col;j1++){//xor tra le 2 rihe
+						binary_matrix[i][j1]=binary_matrix[i][j1]^binary_matrix[r][j1];
+					}
+				}
+			}
+		}
+		lead=lead+1;//vai alla riga successiva
+	}
+	return;
+}
 void reduce_echelon_form_matrix_char(char**matrix,int num_row,int num_col){//versione rref,fare il test per verificare
 	// che è effettivamente ridotta in modo rref
 	int lead=0;
@@ -2192,8 +2284,8 @@ void reduce_echelon_form_matrix_char(char**matrix,int num_row,int num_col){//ver
 			handle_error_with_exit("invalid pivot\n");
 		}
 		//in r,lead c'è il pivot sottrai tutta la sottomatrice
-        for(int i=r+1;i<num_row;i++){//versione ref
-		//for(int i=0;i<num_row;i++){//riduzione della matrice versione rref
+        //for(int i=r+1;i<num_row;i++){//versione ref
+		for(int i=0;i<num_row;i++){//riduzione della matrice versione rref
 			if(i!=r){
 				if(matrix[i][lead]!=0){
 					for(int f=lead;f<num_col;f++){//in realtà il ciclo si può fare da lead a num_col,la parte prima di lead 						sono sottrazioni per 0
@@ -2409,11 +2501,22 @@ long get_index(int index_row,int index_col,int num_col){
 	index+=index_col;//shift della colonna
 	return index;
 }
-char*create_linear_system_f(struct node_square_relation*head,int cardinality_factor_base,int num_B_smooth){
-	if(head==NULL || cardinality_factor_base<=0 || num_B_smooth<=0){
+unsigned long**create_linear_system_f(struct node_square_relation*head,int cardinality_factor_base,int num_B_smooth,int*num_col_binary_matrix){
+	if(head==NULL || cardinality_factor_base<=0 || num_B_smooth<=0 || num_col_binary_matrix==NULL){
 		handle_error_with_exit("error in create_linear_system\n");
 	}
 	char*linear_system=alloc_array_char(cardinality_factor_base*num_B_smooth);
+	int remainder=num_B_smooth%BIT_OF_UNSIGNED_LONG;
+	if(remainder==0){
+		*num_col_binary_matrix=num_B_smooth/BIT_OF_UNSIGNED_LONG;
+	}
+	else{
+		*num_col_binary_matrix=((num_B_smooth-remainder)/BIT_OF_UNSIGNED_LONG)+1;
+	}
+	printf("bit unsigned long=%lu\n",BIT_OF_UNSIGNED_LONG);
+	printf("num_col=%d\n",*num_col_binary_matrix);
+	unsigned long**binary_linear_system=alloc_matrix_unsigned_long(cardinality_factor_base,*num_col_binary_matrix);
+	print_binary_matrix(binary_linear_system,cardinality_factor_base,*num_col_binary_matrix);
 	struct node_square_relation*p=head;
 	int col_index=0;
 	long index;
@@ -2422,6 +2525,9 @@ char*create_linear_system_f(struct node_square_relation*head,int cardinality_fac
 		while(sq!=NULL){//cicla su tutti i fattori della singola relazione quadratica
 			if((sq->exp_of_number & 1)!=0){//se l'esponente non è divisibile per 2
 				//metti 1 in posizione indice nella colonna iesima
+				int remainder=col_index%BIT_OF_UNSIGNED_LONG;//va da 0 a bit_unsigned_long->ci dice qual'è l'indice del bit da mettere a 1
+				int index_element=col_index/BIT_OF_UNSIGNED_LONG;
+				binary_linear_system[sq->index][index_element]^= 1UL << (BIT_OF_UNSIGNED_LONG-remainder-1);//toggle bit
 				index=get_index(sq->index,col_index,num_B_smooth);
 				linear_system[index]=1;
 			}
@@ -2433,8 +2539,13 @@ char*create_linear_system_f(struct node_square_relation*head,int cardinality_fac
 	if(col_index!=num_B_smooth){
 		handle_error_with_exit("error initialize_linear_system\n");
 	}
-	return linear_system;
+	print_linear_system(linear_system,cardinality_factor_base,num_B_smooth);
+	print_binary_matrix(binary_linear_system,cardinality_factor_base,*num_col_binary_matrix);
+	reduce_echelon_form_char(linear_system,cardinality_factor_base,num_B_smooth);
+	print_linear_system(linear_system,cardinality_factor_base,num_B_smooth);
+	return binary_linear_system;
 }
+
 /*char*create_linear_system_f(struct matrix_factorization *mat,int cardinality_factor_base){
 	//mat contiene solamente i B_smooth;
 	if(mat->num_row<=0 || cardinality_factor_base<=0 || mat==NULL){

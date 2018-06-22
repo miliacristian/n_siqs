@@ -129,7 +129,7 @@ struct node_factorization*factorize_num(const mpz_t num,int first_index_f_base,i
 	}
 	if(s!=0) {
         //se i numeri di a sono ad un indice più piccolo del first_index_f_base allora aggiungili prima
-        while (array_a_struct[index].index_prime_a < first_index_f_base && index < s) {
+        while (index!=s && array_a_struct[index].index_prime_a < first_index_f_base && index < s) {
             insert_ordered_factor(array_a_struct[index].number_prime_a, 1, array_a_struct[index].index_prime_a, &head,
                                   &tail);//inserisci nodo -1
             index++;
@@ -139,7 +139,7 @@ struct node_factorization*factorize_num(const mpz_t num,int first_index_f_base,i
 	    if(r.prime[i]==-1){
 	        continue;
 	    }
-	    if(s!=0 && array_a_struct[index].index_prime_a==i){//se un fattore di a ha un indice compreso
+	    if(s!=0 && index!=s && array_a_struct[index].index_prime_a==i){//se un fattore di a ha un indice compreso
 	    	// tra first e last index metti ad uno l'esponente anche se non è divisibile per quel numero
 			// (sappiamo che il polinomio è divisibile per quel numero)
 	    	exp=1;//aggiungi il fattore di a
@@ -159,7 +159,7 @@ struct node_factorization*factorize_num(const mpz_t num,int first_index_f_base,i
     }
     if(s!=0) {
         //se i numeri di a sono ad un indice più grande del last_index_f_base allora aggiungili dopo
-        while (array_a_struct[index].index_prime_a > last_index_f_base && index < s) {
+        while (index!=s && array_a_struct[index].index_prime_a > last_index_f_base && index < s) {
             insert_ordered_factor(array_a_struct[index].number_prime_a, 1, array_a_struct[index].index_prime_a, &head,
                                   &tail);//inserisci nodo -1
             index++;
@@ -2400,7 +2400,7 @@ void calculate_root_poly_second_degree_mod_p_to_k(mpz_t j1t,const mpz_t p_to_k,l
 	return 0;//ritorna 0 se non ci sono state divisioni nell'array
 }
  */
-char divide_all_by_p_to_k_with_thread(pthread_mutex_t*mtx,int rad,long p,int index_of_prime,long k,long M,struct thread_data thread_data,const mpz_t n,const mpz_t a,const mpz_t b,struct a_struct*array_a_struct){//r=square root di n mod p^k,ritorna >zero se c'è stata almeno 1 divisione
+char divide_all_by_p_to_k_with_thread(int rad,long p,int index_of_prime,long k,long M,struct thread_data thread_data,const mpz_t n,const mpz_t a,const mpz_t b,struct a_struct*array_a_struct){//r=square root di n mod p^k,ritorna >zero se c'è stata almeno 1 divisione
 //a(j)=aj^2+2bj+c,se polinomio forma semplice a=1 e b=x0
 //(x0+j)^2==n mod p^k r:r^2==n mod p^k -> r=x0+j ->j=r-x0
 //una volta trovate le soluzioni r1 e r2 e una volta trovati j e t le altre soluzioni sono della forma j+l*p^k t+h*p^k,cioè a salti di p^k rispetto a t e j,dove l ed h sono interi
@@ -2408,8 +2408,8 @@ char divide_all_by_p_to_k_with_thread(pthread_mutex_t*mtx,int rad,long p,int ind
 
 	//j1=r-x0;
 	//j2=-r-x0;
-	if((p<=1 && p!=-1 ) || n==NULL || a==NULL || b==NULL || k<=0 || M<=0 || array_a_struct==NULL || mtx==NULL){
-		handle_error_with_exit("invalid parameter divide all by p to k\n");
+	if((p<=1 && p!=-1 ) || n==NULL || a==NULL || b==NULL || k<=0 || M<=0 || array_a_struct==NULL){
+		handle_error_with_exit("invalid parameter divide all by p to k with thread\n");
 	}
 	char array_divided=0;//0 se nessuna divisione effettuata,1 se sono state effettutate divisioni per p^k
 	long indexv,j1,j2,j_temp2;
@@ -2429,8 +2429,6 @@ char divide_all_by_p_to_k_with_thread(pthread_mutex_t*mtx,int rad,long p,int ind
 	mpz_init(h_temp);
 	mpz_init(index);
 	mpz_set_si(p_to_k,p);//p^k=p
-	//mpz_ui_pow_ui(p_to_k,p,k);//p_to_k=p^k
-	//mpz_sub_ui(r2,p_to_k,rad);
 	mpz_set_si(r2,r.root2_n_mod_p[index_of_prime]);//r2=p^k-r seconda radice quadrata di n modulo p^k
 	long j=0;//indici dell'array divisibile per p^k,se j!=0 j2 non esiste
 	if(mpz_cmp_si(a,1)==0){//se a=1,infatti a^-1 mod p =1
@@ -2482,10 +2480,8 @@ char divide_all_by_p_to_k_with_thread(pthread_mutex_t*mtx,int rad,long p,int ind
 	j2=mpz_get_si(j2t);//j2=j2t
 	j_temp2=j1;
 	indexv=j_temp2+M;//l'indice deve essere positivo
-    //lock_mtx(mtx);
 	while(j_temp2<=M){//all'inizio j_temp=0*p+j1t,poi diventa k*p+j1t(a salti di p)
 		//indexv=j_temp2+M;//siccome j_temp è sfalsato di -M si riaggiunge M
-
 		thread_data.numbers[indexv].sum_log+=r.log_prime[index_of_prime];
 		//se il first_index_f_base non è stato modificato setta first e last
 		if(thread_data.numbers[indexv].first_index_f_base==-1){
@@ -2503,7 +2499,6 @@ char divide_all_by_p_to_k_with_thread(pthread_mutex_t*mtx,int rad,long p,int ind
 		if(thread_data.numbers[indexv].first_index_f_base>thread_data.numbers[indexv].last_index_f_base){
 			handle_error_with_exit("error in index\n");
 		}
-
 		array_divided=1;//una divisione è stata effettuata
 		j_temp2+=p;//ad ogni ciclo aggiungo p
 		indexv+=p;
@@ -2512,7 +2507,6 @@ char divide_all_by_p_to_k_with_thread(pthread_mutex_t*mtx,int rad,long p,int ind
 	indexv=j_temp2+M;
 	while(j_temp2>=-M){//all'inizio j_temp=0*p+j1t,poi diventa k*p+j1t(a salti di p)
 		//indexv=j_temp2+M;//siccome j_temp è sfalsato di -M si riaggiunge M
-
 		thread_data.numbers[indexv].sum_log+=r.log_prime[index_of_prime];
 		//se il first_index_f_base non è stato modificato setta first e last
 		if(thread_data.numbers[indexv].first_index_f_base==-1){
@@ -2530,12 +2524,10 @@ char divide_all_by_p_to_k_with_thread(pthread_mutex_t*mtx,int rad,long p,int ind
 		if(thread_data.numbers[indexv].first_index_f_base>thread_data.numbers[indexv].last_index_f_base){
 			handle_error_with_exit("error in index\n");
 		}
-
 		array_divided=1;//una divisione è stata effettuata
 		j_temp2-=p;//ad ogni ciclo tolgo p
 		indexv-=p;
 	}
-    //unlock_mtx(mtx);
 	if(j==1){
 		mpz_clear(p_to_k);
 		mpz_clear(r2);
@@ -2558,10 +2550,8 @@ char divide_all_by_p_to_k_with_thread(pthread_mutex_t*mtx,int rad,long p,int ind
 	}
 	j_temp2=j2;//si passa alla secodna radice
 	indexv=j_temp2+M;
-    //lock_mtx(mtx);
 	while(j_temp2<=M){//all'inizio j_temp=0*p+j1t,poi diventa k*p+j1t(a salti di p)
 		//indexv=j_temp2+M;//siccome j_temp è sfalsato di -M si riaggiunge M
-
 		thread_data.numbers[indexv].sum_log+=r.log_prime[index_of_prime];
 		//se il first_index_f_base non è stato modificato setta first e last
 		if(thread_data.numbers[indexv].first_index_f_base==-1){
@@ -2579,7 +2569,6 @@ char divide_all_by_p_to_k_with_thread(pthread_mutex_t*mtx,int rad,long p,int ind
 		if(thread_data.numbers[indexv].first_index_f_base>thread_data.numbers[indexv].last_index_f_base){
 			handle_error_with_exit("error in index\n");
 		}
-
 		array_divided=1;//una divisione è stata effettuata
 		j_temp2+=p;//ad ogni ciclo aggiungo p
 		indexv+=p;
@@ -2588,7 +2577,6 @@ char divide_all_by_p_to_k_with_thread(pthread_mutex_t*mtx,int rad,long p,int ind
 	indexv=j_temp2+M;
 	while(j_temp2>=-M){//all'inizio j_temp=0*p+j1t,poi diventa k*p+j1t(a salti di p)
 		//indexv=j_temp2+M;//siccome j_temp è sfalsato di -M si riaggiunge M
-
 		thread_data.numbers[indexv].sum_log+=r.log_prime[index_of_prime];
 		//se il first_index_f_base non è stato modificato setta first e last
 		if(thread_data.numbers[indexv].first_index_f_base==-1){
@@ -2606,12 +2594,10 @@ char divide_all_by_p_to_k_with_thread(pthread_mutex_t*mtx,int rad,long p,int ind
 		if(thread_data.numbers[indexv].first_index_f_base>thread_data.numbers[indexv].last_index_f_base){
 			handle_error_with_exit("error in index\n");
 		}
-
 		array_divided=1;//una divisione è stata effettuata
 		j_temp2-=p;//ad ogni ciclo tolgo p
 		indexv-=p;
 	}
-    //unlock_mtx(mtx);
 	mpz_clear(p_to_k);
 	mpz_clear(r2);
 	mpz_clear(a_temp);
@@ -2631,6 +2617,7 @@ char divide_all_by_p_to_k_with_thread(pthread_mutex_t*mtx,int rad,long p,int ind
 	}
 	return 0;//ritorna 0 se non ci sono state divisioni nell'array
 }
+
 char divide_all_by_p_to_k_f(int rad,long p,int index_of_prime,long k,long M,struct thread_data thread_data,const mpz_t n,const mpz_t a,const mpz_t b,struct a_struct*array_a_struct,int*index_array_a_struct){//r=square root di n mod p^k,ritorna >zero se c'è stata almeno 1 divisione
 //a(j)=aj^2+2bj+c,se polinomio forma semplice a=1 e b=x0
 //(x0+j)^2==n mod p^k r:r^2==n mod p^k -> r=x0+j ->j=r-x0
@@ -2661,8 +2648,6 @@ char divide_all_by_p_to_k_f(int rad,long p,int index_of_prime,long k,long M,stru
     mpz_init(index);
 
     mpz_set_si(p_to_k,p);//p^k=p
-    //mpz_ui_pow_ui(p_to_k,p,k);//p_to_k=p^k
-    //mpz_sub_ui(r2,p_to_k,rad);
     mpz_set_si(r2,r.root2_n_mod_p[index_of_prime]);//r2=p^k-r seconda radice quadrata di n modulo p^k
     long j=0;//indici dell'array divisibile per p^k,se j!=0 j2 non esiste
     if(mpz_cmp_si(a,1)==0){//se a=1,infatti a^-1 mod p =1
@@ -2672,7 +2657,7 @@ char divide_all_by_p_to_k_f(int rad,long p,int index_of_prime,long k,long M,stru
 		mpz_add(j2t,j2t,r2);//j2=-b+r2
     }
 
-    else if(array_a_struct[*index_array_a_struct].index_prime_a!=index_of_prime){//p non divide a
+    else if(*index_array_a_struct!=s && array_a_struct[*index_array_a_struct].index_prime_a!=index_of_prime){//p non divide a
         if(r.inverse_a_mod_p[index_of_prime]==-1){
             printf("p=%ld,index_of_prime=%d,index_array_a_struct=%d\n",p,index_of_prime,array_a_struct[*index_array_a_struct].index_prime_a);
             handle_error_with_exit("error in factorize_matrix,inverse not found\n");
@@ -2976,23 +2961,26 @@ void*thread_factorization_job(void*arg){
     	mpz_set(a1,a);
     }
     for(int i=start;i<=end;i++){
-    	if(i==0 || i==1){//skippa indice 0 e indice 1
+    	if(i==0){//skippa indice 0 e indice 1
     		continue;
     	}
+    	if(i==1){
+			divide_all_by_2_log(M, (*factorization_thread_data).thread_data);
+			continue;
+		}
         p=r.prime[i];//primo iesimo della factor base
-        divide_all_by_p_to_k_with_thread((*factorization_thread_data).mtx,r.root_n_mod_p[i],p,i,1,M,(*factorization_thread_data).thread_data,n,a1,(*factorization_thread_data).thread_data.b,array_a_struct);
+        divide_all_by_p_to_k_with_thread(r.root_n_mod_p[i],p,i,1,M,(*factorization_thread_data).thread_data,n,a1,(*factorization_thread_data).thread_data.b,array_a_struct);
     }
     mpz_clear(a1);
     return NULL;
 }
-void factor_matrix_f(const mpz_t n,long M,struct thread_data thread_data,int cardinality_factor_base,const mpz_t a,
+/*void factor_matrix_f(const mpz_t n,long M,struct thread_data *thread_data,int cardinality_factor_base,const mpz_t a,
 		struct a_struct*array_a_struct,int s){
     if(n==NULL || a==NULL || mpz_sgn(n)<=0 || M<=0 || cardinality_factor_base<=0 || array_a_struct==NULL || s<0){
         handle_error_with_exit("error in factor matrix_f\n");
     }
     pthread_t *array_tid=NULL;
     struct factorization_thread_data*factorization_thread_data=NULL;
-    divide_all_by_2_log(M,thread_data);
     int num_thread;
     if(NUM_THREAD_FACTORIZATION>cardinality_factor_base){
     	num_thread=cardinality_factor_base;
@@ -3001,24 +2989,45 @@ void factor_matrix_f(const mpz_t n,long M,struct thread_data thread_data,int car
     	num_thread=NUM_THREAD_FACTORIZATION;
     }
     array_tid = alloc_array_tid(num_thread);//alloca memoria per contenere tutti i tid
-    factorization_thread_data = create_factorization_threads(array_tid,thread_data,a,num_thread);//crea tutti i thread
+    factorization_thread_data = create_factorization_threads(array_tid,*thread_data,a,num_thread);//crea tutti i thread
     join_all_threads(array_tid,num_thread);//aspetta tutti i thread
     if (array_tid != NULL) {//libera memoria allocata
         free(array_tid);
         array_tid = NULL;
     }
+	memcpy((*thread_data).numbers,factorization_thread_data[0].thread_data.numbers,sizeof(struct number)*(2*M+1));
+	mpz_clear(factorization_thread_data[0].thread_data.b);
+	factorization_thread_data[0].thread_data.head=NULL;
+	factorization_thread_data[0].thread_data.tail=NULL;
+	free(factorization_thread_data[0].thread_data.numbers);
+
+	for(int i=1;i<num_thread;i++){
+    	for(int j=0;j<2*M+1;j++){
+			(*thread_data).numbers[j].sum_log+=factorization_thread_data[i].thread_data.numbers[j].sum_log;
+			if((*thread_data).numbers[j].first_index_f_base==-1 && factorization_thread_data[i].thread_data.numbers[j].first_index_f_base!=-1){
+				(*thread_data).numbers[j].first_index_f_base=factorization_thread_data[i].thread_data.numbers[j].first_index_f_base;
+			}
+			if((*thread_data).numbers[j].first_index_f_base>factorization_thread_data[i].thread_data.numbers[j].first_index_f_base && factorization_thread_data[i].thread_data.numbers[j].first_index_f_base!=-1){
+				(*thread_data).numbers[j].first_index_f_base=factorization_thread_data[i].thread_data.numbers[j].first_index_f_base;
+			}
+			if((*thread_data).numbers[j].last_index_f_base<factorization_thread_data[i].thread_data.numbers[j].last_index_f_base){
+				(*thread_data).numbers[j].last_index_f_base=factorization_thread_data[i].thread_data.numbers[j].last_index_f_base;
+			}
+    	}
+		mpz_clear(factorization_thread_data[i].thread_data.b);
+		factorization_thread_data[i].thread_data.head=NULL;
+		factorization_thread_data[i].thread_data.tail=NULL;
+		free(factorization_thread_data[i].thread_data.numbers);
+    }
     if (factorization_thread_data != NULL) {
-		destroy_mtx(factorization_thread_data[0].mtx);
-    	free(factorization_thread_data[0].mtx);
-		factorization_thread_data[0].mtx=NULL;
+	    free(factorization_thread_data[0].pointer);
         free(factorization_thread_data);
         factorization_thread_data = NULL;
     }
-	print_thread_data(thread_data,M);
     return;
-}
+}*/
 
-/*void factor_matrix_f(const mpz_t n,long M,struct thread_data thread_data,int cardinality_factor_base,const mpz_t a,
+void factor_matrix_f(const mpz_t n,long M,struct thread_data thread_data,int cardinality_factor_base,const mpz_t a,
                      struct a_struct*array_a_struct,int s){
     if(n==NULL || a==NULL || mpz_sgn(n)<=0 || M<=0 || cardinality_factor_base<=0 || array_a_struct==NULL || s<0){
         handle_error_with_exit("error in factor matrix_f\n");
@@ -3038,7 +3047,7 @@ void factor_matrix_f(const mpz_t n,long M,struct thread_data thread_data,int car
         }
     }
     return;
-}*/
+}
 /*int count_number_B_smooth_in_matrix(mpz_t**potential_matrix_B_smooth,int card_factor_base,long size){
 //conta il numero di numeri B_smooth nell'array dei numeri e inserisce i valori sia nella lista degli indici B_smooth,sia nella lista delle radici quadrate dei numeri B_smoot
 	mpz_t temp,i_temp;

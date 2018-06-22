@@ -39,3 +39,4 @@ void print_list_square_relation(struct node_square_relation*head,int length);
 void print_array_a_struct(struct a_struct*array_a_struct,int length);
 void print_linear_system(char*linear_system,int cardinality_factor_base,int num_of_B_smooth);
 void print_matrix_char(char**matrix,int num_row,int num_col);
+void print_binary_matrix(unsigned long**binary_matrix,int num_row,int num_col);

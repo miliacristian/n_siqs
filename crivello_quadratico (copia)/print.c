@@ -29,6 +29,51 @@ void print_array_a_struct(struct a_struct*array_a_struct,int length){
 	}
 	return;
 }
+void print_binary_array_unsigned_long(unsigned long*binary_array,int length){
+	if(length<=0){
+		handle_error_with_exit("error in print_array_char\n");
+	}
+	if(binary_array==NULL){
+		printf("array is empty in print_binary_array\n");
+		return;
+	}
+	if(not_print_array(length)==1){
+		return;
+	}
+	for(int i=0;i<length;i++){
+		unsigned long num=binary_array[i];
+		unsigned long temp=1;
+		temp=temp<<63;
+		unsigned long j=0;
+		while (j<BIT_OF_UNSIGNED_LONG) {
+			if (num & temp)
+				printf("1");
+			else
+				printf("0");
+			temp >>= 1;
+			j++;
+		}
+	}
+	printf("\n");
+	return;
+}
+
+void print_binary_matrix(unsigned long**binary_matrix,int num_row,int num_col){
+	if(binary_matrix==NULL || *binary_matrix==NULL){
+		printf("empty matrix\n");
+	}
+	if(num_row <=0 || num_col <=0){
+		handle_error_with_exit("error in print_matrix_int\n");
+	}
+	if(not_print_matrix(num_row,num_col)==1){
+		return;
+	}
+	for(int i=0;i<num_row;i++){
+		printf("riga %d:",i);
+		print_binary_array_unsigned_long(binary_matrix[i],num_col);//stampa 1 riga
+	}
+	return;
+}
 void print_int(int a,char*string){
 	if(string==NULL){
 		handle_error_with_exit("error in print_int\n");
@@ -79,6 +124,7 @@ void print_array_char(char*array,int length){
 	printf("\n");
 	return;
 }
+
 void print_array_float(float*array,int length){
 	if(length<=0){
 		handle_error_with_exit("error in print_array_char\n");

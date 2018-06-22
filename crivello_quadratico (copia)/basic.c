@@ -184,7 +184,6 @@ void test(){
 void*thread_job_polynomial(void*arg){
 	int*id=arg;
 	thread_job_criv_quad(*id);
-	pthread_exit(NULL);
 	return NULL;
 }
 void*thread_job_factor_base(void*arg){
@@ -217,15 +216,12 @@ struct factorization_thread_data* create_factorization_threads(pthread_t*array_t
     if(num_thread==0){
         return NULL;
     }
-    pthread_mutex_t*mtx=malloc(sizeof(pthread_mutex_t)*1);
-    if(mtx==NULL){
-    	handle_error_with_exit("error in alloc mutex\n");
-    }
-    initialize_mtx(mtx);
     struct factorization_thread_data*factorization_data=malloc(sizeof(struct factorization_thread_data)*num_thread);
     if(factorization_data==NULL){
     	handle_error_with_exit("error in malloc factorization_data\n");
     }
+    struct thread_data*t=alloc_array_polynomial_thread_data(num_thread,M);
+    factorization_data[0].pointer=t;
 	long remainder=reduce_int_mod_n_v2(cardinality_factor_base,num_thread);
 	long length=(cardinality_factor_base-remainder)/(num_thread);
     for(int id=0;id<num_thread;id++){
@@ -237,11 +233,11 @@ struct factorization_thread_data* create_factorization_threads(pthread_t*array_t
         if(start>end){
         	handle_error_with_exit("error in calculate start,end\n");
         }
-        factorization_data[id].thread_data=thread_data;
+        factorization_data[id].thread_data=t[id];
+        mpz_set(factorization_data[id].thread_data.b,thread_data.b);
         factorization_data[id].id_thread=id;//assegna ad ogni thread l'indice
         factorization_data[id].start=start;
         factorization_data[id].end=end;
-        factorization_data[id].mtx=mtx;
         if(mpz_cmp_si(a,1)==0) {
 			factorization_data[id].is_a_default = 1;
 		}

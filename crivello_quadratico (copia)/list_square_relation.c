@@ -209,8 +209,10 @@ void union_list_square(struct node_square_relation**head,struct node_square_rela
     }
     struct node_square_relation*p=head_square;
     while(p!=NULL){
+        struct node_square_relation*q=p->next;
         insert_ordered_square_rel(p->square_relation,head,tail);
-        p=p->next;
+        free(p);
+        p=q;
     }
     return;
 }

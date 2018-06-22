@@ -69,7 +69,6 @@ float*alloc_array_float(int length);
 void concatenate_all_matrix_B_smooth(struct matrix_factorization**array_matrix_factorization,int length_array_matrix,int *row_result);
 struct matrix_factorization* alloc_matrix_factorization(int num_row);
 char is_in_array_int(int*array,long length,long p_i);
-char*create_linear_system_f(struct node_square_relation*head,int cardinality_factor_base,int num_B_smooth);
 int**calculate_base_linear_system_char(char*matrix_linear_system,int num_row,int num_col,int*dim_sol);
 long get_index(int index_row,int index_col,int num_col);
 void reduce_echelon_form_char(char*matrix,int num_row,int num_col);
@@ -81,6 +80,9 @@ char**alloc_matrix_char(int num_row,int num_col);
 void copy_matrix_with_array(char**linear_system2,char*linear_system,int num_row,int num_col);
 void reduce_echelon_form_matrix_char(char**matrix,int num_row,int num_col);
 char value_is_in_sorted_array(int index_of_prime,struct a_struct*array_a_struct,int length);
+unsigned long**create_linear_system_f(struct node_square_relation*head,int cardinality_factor_base,int num_B_smooth,int*num_col_binary_matrix);
+void swap_row_unsigned_long(unsigned long**matrix,int num_row,int ind_row1,int ind_row2);
+void reduce_echelon_form_binary_matrix(unsigned long**binary_matrix,int num_row,int num_col);
 #endif
 
 
