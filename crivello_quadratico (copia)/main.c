@@ -73,7 +73,7 @@ int main(int argc,char*argv[]){
 		mpz_t a_default,b_default;//a,b sono i coefficienti del polinomio aj^2+2bj+c,thresold a serve per calcolare il valore di a
 		int*array_id=NULL;//array che contiene gli id dei nuovi thread creati a partire da 0
 		int num_B_smooth=0,num_potential_B_smooth=0;//numero di numeri b-smooth potenziali e reali trovati nell'array
-		char*linear_system=NULL;//sistema lineare da risolvere per trovare a e b
+		char*linear_system=NULL,*linear_system2=NULL;//sistema lineare da risolvere per trovare a e b
 		unsigned long**binary_linear_system=NULL;
 		int num_col_binary_matrix;
 		int**base_matrix=NULL;//matrice che riporta per colonna i vettori che formano una base del sistema lineare
@@ -354,8 +354,12 @@ int main(int argc,char*argv[]){
             print_time_elapsed("time to union all lists");
 			remove_same_num(&head,&tail,&num_B_smooth);
             print_time_elapsed("time to remove same num");
+			printf("num_potential_B_smooth=%d,num_B_smooth=%d\n",num_potential_B_smooth,num_B_smooth);
             fprintf(file_log,"num_pot_B_smooth=%d num_B_smooth=%d ",num_potential_B_smooth,num_B_smooth);
             //print_list_square_relation(head,num_B_smooth);
+			//if(num_B_smooth>64){
+			//	handle_error_with_exit(">64\n");
+			//}
             printf("cardinality factor base=%d\n",cardinality_factor_base);
             timer.tv_nsec=time_start.tv_nsec;//timer=time_start
             timer.tv_sec=time_start.tv_sec;//timer=time_start
@@ -392,6 +396,9 @@ int main(int argc,char*argv[]){
             reduce_echelon_form_binary_matrix(binary_linear_system,cardinality_factor_base,num_col_binary_matrix);
             print_binary_matrix(binary_linear_system,cardinality_factor_base,num_col_binary_matrix);
             print_time_elapsed("time_to_create_linear_system");
+            printf("sistema lineare copiato\n");
+            linear_system2=from_matrix_binary_to_matrix_char(binary_linear_system,cardinality_factor_base,num_col_binary_matrix);
+			print_linear_system(linear_system2,cardinality_factor_base,num_col_binary_matrix*BIT_OF_UNSIGNED_LONG);
             free_memory_matrix_unsigned_long(binary_linear_system,cardinality_factor_base,num_col_binary_matrix);
             binary_linear_system=NULL;
 
@@ -401,7 +408,7 @@ int main(int argc,char*argv[]){
 			print_matrix_char(linear_system2,cardinality_factor_base,num_B_smooth);
 			free_memory_matrix_char(linear_system2,cardinality_factor_base,num_B_smooth);
 			linear_system2=NULL;*/
-             base_matrix=calculate_base_linear_system_char(linear_system,cardinality_factor_base,num_B_smooth,&dim_sol);
+             base_matrix=calculate_base_linear_system_char(linear_system2,cardinality_factor_base,num_col_binary_matrix*BIT_OF_UNSIGNED_LONG,&dim_sol);
 			if(base_matrix==NULL){//non ci sono abbastanza soluzioni,ricomincia il crivello quadratico
 				calculate_news_M_and_B(&M,&B);
                 free(linear_system);
@@ -435,6 +442,7 @@ int main(int argc,char*argv[]){
 				handle_error_with_exit("error in main,invalid solution\n");
 			}
 			print_time_elapsed("time to check solution base linear system");
+
             //algebra step:calcolo di tutti gli a,b del crivello quadratico
 			factorizations_founded=find_factor_of_n_from_base_matrix_char(base_matrix,num_B_smooth,&dim_sol,
 			linear_system,cardinality_factor_base,num_B_smooth,n,head,num_B_smooth,cardinality_factor_base);

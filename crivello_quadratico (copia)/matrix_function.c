@@ -12,6 +12,29 @@ extern struct row_factorization r;
 extern struct timespec timer;
 extern struct timespec time_start;
 extern FILE*file_log;
+
+char*from_matrix_binary_to_matrix_char(unsigned long**binary_linear_system,int num_row,int num_col_binary_matrix){
+	if(binary_linear_system==NULL || *binary_linear_system==NULL || num_row<=0 || num_col_binary_matrix<=0){
+		handle_error_with_exit("error in from_matrix_binary_to_matrix_char\n");
+	}
+	char*linear_system;
+	int index_col_linear_system;
+	int index;
+	char bit;
+	int num_col_linear_system=num_col_binary_matrix*BIT_OF_UNSIGNED_LONG;
+	linear_system=alloc_array_char(num_row*(num_col_linear_system));
+	for(int i=0;i<num_row;i++){
+		for(int j=0;j<num_col_binary_matrix;j++){
+			for(int b=0;(unsigned long)b<BIT_OF_UNSIGNED_LONG;b++){
+				bit=(binary_linear_system[i][j]>> (BIT_OF_UNSIGNED_LONG-b-1)) & 1U;
+				index_col_linear_system=BIT_OF_UNSIGNED_LONG*j+b;
+				index=get_index(i,index_col_linear_system,num_col_linear_system);
+				linear_system[index]=bit;
+			}
+		}
+	}
+	return linear_system;
+}
 void copy_matrix_with_array(char**linear_system2,char*linear_system,int num_row,int num_col){
     if(linear_system2==NULL || *linear_system2==NULL || linear_system==NULL || num_row<=0 || num_col<=0){
         handle_error_with_exit("error in copy_matrix_with_array\n");

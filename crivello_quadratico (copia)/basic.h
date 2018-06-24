@@ -18,7 +18,7 @@
 #define PERC_INCREMENT_B 50
 #define MAX_ITER 3000 //iterazioni massime per calcolare a
 #define MAX_ITER2 3000 //iterazioni massime per calcolare a
-#define MAX_NUM_FOR_DIGIT 30
+#define MAX_NUM_FOR_DIGIT 1
 #define RATIO_A 0.8//rapporto tra a ideale e a trovato,se ratio=1 si vuole a trovato molto molto vicino ad a ideale
 #define ENOUGH_RELATION 1.00 //numero minore o uguale a 1 indica quante relazioni
 //vanno trovate in più rispetto alla cardinalità della factor base
