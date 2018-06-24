@@ -73,7 +73,7 @@ int main(int argc,char*argv[]){
 		mpz_t a_default,b_default;//a,b sono i coefficienti del polinomio aj^2+2bj+c,thresold a serve per calcolare il valore di a
 		int*array_id=NULL;//array che contiene gli id dei nuovi thread creati a partire da 0
 		int num_B_smooth=0,num_potential_B_smooth=0;//numero di numeri b-smooth potenziali e reali trovati nell'array
-		char*linear_system=NULL,*linear_system2=NULL;//sistema lineare da risolvere per trovare a e b
+		char*linear_system=NULL;//sistema lineare da risolvere per trovare a e b
 		unsigned long**binary_linear_system=NULL;
 		int num_col_binary_matrix,num_col_linear_system;
 		int**base_matrix=NULL;//matrice che riporta per colonna i vettori che formano una base del sistema lineare
@@ -222,7 +222,9 @@ int main(int argc,char*argv[]){
 			printf("cardinality factor_base %d\n",cardinality_factor_base);
 			fprintf(file_log,"card_f_base=%d ",cardinality_factor_base);
 			print_time_elapsed("time to calculate factor base");
-
+            if(verify_factor_base(head_f_base_f,cardinality_factor_base)==0){
+                handle_error_with_exit("error in main verify factor base\n");
+            }
 			//a,per siqs e generare tutti gli altri b,prodotto di primi dispari distinti
 			calculate_a_f2(a,thresold_a,&s,head_f_base_f,cardinality_factor_base,&index_prime_a,&number_prime_a);
 			if(s>0) {
@@ -394,7 +396,7 @@ int main(int argc,char*argv[]){
             print_time_elapsed("time_to_reduce echelon form linear_system");
             linear_system=from_matrix_binary_to_matrix_char(binary_linear_system,cardinality_factor_base,num_col_binary_matrix,&num_col_linear_system);
             print_time_elapsed("time_to_copy matrix binary into matrix char");
-			print_linear_system(linear_system,cardinality_factor_base,num_col_binary_matrix*BIT_OF_UNSIGNED_LONG);
+			print_linear_system(linear_system,cardinality_factor_base,num_col_linear_system);
             free_memory_matrix_unsigned_long(binary_linear_system,cardinality_factor_base,num_col_binary_matrix);
             binary_linear_system=NULL;
 
@@ -435,11 +437,11 @@ int main(int argc,char*argv[]){
 			print_time_elapsed("time to check solution base linear system");
 
             //algebra step:calcolo di tutti gli a,b del crivello quadratico
-			factorizations_founded=find_factor_of_n_from_base_matrix_char(base_matrix,num_B_smooth,&dim_sol,
-			linear_system,cardinality_factor_base,num_B_smooth,n,head,num_B_smooth,cardinality_factor_base);
+			factorizations_founded=find_factor_of_n_from_base_matrix_char(base_matrix,num_col_linear_system,&dim_sol,
+			linear_system,cardinality_factor_base,num_col_linear_system,n,head,num_B_smooth,cardinality_factor_base);
             free(linear_system);
             linear_system=NULL;
-			free_memory_matrix_int(base_matrix,num_B_smooth,dim_sol);
+			free_memory_matrix_int(base_matrix,num_col_linear_system,dim_sol);
 			base_matrix=NULL;
 			print_time_elapsed("time to calculate solution from base linear system");
 			if(factorizations_founded==0){

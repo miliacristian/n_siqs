@@ -28,7 +28,7 @@ char*from_matrix_binary_to_matrix_char(unsigned long**binary_linear_system,int n
 			for(int b=0;(unsigned long)b<BIT_OF_UNSIGNED_LONG;b++){
 				bit=(binary_linear_system[i][j]>> (BIT_OF_UNSIGNED_LONG-b-1)) & 1U;
 				index_col_linear_system=BIT_OF_UNSIGNED_LONG*j+b;
-				index=get_index(i,index_col_linear_system,num_col_linear_system);
+				index=get_index(i,index_col_linear_system,*num_col_linear_system);
 				linear_system[index]=bit;
 			}
 		}
