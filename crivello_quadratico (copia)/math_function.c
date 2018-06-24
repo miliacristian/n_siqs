@@ -2618,7 +2618,7 @@ char divide_all_by_p_to_k_with_thread(int rad,long p,int index_of_prime,long k,l
 	return 0;//ritorna 0 se non ci sono state divisioni nell'array
 }
 
-char divide_all_by_p_to_k_f(int rad,long p,int index_of_prime,long k,long M,struct thread_data thread_data,const mpz_t n,const mpz_t a,const mpz_t b,struct a_struct*array_a_struct,int*index_array_a_struct){//r=square root di n mod p^k,ritorna >zero se c'è stata almeno 1 divisione
+char divide_all_by_p_to_k_f(int rad,long p,int index_of_prime,long k,long M,struct thread_data thread_data,const mpz_t n,const mpz_t a,const mpz_t b,struct a_struct*array_a_struct,int*index_array_a_struct,int s){//r=square root di n mod p^k,ritorna >zero se c'è stata almeno 1 divisione
 //a(j)=aj^2+2bj+c,se polinomio forma semplice a=1 e b=x0
 //(x0+j)^2==n mod p^k r:r^2==n mod p^k -> r=x0+j ->j=r-x0
 //una volta trovate le soluzioni r1 e r2 e una volta trovati j e t le altre soluzioni sono della forma j+l*p^k t+h*p^k,cioè a salti di p^k rispetto a t e j,dove l ed h sono interi
@@ -2626,7 +2626,7 @@ char divide_all_by_p_to_k_f(int rad,long p,int index_of_prime,long k,long M,stru
 
     //j1=r-x0;
     //j2=-r-x0;
-    if((p<=1 && p!=-1 ) || n==NULL || a==NULL || b==NULL || k<=0 || M<=0 || array_a_struct==NULL || index_array_a_struct==NULL){
+    if((p<=1 && p!=-1 ) || n==NULL || a==NULL || b==NULL || k<=0 || M<=0 || (array_a_struct==NULL && s>0) || index_array_a_struct==NULL || s<0){
         handle_error_with_exit("invalid parameter divide all by p to k\n");
     }
     char array_divided=0;//0 se nessuna divisione effettuata,1 se sono state effettutate divisioni per p^k
@@ -3029,7 +3029,7 @@ void*thread_factorization_job(void*arg){
 
 void factor_matrix_f(const mpz_t n,long M,struct thread_data thread_data,int cardinality_factor_base,const mpz_t a,
                      struct a_struct*array_a_struct,int s){
-    if(n==NULL || a==NULL || mpz_sgn(n)<=0 || M<=0 || cardinality_factor_base<=0 || array_a_struct==NULL || s<0){
+    if(n==NULL || a==NULL || mpz_sgn(n)<=0 || M<=0 || cardinality_factor_base<=0 || (array_a_struct==NULL && s>0) || s<0){
         handle_error_with_exit("error in factor matrix_f\n");
     }
     long p;
@@ -3043,7 +3043,7 @@ void factor_matrix_f(const mpz_t n,long M,struct thread_data thread_data,int car
             divide_all_by_2_log(M,thread_data);
         }
         else{//p>2 e dispari
-            divide_all_by_p_to_k_f(r.root_n_mod_p[i],p,i,1,M,thread_data,n,a,thread_data.b,array_a_struct,&index_array_a_struct);
+            divide_all_by_p_to_k_f(r.root_n_mod_p[i],p,i,1,M,thread_data,n,a,thread_data.b,array_a_struct,&index_array_a_struct,s);
         }
     }
     return;

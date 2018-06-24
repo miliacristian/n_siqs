@@ -486,6 +486,17 @@ void free_memory_matrix_int(int **matrix,int num_row,int num_col){
 	matrix=NULL;
 	return;
 }
+void free_memory_matrix_unsigned_long(unsigned long **matrix,int num_row,int num_col){
+	if(matrix==NULL || *matrix==NULL || num_row<=0 || num_col<=0){
+		handle_error_with_exit("error in free memory matrix int\n");
+	}
+	for(int i=0;i<num_row;i++){
+		free(matrix[i]);
+	}
+	free(matrix);
+	matrix=NULL;
+	return;
+}
 void free_memory_matrix_char(char **matrix,int num_row,int num_col){
 	if(matrix==NULL || *matrix==NULL || num_row<=0 || num_col<=0){
 		handle_error_with_exit("error in free memory matrix int\n");

@@ -18,7 +18,7 @@
 #define PERC_INCREMENT_B 50
 #define MAX_ITER 10000 //iterazioni massime per calcolare a
 #define MAX_ITER2 10000 //iterazioni massime per calcolare a
-#define MAX_NUM_FOR_DIGIT 1
+#define MAX_NUM_FOR_DIGIT 6
 #define RATIO_A 0.8//rapporto tra a ideale e a trovato,se ratio=1 si vuole a trovato molto molto vicino ad a ideale
 #define ENOUGH_RELATION 1.00 //numero minore o uguale a 1 indica quante relazioni
 //vanno trovate in più rispetto alla cardinalità della factor base
@@ -115,4 +115,5 @@ void initialize_mtx(pthread_mutex_t *mtx);
 void lock_mtx(pthread_mutex_t *mtx);
 void unlock_mtx(pthread_mutex_t *mtx);
 void destroy_mtx(pthread_mutex_t *mtx);
+void free_memory_matrix_unsigned_long(unsigned long **matrix,int num_row,int num_col);
 #endif

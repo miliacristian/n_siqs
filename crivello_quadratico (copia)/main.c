@@ -385,25 +385,23 @@ int main(int argc,char*argv[]){
                 continue;
             }
 			//algebra step:sistema lineare
-            binary_linear_system=create_linear_system_f(head,cardinality_factor_base,num_B_smooth,&num_col_binary_matrix);
+            linear_system=create_linear_system_f(head,cardinality_factor_base,num_B_smooth);
+            print_linear_system(linear_system,cardinality_factor_base,num_B_smooth);
+            binary_linear_system=create_binary_linear_system(head,cardinality_factor_base,num_B_smooth,&num_col_binary_matrix);
+            print_binary_matrix(binary_linear_system,cardinality_factor_base,num_col_binary_matrix);
             reduce_echelon_form_binary_matrix(binary_linear_system,cardinality_factor_base,num_col_binary_matrix);
             print_binary_matrix(binary_linear_system,cardinality_factor_base,num_col_binary_matrix);
-            exit(0);
-			print_linear_system(linear_system,cardinality_factor_base,num_B_smooth);
             print_time_elapsed("time_to_create_linear_system");
+            free_memory_matrix_unsigned_long(binary_linear_system,cardinality_factor_base,num_col_binary_matrix);
+            binary_linear_system=NULL;
 
             //algebra step:base sistema lineare
-            char **linear_system2=alloc_matrix_char(cardinality_factor_base,num_B_smooth);
+            /*char **linear_system2=alloc_matrix_char(cardinality_factor_base,num_B_smooth);
             copy_matrix_with_array(linear_system2,linear_system,cardinality_factor_base,num_B_smooth);
-            print_matrix_char(linear_system2,cardinality_factor_base,num_B_smooth);
-            printf("inizio riduzione a scala\n");
-            reduce_echelon_form_matrix_char(linear_system2,cardinality_factor_base,num_B_smooth);
 			print_matrix_char(linear_system2,cardinality_factor_base,num_B_smooth);
-            printf("fine riduzione a scala\n");
-            print_time_elapsed("time to reduce echelon form");
-			base_matrix=calculate_base_linear_system_char(linear_system,cardinality_factor_base,num_B_smooth,&dim_sol);
 			free_memory_matrix_char(linear_system2,cardinality_factor_base,num_B_smooth);
-			linear_system2=NULL;
+			linear_system2=NULL;*/
+             base_matrix=calculate_base_linear_system_char(linear_system,cardinality_factor_base,num_B_smooth,&dim_sol);
 			if(base_matrix==NULL){//non ci sono abbastanza soluzioni,ricomincia il crivello quadratico
 				calculate_news_M_and_B(&M,&B);
                 free(linear_system);
