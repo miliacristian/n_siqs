@@ -1380,3 +1380,6 @@ n=50467 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=13 num_pot_B_s
 mean_increment=0.000000
 n=50467 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=13 num_pot_B_smooth=51 num_B_smooth=3 time_total:hour=0 min=0 sec:0 ms=0 ns:794675card_f_base=21 p_min=2 p_max=20 a=0 num_pot_B_smooth=276 num_B_smooth=69 time_total:hour=0 min=0 sec:0 ms=1 ns:572317dim_sol=49 p=463 q=109 M_end=112 B_end=105 num_increment=1 time_total:hour=0 min=0 sec:0 ms=2 ns:942114
 mean_increment=0.000000
+n=50467 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=13 num_pot_B_smooth=102 num_B_smooth=7 error in parameter get_coli
+n=50467 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=13 num_pot_B_smooth=102 num_B_smooth=7 error in parameter get_coli
+n=50467 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=13 num_pot_B_smooth=102 num_B_smooth=7 error in parameter get_coli

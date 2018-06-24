@@ -75,7 +75,7 @@ int main(int argc,char*argv[]){
 		int num_B_smooth=0,num_potential_B_smooth=0;//numero di numeri b-smooth potenziali e reali trovati nell'array
 		char*linear_system=NULL,*linear_system2=NULL;//sistema lineare da risolvere per trovare a e b
 		unsigned long**binary_linear_system=NULL;
-		int num_col_binary_matrix;
+		int num_col_binary_matrix,num_col_linear_system;
 		int**base_matrix=NULL;//matrice che riporta per colonna i vettori che formano una base del sistema lineare
 		pthread_t *array_tid=NULL;
 		//int row_result=-1;//numero di righe risultanti dalla concatenazione di tutte le matrici
@@ -154,9 +154,8 @@ int main(int argc,char*argv[]){
 		//b_default
 		mpz_set(b_default,x0);
 		gmp_printf("b_default=%Zd\n",b_default);
-
-		print_time_elapsed("time to initialize factor base");
 		factor_base_already_exist=0;
+
 		while(factorizations_founded<=0){//finquando non sono stati trovati fattori:
 		    // calcola a,unisci le relazioni quadratiche vedi se puoi calcolare il sistema lineare,
             // trova souzioni sistema lineare e trova tutti gli a,b del crivello quadratico
@@ -204,7 +203,7 @@ int main(int argc,char*argv[]){
 				tail_f_base_f=thread_factor_base_data[0].tail;
 				cardinality_factor_base=thread_factor_base_data[0].cardinality_factor_base;
 				last_prime_factor_base=thread_factor_base_data[0].last_prime_factor_base;
-				print_time_elapsed("time to union all lists");
+				print_time_elapsed("time to union all lists factor base");
 				if(thread_factor_base_data!=NULL){
 					free(thread_factor_base_data);
 					thread_factor_base_data=NULL;
@@ -223,6 +222,7 @@ int main(int argc,char*argv[]){
 			printf("cardinality factor_base %d\n",cardinality_factor_base);
 			fprintf(file_log,"card_f_base=%d ",cardinality_factor_base);
 			print_time_elapsed("time to calculate factor base");
+
 			//a,per siqs e generare tutti gli altri b,prodotto di primi dispari distinti
 			calculate_a_f2(a,thresold_a,&s,head_f_base_f,cardinality_factor_base,&index_prime_a,&number_prime_a);
 			if(s>0) {
@@ -280,7 +280,6 @@ int main(int argc,char*argv[]){
 			}
 			printf("num_thread_job=%d\n",num_thread_job);
             thread_polynomial_data=alloc_array_polynomial_thread_data(NUM_THREAD_POLYNOMIAL+1,M);
-
 			print_time_elapsed("time to create thread data");
 
 			//creazione della struttura row_factorization(che contiene primi factor base e log)
@@ -312,7 +311,7 @@ int main(int argc,char*argv[]){
 			printf("log_thresold main thread=%f\n",thread_polynomial_data[NUM_THREAD_POLYNOMIAL].log_thresold);
 
 			find_list_square_relation(thread_polynomial_data[NUM_THREAD_POLYNOMIAL],&num_B_smooth,&num_potential_B_smooth,M,&head,&tail,n,a_default,NULL,0);
-			print_time_elapsed("time_to find_list_square_relation");
+			print_time_elapsed("time_to find_list_square_relation main thread");
 
 			//aspetta tutti i thread e libera memoria
 			if(num_thread_job!=1 && NUM_THREAD_POLYNOMIAL>0){
@@ -361,10 +360,7 @@ int main(int argc,char*argv[]){
 			//	handle_error_with_exit(">64\n");
 			//}
             printf("cardinality factor base=%d\n",cardinality_factor_base);
-            timer.tv_nsec=time_start.tv_nsec;//timer=time_start
-            timer.tv_sec=time_start.tv_sec;//timer=time_start
-            print_time_elapsed_on_file_log("time_total");
-            print_time_elapsed("time_total");
+
             if(num_B_smooth<cardinality_factor_base*ENOUGH_RELATION){
                 calculate_news_M_and_B(&M,&B);
 				free_array_thread_data(thread_polynomial_data,NUM_THREAD_POLYNOMIAL+1);
@@ -388,27 +384,22 @@ int main(int argc,char*argv[]){
 				}
                 continue;
             }
+
 			//algebra step:sistema lineare
-            linear_system=create_linear_system_f(head,cardinality_factor_base,num_B_smooth);
-            print_linear_system(linear_system,cardinality_factor_base,num_B_smooth);
             binary_linear_system=create_binary_linear_system(head,cardinality_factor_base,num_B_smooth,&num_col_binary_matrix);
-            print_binary_matrix(binary_linear_system,cardinality_factor_base,num_col_binary_matrix);
+            //print_binary_matrix(binary_linear_system,cardinality_factor_base,num_col_binary_matrix);
+            print_time_elapsed("time_to_create_binary linear_system");
             reduce_echelon_form_binary_matrix(binary_linear_system,cardinality_factor_base,num_col_binary_matrix);
-            print_binary_matrix(binary_linear_system,cardinality_factor_base,num_col_binary_matrix);
-            print_time_elapsed("time_to_create_linear_system");
-            printf("sistema lineare copiato\n");
-            linear_system2=from_matrix_binary_to_matrix_char(binary_linear_system,cardinality_factor_base,num_col_binary_matrix);
-			print_linear_system(linear_system2,cardinality_factor_base,num_col_binary_matrix*BIT_OF_UNSIGNED_LONG);
+            //print_binary_matrix(binary_linear_system,cardinality_factor_base,num_col_binary_matrix);
+            print_time_elapsed("time_to_reduce echelon form linear_system");
+            linear_system=from_matrix_binary_to_matrix_char(binary_linear_system,cardinality_factor_base,num_col_binary_matrix,&num_col_linear_system);
+            print_time_elapsed("time_to_copy matrix binary into matrix char");
+			print_linear_system(linear_system,cardinality_factor_base,num_col_binary_matrix*BIT_OF_UNSIGNED_LONG);
             free_memory_matrix_unsigned_long(binary_linear_system,cardinality_factor_base,num_col_binary_matrix);
             binary_linear_system=NULL;
 
             //algebra step:base sistema lineare
-            /*char **linear_system2=alloc_matrix_char(cardinality_factor_base,num_B_smooth);
-            copy_matrix_with_array(linear_system2,linear_system,cardinality_factor_base,num_B_smooth);
-			print_matrix_char(linear_system2,cardinality_factor_base,num_B_smooth);
-			free_memory_matrix_char(linear_system2,cardinality_factor_base,num_B_smooth);
-			linear_system2=NULL;*/
-             base_matrix=calculate_base_linear_system_char(linear_system2,cardinality_factor_base,num_col_binary_matrix*BIT_OF_UNSIGNED_LONG,&dim_sol);
+            base_matrix=calculate_base_linear_system_char(linear_system,cardinality_factor_base,num_col_linear_system,&dim_sol);
 			if(base_matrix==NULL){//non ci sono abbastanza soluzioni,ricomincia il crivello quadratico
 				calculate_news_M_and_B(&M,&B);
                 free(linear_system);
@@ -437,7 +428,7 @@ int main(int argc,char*argv[]){
 			}
 			printf("dim_sol=%d\n",dim_sol);
 			print_time_elapsed("time to calculate base linear system");
-			if(check_solution_base_matrix_char(linear_system,cardinality_factor_base,num_B_smooth,
+			if(check_solution_base_matrix_char(linear_system,cardinality_factor_base,num_col_linear_system,
             base_matrix,num_B_smooth,dim_sol)==0){
 				handle_error_with_exit("error in main,invalid solution\n");
 			}

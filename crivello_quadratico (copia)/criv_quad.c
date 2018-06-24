@@ -166,9 +166,9 @@ void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B){
 	//*M=5000000
     //*M=400000;
 	//*B=4000000;
-    *M=25;
+    /**M=25;
 	*B=20;
-    return;
+    return;*/
 	if(digit_n<7){
 		*M=25;
 		*B=20;
@@ -498,6 +498,7 @@ void create_factor_base_f(int*cardinality_factor_base,long B,struct node_factor_
 	long start;
 	if(*last_prime_factor_base==1) {
 		*head=initialize_factor_base(cardinality_factor_base, B,tail, n,last_prime_factor_base);
+		//initialize factor base pone last_prime_factor_base a 1
 	}
 	if((*last_prime_factor_base & 1)==0){//start=last_prime_factor_base è pari==2
 		start=*last_prime_factor_base;

@@ -84,7 +84,7 @@ char*create_linear_system_f(struct node_square_relation*head,int cardinality_fac
 void swap_row_unsigned_long(unsigned long**matrix,int num_row,int ind_row1,int ind_row2);
 void reduce_echelon_form_binary_matrix(unsigned long**binary_matrix,int num_row,int num_col);
 unsigned long**create_binary_linear_system(struct node_square_relation*head,int cardinality_factor_base,int num_B_smooth,int*num_col_binary_matrix);
-char*from_matrix_binary_to_matrix_char(unsigned long**binary_linear_system,int num_row,int num_col_binary_matrix);
+char*from_matrix_binary_to_matrix_char(unsigned long**binary_linear_system,int num_row,int num_col_binary_matrix,int*num_col_linear_system);
 #endif
 
 

@@ -13,16 +13,16 @@ extern struct timespec timer;
 extern struct timespec time_start;
 extern FILE*file_log;
 
-char*from_matrix_binary_to_matrix_char(unsigned long**binary_linear_system,int num_row,int num_col_binary_matrix){
-	if(binary_linear_system==NULL || *binary_linear_system==NULL || num_row<=0 || num_col_binary_matrix<=0){
+char*from_matrix_binary_to_matrix_char(unsigned long**binary_linear_system,int num_row,int num_col_binary_matrix,int*num_col_linear_system){
+	if(binary_linear_system==NULL || *binary_linear_system==NULL || num_row<=0 || num_col_binary_matrix<=0 || num_col_linear_system==NULL){
 		handle_error_with_exit("error in from_matrix_binary_to_matrix_char\n");
 	}
 	char*linear_system;
 	int index_col_linear_system;
 	int index;
 	char bit;
-	int num_col_linear_system=num_col_binary_matrix*BIT_OF_UNSIGNED_LONG;
-	linear_system=alloc_array_char(num_row*(num_col_linear_system));
+	*num_col_linear_system=num_col_binary_matrix*BIT_OF_UNSIGNED_LONG;
+	linear_system=alloc_array_char(num_row*(*num_col_linear_system));
 	for(int i=0;i<num_row;i++){
 		for(int j=0;j<num_col_binary_matrix;j++){
 			for(int b=0;(unsigned long)b<BIT_OF_UNSIGNED_LONG;b++){
@@ -2067,15 +2067,12 @@ int**calculate_base_linear_system_char(char*matrix_linear_system,int num_row,int
     if(matrix_linear_system==NULL || num_row<=0 || num_col<=0 || dim_sol==NULL){
         handle_error_with_exit("error in parameter get_coli\n");
     }
-    reduce_echelon_form_char(matrix_linear_system,num_row,num_col);//riduce la matrice a scala
     if(check_if_matrix_char_is_reduce_mod_n(matrix_linear_system,num_row,num_col,2)==0){
         handle_error_with_exit("matrix is not reduce mod n");
     }
     if(check_if_matrix_char_is_echelon_reduce(matrix_linear_system,num_row,num_col)==0){
         handle_error_with_exit("error in calculate_base_linear_system\n");
     }
-    printf("matrice_ridotta a scala\n");
-    print_linear_system(matrix_linear_system,num_row,num_col);
     *dim_sol=calculate_dim_sol_char(matrix_linear_system,num_row,num_col);//calcola la dimensione della base del sistema lineare
     printf("dim_sol=%d\n",*dim_sol);
     fprintf(file_log,"dim_sol=%d ",*dim_sol);
