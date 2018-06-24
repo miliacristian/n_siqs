@@ -503,7 +503,7 @@ void create_factor_base_f(int*cardinality_factor_base,long B,struct node_factor_
 		start=*last_prime_factor_base;
 	}
 	else{//last_prime_factor_base è dispari
-		start=*last_prime_factor_base-1;//start è pari
+		start=*last_prime_factor_base+1;//start è pari
 	}
     for(long i=start;i<=B;){
         mpz_set_si(p,i);//p=i,inizialmente p=2,ad ogni inizio ciclo deve essere pari
@@ -1125,7 +1125,6 @@ void calculate_a_f2(mpz_t a,const mpfr_t target_a,int*s,struct node_factor_base*
 	}
 	*s=length_best_q;//imposta il valore di s
 	printf("s=%d,s_max=%ld\n",*s,s_max);
-	print_time_elapsed("time to choose factor for a");
 	if(*s>s_max){
 		handle_error_with_exit("error in calculate a,s must be minor or equal to s_max\n");
 	}

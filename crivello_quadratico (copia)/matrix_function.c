@@ -132,8 +132,9 @@ void create_row_factorization(struct node_factor_base*head_f_base_f,int card_f_b
 		    mpz_set_si(temp,r.prime[i]);//temp=p
             if(mpz_invert(temp,a,temp)==0){//temp=inverse of a mod p
 				if(i==array_a_struct[index].index_prime_a){
-					handle_error_with_exit("exit\n");
+					handle_error_with_exit("inv\n");
 				}
+				printf("i=%d,s=%d\n",i,s);
             	handle_error_with_exit("error in mpz_invert create_row_factorization\n");
             }
 			r.inverse_a_mod_p[i]=mpz_get_si(temp);

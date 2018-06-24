@@ -6,7 +6,7 @@
 #define THRESOLD_PRINT_MATRIX 1000
 #define THRESOLD_PRINT_LIST 1000
 #define SIQS_MIN_PRIME_POLYNOMIAL 400 //parametri per il calcolo di a
-#define SIQS_MAX_PRIME_POLYNOMIAL 2000 //parametri per il calcolo di a
+#define SIQS_MAX_PRIME_POLYNOMIAL 4000 //parametri per il calcolo di a
 #define NUM_ITER_FOR_CALCULATE_A 1000 //parametri per il calcolo di a
 #define THRESOLD_RELATION 0
 #define NUM_THREAD_FACTOR_BASE 8
@@ -16,9 +16,9 @@
 #define MAX_DIM_SOL 16 //dimensione soluzione massima
 #define PERC_INCREMENT_M 50 
 #define PERC_INCREMENT_B 50
-#define MAX_ITER 10000 //iterazioni massime per calcolare a
-#define MAX_ITER2 10000 //iterazioni massime per calcolare a
-#define MAX_NUM_FOR_DIGIT 6
+#define MAX_ITER 3000 //iterazioni massime per calcolare a
+#define MAX_ITER2 3000 //iterazioni massime per calcolare a
+#define MAX_NUM_FOR_DIGIT 1
 #define RATIO_A 0.8//rapporto tra a ideale e a trovato,se ratio=1 si vuole a trovato molto molto vicino ad a ideale
 #define ENOUGH_RELATION 1.00 //numero minore o uguale a 1 indica quante relazioni
 //vanno trovate in più rispetto alla cardinalità della factor base
