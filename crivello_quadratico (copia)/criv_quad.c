@@ -488,7 +488,7 @@ void create_factor_base_f(int*cardinality_factor_base,long B,struct node_factor_
         handle_error_with_exit("error in parameter\n");
     }
     struct node_factor_base*node;
-    long v,m;
+    long v,v_temp,m;
     mpz_t p,pp,value;
 
 
@@ -511,7 +511,7 @@ void create_factor_base_f(int*cardinality_factor_base,long B,struct node_factor_
         mpz_nextprime(p,p);//p=next_prime,ritorna il prossimo primo maggiore strettamente di p,è bene che p sia pari
         if(mpz_cmp_si(p,B)<=0){//primo<=B
             v=mpz_get_si(p);
-            *last_prime_factor_base=v;
+            v_temp=v;
             v=(v-1)>>1;//shift a destra divide per 2,v=(v-1/2)
             mpz_powm_ui(value,n,(unsigned long int)v,p);//value=n^v mod p
             m=mpz_get_si(value);//m=n^((p-1)/2) mod p
@@ -519,6 +519,7 @@ void create_factor_base_f(int*cardinality_factor_base,long B,struct node_factor_
                 node=get_new_node_f(mpz_get_si(p),n);
                 insert_at_tail_f(node,head,tail);
                 (*cardinality_factor_base)++;
+                *last_prime_factor_base=v_temp;
             }
             i=mpz_get_si(p)+1;//il numero diventa pari e il prossimo numero primo sarà dispari
         }

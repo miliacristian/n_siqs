@@ -121,3 +121,12 @@
 --8358-- REDIR: 0x5c80ab0 (libc.so.6:__mempcpy_avx_unaligned_erms) redirected to 0x4c37130 (mempcpy)
 --8358-- REDIR: 0x5c80f50 (libc.so.6:__memset_avx2_unaligned_erms) redirected to 0x4c365d0 (memset)
 --8358-- REDIR: 0x5b8c030 (libc.so.6:calloc) redirected to 0x4c31a70 (calloc)
+==8358== 
+==8358== HEAP SUMMARY:
+==8358==     in use at exit: 0 bytes in 0 blocks
+==8358==   total heap usage: 753,194 allocs, 753,194 frees, 22,668,436 bytes allocated
+==8358== 
+==8358== All heap blocks were freed -- no leaks are possible
+==8358== 
+==8358== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==8358== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

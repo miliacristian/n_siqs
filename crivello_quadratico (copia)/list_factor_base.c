@@ -6,31 +6,40 @@
 #include "basic.h"
 #include "math_function.h"
 #include <gmp.h>
-char verify_factor_base(struct node_factor_base*head,int cardinality_factor_base){
-    if(head==NULL || cardinality_factor_base<=0){
+char verify_factor_base(struct node_factor_base*head,int cardinality_factor_base,int last_prime_factor_base){
+    if(head==NULL || cardinality_factor_base<=0 || last_prime_factor_base<=0){
       handle_error_with_exit("error in verify factor base");
     }
     int count_elem=0;
     struct node_factor_base*p=head;
     while(p!=NULL){
         if(p->next==NULL){//ultimo elemento
+            if(p->prime!=last_prime_factor_base){
+                printf("1\n");
+                return 0;
+            }
             count_elem++;
             p=p->next;
             continue;
         }
         if(count_elem==0 && p->prime!=-1){
+            printf("2\n");
             return 0;
         }
         if(count_elem==1 && p->prime!=2){
+            printf("3\n");
             return 0;
         }
         if(p->prime>=p->next->prime){
+            printf("p->prime=%d,p->next_prime=%d\n",p->prime,p->next->prime);
+            printf("4\n");
             return 0;
         }
         count_elem++;//aumenta numero elementi
         p=p->next;
     }
     if(count_elem!=cardinality_factor_base){//se il numero di elementi è diverso dalla cardinalità errore
+        printf("5\n");
         return 0;
     }
     return 1;

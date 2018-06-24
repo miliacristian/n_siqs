@@ -23,7 +23,7 @@ struct node_factor_base* get_new_node_f(int num,const mpz_t n);
 
 void insert_at_head_f(struct node_factor_base* new_node,struct node_factor_base** head,struct node_factor_base** tail);
 
-char verify_factor_base(struct node_factor_base*head,int cardinality_factor_base);
+char verify_factor_base(struct node_factor_base*head,int cardinality_factor_base,int last_prime_factor_base);
 char first_is_smaller_f(struct node_factor_base node1, struct node_factor_base node2);
 
 void insert_ordered_f(int num,const mpz_t n, struct node_factor_base** head, struct node_factor_base** tail);
