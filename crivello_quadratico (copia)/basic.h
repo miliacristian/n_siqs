@@ -48,7 +48,6 @@ struct thread_data {
     int num_potential_B_smooth;
     int num_B_smooth;
     int num_semi_B_smooth;
-    mpz_t residuos;
 	struct number*numbers;//array di struct di numberi
 	struct node_square_relation*head;//ogni thread dopo il suo compito ha una lista di relazioni quadratiche
 	struct node_square_relation*tail;//ogni thread dopo il suo compito ha una lista di relazioni quadratiche

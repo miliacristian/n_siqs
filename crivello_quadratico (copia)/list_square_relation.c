@@ -174,14 +174,19 @@ char first_is_smaller_square_rel(struct node_square_relation node1, struct node_
     *tail=tail_square;//la coda punta alla coda dell'altra lista
     return;
 }*/
-void remove_same_num(struct node_square_relation**head,struct node_square_relation**tail,int*num_B_smooth){
-    if(head==NULL || tail==NULL || num_B_smooth==NULL){
+void remove_same_num(struct node_square_relation**head,struct node_square_relation**tail,int*num_B_smooth,int*num_semi_B_smooth){
+    if(head==NULL || tail==NULL || num_B_smooth==NULL || num_semi_B_smooth==NULL){
         handle_error_with_exit("error in remove_same_num\n");
     }
     struct node_square_relation*l=*head;
     while(l!=NULL){
-        while(l->next!=NULL && (mpz_cmp(l->square_relation.num,(l->next)->square_relation.num)==0) ){
-            (*num_B_smooth)--;
+        while(l->next!=NULL && (mpz_cmp(l->square_relation.num,(l->next)->square_relation.num)==0) ) {
+            if (mpz_cmp(l->square_relation.residuos, 1) == 0){//trovati due numeri uguali con residuo uguale a 1
+                (*num_B_smooth)--;
+            }
+            else{//trovati due numeri uguali con residuo diverso da 1
+                (*num_semi_B_smooth)--;
+            }
             remove_after_node_square_rel(&(l->next),tail);
         }
         if(l->next==NULL){

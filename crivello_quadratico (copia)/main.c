@@ -353,11 +353,11 @@ int main(int argc,char*argv[]){
 								  thread_polynomial_data[i].head,thread_polynomial_data[i].tail);
 				num_B_smooth+=thread_polynomial_data[i].num_B_smooth;
 				num_potential_B_smooth+=thread_polynomial_data[i].num_potential_B_smooth;
-
-				printf("num_potential_B_smooth=%d,num_B_smooth=%d\n",num_potential_B_smooth,num_B_smooth);
+				num_semi_B_smooth+=thread_polynomial_data[i].num_semi_B_smooth;
+				printf("num_potential_B_smooth=%d,num_B_smooth=%d,num_semi_B_smooth=%d\n",num_potential_B_smooth,num_B_smooth,num_semi_B_smooth);
 			}
             print_time_elapsed("time to union all lists");
-			remove_same_num(&head,&tail,&num_B_smooth);
+			remove_same_num(&head,&tail,&num_B_smooth,&num_semi_B_smooth);
             print_time_elapsed("time to remove same num");
 			printf("num_potential_B_smooth=%d,num_B_smooth=%d\n",num_potential_B_smooth,num_B_smooth);
             fprintf(file_log,"num_pot_B_smooth=%d num_B_smooth=%d ",num_potential_B_smooth,num_B_smooth);
