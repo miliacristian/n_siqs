@@ -278,7 +278,11 @@ void print_list_factor(struct node_factor_base*head,int length){
 	printf("\n");
 	return;
 }
-
+void print_struct_square_relation(struct square_relation square_relation){
+	gmp_printf("square=%Zd,residuos=%Zd\n",square_relation.square,square_relation.residuos);
+	print_factorization(square_relation.num,square_relation.head_factorization);
+	return;
+}
 void print_list_square_relation(struct node_square_relation*head,int length){
 	if (head==NULL){
         printf("impossible print list head is NULL\n");
@@ -295,7 +299,6 @@ void print_list_square_relation(struct node_square_relation*head,int length){
     }
     struct node_square_relation*p=head;
     while(p!=NULL){
-        //print_factorization(p->square_relation.num,p->square_relation.head_factorization);
         gmp_printf("square=%Zd,residuos=%Zd\n",p->square_relation.square,p->square_relation.residuos);
         print_factorization(p->square_relation.num,p->square_relation.head_factorization);
         p=p->next;
@@ -448,8 +451,8 @@ void print_factorization(const mpz_t num,struct node_factorization*head_factor){
         printf("no simple factorization found\n");
         return;
     }
+	gmp_printf("%Zd=",num);
     struct node_factorization*p=head_factor;
-    gmp_printf("%Zd=",num);
     while(p!=NULL){
         printf("%d^%d,",p->number,p->exp_of_number);
         p=p->next;

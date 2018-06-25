@@ -118,4 +118,5 @@ void lock_mtx(pthread_mutex_t *mtx);
 void unlock_mtx(pthread_mutex_t *mtx);
 void destroy_mtx(pthread_mutex_t *mtx);
 void free_memory_matrix_unsigned_long(unsigned long **matrix,int num_row,int num_col);
+void free_list_factorization(struct node_factorization*head_factorization);
 #endif

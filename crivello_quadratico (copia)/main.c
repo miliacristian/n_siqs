@@ -361,10 +361,13 @@ int main(int argc,char*argv[]){
             print_time_elapsed("time to remove same num");
 			printf("num_potential_B_smooth=%d,num_B_smooth=%d,num_semi_B_smooth=%d\n",num_potential_B_smooth,num_B_smooth,num_semi_B_smooth);
             fprintf(file_log,"num_pot_B_smooth=%d num_B_smooth=%d ,num_semi_B_smooth=%d ",num_potential_B_smooth,num_B_smooth,num_semi_B_smooth);
-            print_list_square_relation(head,num_B_smooth);
             printf("cardinality factor base=%d\n",cardinality_factor_base);
-            combine_relation_B_smooth_and_semi_B_smooth(head,tail,&head_residuos,&tail_residuos,n);
-			//print_list_square_relation(head_residuos,num_B_smooth);
+            combine_relation_B_smooth_and_semi_B_smooth(head,tail,&head_residuos,&tail_residuos,n,&num_B_smooth);
+            print_time_elapsed("time to combine relation B_smooth");
+            remove_same_square(&head_residuos,&tail_residuos,&num_B_smooth,&num_semi_B_smooth);
+            print_time_elapsed("time to remove same square");
+            printf("num_potential_B_smooth=%d,num_B_smooth=%d,num_semi_B_smooth=%d\n",num_potential_B_smooth,num_B_smooth,num_semi_B_smooth);
+            print_list_square_relation(head_residuos,num_B_smooth);
             break;
             if(num_B_smooth<cardinality_factor_base*ENOUGH_RELATION){
                 calculate_news_M_and_B(&M,&B);
