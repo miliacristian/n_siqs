@@ -153,6 +153,12 @@ char first_is_smaller_square_rel(struct node_square_relation node1, struct node_
     }
     return 1;//node1 è più piccolo di node 2
 }
+char first_is_smaller_residuos_square_rel(struct node_square_relation node1, struct node_square_relation node2){//verifica se il primo nodo contiene tempi più piccoli del secondo nodo
+    if(mpz_cmp(node1.square_relation.residuos,node2.square_relation.residuos)>=0){//node1 è più grande di node2
+        return 0;
+    }
+    return 1;//node1 è più piccolo di node 2
+}
 /*void union_list_square(struct node_square_relation**head,struct node_square_relation**tail,struct node_square_relation*head_square,struct node_square_relation*tail_square){
     //concatena la prima lista e la seconda lista =L1 unito L2=L1,L2
     if(head==NULL){
@@ -174,6 +180,18 @@ char first_is_smaller_square_rel(struct node_square_relation node1, struct node_
     *tail=tail_square;//la coda punta alla coda dell'altra lista
     return;
 }*/
+void combine_relation_B_smooth_and_semi_B_smooth(struct node_square_relation*head,struct node_square_relation*tail){
+    struct node_square_relation*head_sort_residuos=NULL;
+    struct node_square_relation*tail_sort_residuos=NULL;
+    struct node_square_relation*p=head;
+    struct node_square_relation*q;
+    while(p!=NULL){
+        q=p->next;
+        insert_ordered_residuos_square_rel(p->square_relation,&head_sort_residuos,&tail_sort_residuos);
+        free(p);
+        p=q;
+    }
+}
 void remove_same_num(struct node_square_relation**head,struct node_square_relation**tail,int*num_B_smooth,int*num_semi_B_smooth){
     if(head==NULL || tail==NULL || num_B_smooth==NULL || num_semi_B_smooth==NULL){
         handle_error_with_exit("error in remove_same_num\n");
@@ -181,7 +199,7 @@ void remove_same_num(struct node_square_relation**head,struct node_square_relati
     struct node_square_relation*l=*head;
     while(l!=NULL){
         while(l->next!=NULL && (mpz_cmp(l->square_relation.num,(l->next)->square_relation.num)==0) ) {
-            if (mpz_cmp(l->square_relation.residuos, 1) == 0){//trovati due numeri uguali con residuo uguale a 1
+            if (mpz_cmp_si(l->square_relation.residuos, 1) == 0){//trovati due numeri uguali con residuo uguale a 1
                 (*num_B_smooth)--;
             }
             else{//trovati due numeri uguali con residuo diverso da 1
@@ -218,6 +236,42 @@ void union_list_square(struct node_square_relation**head,struct node_square_rela
         insert_ordered_square_rel(p->square_relation,head,tail);
         free(p);
         p=q;
+    }
+    return;
+}
+void insert_ordered_residuos_square_rel(struct square_relation square_relation, struct node_square_relation** head, struct node_square_relation** tail){
+    //inserisce ordinatamente un nodo nella lista ordinata per istanti temporali
+    if(square_relation.head_factorization==NULL){
+        handle_error_with_exit("error in insert_ordered\n");
+    }
+    if(head==NULL || tail==NULL){
+        handle_error_with_exit("error in insert_ordered,head or tail are NULL\n");
+    }
+    struct node_square_relation* temp = *tail;
+    struct node_square_relation* next_node = NULL;
+    struct node_square_relation* new_node = get_new_node_square_rel(square_relation);
+
+    if(*head == NULL){
+        insert_first_square_rel(new_node, head, tail);
+        return;
+    }
+    if(first_is_smaller_residuos_square_rel((**tail),*new_node)){
+        insert_at_tail_square_rel(new_node,head, tail);
+    }
+    else{
+        while(!first_is_smaller_residuos_square_rel(*temp,*new_node)){
+            if(temp->prev != NULL){
+                temp = temp->prev;
+            }else{
+                insert_at_head_square_rel(new_node, head, tail);
+                return;
+            }
+        }
+        next_node = temp->next;
+        new_node->prev = temp;
+        new_node->next = next_node;
+        temp->next = new_node;
+        next_node->prev = new_node;
     }
     return;
 }

@@ -149,6 +149,7 @@ struct thread_data*alloc_array_polynomial_thread_data(int length_array_thread_da
 		t_data[i].log_thresold=0;
 		t_data[i].num_potential_B_smooth=0;
 		t_data[i].num_B_smooth=0;
+		t_data[i].num_semi_B_smooth=0;
 		t_data[i].head=NULL;
 		t_data[i].tail=NULL;
 		t_data[i].numbers=malloc(sizeof(struct number)*(2*M+1));

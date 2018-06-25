@@ -359,14 +359,12 @@ int main(int argc,char*argv[]){
             print_time_elapsed("time to union all lists");
 			remove_same_num(&head,&tail,&num_B_smooth,&num_semi_B_smooth);
             print_time_elapsed("time to remove same num");
-			printf("num_potential_B_smooth=%d,num_B_smooth=%d\n",num_potential_B_smooth,num_B_smooth);
-            fprintf(file_log,"num_pot_B_smooth=%d num_B_smooth=%d ",num_potential_B_smooth,num_B_smooth);
+			printf("num_potential_B_smooth=%d,num_B_smooth=%d,num_semi_B_smooth=%d\n",num_potential_B_smooth,num_B_smooth,num_semi_B_smooth);
+            fprintf(file_log,"num_pot_B_smooth=%d num_B_smooth=%d ,num_semi_B_smooth=%d ",num_potential_B_smooth,num_B_smooth,num_semi_B_smooth);
             //print_list_square_relation(head,num_B_smooth);
-			//if(num_B_smooth>64){
-			//	handle_error_with_exit(">64\n");
-			//}
             printf("cardinality factor base=%d\n",cardinality_factor_base);
-
+            combine_relation_B_smooth_and_semi_B_smooth(head,tail);
+            exit(0);
             if(num_B_smooth<cardinality_factor_base*ENOUGH_RELATION){
                 calculate_news_M_and_B(&M,&B);
 				free_array_thread_data(thread_polynomial_data,NUM_THREAD_POLYNOMIAL+1);
@@ -567,8 +565,8 @@ int thread_job_criv_quad(int id_thread){//id inizia da 0,il lavoro di un thread 
 		print_time_elapsed_local("time to factor matrix_factorization",&timer_thread);
 
 		//ricerca dei B_smooth potenziali,reali e fattorizzazione dei B_smooth reali
-        find_list_square_relation(thread_polynomial_data[id_thread],&(thread_polynomial_data[id_thread].num_B_smooth),&(thread_polynomial_data[id_thread].num_potential_B_smooth),M,&head_square,&tail_square,n,a,array_a_struct,s);
-		printf("num_potential_B_smooth=%d,num_B_smooth=%d\n",thread_polynomial_data[id_thread].num_potential_B_smooth,thread_polynomial_data[id_thread].num_B_smooth);
+        find_list_square_relation(thread_polynomial_data[id_thread],&(thread_polynomial_data[id_thread].num_B_smooth),&(thread_polynomial_data[id_thread].num_semi_B_smooth),&(thread_polynomial_data[id_thread].num_potential_B_smooth),M,&head_square,&tail_square,n,a,array_a_struct,s);
+		printf("num_potential_B_smooth=%d,num_B_smooth=%d,num_semi_B_smooth=%d\n",thread_polynomial_data[id_thread].num_potential_B_smooth,thread_polynomial_data[id_thread].num_B_smooth,thread_polynomial_data[id_thread].num_semi_B_smooth);
 		print_time_elapsed_local("time to find_list_square_relation",&timer_thread);
 		clear_struct_thread_data(thread_polynomial_data[id_thread],M);
 		print_time_elapsed_local("time to clear struct thread_data",&timer_thread);
