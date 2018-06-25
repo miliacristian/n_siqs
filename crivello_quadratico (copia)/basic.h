@@ -47,6 +47,8 @@ struct thread_data {
 	mpz_t b;//coefficiente b
     int num_potential_B_smooth;
     int num_B_smooth;
+    int num_semi_B_smooth;
+    mpz_t residuos;
 	struct number*numbers;//array di struct di numberi
 	struct node_square_relation*head;//ogni thread dopo il suo compito ha una lista di relazioni quadratiche
 	struct node_square_relation*tail;//ogni thread dopo il suo compito ha una lista di relazioni quadratiche
@@ -69,6 +71,7 @@ struct square_relation {
     mpz_t square;
     struct node_factorization*head_factorization;
     mpz_t num;
+    mpz_t residuos;
 };
 struct factor_base_data {
 	struct node_factor_base*head;

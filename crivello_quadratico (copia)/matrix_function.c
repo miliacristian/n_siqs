@@ -2562,8 +2562,6 @@ unsigned long**create_binary_linear_system(struct node_square_relation*head,int 
     else{
         *num_col_binary_matrix=((num_B_smooth-remainder)/BIT_OF_UNSIGNED_LONG)+1;
     }
-    printf("bit unsigned long=%lu\n",BIT_OF_UNSIGNED_LONG);
-    printf("num_col=%d\n",*num_col_binary_matrix);
     unsigned long**binary_linear_system=alloc_matrix_unsigned_long(cardinality_factor_base,*num_col_binary_matrix);
     struct node_square_relation*p=head;
     int col_index=0;

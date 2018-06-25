@@ -17,7 +17,7 @@ void calculate_news_M_and_B(long*M,long*B){
 	//calcola i valori nuovi di M e B secondo una formula scelta opportunamente
 	//new_m=(m+perc_m)+(m+perc_m)*perc_m/100
 	//new_b=(b+perc_b)+(b+perc_b)*perc_b/100
-
+    return;
 	if(M==NULL || B==NULL || *M<=0 || *B<=0){
 		handle_error_with_exit("error in calculate_news_M_and_B\n");
 	}
@@ -219,9 +219,14 @@ void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B){
 		*B=3540;
 		return;
 	}
-	if(digit_n>=25){
+    if(digit_n<41){
+        *M=22512;
+        *B=3540;
+        return;
+    }
+	if(digit_n>=41){
 		*M=22512;
-		*B=3940;
+		*B=10000;
 		return;
 	}
 	handle_error_with_exit("num_too long\n");

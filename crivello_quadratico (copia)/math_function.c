@@ -104,9 +104,9 @@ void create_num(mpz_t num,const mpz_t a,const mpz_t b,const mpz_t n,long j){
 	mpz_clear(a_mul_square_j);
 }
 struct node_factorization*factorize_num(const mpz_t num,int first_index_f_base,int last_index_f_base,
-        char*is_B_smooth,struct a_struct*array_a_struct,int s){
+        char*is_B_smooth,char*is_semi_B_smooth,mpz_t residuos,struct a_struct*array_a_struct,int s){
 	if((first_index_f_base<0 && first_index_f_base!=-1)|| (last_index_f_base<0 && last_index_f_base!=-1)
-        || is_B_smooth==NULL
+        || is_B_smooth==NULL || is_semi_B_smooth==NULL
             || first_index_f_base>last_index_f_base || (array_a_struct==NULL && s>0)){
 		handle_error_with_exit("error in factorize_num\n");
 	}
@@ -170,9 +170,13 @@ struct node_factorization*factorize_num(const mpz_t num,int first_index_f_base,i
 	}
     if(mpz_cmp_si(temp,1)==0){//se il residuo della divisione è 1 allora è B-smooth
 	    *is_B_smooth=1;
+	    *is_semi_B_smooth=0;
+	    mpz_set(residuos,temp);
 	}
-	else{//non è B-smooth
+	else{//non è B-smooth è semi_B_smooth
     	*is_B_smooth=0;
+    	*is_semi_B_smooth=1;
+		mpz_set(residuos,temp);
     }
     mpz_clear(temp);
 	return head;
@@ -208,13 +212,16 @@ void calculate_square(mpz_t square,const mpz_t a,int index,const mpz_t b,const m
 	mpz_mod(square,square,n);// a*j+b mod n
     return;
 }
-void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth, int *num_potential_B_smooth, long M,
+void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth,int*num_semi_B_smooth, int *num_potential_B_smooth, long M,
 							   struct node_square_relation **head, struct node_square_relation **tail,
 							   const mpz_t n,const mpz_t a,struct a_struct*array_a_struct,int s) {
 	mpz_t num;
 	struct node_factorization*head_factor=NULL;
 	char is_B_smooth=0;
-	if(num_B_smooth==NULL || num_potential_B_smooth==NULL || M<=0 || head==NULL || tail==NULL || (array_a_struct==NULL && s>0)){
+	char is_semi_B_smooth=0;
+	mpz_t residuos;
+	mpz_init(residuos);
+	if(num_B_smooth==NULL || num_semi_B_smooth==NULL || num_potential_B_smooth==NULL || M<=0 || head==NULL || tail==NULL || (array_a_struct==NULL && s>0)){
 		handle_error_with_exit("error in find_list_square_relation");
 	}
 	struct square_relation square_relation;
@@ -224,7 +231,7 @@ void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth
             //possibile B_smooth trovato
             (*num_potential_B_smooth)++;
             create_num(num,a,thread_data.b,n,thread_data.numbers[i].j);
-            head_factor=factorize_num(num,thread_data.numbers[i].first_index_f_base,thread_data.numbers[i].last_index_f_base,&is_B_smooth,array_a_struct,s);
+            head_factor=factorize_num(num,thread_data.numbers[i].first_index_f_base,thread_data.numbers[i].last_index_f_base,&is_B_smooth,&is_semi_B_smooth,residuos,array_a_struct,s);
             if(head_factor==NULL && is_B_smooth==1){
             	handle_error_with_exit("error invalid factorize_num\n");
             }
@@ -234,19 +241,38 @@ void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth
             if(is_B_smooth==1){
                 (*num_B_smooth)++;
                 is_B_smooth=0;
+                is_semi_B_smooth=0;
                 square_relation.head_factorization=head_factor;
                 mpz_init(square_relation.square);
                 mpz_init(square_relation.num);
+                mpz_init(square_relation.residuos);
                 mpz_set(square_relation.num,num);
+                mpz_set(square_relation.residuos,residuos);
                 calculate_square(square_relation.square,a,i-M,thread_data.b,n);
                 insert_ordered_square_rel(square_relation,head,tail);
             }
+            else if(is_semi_B_smooth==1){
+				(*num_semi_B_smooth)++;
+				is_B_smooth=0;
+				is_semi_B_smooth=0;
+				square_relation.head_factorization=head_factor;
+				mpz_init(square_relation.square);
+				mpz_init(square_relation.num);
+				mpz_init(square_relation.residuos);
+				mpz_set(square_relation.num,num);
+				mpz_set(square_relation.residuos,residuos);
+				calculate_square(square_relation.square,a,i-M,thread_data.b,n);
+				insert_ordered_square_rel(square_relation,head,tail);
+
+            }
             else{
-				free_memory_list_factor(head_factor);
+            	handle_error_with_exit("error in find list square relation\n");
+				//free_memory_list_factor(head_factor);
             }
         }
     }
 	mpz_clear(num);
+	mpz_clear(residuos);
 	return;
 }
 

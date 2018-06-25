@@ -72,7 +72,7 @@ int main(int argc,char*argv[]){
 		cardinality_factor_base=0;
 		mpz_t a_default,b_default;//a,b sono i coefficienti del polinomio aj^2+2bj+c,thresold a serve per calcolare il valore di a
 		int*array_id=NULL;//array che contiene gli id dei nuovi thread creati a partire da 0
-		int num_B_smooth=0,num_potential_B_smooth=0;//numero di numeri b-smooth potenziali e reali trovati nell'array
+		int num_B_smooth=0,num_semi_B_smooth=0,num_potential_B_smooth=0;//numero di numeri b-smooth potenziali e reali trovati nell'array
 		char*linear_system=NULL;//sistema lineare da risolvere per trovare a e b
 		unsigned long**binary_linear_system=NULL;
 		int num_col_binary_matrix,num_col_linear_system;
@@ -213,6 +213,7 @@ int main(int argc,char*argv[]){
 			else if(B<=THRESOLD_B || NUM_THREAD_FACTOR_BASE<0){
 				//crea factor base da 0 a B,-1 e 2 sono già presenti,alle prossime iterazioni calcola la lista appendendo la sottolista
 				create_factor_base_f(&cardinality_factor_base,B,&head_f_base_f,&tail_f_base_f,n,&last_prime_factor_base);//crea lista dinamica con tutti i primi
+                factor_base_already_exist=1;
 			}
 			else if(factor_base_already_exist==1){//factor base è già stata creata parti da start=last_prime_factor_base fino a B e appendi la sottolista alla lista precedente
 				create_factor_base_f(&cardinality_factor_base,B,&head_f_base_f,&tail_f_base_f,n,&last_prime_factor_base);//crea lista dinamica con tutti i primi
@@ -313,7 +314,7 @@ int main(int argc,char*argv[]){
 			thread_polynomial_data[NUM_THREAD_POLYNOMIAL].log_thresold=calculate_log_thresold(n,M);
 			printf("log_thresold main thread=%f\n",thread_polynomial_data[NUM_THREAD_POLYNOMIAL].log_thresold);
 
-			find_list_square_relation(thread_polynomial_data[NUM_THREAD_POLYNOMIAL],&num_B_smooth,&num_potential_B_smooth,M,&head,&tail,n,a_default,NULL,0);
+			find_list_square_relation(thread_polynomial_data[NUM_THREAD_POLYNOMIAL],&num_B_smooth,&num_semi_B_smooth,&num_potential_B_smooth,M,&head,&tail,n,a_default,NULL,0);
 			print_time_elapsed("time_to find_list_square_relation main thread");
 
 			//aspetta tutti i thread e libera memoria
@@ -345,12 +346,14 @@ int main(int argc,char*argv[]){
 			array_a_struct=NULL;
 			printf("threads ended the job\n");
 			print_time_elapsed("time to wait all threads");
-			printf("num_potential_B_smooth_main_thread=%d,num_B_smooth_main_thread=%d\n",num_potential_B_smooth,num_B_smooth);
+			printf("num_potential_B_smooth_main_thread=%d,num_B_smooth_main_thread=%d,num_semi_B_smooth main thread=%d\n",
+                   num_potential_B_smooth,num_B_smooth,num_semi_B_smooth);
 			for(int i=0;i<NUM_THREAD_POLYNOMIAL;i++){
 				union_list_square(&head,&tail,
 								  thread_polynomial_data[i].head,thread_polynomial_data[i].tail);
 				num_B_smooth+=thread_polynomial_data[i].num_B_smooth;
 				num_potential_B_smooth+=thread_polynomial_data[i].num_potential_B_smooth;
+
 				printf("num_potential_B_smooth=%d,num_B_smooth=%d\n",num_potential_B_smooth,num_B_smooth);
 			}
             print_time_elapsed("time to union all lists");
@@ -397,7 +400,7 @@ int main(int argc,char*argv[]){
             print_time_elapsed("time_to_reduce echelon form linear_system");
             linear_system=from_matrix_binary_to_matrix_char(binary_linear_system,cardinality_factor_base,num_col_binary_matrix,&num_col_linear_system);
             print_time_elapsed("time_to_copy matrix binary into matrix char");
-			print_linear_system(linear_system,cardinality_factor_base,num_col_linear_system);
+			//print_linear_system(linear_system,cardinality_factor_base,num_col_linear_system);
             free_memory_matrix_unsigned_long(binary_linear_system,cardinality_factor_base,num_col_binary_matrix);
             binary_linear_system=NULL;
 
