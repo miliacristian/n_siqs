@@ -11,4 +11,4 @@ void insert_ordered_square_rel(struct square_relation square_relation, struct no
 void union_list_square(struct node_square_relation**head,struct node_square_relation**tail,struct node_square_relation*head_square,struct node_square_relation*tail_square);
 void remove_same_num(struct node_square_relation**head,struct node_square_relation**tail,int*num_B_smooth,int*num_semi_B_smooth);
 void insert_ordered_residuos_square_rel(struct square_relation square_relation, struct node_square_relation** head, struct node_square_relation** tail);
-void combine_relation_B_smooth_and_semi_B_smooth(struct node_square_relation*head,struct node_square_relation*tail);
+void combine_relation_B_smooth_and_semi_B_smooth(struct node_square_relation*head,struct node_square_relation*tail,struct node_square_relation**head_sort_residuos,struct node_square_relation**tail_sort_residuos,mpz_t n);

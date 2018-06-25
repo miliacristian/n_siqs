@@ -82,7 +82,7 @@ int main(int argc,char*argv[]){
 		int factorizations_founded=-1;//numero di fattorizazzioni trovate
 		char factorized=0;//indica se numero fattorizzato o no
 		char digit=-1;//numero cifre di n
-		struct node_square_relation*head=NULL,*tail=NULL;//contengono tutte le relazioni quadratiche
+		struct node_square_relation*head=NULL,*tail=NULL,*head_residuos=NULL,*tail_residuos=NULL;//contengono tutte le relazioni quadratiche
         int last_prime_factor_base=1;//indica da quale primo si inizia a creare la factor base
         char factor_base_already_exist=0;
         int start=0;
@@ -361,10 +361,11 @@ int main(int argc,char*argv[]){
             print_time_elapsed("time to remove same num");
 			printf("num_potential_B_smooth=%d,num_B_smooth=%d,num_semi_B_smooth=%d\n",num_potential_B_smooth,num_B_smooth,num_semi_B_smooth);
             fprintf(file_log,"num_pot_B_smooth=%d num_B_smooth=%d ,num_semi_B_smooth=%d ",num_potential_B_smooth,num_B_smooth,num_semi_B_smooth);
-            //print_list_square_relation(head,num_B_smooth);
+            print_list_square_relation(head,num_B_smooth);
             printf("cardinality factor base=%d\n",cardinality_factor_base);
-            combine_relation_B_smooth_and_semi_B_smooth(head,tail);
-            exit(0);
+            combine_relation_B_smooth_and_semi_B_smooth(head,tail,&head_residuos,&tail_residuos,n);
+			//print_list_square_relation(head_residuos,num_B_smooth);
+            break;
             if(num_B_smooth<cardinality_factor_base*ENOUGH_RELATION){
                 calculate_news_M_and_B(&M,&B);
 				free_array_thread_data(thread_polynomial_data,NUM_THREAD_POLYNOMIAL+1);
@@ -492,8 +493,8 @@ int main(int argc,char*argv[]){
 			thread_polynomial_data = NULL;
 		}
 		if(head!=NULL) {
-			free_memory_list_square_relation(head);
-			head = NULL;
+			free_memory_list_square_relation(head_residuos);
+			head_residuos = NULL;
 		}
 
 		mpz_clear(n);
