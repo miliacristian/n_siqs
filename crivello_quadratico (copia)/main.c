@@ -213,16 +213,22 @@ int main(int argc,char*argv[]){
 			else if(B<=THRESOLD_B || NUM_THREAD_FACTOR_BASE==0){//se B minore della soglia o numero thread factor base=0
 				//crea factor base da 0 a B,-1 e 2 sono già presenti,alle prossime iterazioni calcola la lista appendendo la sottolista
 				create_factor_base_f(&cardinality_factor_base,B,&head_f_base_f,&tail_f_base_f,n,&last_prime_factor_base);//crea lista dinamica con tutti i primi
-                factor_base_already_exist=1;
+                //imposta factor base come creata
+				factor_base_already_exist=1;
 			}
 			else if(factor_base_already_exist==1){//factor base è già stata creata parti da start=last_prime_factor_base fino a B e appendi la sottolista alla lista precedente
 				create_factor_base_f(&cardinality_factor_base,B,&head_f_base_f,&tail_f_base_f,n,&last_prime_factor_base);//crea lista dinamica con tutti i primi
+			}
+			else{
+				handle_error_with_exit("caso factor base non gestito\n");
 			}
 			printf("factor base=");
 			print_list_factor(head_f_base_f,cardinality_factor_base);
 			printf("cardinality factor_base %d\n",cardinality_factor_base);
 			fprintf(file_log,"card_f_base=%d ",cardinality_factor_base);
 			print_time_elapsed("time to calculate factor base");
+
+			//verifica che la factor base è corretta
             if(verify_factor_base(head_f_base_f,cardinality_factor_base,last_prime_factor_base)==0){
                 handle_error_with_exit("error in main verify factor base\n");
             }
@@ -230,6 +236,7 @@ int main(int argc,char*argv[]){
 			//a,per siqs e generare tutti gli altri b,prodotto di primi dispari distinti
 			calculate_a_f2(a,thresold_a,&s,head_f_base_f,cardinality_factor_base,&index_prime_a,&number_prime_a);
 			if(s>0) {
+				//crea array a struct e ordina i fattori di a
                 array_a_struct = create_array_a_struct(number_prime_a, index_prime_a, s);
                 qsort(array_a_struct, (size_t)s, sizeof(struct a_struct), compare_a_struct);
                 print_array_a_struct(array_a_struct, s);
@@ -272,45 +279,48 @@ int main(int argc,char*argv[]){
 			print_time_elapsed("time to calculate array bi");
 
 			//creazione struttura dati dei thread
-			if(array_bi==NULL){
+			if(array_bi==NULL){//se array_bi==NULL non ci sono polinomi,numero dei thread è 1
 				num_thread_job=1;
 			}
 			else{
-				//length_array_thread_data=(int)pow(2,s-1)+1;//abbiamo 2^(s-1) polinomi diversi con un a fissato
-                num_thread_job=(int)pow(2,s-1)+1;
+                num_thread_job=(int)pow(2,s-1)+1;//abbiamo 2^(s-1) polinomi diversi con un a fissato
 			}
 			if(NUM_THREAD_POLYNOMIAL==0){//se non ci sono thread la lunghezza della matrice è 1
 				num_thread_job=1;
 			}
 			printf("num_thread_job=%d\n",num_thread_job);
+
+			//alloca struttura dati dei thread per fare il sieving
             thread_polynomial_data=alloc_array_polynomial_thread_data(NUM_THREAD_POLYNOMIAL+1,M);
 			print_time_elapsed("time to create thread data");
 
-			//creazione della struttura row_factorization(che contiene primi factor base e log)
+			//creazione della struttura row_factorization
+			// row_factorization contiene primi factor base,log per ogni primo radice 1 e radice 2 di n mod p e a^-1 mod p)
 			r.prime=alloc_array_int(cardinality_factor_base);
 			r.log_prime=alloc_array_int(cardinality_factor_base);
 			r.root_n_mod_p=alloc_array_int(cardinality_factor_base);
 			r.root2_n_mod_p=alloc_array_int(cardinality_factor_base);
 			r.inverse_a_mod_p=alloc_array_int(cardinality_factor_base);
 			create_row_factorization(head_f_base_f,cardinality_factor_base,a,array_a_struct,s);
-			//print_array_int(r.log_prime,cardinality_factor_base);
-			//print_array_int(r.prime,cardinality_factor_base);
-			//print_array_int(r.root_n_mod_p,cardinality_factor_base);
+			print_array_int(r.log_prime,cardinality_factor_base);
+			print_array_int(r.prime,cardinality_factor_base);
+			print_array_int(r.root_n_mod_p,cardinality_factor_base);
+			print_array_int(r.inverse_a_mod_p,cardinality_factor_base);
 			print_time_elapsed("time to create row factorization");
 
-			//creazione e avvio thread
+			//creazione e avvio thread per fase sieving
 			if(num_thread_job!=1){
 				array_tid=alloc_array_tid(NUM_THREAD_POLYNOMIAL);//alloca memoria per contenere tutti i tid
 				array_id=create_threads(array_tid,NUM_THREAD_POLYNOMIAL);//crea tutti i thread
 			}
 			print_time_elapsed("time to create thread");
-            //n.b. thread_data[length_array_thread_data-1]==struttura dati main thread
             mpz_set(thread_polynomial_data[NUM_THREAD_POLYNOMIAL].b,b_default);//imposta b
+			//fattorizza numeri nell'array lungo 2m+1
 			factor_matrix_f(n,M,(thread_polynomial_data[NUM_THREAD_POLYNOMIAL]),cardinality_factor_base,a_default,array_a_struct,s);//fattorizza numeri
 			print_time_elapsed("time_to_factor matrix_factorization main thread");
 			print_thread_data(thread_polynomial_data[NUM_THREAD_POLYNOMIAL],M);
 
-			//ricerca dei B_smooth potenziali,reali e fattorizzazione dei B_smooth reali
+			//log_thresold main thread
 			thread_polynomial_data[NUM_THREAD_POLYNOMIAL].log_thresold=calculate_log_thresold(n,M);
 			printf("log_thresold main thread=%f\n",thread_polynomial_data[NUM_THREAD_POLYNOMIAL].log_thresold);
 
@@ -345,6 +355,7 @@ int main(int argc,char*argv[]){
 			}
 			free(array_a_struct);
 			array_a_struct=NULL;
+
 			printf("threads ended the job\n");
 			print_time_elapsed("time to wait all threads");
 			printf("num_potential_B_smooth_main_thread=%d,num_B_smooth_main_thread=%d,num_semi_B_smooth main thread=%d\n",
@@ -367,6 +378,7 @@ int main(int argc,char*argv[]){
 
             //trova nuove relazioni quadratiche con un nuovo square,una nuova fattorizazzione e num=0
             combine_relation_B_smooth_and_semi_B_smooth(head,tail,&head_residuos,&tail_residuos,n,&num_B_smooth);
+            //riassegna la lista delle relazioni quadratiche a head e tail
             head=head_residuos;
             tail=tail_residuos;
             print_time_elapsed("time to combine relation B_smooth");
@@ -509,6 +521,7 @@ int main(int argc,char*argv[]){
 			head = NULL;
 		}
 
+		//mpz_clear
 		mpz_clear(n);
 		mpz_clear(a);
 		mpz_clear(temp);

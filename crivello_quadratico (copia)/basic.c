@@ -26,6 +26,9 @@ void check_variable_in_defines(){
     if(NUM_THREAD_FACTOR_BASE<0){
         handle_error_with_exit("invalid num_thread factor base\n");
     }
+    if(NUM_THREAD_POLYNOMIAL<0){
+		handle_error_with_exit("invalid num_thread polynomial\n");
+    }
 }
 int calculate_start_factor_base(int id_thread){
     long remainder=reduce_int_mod_n_v2(B,NUM_THREAD_FACTOR_BASE+1);

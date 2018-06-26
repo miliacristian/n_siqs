@@ -206,68 +206,72 @@ struct square_relation create_relation_large_prime(struct square_relation rel1,s
     mpz_init(new_relation.square);
     mpz_init(new_relation.residuos);
     mpz_init(new_relation.num);
+
     mpz_set_si(new_relation.residuos,1);//residuo=1
     mpz_set_si(new_relation.num,0);//num=0
     new_relation.head_factorization=NULL;
-    //square=square1*square2*(residuos)^-1
+
+    //new_square=square1*square2*(residuos)^-1
     mpz_invert(new_relation.square,rel1.residuos,n);//square=residuos^-1 mod n
     mpz_mul(new_relation.square,new_relation.square,rel1.square);
     mpz_mod(new_relation.square,new_relation.square,n);//square=residuos^-1*square1 mod n
     mpz_mul(new_relation.square,new_relation.square,rel2.square);
     mpz_mod(new_relation.square,new_relation.square,n);//square=residuos^-1*square1*square2 mod n
 
-    print_struct_square_relation(rel1);
-    print_struct_square_relation(rel2);
+    print_struct_square_relation(rel1);//
+    print_struct_square_relation(rel2);//
+
     struct node_factorization*p1=rel1.head_factorization;
     struct node_factorization*p2=rel2.head_factorization;
     while(p1!=NULL || p2!=NULL){//finisci quando sei arrivato alla fine di entrambe le liste
         if(p1!=NULL && p2!=NULL && p1->index<p2->index){
             //se le liste non sono finite e indice minore nella lista 1 aggiungi il nodo della lista 1
+            // e vai avanti di un elemento
             index=p1->index;
             exp_of_number=p1->exp_of_number;
             number=p1->number;
             insert_ordered_factor(number,exp_of_number,index,&(new_relation.head_factorization),&tail);
-            p1=p1->next;
+            p1=p1->next;//vai avanti al nodo successivo nella lista 1
         }
         else if(p1!=NULL && p2!=NULL && p1->index==p2->index){
-            //se le liste non sono finite e indici uguali somma esponenti
+            //se le liste non sono finite e indici uguali somma gli esponenti e vai avanti in entrambe le liste
             if(p1->number!=-1) {
-                index = p1->index;
+                index = p1->index;//l'indice è uguale
                 exp_of_number = p1->exp_of_number + p2->exp_of_number;
-                number = p1->number;
+                number = p1->number;//il numero è uguale
                 insert_ordered_factor(number, exp_of_number, index, &(new_relation.head_factorization), &tail);
             }
-            p1=p1->next;
-            p2=p2->next;
+            p1=p1->next;//vai avanti in entrambe le liste
+            p2=p2->next;//vai avanti in entrambe le liste
         }
         else if(p1!=NULL && p2!=NULL && p1->index>p2->index){
-            //se le liste non sono finite e indice della lista 2 è minore,aggiungi nodo della lista 2
+            //se le liste non sono finite e indice della lista 2 è minore,aggiungi nodo della lista 2 e vai avanti di un nodo nella lista 2
             index=p2->index;
             exp_of_number=p2->exp_of_number;
             number=p2->number;
             insert_ordered_factor(number,exp_of_number,index,&(new_relation.head_factorization),&tail);
-            p2=p2->next;
+            p2=p2->next;//vai avanti nella lista 2
         }
-        else if(p1==NULL && p2!=NULL){//se la prima lista è finita aggiungi nodo della seconda lista
+        else if(p1==NULL && p2!=NULL){//se la prima lista è finita aggiungi nodo della seconda lista e vai avanti di un nodo nella lista 2
             index=p2->index;
             exp_of_number=p2->exp_of_number;
             number=p2->number;
             insert_ordered_factor(number,exp_of_number,index,&(new_relation.head_factorization),&tail);
-            p2=p2->next;
+            p2=p2->next;//vai avanti di un nodo nella lista 2
         }
         else if(p1!=NULL && p2==NULL){//se la seconda lista è finita aggiungi nodo della prima lista
             index=p1->index;
             exp_of_number=p1->exp_of_number;
             number=p1->number;
             insert_ordered_factor(number,exp_of_number,index,&(new_relation.head_factorization),&tail);
-            p1=p1->next;
+            p1=p1->next;//vai avanti di un nodo nella lista 1 vai avanti di un nodo nella lista 1
         }
         else{
             handle_error_with_exit("error in create relation large prime,caso non gestito\n");
         }
     }
-    printf("new relation\n");
-    print_struct_square_relation(new_relation);
+    printf("new relation\n");//
+    print_struct_square_relation(new_relation);//
     return new_relation;
 }
 void insert_ordered_sort_square_rel(struct square_relation square_relation, struct node_square_relation** head, struct node_square_relation** tail){
@@ -317,8 +321,9 @@ void combine_relation_B_smooth_and_semi_B_smooth(struct node_square_relation*hea
     struct node_square_relation*p=head_sort_residuos;//p=nodo
     struct node_square_relation*q;
     while(p!=NULL) {
+        //i numeri B_smooth li metto in lista ordinati per square
         while(p!=NULL && not_remove_residuos_one && mpz_cmp_si(p->square_relation.residuos,1)==0){//se il residuo è uguale a 1
-            gmp_printf("residuo uguale a 1 square=%Zd\n",p->square_relation.square);
+            gmp_printf("residuo uguale a 1 con square=%Zd\n",p->square_relation.square);//
             insert_ordered_sort_square_rel(p->square_relation,head_final_list_relation,tail_final_list_relation);
             q=p->next;
             free(p);
@@ -326,13 +331,15 @@ void combine_relation_B_smooth_and_semi_B_smooth(struct node_square_relation*hea
         }
         not_remove_residuos_one=0;
         q=p->next;
+        //ciclo sulla lista per trovare residui uguali e creare nuove relazioni B_smooth
         while (p!=NULL && q!=NULL && mpz_cmp(p->square_relation.residuos, q->square_relation.residuos) == 0) {//residui uguali
-            gmp_printf("residui uguali a %Zd\n", p->square_relation.residuos);
+            gmp_printf("residui uguali a %Zd\n", p->square_relation.residuos);//
             (*num_B_smooth)++;
             struct square_relation new_square_relation=create_relation_large_prime(p->square_relation,q->square_relation,n);
             insert_ordered_sort_square_rel(new_square_relation,head_final_list_relation,tail_final_list_relation);
             q = q->next;
         }
+        //una volta che ho creato tutte le relazioni quadratiche sfruttando un numero semi_B_smooth lo tolgo dalla lista
         q=p->next;
         mpz_clear(p->square_relation.square);
         mpz_clear(p->square_relation.num);
