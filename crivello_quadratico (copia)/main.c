@@ -545,7 +545,7 @@ int main(int argc,char*argv[]){
 		}
 	}
 	file_log=open_file_log();//apri file di log
-	fprintf(file_log,"mean_increment=%lf\n",mean_increment_M_and_B/MAX_NUM_FOR_DIGIT);
+	fprintf(file_log,"mean_increment=%lf\n",mean_increment_M_and_B/NUM_OF_N_TO_FACTORIZE);
 	if(fclose(file_log)!=0){
 			handle_error_with_exit("error in close file_log\n");
 		}
