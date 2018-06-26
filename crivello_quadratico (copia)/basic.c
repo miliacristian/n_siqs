@@ -23,106 +23,72 @@ extern int M;
 extern int cardinality_factor_base;
 extern long B;
 void check_variable_in_defines(){
-    if(NUM_TEST_MILLER_RABIN){
-
+    if(NUM_TEST_MILLER_RABIN<=0){
+		handle_error_with_exit("error in value num_test_miller_rabin\n");
     }
-    if(RAD2){
-
+    if(RAD2<=0){
+		handle_error_with_exit("error in value rad2\n");
     }
-    if(THRESOLD_PRINT_ARRAY){
-
+    if(THRESOLD_PRINT_ARRAY<=0){
+		handle_error_with_exit("error in value thresold_print_array");
     }
-	if(THRESOLD_PRINT_MATRIX){
+	if(THRESOLD_PRINT_MATRIX<=0){
+		handle_error_with_exit("error in value thresold_print_matrix\n");
 	}
-	if(THRESOLD_PRINT_LIST){
+	if(THRESOLD_PRINT_LIST<=0){
+		handle_error_with_exit("error in value thresold print_list\n");
 	}
-
-
-
-
-	if(SIQS_MIN_PRIME_POLYNOMIAL){
-
+	if(SIQS_MIN_PRIME_POLYNOMIAL<=0){
+		handle_error_with_exit("error in value siqs_min_prime_polynomial\n");
 	}
-	if(SIQS_MAX_PRIME_POLYNOMIAL){
-
+	if(SIQS_MAX_PRIME_POLYNOMIAL<=0){
+		handle_error_with_exit("error in value siqs_max_prime_polynomial\n");
 	}
-	if(NUM_ITER_FOR_CALCULATE_A){
-
+	if(NUM_ITER_FOR_CALCULATE_A<=0){
+		handle_error_with_exit("error in value num_iter_for_calculate_a\n");
     }
-    if(MAX_ITER){
-
+    if(MAX_ITER<=0){
+		handle_error_with_exit("error in value max_iter\n");
     }
-	if(MAX_ITER2){
-
+	if(MAX_ITER2<=0){
+		handle_error_with_exit("error in value max_iter2\n");
 	}
-	if(RATIO_A){
-
+	if(RATIO_A<=0){
+		handle_error_with_exit("error in value ratio_a\n");
 	}
-
-
-
-
-	if(NUM_THREAD_FACTOR_BASE){
-
+	if(NUM_THREAD_FACTOR_BASE<0){
+		handle_error_with_exit("error in value num_thread_factor_base\n");
 	}
-	if(NUM_THREAD_POLYNOMIAL){
-
+	if(NUM_THREAD_POLYNOMIAL<0){
+		handle_error_with_exit("error in value num_thread_polynomial\n");
 	}
-	if(S_MAX){
-
+	if(S_MAX<=0){
+		handle_error_with_exit("error in value s_max\n");
 	}
-	if(MAX_DIM_SOL){
-
+	if(MAX_DIM_SOL<=0){
+		handle_error_with_exit("error in value max_dim_sol\n");
 	}
-	if(PERC_INCREMENT_M){
-
+	if(PERC_INCREMENT_M<=0){
+		handle_error_with_exit("error in value perc_increment_m\n");
 	}
-	if(PERC_INCREMENT_B){
-
+	if(PERC_INCREMENT_B<=0){
+		handle_error_with_exit("error in value perc_increment b\n");
 	}
-	if(NUM_OF_N_TO_FACTORIZE){
-
+	if(NUM_OF_N_TO_FACTORIZE<1){
+		handle_error_with_exit("error in value num_of_n_to_factorize\n");
 	}
-	if(ENOUGH_RELATION){
-
+	if(ENOUGH_RELATION<1){
+		handle_error_with_exit("error in value enough relation\n");
 	}
 	if(ERROR_LOG){
-
+		handle_error_with_exit("error in value error_log\n");
 	}
-	if(THRESOLD_B){
-
+	if(THRESOLD_B<=0){
+		handle_error_with_exit("error in value thresold_b\n");
 	}
-	if(BIT_OF_UNSIGNED_LONG){
-
+	if(BIT_OF_UNSIGNED_LONG<8 || BIT_OF_UNSIGNED_LONG%8!=0){
+		handle_error_with_exit("error in value bit_of_unsigned_long\n");
 	}
-/*#define NUM_TEST_MILLER_RABIN 10 //numero di test di miller_rabin per vedere se il numero è primo
-#define RAD2 1.41421356 //radice di 2
-#define THRESOLD_PRINT_ARRAY 1000//dopo il valore di soglia l'array non viene stampato
-#define THRESOLD_PRINT_MATRIX 1000//dopo il valore di soglia la matrice non viene stampata
-#define THRESOLD_PRINT_LIST 1000 //dopo il valore di soglia la lista non viene stampata
-
-#define SIQS_MIN_PRIME_POLYNOMIAL 400 //parametri per il calcolo di a
-#define SIQS_MAX_PRIME_POLYNOMIAL 4000 //parametri per il calcolo di a
-#define NUM_ITER_FOR_CALCULATE_A 1000 //parametri per il calcolo di a
-#define MAX_ITER 3000 //iterazioni massime per calcolare a
-#define MAX_ITER2 3000 //iterazioni massime per calcolare a
-#define RATIO_A 0.8//rapporto tra "a" ideale e "a" trovato,se ratio=1 si vuole a trovato molto molto vicino ad a ideale
-
-#define NUM_THREAD_FACTOR_BASE 8//numero thread supplementari per costruire factor base
-#define NUM_THREAD_POLYNOMIAL 0 //numero di thread supplementari per calcolare i polinomi di siqs
-#define S_MAX 11//corrisponde a 2^(S_MAX-1) polinomi diversi,limita il numero di polinomi possibili
-#define MAX_DIM_SOL 16 //dimensione soluzione massima del sistema lineare
-#define PERC_INCREMENT_M 50 //quanto aumenta in percentuale M se non si riesce a fattorizzare n
-#define PERC_INCREMENT_B 50 //quanto aumenta in percentuale B se non si riesce a fattorizzare n
-
-#define num_of_n_to_factorize 1
-
-#define ENOUGH_RELATION 1.00 //numero maggiore o uguale a 1 indica quante relazioni
-//vanno trovate in più rispetto alla cardinalità della factor base num_b_smooth>cardinality*enough_relation
-#define ERROR_LOG 25//errore del logaritmo,aumentare per trovare più numeri B_smooth potenziali ma maggior computazione,
-//diminuire per trovare meno numeri B_smooth potenziali ma minor computazione,valore default=25
-#define THRESOLD_B 20000 //se B è minore di thresold b non dividere il processo di creazione factor base in più thread
-#define BIT_OF_UNSIGNED_LONG (8*sizeof(unsigned long))//numero di bit di */
 	return;
 }
 int calculate_start_factor_base(int id_thread){
