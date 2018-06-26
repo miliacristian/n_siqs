@@ -18,7 +18,7 @@
 #define PERC_INCREMENT_M 50 //quanto aumenta in percentuale M se non si riesce a fattorizzare n
 #define PERC_INCREMENT_B 50 //quanto aumenta in percentuale B se non si riesce a fattorizzare n
 
-#define MAX_NUM_FOR_DIGIT 1
+#define NUM_OF_N_TO_FACTORIZE 1
 
 #define ENOUGH_RELATION 1.00 //numero maggiore o uguale a 1 indica quante relazioni
 //vanno trovate in più rispetto alla cardinalità della factor base num_b_smooth>cardinality*enough_relation
@@ -26,6 +26,7 @@
 //diminuire per trovare meno numeri B_smooth potenziali ma minor computazione,valore default=25
 #define THRESOLD_B 20000 //se B è minore di thresold b non dividere il processo di creazione factor base in più thread
 #define BIT_OF_UNSIGNED_LONG (8*sizeof(unsigned long))//numero di bit di una variabile unsigned long
+
 #include <gmp.h>
 #include <time.h>
 #include <stdio.h>

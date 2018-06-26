@@ -61,7 +61,7 @@ int main(int argc,char*argv[]){
 
 	FILE*file_number=open_file(argv[1]);//apri file in cui risiede il numero n da fattorizzare
 	double mean_increment_M_and_B=0;
-	for(int i=0;i<MAX_NUM_FOR_DIGIT;i++){
+	for(int i=0;i<NUM_OF_N_TO_FACTORIZE;i++){
 
 		//apertura file e dichiarazione variabili
 		file_log=open_file_log();//apri file di log
