@@ -51,17 +51,14 @@
 	int*number_prime_a=NULL;//numeri primi usati per ottenere a
     struct a_struct*array_a_struct=NULL;
 
-int calculate_start_factor_base(int id_thread){
-    long remainder=reduce_int_mod_n_v2(B,NUM_THREAD_FACTOR_BASE+1);
-    long length=(B-remainder)/(NUM_THREAD_FACTOR_BASE+1);
-    int start=id_thread*length+1;
-    return start;
-}
+
 int main(int argc,char*argv[]){
 	srand((unsigned int)time(NULL));//imposta seme casuale
-	if(argc!=2){//se non c'è esattamente un parametro,termina
+	if(argc!=2){//se non c'è esattamente un parametro,termina,serve il path in cui c'è scritto il numero all'interno
 		handle_error_with_exit("usage<path>\n");
 	}
+	check_variable_in_defines();
+
 	FILE*file_number=open_file(argv[1]);//apri file in cui risiede il numero n da fattorizzare
 	double mean_increment_M_and_B=0;
 	for(int i=0;i<MAX_NUM_FOR_DIGIT;i++){
@@ -74,19 +71,19 @@ int main(int argc,char*argv[]){
 		int*array_id=NULL;//array che contiene gli id dei nuovi thread creati a partire da 0
 		int num_B_smooth=0,num_semi_B_smooth=0,num_potential_B_smooth=0;//numero di numeri b-smooth potenziali e reali trovati nell'array
 		char*linear_system=NULL;//sistema lineare da risolvere per trovare a e b
-		unsigned long**binary_linear_system=NULL;
-		int num_col_binary_matrix,num_col_linear_system;
+		unsigned long**binary_linear_system=NULL;//sistema lineare binario da ridurre a scala
+		int num_col_binary_matrix,num_col_linear_system;//numero colonne sistema binario e sistema lineare
 		int**base_matrix=NULL;//matrice che riporta per colonna i vettori che formano una base del sistema lineare
-		pthread_t *array_tid=NULL;
-		//int row_result=-1;//numero di righe risultanti dalla concatenazione di tutte le matrici
+		pthread_t *array_tid=NULL;//array di tid per fare le join dal main thread
 		int factorizations_founded=-1;//numero di fattorizazzioni trovate
-		char factorized=0;//indica se numero fattorizzato o no
+		char factorized=0;//indica se il numero è stato fattorizzato o no
 		char digit=-1;//numero cifre di n
 		struct node_square_relation*head=NULL,*tail=NULL,*head_residuos=NULL,*tail_residuos=NULL;//contengono tutte le relazioni quadratiche
-        int last_prime_factor_base=1;//indica da quale primo si inizia a creare la factor base
-        char factor_base_already_exist=0;
+        int last_prime_factor_base=1;//indica l'ultimo primo della factor base,e quindi da quale primo si inizia a creare la factor base se una factor base è già esistente
+                //se last_prime==1 allora si aggiungono alla factor base anche -1 e 2
+        char factor_base_already_exist=0;//indica se la factor base è già esistente oppure no
         int start=0;
-		k=1;
+		k=1;//moltiplicatore di n
 
 		//mpz_init
 		mpz_init(n);
@@ -139,7 +136,7 @@ int main(int argc,char*argv[]){
 		gmp_printf("n*k=%Zd\n",n);
 		print_time_elapsed("time to calculate k");
 
-		//x0
+		//x0=rad(n)
 		calculate_x0(x0,n,k,&factorized);//x0=n^(1/2),xo radice quadrata di n
 		if(factorized==1){//se n viene fattorizzato pulire la memoria e terminare il programma
 			goto clean_memory;
@@ -157,7 +154,7 @@ int main(int argc,char*argv[]){
 		factor_base_already_exist=0;
 
 		while(factorizations_founded<=0){//finquando non sono stati trovati fattori:
-		    // calcola a,unisci le relazioni quadratiche vedi se puoi calcolare il sistema lineare,
+		    // calcola a=p1*p2*...ps,unisci le relazioni quadratiche vedi se puoi calcolare il sistema lineare,
             // trova souzioni sistema lineare e trova tutti gli a,b del crivello quadratico
 			printf("inizio ciclo\n");
 
@@ -174,8 +171,9 @@ int main(int argc,char*argv[]){
 
 			//factor base
 			if(factor_base_already_exist==0 && B>THRESOLD_B && NUM_THREAD_FACTOR_BASE>0) {//se la factor base non è mai stata creata
-				// e se B è maggiore del valore soglia
-				thread_factor_base_data = alloc_array_factor_base_data(NUM_THREAD_FACTOR_BASE + 1);
+				// e se B è maggiore del valore soglia e numero thread per creare factor base>0
+				thread_factor_base_data = alloc_array_factor_base_data(NUM_THREAD_FACTOR_BASE + 1);//alloca struttura condivisa a tutti i thread,
+				        // ogni thread ha il propri indice
 				array_tid = alloc_array_tid(NUM_THREAD_FACTOR_BASE);//alloca memoria per contenere tutti i tid
 				array_id = create_factor_base_threads(array_tid, NUM_THREAD_FACTOR_BASE);//crea tutti i thread
 				join_all_threads(array_tid, NUM_THREAD_FACTOR_BASE);//aspetta tutti i thread
@@ -187,9 +185,9 @@ int main(int argc,char*argv[]){
 					free(array_id);
 					array_id = NULL;
 				}
-				start=calculate_start_factor_base(NUM_THREAD_FACTOR_BASE);
-				last_prime_factor_base=start;
-				create_factor_base_f(&cardinality_factor_base,B,&head_f_base_f,&tail_f_base_f,n,&last_prime_factor_base);
+				start=calculate_start_factor_base(NUM_THREAD_FACTOR_BASE);//calcola lo start del main thread,l'end è pari a B
+				last_prime_factor_base=start;//inizia a creare la factor base da start
+				create_factor_base_f(&cardinality_factor_base,B,&head_f_base_f,&tail_f_base_f,n,&last_prime_factor_base);//crea la factor base da lastprime fino a B
 				printf("time to create factor base main thread");
 				for(int i=1;i<NUM_THREAD_FACTOR_BASE;i++){//unisci tutte le liste nella prima lista tranne la lista del main thread
 					union_list_factor_base(&(thread_factor_base_data[0].head),&(thread_factor_base_data[0].tail),&(thread_factor_base_data[0].cardinality_factor_base),&(thread_factor_base_data[0].last_prime_factor_base),
@@ -204,13 +202,15 @@ int main(int argc,char*argv[]){
 				cardinality_factor_base=thread_factor_base_data[0].cardinality_factor_base;
 				last_prime_factor_base=thread_factor_base_data[0].last_prime_factor_base;
 				print_time_elapsed("time to union all lists factor base");
+
+				//libera memoria
 				if(thread_factor_base_data!=NULL){
 					free(thread_factor_base_data);
 					thread_factor_base_data=NULL;
 				}
                 factor_base_already_exist=1;
 			}
-			else if(B<=THRESOLD_B || NUM_THREAD_FACTOR_BASE<0){
+			else if(B<=THRESOLD_B || NUM_THREAD_FACTOR_BASE==0){//se B minore della soglia o numero thread factor base=0
 				//crea factor base da 0 a B,-1 e 2 sono già presenti,alle prossime iterazioni calcola la lista appendendo la sottolista
 				create_factor_base_f(&cardinality_factor_base,B,&head_f_base_f,&tail_f_base_f,n,&last_prime_factor_base);//crea lista dinamica con tutti i primi
                 factor_base_already_exist=1;
@@ -314,6 +314,7 @@ int main(int argc,char*argv[]){
 			thread_polynomial_data[NUM_THREAD_POLYNOMIAL].log_thresold=calculate_log_thresold(n,M);
 			printf("log_thresold main thread=%f\n",thread_polynomial_data[NUM_THREAD_POLYNOMIAL].log_thresold);
 
+			//trova relazioni quadratiche o semi_B_smooth
 			find_list_square_relation(thread_polynomial_data[NUM_THREAD_POLYNOMIAL],&num_B_smooth,&num_semi_B_smooth,&num_potential_B_smooth,M,&head,&tail,n,a_default,NULL,0);
 			print_time_elapsed("time_to find_list_square_relation main thread");
 
@@ -348,7 +349,7 @@ int main(int argc,char*argv[]){
 			print_time_elapsed("time to wait all threads");
 			printf("num_potential_B_smooth_main_thread=%d,num_B_smooth_main_thread=%d,num_semi_B_smooth main thread=%d\n",
                    num_potential_B_smooth,num_B_smooth,num_semi_B_smooth);
-			for(int i=0;i<NUM_THREAD_POLYNOMIAL;i++){
+			for(int i=0;i<NUM_THREAD_POLYNOMIAL;i++){//metti tutte le relazioni in head e tail,somma tutti i numeri B_smooth e semi_B_smooth
 				union_list_square(&head,&tail,
 								  thread_polynomial_data[i].head,thread_polynomial_data[i].tail);
 				num_B_smooth+=thread_polynomial_data[i].num_B_smooth;
@@ -358,19 +359,25 @@ int main(int argc,char*argv[]){
 			}
 
             print_time_elapsed("time to union all lists");
-			remove_same_num(&head,&tail,&num_B_smooth,&num_semi_B_smooth);
+			remove_same_num(&head,&tail,&num_B_smooth,&num_semi_B_smooth);//rimuovi relazioni con lo stesso numero(diverso da zero)
             print_time_elapsed("time to remove same num");
 			printf("num_potential_B_smooth=%d,num_B_smooth=%d,num_semi_B_smooth=%d\n",num_potential_B_smooth,num_B_smooth,num_semi_B_smooth);
             fprintf(file_log,"num_pot_B_smooth=%d num_B_smooth=%d ,num_semi_B_smooth=%d ",num_potential_B_smooth,num_B_smooth,num_semi_B_smooth);
             printf("cardinality factor base=%d\n",cardinality_factor_base);
+
+            //trova nuove relazioni quadratiche con un nuovo square,una nuova fattorizazzione e num=0
             combine_relation_B_smooth_and_semi_B_smooth(head,tail,&head_residuos,&tail_residuos,n,&num_B_smooth);
             head=head_residuos;
             tail=tail_residuos;
             print_time_elapsed("time to combine relation B_smooth");
+
+            //rimuovi i quadrati uguali
             remove_same_square(&head,&tail,&num_B_smooth,&num_semi_B_smooth);
             print_time_elapsed("time to remove same square");
             printf("num_potential_B_smooth=%d,num_B_smooth=%d,num_semi_B_smooth=%d\n",num_potential_B_smooth,num_B_smooth,num_semi_B_smooth);
             print_list_square_relation(head,num_B_smooth);
+
+            //verifica che il numero di relazioni trovate è sufficiente
             if(num_B_smooth<cardinality_factor_base*ENOUGH_RELATION){
                 calculate_news_M_and_B(&M,&B);
 				free_array_thread_data(thread_polynomial_data,NUM_THREAD_POLYNOMIAL+1);
@@ -498,7 +505,6 @@ int main(int argc,char*argv[]){
 			thread_polynomial_data = NULL;
 		}
 		if(head!=NULL) {
-		    printf("head !=NULL\n");
 			free_memory_list_square_relation(head);
 			head = NULL;
 		}
@@ -537,9 +543,9 @@ int main(int argc,char*argv[]){
 }
 
 int thread_job_to_create_factor_base(int id_thread){
-    long remainder=reduce_int_mod_n_v2(B,NUM_THREAD_FACTOR_BASE+1);
+    long remainder=reduce_int_mod_n_v2(B,NUM_THREAD_FACTOR_BASE+1);//rem=b mod num_thread
 	long length=(B-remainder)/(NUM_THREAD_FACTOR_BASE+1);
-	int start=id_thread*length+1;
+	int start=id_thread*length+1;//se id=o start=1
 	int end=start+length-1;
 	//es remainder=0 thread=5 B=500.000 -> len=100.000 start=0*100000+1,end=1+100000-1=100000,start2=100001,end2=200000
 	thread_factor_base_data[id_thread].last_prime_factor_base=start;

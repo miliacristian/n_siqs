@@ -1,19 +1,17 @@
-#define NUM_TEST_MILLER_RABIN 10
-#define RAD2 1.41421356
+#define NUM_TEST_MILLER_RABIN 10 //numero di test di miller_rabin per vedere se il numero è primo
+#define RAD2 1.41421356 //radice di 2
 //#define THRESOLD_PROBABLE_PRIME 1000000 //per i numeri più piccoli della soglia si vede se sono primi dividendoli per ogni numero minore di essi che risiede nella factor base
 #define THRESOLD_PROBABLE_PRIME 100
-#define THRESOLD_PRINT_ARRAY 1000
-#define THRESOLD_PRINT_MATRIX 1000
-#define THRESOLD_PRINT_LIST 1000
+#define THRESOLD_PRINT_ARRAY 1000//dopo il valore di soglia l'array non viene stampato
+#define THRESOLD_PRINT_MATRIX 1000//dopo il valore di soglia la matrice non viene stampata
+#define THRESOLD_PRINT_LIST 1000 //dopo il valore di soglia la lista non viene stampata
 #define SIQS_MIN_PRIME_POLYNOMIAL 400 //parametri per il calcolo di a
 #define SIQS_MAX_PRIME_POLYNOMIAL 4000 //parametri per il calcolo di a
 #define NUM_ITER_FOR_CALCULATE_A 1000 //parametri per il calcolo di a
-#define THRESOLD_RELATION 0
-#define NUM_THREAD_FACTOR_BASE 8
-#define NUM_THREAD_POLYNOMIAL 0 //numero di thread
-//#define NUM_THREAD_FACTORIZATION 1
-#define S_MAX 11//corrisponde a 2^(S_MAX-1) polinomi diversi
-#define MAX_DIM_SOL 16 //dimensione soluzione massima
+#define NUM_THREAD_FACTOR_BASE 8//numero thread supplementari per costruire factor base
+#define NUM_THREAD_POLYNOMIAL 0 //numero di thread supplementari per calcolare i polinomi di siqs
+#define S_MAX 11//corrisponde a 2^(S_MAX-1) polinomi diversi,limita il numero di polinomi possibili
+#define MAX_DIM_SOL 16 //dimensione soluzione massima del sistema lineare
 #define PERC_INCREMENT_M 50 
 #define PERC_INCREMENT_B 50
 #define MAX_ITER 3000 //iterazioni massime per calcolare a
@@ -119,4 +117,6 @@ void unlock_mtx(pthread_mutex_t *mtx);
 void destroy_mtx(pthread_mutex_t *mtx);
 void free_memory_matrix_unsigned_long(unsigned long **matrix,int num_row,int num_col);
 void free_list_factorization(struct node_factorization*head_factorization);
+int calculate_start_factor_base(int id_thread);
+void check_variable_in_defines();
 #endif

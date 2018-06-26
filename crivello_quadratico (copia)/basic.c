@@ -21,6 +21,19 @@ struct timespec time_start;
 FILE*file_log;
 extern int M;
 extern int cardinality_factor_base;
+extern long B;
+void check_variable_in_defines(){
+    if(NUM_THREAD_FACTOR_BASE<0){
+        handle_error_with_exit("invalid num_thread factor base\n");
+    }
+}
+int calculate_start_factor_base(int id_thread){
+    long remainder=reduce_int_mod_n_v2(B,NUM_THREAD_FACTOR_BASE+1);
+    long length=(B-remainder)/(NUM_THREAD_FACTOR_BASE+1);
+    int start=id_thread*length+1;
+    return start;
+}
+
 void destroy_mtx(pthread_mutex_t *mtx){
 	if(mtx==NULL){
 		handle_error_with_exit("error in destroy_mtx mtx is NULL\n");
