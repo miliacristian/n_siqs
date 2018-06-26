@@ -330,24 +330,7 @@ void set_to_odd_array_mpz_mod_n(mpz_t *array,int length,const mpz_t a){
 	}
 	return;
 }
-char is_prime(const mpz_t num,struct node*head){//verifica se num è coprimo con i numeri primi presenti nella lista dinamica
-	if(num==NULL || mpz_cmp_si(num,1)<=0 || head==NULL){
-		handle_error_with_exit("invalid parameter is_prime\n");
-	}
-	struct node*p=head;
-	if(mpz_cmp_si(num,THRESOLD_PROBABLE_PRIME)>=0){//num >=soglia
-		return mpz_probab_prime_p(num,NUM_TEST_MILLER_RABIN);
-	}
-	else{
-		while(p!=NULL){
-			if(mpz_divisible_p(num,p->prime)!=0){//se num è divisibile per p della factor base
-				return 0;
-			}
-			p=p->next;
-		}
-	}
-	return 1;
-}
+
  long inverse_mod_n(long x,long n){
 	if(x<0){
 		handle_error_with_exit("negative x\n");

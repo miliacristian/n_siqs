@@ -23,12 +23,75 @@ extern int M;
 extern int cardinality_factor_base;
 extern long B;
 void check_variable_in_defines(){
-    if(NUM_THREAD_FACTOR_BASE<0){
-        handle_error_with_exit("invalid num_thread factor base\n");
+    if(NUM_THREAD_FACTOR_BASE){
     }
-    if(NUM_THREAD_POLYNOMIAL<0){
-		handle_error_with_exit("invalid num_thread polynomial\n");
+    if(NUM_THREAD_POLYNOMIAL){
     }
+    if(NUM_TEST_MILLER_RABIN){
+
+    }
+    if(RAD2){
+
+    }
+    if(THRESOLD_PRINT_ARRAY){
+
+    }
+	if(THRESOLD_PRINT_MATRIX){
+	}
+	if(THRESOLD_PRINT_LIST){
+	}
+	if(SIQS_MIN_PRIME_POLYNOMIAL){
+
+	}
+	if(SIQS_MAX_PRIME_POLYNOMIAL){
+
+	}
+	if(NUM_ITER_FOR_CALCULATE_A){
+
+    }
+    if(MAX_ITER){
+
+    }
+	if(MAX_ITER2){
+
+	}
+	if(RATIO_A){
+
+	}
+	if(NUM_THREAD_FACTOR_BASE){
+
+	}
+	if(NUM_THREAD_POLYNOMIAL){
+
+	}
+	if(S_MAX){
+
+	}
+	if(MAX_DIM_SOL){
+
+	}
+	if(PERC_INCREMENT_M){
+
+	}
+	if(PERC_INCREMENT_B){
+
+	}
+	if(MAX_NUM_FOR_DIGIT){
+
+	}
+	if(ENOUGH_RELATION){
+
+	}
+	if(ERROR_LOG){
+
+	}
+	if(THRESOLD_B){
+
+	}
+	if(BIT_OF_UNSIGNED_LONG){
+
+	}
+	return;
 }
 int calculate_start_factor_base(int id_thread){
     long remainder=reduce_int_mod_n_v2(B,NUM_THREAD_FACTOR_BASE+1);

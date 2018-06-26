@@ -1,7 +1,5 @@
 #define NUM_TEST_MILLER_RABIN 10 //numero di test di miller_rabin per vedere se il numero è primo
 #define RAD2 1.41421356 //radice di 2
-//#define THRESOLD_PROBABLE_PRIME 1000000 //per i numeri più piccoli della soglia si vede se sono primi dividendoli per ogni numero minore di essi che risiede nella factor base
-#define THRESOLD_PROBABLE_PRIME 100
 #define THRESOLD_PRINT_ARRAY 1000//dopo il valore di soglia l'array non viene stampato
 #define THRESOLD_PRINT_MATRIX 1000//dopo il valore di soglia la matrice non viene stampata
 #define THRESOLD_PRINT_LIST 1000 //dopo il valore di soglia la lista non viene stampata
