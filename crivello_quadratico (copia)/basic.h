@@ -5,24 +5,29 @@
 #define THRESOLD_PRINT_ARRAY 1000//dopo il valore di soglia l'array non viene stampato
 #define THRESOLD_PRINT_MATRIX 1000//dopo il valore di soglia la matrice non viene stampata
 #define THRESOLD_PRINT_LIST 1000 //dopo il valore di soglia la lista non viene stampata
+
 #define SIQS_MIN_PRIME_POLYNOMIAL 400 //parametri per il calcolo di a
 #define SIQS_MAX_PRIME_POLYNOMIAL 4000 //parametri per il calcolo di a
 #define NUM_ITER_FOR_CALCULATE_A 1000 //parametri per il calcolo di a
+#define MAX_ITER 3000 //iterazioni massime per calcolare a
+#define MAX_ITER2 3000 //iterazioni massime per calcolare a
+#define RATIO_A 0.8//rapporto tra "a" ideale e "a" trovato,se ratio=1 si vuole a trovato molto molto vicino ad a ideale
+
 #define NUM_THREAD_FACTOR_BASE 8//numero thread supplementari per costruire factor base
 #define NUM_THREAD_POLYNOMIAL 0 //numero di thread supplementari per calcolare i polinomi di siqs
 #define S_MAX 11//corrisponde a 2^(S_MAX-1) polinomi diversi,limita il numero di polinomi possibili
 #define MAX_DIM_SOL 16 //dimensione soluzione massima del sistema lineare
-#define PERC_INCREMENT_M 50 
-#define PERC_INCREMENT_B 50
-#define MAX_ITER 3000 //iterazioni massime per calcolare a
-#define MAX_ITER2 3000 //iterazioni massime per calcolare a
+#define PERC_INCREMENT_M 50 //quanto aumenta in percentuale M se non si riesce a fattorizzare n
+#define PERC_INCREMENT_B 50 //quanto aumenta in percentuale B se non si riesce a fattorizzare n
+
 #define MAX_NUM_FOR_DIGIT 1
-#define RATIO_A 0.8//rapporto tra a ideale e a trovato,se ratio=1 si vuole a trovato molto molto vicino ad a ideale
-#define ENOUGH_RELATION 1.00 //numero minore o uguale a 1 indica quante relazioni
-//vanno trovate in più rispetto alla cardinalità della factor base
-#define ERROR_LOG 25//aumentare per trovare più numeri B_smooth potenziali,valore default=25
-#define THRESOLD_B 20000 //se B è minore di thresold b non dividere il processo di creazione factor base
-#define BIT_OF_UNSIGNED_LONG (8*sizeof(unsigned long))
+
+#define ENOUGH_RELATION 1.00 //numero maggiore o uguale a 1 indica quante relazioni
+//vanno trovate in più rispetto alla cardinalità della factor base num_b_smooth>cardinality*enough_relation
+#define ERROR_LOG 25//errore del logaritmo,aumentare per trovare più numeri B_smooth potenziali ma maggior computazione,
+//diminuire per trovare meno numeri B_smooth potenziali ma minor computazione,valore default=25
+#define THRESOLD_B 20000 //se B è minore di thresold b non dividere il processo di creazione factor base in più thread
+#define BIT_OF_UNSIGNED_LONG (8*sizeof(unsigned long))//numero di bit di una variabile unsigned long
 #include <gmp.h>
 #include <time.h>
 #include <stdio.h>
@@ -30,7 +35,7 @@
 #ifndef LINE_H
 #define LINE_H
 
-struct timespec;
+//strutture dati
 struct row_factorization{
     int length;
 	int*prime;//contiene primo factor base e
@@ -56,7 +61,7 @@ struct a_struct {
     int number_prime_a;
     int index_prime_a;
 };
-int compare_a_struct( const void* a, const void* b);
+
 struct number {
 	int j;//indice j va da -M a M
 	int sum_log;//somma del logaritmo
@@ -119,4 +124,5 @@ void free_memory_matrix_unsigned_long(unsigned long **matrix,int num_row,int num
 void free_list_factorization(struct node_factorization*head_factorization);
 int calculate_start_factor_base(int id_thread);
 void check_variable_in_defines();
+int compare_a_struct( const void* a, const void* b);
 #endif

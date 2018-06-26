@@ -569,10 +569,11 @@ int thread_job_criv_quad(int id_thread){//id inizia da 0,il lavoro di un thread 
     print_time_elapsed_local("time to calculate log thresold",&timer_thread);
 
 	while(count<=num_thread_job-2){//ogni thread prende un sottoinsieme di compiti,il thread con id 0 farà i compiti 0,NUM_THREAD,2*NUM_THREAD,il thread 1 farà 1,NUM_THREAD+1,2*NUM_THREAD+1 ecc
-		//fattorizzazione
+		//fattorizzazione,alla fine ogni thread ha una lista di relazioni quadratiche
 		printf("thread=%d\n",count);
 
-		//factorization
+		//fattorizza array di 2m+1 elementi e memorizza la somma dei logaritmi per ogni posizione e
+        // indici last e first che ci dicono il primo elemento divisibile per num e l'ultimo(questo facilita la trial division)
         mpz_set(thread_polynomial_data[id_thread].b,array_bi[count]);//imposta ad ogni ciclo il valore di b
 		factor_matrix_f(n,M,(thread_polynomial_data[id_thread]),cardinality_factor_base,a,array_a_struct,s);//fattorizza una nuova matrice
 		print_time_elapsed_local("time to factor matrix_factorization",&timer_thread);
@@ -581,8 +582,10 @@ int thread_job_criv_quad(int id_thread){//id inizia da 0,il lavoro di un thread 
         find_list_square_relation(thread_polynomial_data[id_thread],&(thread_polynomial_data[id_thread].num_B_smooth),&(thread_polynomial_data[id_thread].num_semi_B_smooth),&(thread_polynomial_data[id_thread].num_potential_B_smooth),M,&head_square,&tail_square,n,a,array_a_struct,s);
 		printf("num_potential_B_smooth=%d,num_B_smooth=%d,num_semi_B_smooth=%d\n",thread_polynomial_data[id_thread].num_potential_B_smooth,thread_polynomial_data[id_thread].num_B_smooth,thread_polynomial_data[id_thread].num_semi_B_smooth);
 		print_time_elapsed_local("time to find_list_square_relation",&timer_thread);
+		//pulisci struttura dati del thread per ricominciare con un altro polinomio
 		clear_struct_thread_data(thread_polynomial_data[id_thread],M);
 		print_time_elapsed_local("time to clear struct thread_data",&timer_thread);
+		//unisci la lista dei quadrati trovata con il polinomio con la lista dei quadrati del thread,alla fine ogni thread ha un unica lista dei quadrati
         union_list_square(&(thread_polynomial_data[id_thread].head),&(thread_polynomial_data[id_thread].tail),head_square,tail_square);
 		head_square=NULL;//resetta la lista locale delle relazioni quadratiche
 		tail_square=NULL;//resetta la lista locale delle relazioni quadratiche
