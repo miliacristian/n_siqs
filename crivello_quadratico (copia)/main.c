@@ -356,6 +356,7 @@ int main(int argc,char*argv[]){
 				num_semi_B_smooth+=thread_polynomial_data[i].num_semi_B_smooth;
 				printf("num_potential_B_smooth=%d,num_B_smooth=%d,num_semi_B_smooth=%d\n",num_potential_B_smooth,num_B_smooth,num_semi_B_smooth);
 			}
+
             print_time_elapsed("time to union all lists");
 			remove_same_num(&head,&tail,&num_B_smooth,&num_semi_B_smooth);
             print_time_elapsed("time to remove same num");
@@ -363,12 +364,13 @@ int main(int argc,char*argv[]){
             fprintf(file_log,"num_pot_B_smooth=%d num_B_smooth=%d ,num_semi_B_smooth=%d ",num_potential_B_smooth,num_B_smooth,num_semi_B_smooth);
             printf("cardinality factor base=%d\n",cardinality_factor_base);
             combine_relation_B_smooth_and_semi_B_smooth(head,tail,&head_residuos,&tail_residuos,n,&num_B_smooth);
+            head=head_residuos;
+            tail=tail_residuos;
             print_time_elapsed("time to combine relation B_smooth");
-            remove_same_square(&head_residuos,&tail_residuos,&num_B_smooth,&num_semi_B_smooth);
+            remove_same_square(&head,&tail,&num_B_smooth,&num_semi_B_smooth);
             print_time_elapsed("time to remove same square");
             printf("num_potential_B_smooth=%d,num_B_smooth=%d,num_semi_B_smooth=%d\n",num_potential_B_smooth,num_B_smooth,num_semi_B_smooth);
-            print_list_square_relation(head_residuos,num_B_smooth);
-            break;
+            print_list_square_relation(head,num_B_smooth);
             if(num_B_smooth<cardinality_factor_base*ENOUGH_RELATION){
                 calculate_news_M_and_B(&M,&B);
 				free_array_thread_data(thread_polynomial_data,NUM_THREAD_POLYNOMIAL+1);
@@ -496,8 +498,9 @@ int main(int argc,char*argv[]){
 			thread_polynomial_data = NULL;
 		}
 		if(head!=NULL) {
-			free_memory_list_square_relation(head_residuos);
-			head_residuos = NULL;
+		    printf("head !=NULL\n");
+			free_memory_list_square_relation(head);
+			head = NULL;
 		}
 
 		mpz_clear(n);

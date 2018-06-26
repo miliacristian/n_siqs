@@ -1408,3 +1408,54 @@ n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 num_pot_B
 mean_increment=0.000000
 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 num_pot_B_smooth=51 num_B_smooth=7 ,num_semi_B_smooth=42 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=355 ns:425576
 mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=313 ns:590891
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=310 ns:402920
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=310 ns:633388
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 num_pot_B_smooth=51 num_B_smooth=7 ,num_semi_B_smooth=42 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=311 ns:421810
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 num_pot_B_smooth=51 num_B_smooth=7 ,num_semi_B_smooth=42 error initialize_linear_system
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 num_pot_B_smooth=51 num_B_smooth=7 ,num_semi_B_smooth=42 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=320 ns:296647
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 num_pot_B_smooth=51 num_B_smooth=7 ,num_semi_B_smooth=42 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=329 ns:556559
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 num_pot_B_smooth=51 num_B_smooth=7 ,num_semi_B_smooth=42 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=328 ns:663290
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 num_pot_B_smooth=51 num_B_smooth=7 ,num_semi_B_smooth=42 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=314 ns:893421
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 num_pot_B_smooth=51 num_B_smooth=7 ,num_semi_B_smooth=42 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=324 ns:877168
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 num_pot_B_smooth=51 num_B_smooth=7 ,num_semi_B_smooth=42 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=310 ns:486246
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 num_pot_B_smooth=51 num_B_smooth=7 ,num_semi_B_smooth=42 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:1 ms=304 ns:419425
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 num_pot_B_smooth=51 num_B_smooth=7 ,num_semi_B_smooth=42 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=325 ns:34859
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 num_pot_B_smooth=51 num_B_smooth=7 ,num_semi_B_smooth=42 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=307 ns:549467
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 num_pot_B_smooth=51 num_B_smooth=7 ,num_semi_B_smooth=42 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=303 ns:93736
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 num_pot_B_smooth=51 num_B_smooth=7 ,num_semi_B_smooth=42 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=321 ns:394669
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 num_pot_B_smooth=51 num_B_smooth=7 ,num_semi_B_smooth=42 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=321 ns:941712
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 num_pot_B_smooth=51 num_B_smooth=7 ,num_semi_B_smooth=42 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=391 ns:116415
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 num_pot_B_smooth=51 num_B_smooth=7 ,num_semi_B_smooth=42 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:1 ms=417 ns:986253
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 num_pot_B_smooth=51 num_B_smooth=7 ,num_semi_B_smooth=42 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=325 ns:819270
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 num_pot_B_smooth=51 num_B_smooth=7 ,num_semi_B_smooth=42 n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 num_pot_B_smooth=51 num_B_smooth=7 ,num_semi_B_smooth=42 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:1 ms=462 ns:532034
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 num_pot_B_smooth=51 num_B_smooth=7 ,num_semi_B_smooth=42 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=308 ns:745955
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 num_pot_B_smooth=51 num_B_smooth=7 ,num_semi_B_smooth=42 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=331 ns:366036
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 num_pot_B_smooth=51 num_B_smooth=7 ,num_semi_B_smooth=42 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=332 ns:153913
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 num_pot_B_smooth=51 num_B_smooth=7 ,num_semi_B_smooth=42 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=333 ns:815261
+mean_increment=0.000000
+n=1100017 M_start=25 B_start=20 k=1 card_f_base=6 p_min=2 p_max=5 a=91 num_pot_B_smooth=51 num_B_smooth=7 ,num_semi_B_smooth=42 dim_sol=7 p=547 q=2011 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=376 ns:409922
+mean_increment=0.000000

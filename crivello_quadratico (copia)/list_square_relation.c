@@ -312,21 +312,21 @@ void combine_relation_B_smooth_and_semi_B_smooth(struct node_square_relation*hea
     }
     struct node_square_relation*head_sort_residuos=NULL;
     struct node_square_relation*tail_sort_residuos=NULL;
-   sort_relation_by_residuos(head,&head_sort_residuos,&tail_sort_residuos);
+    sort_relation_by_residuos(head,&head_sort_residuos,&tail_sort_residuos);
     char not_remove_residuos_one=1;
     struct node_square_relation*p=head_sort_residuos;//p=nodo
-    struct node_square_relation*q=p->next;
-
-    while(p!=NULL && q!=NULL) {
-        while(not_remove_residuos_one && mpz_cmp_si(p->square_relation.residuos,1)==0){//se il residuo è uguale a 1
-            q=p->next;
+    struct node_square_relation*q;
+    while(p!=NULL) {
+        while(p!=NULL && not_remove_residuos_one && mpz_cmp_si(p->square_relation.residuos,1)==0){//se il residuo è uguale a 1
+            gmp_printf("residuo uguale a 1 square=%Zd\n",p->square_relation.square);
             insert_ordered_sort_square_rel(p->square_relation,head_final_list_relation,tail_final_list_relation);
+            q=p->next;
             free(p);
             p=q;
-            q=p->next;
         }
         not_remove_residuos_one=0;
-        while (mpz_cmp(p->square_relation.residuos, q->square_relation.residuos) == 0) {//residui uguali
+        q=p->next;
+        while (p!=NULL && q!=NULL && mpz_cmp(p->square_relation.residuos, q->square_relation.residuos) == 0) {//residui uguali
             gmp_printf("residui uguali a %Zd\n", p->square_relation.residuos);
             (*num_B_smooth)++;
             struct square_relation new_square_relation=create_relation_large_prime(p->square_relation,q->square_relation,n);
@@ -340,7 +340,6 @@ void combine_relation_B_smooth_and_semi_B_smooth(struct node_square_relation*hea
         free_list_factorization(p->square_relation.head_factorization);
         free(p);
         p=q;
-        q=p->next;
     }
     return;
 }

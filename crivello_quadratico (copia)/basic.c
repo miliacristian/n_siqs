@@ -98,8 +98,6 @@ void free_memory_list_square_relation(struct node_square_relation*head){
         free(p);
         p=q;
     }
-
-
     return;
 }
 
