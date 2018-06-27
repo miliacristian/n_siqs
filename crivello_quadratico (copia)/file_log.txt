@@ -2704,3 +2704,32 @@ n=14 M_start=25 B_start=20 p=2 q=7 M_end=25 B_end=12 num_increment=0 time_total:
 n=14 M_start=25 B_start=20 p=2 q=7 M_end=25 B_end=12 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:28040
 n=14 M_start=25 B_start=20 p=2 q=7 M_end=25 B_end=12 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:26370
 n=21 M_start=25 B_start=20 k=1 card_f_base=4 p_min=2 p_max=3 a=0 num_pot_B_smooth=51 num_B_smooth=6 ,num_semi_B_smooth=16 error in sort square list by residuos
+n=4 M_start=25 B_start=20 p=2 q=2 M_end=25 B_end=2 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:591414
+n=4 M_start=25 B_start=20 p=2 q=2 M_end=25 B_end=2 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:62100
+n=6 M_start=25 B_start=20 p=2 q=3 M_end=25 B_end=4 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:62640
+n=10 M_start=25 B_start=20 p=2 q=5 M_end=25 B_end=8 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:66210
+n=10 M_start=25 B_start=20 p=2 q=5 M_end=25 B_end=8 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:65374
+n=10 M_start=25 B_start=20 p=2 q=5 M_end=25 B_end=8 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:56699
+n=14 M_start=25 B_start=20 p=2 q=7 M_end=25 B_end=12 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:57402
+n=14 M_start=25 B_start=20 p=2 q=7 M_end=25 B_end=12 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:60167
+n=14 M_start=25 B_start=20 p=2 q=7 M_end=25 B_end=12 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:62068
+n=14 M_start=25 B_start=20 p=2 q=7 M_end=25 B_end=12 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:65477
+n=21 M_start=25 B_start=20 k=1 card_f_base=4 p_min=2 p_max=3 a=0 num_pot_B_smooth=51 num_B_smooth=6 ,num_semi_B_smooth=16 error in sort square list by num
+n=21 M_start=25 B_start=20 k=1 card_f_base=4 p_min=2 p_max=3 a=0 num_pot_B_smooth=51 num_B_smooth=6 ,num_semi_B_smooth=16 error in sort square list by num
+n=21 M_start=25 B_start=20 k=1 card_f_base=4 p_min=2 p_max=3 a=0 num_pot_B_smooth=51 num_B_smooth=6 ,num_semi_B_smooth=16 error in sort square list by num
+n=21 M_start=25 B_start=20 k=1 card_f_base=4 p_min=2 p_max=3 a=0 num_pot_B_smooth=51 num_B_smooth=6 ,num_semi_B_smooth=16 error in sort square list by num
+n=21 M_start=25 B_start=20 k=1 card_f_base=4 p_min=2 p_max=3 a=0 num_pot_B_smooth=51 num_B_smooth=6 ,num_semi_B_smooth=16 error in sort square list by num
+n=21 M_start=25 B_start=20 k=1 card_f_base=4 p_min=2 p_max=3 a=0 num_pot_B_smooth=51 num_B_smooth=6 ,num_semi_B_smooth=16 error in insert_ordered
+n=21 M_start=25 B_start=20 k=1 card_f_base=4 p_min=2 p_max=3 a=0 num_pot_B_smooth=51 num_B_smooth=6 ,num_semi_B_smooth=16 error in insert_ordered
+n=21 M_start=25 B_start=20 k=1 card_f_base=4 p_min=2 p_max=3 a=0 num_pot_B_smooth=51 num_B_smooth=6 ,num_semi_B_smooth=16 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=1 ns:371886
+mean_increment=0.000000
+n=21 M_start=25 B_start=20 k=1 card_f_base=4 p_min=2 p_max=3 a=0 num_pot_B_smooth=51 num_B_smooth=6 ,num_semi_B_smooth=16 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=276 ns:847092
+mean_increment=0.000000
+n=21 M_start=25 B_start=20 k=1 card_f_base=4 p_min=2 p_max=3 a=0 num_pot_B_smooth=51 num_B_smooth=6 ,num_semi_B_smooth=16 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=275 ns:285949
+mean_increment=0.000000
+n=21 M_start=25 B_start=20 k=1 card_f_base=4 p_min=2 p_max=3 a=0 num_pot_B_smooth=51 num_B_smooth=6 ,num_semi_B_smooth=16 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:1 ms=174 ns:964017
+mean_increment=0.000000
+n=21 M_start=25 B_start=20 k=1 card_f_base=4 p_min=2 p_max=3 a=0 num_pot_B_smooth=51 num_B_smooth=6 ,num_semi_B_smooth=16 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:1 ms=246 ns:584287
+mean_increment=0.000000
+n=21 M_start=25 B_start=20 k=1 card_f_base=4 p_min=2 p_max=3 a=0 num_pot_B_smooth=51 num_B_smooth=6 ,num_semi_B_smooth=16 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=291 ns:71290
+mean_increment=0.000000

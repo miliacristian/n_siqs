@@ -331,7 +331,7 @@ int main(int argc,char*argv[]){
 			//trova relazioni quadratiche o semi_B_smooth e ordinale per numero
 			find_list_square_relation(thread_polynomial_data[NUM_THREAD_POLYNOMIAL],&num_B_smooth,&num_semi_B_smooth,&num_potential_B_smooth,M,&head,&tail,n,a_default,NULL,0);
 			print_time_elapsed("time_to find_list_square_relation main thread");
-
+            print_list_square_relation(head,num_B_smooth);
 			//aspetta tutti i thread e libera memoria
 			if(num_thread_job!=1 && NUM_THREAD_POLYNOMIAL>0){
 				join_all_threads(array_tid,NUM_THREAD_POLYNOMIAL);//aspetta tutti i thread
@@ -388,16 +388,21 @@ int main(int argc,char*argv[]){
             printf("cardinality factor base=%d\n",cardinality_factor_base);
 
             //trova nuove relazioni quadratiche con un nuovo square,una nuova fattorizazzione e imposta num=0
-            combine_relation_B_smooth_and_semi_B_smooth(head,tail,&head_temp,&tail_temp,n,&num_B_smooth);
+            factorizations_founded=combine_relation_B_smooth_and_semi_B_smooth(head,tail,&head_temp,&tail_temp,n,&num_B_smooth);
             //riassegna la lista delle relazioni quadratiche a head e tail
             head=head_temp;
             tail=tail_temp;
+            if(factorizations_founded==1){
+            	break;
+            }
+            print_time_elapsed("time to combine relation B_smooth");
             //la lista ora è ordinata per square
+            print_list_square_relation(head,num_B_smooth);
             printf("verify sorted square list\n");
             if(verify_sorted_square_rel_list(head)==0){
                 handle_error_with_exit("error in sorted list by square\n");
             }
-            print_time_elapsed("time to combine relation B_smooth");
+
 
             //rimuovi gli square uguali e ordina la lista per num
             printf("remove same square\n");
