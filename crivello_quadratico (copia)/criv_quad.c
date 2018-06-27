@@ -217,14 +217,19 @@ void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B){
 		*B=3540;
 		return;
 	}
-    if(digit_n<41){
+    if(digit_n<41){//46 cifre con questi parametri 8 secondi ,50 cifre con questi parametri 39 sec
         *M=22512;
         *B=3540;
         return;
     }
-	if(digit_n>=41){
-		*M=22512;
-		*B=10000;
+    if(digit_n<51){
+        *M=25512;
+        *B=4000;
+        return;
+    }
+	if(digit_n>=51){
+		*M=25512;
+		*B=4000;
 		return;
 	}
 	handle_error_with_exit("num_too long\n");
