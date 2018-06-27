@@ -51,6 +51,7 @@ void remove_after_node_square_rel(struct node_square_relation**ppos,struct node_
         *tail=r->prev;
         mpz_clear(r->square_relation.num);
         mpz_clear(r->square_relation.square);
+        mpz_clear(r->square_relation.residuos);
         free_memory_list_factor((r)->square_relation.head_factorization);
         free(r);
         r=NULL;
@@ -60,6 +61,7 @@ void remove_after_node_square_rel(struct node_square_relation**ppos,struct node_
         *ppos = r->next;
         mpz_clear(r->square_relation.num);
         mpz_clear(r->square_relation.square);
+        mpz_clear(r->square_relation.residuos);
         free_memory_list_factor((r)->square_relation.head_factorization);
         free(r);
         r=NULL;
