@@ -239,6 +239,17 @@ void sort_relation_by_residuos(struct node_square_relation*head,struct node_squa
     }
     return;
 }
+void sort_relation_by_num(struct node_square_relation*head,struct node_square_relation**head_sort_residuos,struct node_square_relation**tail_sort_residuos){
+    struct node_square_relation*p=head;
+    struct node_square_relation*q;
+    while(p!=NULL) {
+        q = p->next;
+        insert_ordered_num_square_rel(p->square_relation, head_sort_residuos, tail_sort_residuos);
+        free(p);
+        p = q;
+    }
+    return;
+}
 struct square_relation create_relation_large_prime(struct square_relation rel1,struct square_relation rel2,mpz_t n){
     struct square_relation new_relation;
     int number,exp_of_number,index;

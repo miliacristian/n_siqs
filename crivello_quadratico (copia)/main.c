@@ -398,8 +398,12 @@ int main(int argc,char*argv[]){
             }
             print_time_elapsed("time to combine relation B_smooth");
 
-            //rimuovi gli square uguali e ordina la lista
-            remove_same_square_and_sort_by_num(head,tail,&head_temp,&tail_temp,&num_B_smooth,&num_semi_B_smooth);
+            //rimuovi gli square uguali e ordina la lista per num
+            remove_same_square(&head,&tail,&num_B_smooth,&num_semi_B_smooth);
+            sort_relation_by_num(head,&head_temp,&tail_temp);
+            if(verify_sorted_residuos_square_rel_list(head)==0){
+                handle_error_with_exit("error in sort square list by residuos\n");
+            }
             head=head_temp;
             tail=tail_temp;
             print_time_elapsed("time to remove same square");
