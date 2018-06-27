@@ -10,7 +10,7 @@
 #include <unistd.h>
 char verify_sorted_num_square_rel_list(struct node_square_relation*head){
     if(head==NULL){
-        handle_error_with_exit("error in verify sorted num square list\n");
+        return 1;
     }
     struct node_square_relation*p=head;
     while(p!=NULL && p->next!=NULL) {
@@ -23,7 +23,7 @@ char verify_sorted_num_square_rel_list(struct node_square_relation*head){
 }
 char verify_sorted_residuos_square_rel_list(struct node_square_relation*head){
     if(head==NULL){
-        handle_error_with_exit("error in verify sorted num square list\n");
+        return 1;
     }
     struct node_square_relation*p=head;
     while(p!=NULL && p->next!=NULL) {
@@ -36,7 +36,7 @@ char verify_sorted_residuos_square_rel_list(struct node_square_relation*head){
 }
 char verify_sorted_square_rel_list(struct node_square_relation*head){
     if(head==NULL){
-        handle_error_with_exit("error in verify sorted num square list\n");
+        return 1;
     }
     struct node_square_relation*p=head;
     while(p!=NULL && p->next!=NULL) {

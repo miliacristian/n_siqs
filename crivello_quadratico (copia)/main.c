@@ -81,7 +81,7 @@ int main(int argc,char*argv[]){
         int last_prime_factor_base=1;//indica l'ultimo primo della factor base,e quindi da quale primo si inizia a creare la factor base se una factor base è già esistente
                 //se last_prime==1 allora si aggiungono alla factor base anche -1 e 2
         char factor_base_already_exist=0;//indica se la factor base è già esistente oppure no
-        int start=0;
+        int start=0,number_cycle=0;
 		k=1;//moltiplicatore di n
 
 		//mpz_init
@@ -155,8 +155,8 @@ int main(int argc,char*argv[]){
 		while(factorizations_founded<=0){//finquando non sono stati trovati fattori:
 		    // calcola a=p1*p2*...ps,unisci le relazioni quadratiche vedi se puoi calcolare il sistema lineare,
             // trova souzioni sistema lineare e trova tutti gli a,b del crivello quadratico
-			printf("inizio ciclo\n");
-
+			printf("inizio ciclo numero %d\n",number_cycle);
+            gmp_printf("n=%Zd,digit=%d\n",n,digit);//stampa n e numero cifre
 			adjust_n(n,&k);//aggiusta n per calcolare i suoi fattori(divide n per k)
 			multiply_n_for_k(n,&k,&factorized);//k,moltiplicatore di n per renderlo un quadrato modulo 8
 			print_time_elapsed("time to adjust & multiply n for k");
@@ -329,9 +329,12 @@ int main(int argc,char*argv[]){
 			printf("log_thresold main thread=%f\n",thread_polynomial_data[NUM_THREAD_POLYNOMIAL].log_thresold);
 
 			//trova relazioni quadratiche o semi_B_smooth e ordinale per numero
+            printf("lista relazioni quadratiche attuale:\n");
+            print_list_square_relation(head,num_B_smooth);
+            printf("numeri B_smooth=%d\n",num_B_smooth);
 			find_list_square_relation(thread_polynomial_data[NUM_THREAD_POLYNOMIAL],&num_B_smooth,&num_semi_B_smooth,&num_potential_B_smooth,M,&head,&tail,n,a_default,NULL,0);
 			print_time_elapsed("time_to find_list_square_relation main thread");
-            print_list_square_relation(head,num_B_smooth);
+            //print_list_square_relation(head,num_B_smooth);
 			//aspetta tutti i thread e libera memoria
 			if(num_thread_job!=1 && NUM_THREAD_POLYNOMIAL>0){
 				join_all_threads(array_tid,NUM_THREAD_POLYNOMIAL);//aspetta tutti i thread
@@ -398,7 +401,7 @@ int main(int argc,char*argv[]){
             }
             print_time_elapsed("time to combine relation B_smooth");
             //la lista ora è ordinata per square
-            print_list_square_relation(head,num_B_smooth);
+            //print_list_square_relation(head,num_B_smooth);
             if(verify_sorted_square_rel_list(head)==0){
                 handle_error_with_exit("error in sorted list by square\n");
             }
@@ -406,19 +409,19 @@ int main(int argc,char*argv[]){
             //rimuovi gli square uguali e ordina la lista per num
             remove_same_square(&head,&tail,&num_B_smooth,&num_semi_B_smooth);
             print_time_elapsed("time to remove same square");
-            print_list_square_relation(head,num_B_smooth);
+           // print_list_square_relation(head,num_B_smooth);
             sort_relation_by_num(head,&head_temp,&tail_temp);
             print_time_elapsed("time to sort relation by num");
             head=head_temp;
             tail=tail_temp;
             head_temp=NULL;
             tail_temp=NULL;
-            print_list_square_relation(head,num_B_smooth);
+            //print_list_square_relation(head,num_B_smooth);
             if(verify_sorted_num_square_rel_list(head)==0){
                 handle_error_with_exit("error in sort list by num\n");
             }
             printf("num_potential_B_smooth=%d,num_B_smooth=%d,num_semi_B_smooth=%d\n",num_potential_B_smooth,num_B_smooth,num_semi_B_smooth);
-            print_list_square_relation(head,num_B_smooth);
+            //print_list_square_relation(head,num_B_smooth);
 
             //verifica che il numero di relazioni trovate è sufficiente
             if(num_B_smooth<cardinality_factor_base*ENOUGH_RELATION){
@@ -442,6 +445,7 @@ int main(int argc,char*argv[]){
 					free_array_thread_data(thread_polynomial_data, NUM_THREAD_POLYNOMIAL + 1);
 					thread_polynomial_data = NULL;
 				}
+				number_cycle++;
                 continue;
             }
 
@@ -481,6 +485,7 @@ int main(int argc,char*argv[]){
 					free_array_thread_data(thread_polynomial_data, NUM_THREAD_POLYNOMIAL + 1);
 					thread_polynomial_data = NULL;
 				}
+				number_cycle++;
 				continue;
 			}
 			if(check_if_matrix_is_reduce_mod_n(base_matrix,num_B_smooth,dim_sol,2)==0){
@@ -521,6 +526,7 @@ int main(int argc,char*argv[]){
 					free_array_thread_data(thread_polynomial_data, NUM_THREAD_POLYNOMIAL + 1);
 					thread_polynomial_data = NULL;
 				}
+				number_cycle++;
                 continue;
 			}
 		}
