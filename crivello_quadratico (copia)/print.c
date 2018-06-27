@@ -299,7 +299,7 @@ void print_list_square_relation(struct node_square_relation*head,int length){
     }
     struct node_square_relation*p=head;
     while(p!=NULL){
-        gmp_printf("square=%Zd,residuos=%Zd\n",p->square_relation.square,p->square_relation.residuos);
+        gmp_printf("square=%Zd,residuos=%Zd,",p->square_relation.square,p->square_relation.residuos);
         print_factorization(p->square_relation.num,p->square_relation.head_factorization);
         p=p->next;
     }
