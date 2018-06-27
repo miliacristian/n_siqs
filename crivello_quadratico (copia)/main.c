@@ -77,7 +77,7 @@ int main(int argc,char*argv[]){
 		int factorizations_founded=-1;//numero di fattorizazzioni trovate
 		char factorized=0;//indica se il numero è stato fattorizzato o no
 		char digit=-1;//numero cifre di n
-		struct node_square_relation*head=NULL,*tail=NULL,*head_residuos=NULL,*tail_residuos=NULL;//contengono tutte le relazioni quadratiche
+		struct node_square_relation*head=NULL,*tail=NULL,*head_temp=NULL,*tail_temp=NULL;//contengono tutte le relazioni quadratiche
         int last_prime_factor_base=1;//indica l'ultimo primo della factor base,e quindi da quale primo si inizia a creare la factor base se una factor base è già esistente
                 //se last_prime==1 allora si aggiungono alla factor base anche -1 e 2
         char factor_base_already_exist=0;//indica se la factor base è già esistente oppure no
@@ -322,13 +322,13 @@ int main(int argc,char*argv[]){
             printf("main thread\n");
 			factor_matrix_f(n,M,(thread_polynomial_data[NUM_THREAD_POLYNOMIAL]),cardinality_factor_base,a_default,array_a_struct,s);//fattorizza numeri
 			print_time_elapsed("time_to_factor matrix_factorization main thread");
-			print_thread_data(thread_polynomial_data[NUM_THREAD_POLYNOMIAL],M);
+			//print_thread_data(thread_polynomial_data[NUM_THREAD_POLYNOMIAL],M);
 
 			//log_thresold main thread
 			thread_polynomial_data[NUM_THREAD_POLYNOMIAL].log_thresold=calculate_log_thresold(n,M);
 			printf("log_thresold main thread=%f\n",thread_polynomial_data[NUM_THREAD_POLYNOMIAL].log_thresold);
 
-			//trova relazioni quadratiche o semi_B_smooth
+			//trova relazioni quadratiche o semi_B_smooth e ordinale per numero
 			find_list_square_relation(thread_polynomial_data[NUM_THREAD_POLYNOMIAL],&num_B_smooth,&num_semi_B_smooth,&num_potential_B_smooth,M,&head,&tail,n,a_default,NULL,0);
 			print_time_elapsed("time_to find_list_square_relation main thread");
 
@@ -364,31 +364,44 @@ int main(int argc,char*argv[]){
 			print_time_elapsed("time to wait all threads");
 			printf("num_potential_B_smooth_main_thread=%d,num_B_smooth_main_thread=%d,num_semi_B_smooth main thread=%d\n",
                    num_potential_B_smooth,num_B_smooth,num_semi_B_smooth);
+
 			for(int i=0;i<NUM_THREAD_POLYNOMIAL;i++){//metti tutte le relazioni in head e tail,somma tutti i numeri B_smooth e semi_B_smooth
-				union_list_square(&head,&tail,
+				//le liste vengono unite in modo tale che quella finale è ordinata per numero
+			    union_list_square(&head,&tail,
 								  thread_polynomial_data[i].head,thread_polynomial_data[i].tail);
 				num_B_smooth+=thread_polynomial_data[i].num_B_smooth;
 				num_potential_B_smooth+=thread_polynomial_data[i].num_potential_B_smooth;
 				num_semi_B_smooth+=thread_polynomial_data[i].num_semi_B_smooth;
 				printf("num_potential_B_smooth=%d,num_B_smooth=%d,num_semi_B_smooth=%d\n",num_potential_B_smooth,num_B_smooth,num_semi_B_smooth);
 			}
-
+            if(verify_sorted_num_square_rel_list(head)==0){
+			    handle_error_with_exit("error in sorted list by num\n");
+			}
             print_time_elapsed("time to union all lists");
 			remove_same_num(&head,&tail,&num_B_smooth,&num_semi_B_smooth);//rimuovi relazioni con lo stesso numero(diverso da zero)
             print_time_elapsed("time to remove same num");
-			printf("num_potential_B_smooth=%d,num_B_smooth=%d,num_semi_B_smooth=%d\n",num_potential_B_smooth,num_B_smooth,num_semi_B_smooth);
+            if(verify_sorted_num_square_rel_list(head)==0){
+                handle_error_with_exit("error in sorted list by num\n");
+            }
+            printf("num_potential_B_smooth=%d,num_B_smooth=%d,num_semi_B_smooth=%d\n",num_potential_B_smooth,num_B_smooth,num_semi_B_smooth);
             fprintf(file_log,"num_pot_B_smooth=%d num_B_smooth=%d ,num_semi_B_smooth=%d ",num_potential_B_smooth,num_B_smooth,num_semi_B_smooth);
             printf("cardinality factor base=%d\n",cardinality_factor_base);
 
-            //trova nuove relazioni quadratiche con un nuovo square,una nuova fattorizazzione e num=0
-            combine_relation_B_smooth_and_semi_B_smooth(head,tail,&head_residuos,&tail_residuos,n,&num_B_smooth);
+            //trova nuove relazioni quadratiche con un nuovo square,una nuova fattorizazzione e imposta num=0
+            combine_relation_B_smooth_and_semi_B_smooth(head,tail,&head_temp,&tail_temp,n,&num_B_smooth);
             //riassegna la lista delle relazioni quadratiche a head e tail
-            head=head_residuos;
-            tail=tail_residuos;
+            head=head_temp;
+            tail=tail_temp;
+            //la lista ora è ordinata per square
+            if(verify_sorted_square_rel_list(head)==0){
+                handle_error_with_exit("error in sorted list by square\n");
+            }
             print_time_elapsed("time to combine relation B_smooth");
 
-            //rimuovi i quadrati uguali
-            remove_same_square(&head,&tail,&num_B_smooth,&num_semi_B_smooth);
+            //rimuovi gli square uguali e ordina la lista
+            remove_same_square_and_sort_by_num(head,tail,&head_temp,&tail_temp,&num_B_smooth,&num_semi_B_smooth);
+            head=head_temp;
+            tail=tail_temp;
             print_time_elapsed("time to remove same square");
             printf("num_potential_B_smooth=%d,num_B_smooth=%d,num_semi_B_smooth=%d\n",num_potential_B_smooth,num_B_smooth,num_semi_B_smooth);
             print_list_square_relation(head,num_B_smooth);
@@ -592,7 +605,7 @@ int thread_job_criv_quad(int id_thread){//id inizia da 0,il lavoro di un thread 
         mpz_set(thread_polynomial_data[id_thread].b,array_bi[count]);//imposta ad ogni ciclo il valore di b
 		factor_matrix_f(n,M,(thread_polynomial_data[id_thread]),cardinality_factor_base,a,array_a_struct,s);//fattorizza una nuova matrice
 		print_time_elapsed_local("time to factor matrix_factorization",&timer_thread);
-        print_thread_data(thread_polynomial_data[id_thread],M);
+        //print_thread_data(thread_polynomial_data[id_thread],M);
 
 		//ricerca dei B_smooth potenziali,reali e fattorizzazione dei B_smooth reali
         find_list_square_relation(thread_polynomial_data[id_thread],&(thread_polynomial_data[id_thread].num_B_smooth),&(thread_polynomial_data[id_thread].num_semi_B_smooth),&(thread_polynomial_data[id_thread].num_potential_B_smooth),M,&head_square,&tail_square,n,a,array_a_struct,s);
