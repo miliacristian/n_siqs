@@ -58,7 +58,6 @@ int main(int argc,char*argv[]){
 		handle_error_with_exit("usage<path>\n");
 	}
 	check_variable_in_defines();
-
 	FILE*file_number=open_file(argv[1]);//apri file in cui risiede il numero n da fattorizzare
 	double mean_increment_M_and_B=0;
 	for(int i=0;i<NUM_OF_N_TO_FACTORIZE;i++){
@@ -577,7 +576,6 @@ int thread_job_criv_quad(int id_thread){//id inizia da 0,il lavoro di un thread 
     struct timespec timer_thread;//istante di tempo
 	int count=id_thread;//indica quale polinomio deve usare per fare il crivello quadratico
     struct node_square_relation*head_square=NULL,*tail_square=NULL;
-
     //gettime
     gettime(&timer_thread);
     thread_polynomial_data[id_thread].log_thresold=calculate_log_thresold(n,M);
@@ -585,7 +583,6 @@ int thread_job_criv_quad(int id_thread){//id inizia da 0,il lavoro di un thread 
     //log_thresold
     printf("log_thresold=%f\n",thread_polynomial_data[id_thread].log_thresold);
     print_time_elapsed_local("time to calculate log thresold",&timer_thread);
-
 	while(count<=num_thread_job-2){//ogni thread prende un sottoinsieme di compiti,il thread con id 0 farà i compiti 0,NUM_THREAD,2*NUM_THREAD,il thread 1 farà 1,NUM_THREAD+1,2*NUM_THREAD+1 ecc
 		//fattorizzazione,alla fine ogni thread ha una lista di relazioni quadratiche
 		printf("thread=%d\n",count);

@@ -1,158 +1,158 @@
-==4610== Memcheck, a memory error detector
-==4610== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==4610== Using Valgrind-3.13.0 and LibVEX; rerun with -h for copyright info
-==4610== Command: ./criv_quad biprime.txt
-==4610== Parent PID: 4609
-==4610== 
---4610-- 
---4610-- Valgrind options:
---4610--    --leak-check=full
---4610--    --show-leak-kinds=all
---4610--    --track-origins=yes
---4610--    --verbose
---4610--    --log-file=valgrind-out.txt
---4610-- Contents of /proc/version:
---4610--   Linux version 4.15.0-24-generic (buildd@lgw01-amd64-056) (gcc version 7.3.0 (Ubuntu 7.3.0-16ubuntu3)) #26-Ubuntu SMP Wed Jun 13 08:44:47 UTC 2018
---4610-- 
---4610-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-avx-avx2-bmi
---4610-- Page sizes: currently 4096, max supported 4096
---4610-- Valgrind library directory: /usr/lib/valgrind
---4610-- Reading syms from /home/cristian/Scrivania/crivello_quadratico (copia)1/crivello_quadratico (copia)/criv_quad
---4610-- Reading syms from /lib/x86_64-linux-gnu/ld-2.27.so
---4610--   Considering /lib/x86_64-linux-gnu/ld-2.27.so ..
---4610--   .. CRC mismatch (computed 1b7c895e wanted 2943108a)
---4610--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/ld-2.27.so ..
---4610--   .. CRC is valid
---4610-- Reading syms from /usr/lib/valgrind/memcheck-amd64-linux
---4610--   Considering /usr/lib/valgrind/memcheck-amd64-linux ..
---4610--   .. CRC mismatch (computed 62965bbf wanted eeb84137)
---4610--    object doesn't have a symbol table
---4610--    object doesn't have a dynamic symbol table
---4610-- Scheduler: using generic scheduler lock implementation.
---4610-- Reading suppressions file: /usr/lib/valgrind/default.supp
-==4610== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-4610-by-cristian-on-???
-==4610== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-4610-by-cristian-on-???
-==4610== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-4610-by-cristian-on-???
-==4610== 
-==4610== TO CONTROL THIS PROCESS USING vgdb (which you probably
-==4610== don't want to do, unless you know exactly what you're doing,
-==4610== or are doing some strange experiment):
-==4610==   /usr/lib/valgrind/../../bin/vgdb --pid=4610 ...command...
-==4610== 
-==4610== TO DEBUG THIS PROCESS USING GDB: start GDB like this
-==4610==   /path/to/gdb ./criv_quad
-==4610== and then give GDB the following command
-==4610==   target remote | /usr/lib/valgrind/../../bin/vgdb --pid=4610
-==4610== --pid is optional if only one valgrind process is running
-==4610== 
---4610-- REDIR: 0x401f2f0 (ld-linux-x86-64.so.2:strlen) redirected to 0x58060901 (???)
---4610-- REDIR: 0x401f0d0 (ld-linux-x86-64.so.2:index) redirected to 0x5806091b (???)
---4610-- Reading syms from /usr/lib/valgrind/vgpreload_core-amd64-linux.so
---4610--   Considering /usr/lib/valgrind/vgpreload_core-amd64-linux.so ..
---4610--   .. CRC mismatch (computed 13d5e98a wanted 1786ecf1)
---4610--    object doesn't have a symbol table
---4610-- Reading syms from /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so
---4610--   Considering /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so ..
---4610--   .. CRC mismatch (computed 8f77ef36 wanted fcbde737)
---4610--    object doesn't have a symbol table
-==4610== WARNING: new redirection conflicts with existing -- ignoring it
---4610--     old: 0x0401f2f0 (strlen              ) R-> (0000.0) 0x58060901 ???
---4610--     new: 0x0401f2f0 (strlen              ) R-> (2007.0) 0x04c32db0 strlen
---4610-- REDIR: 0x401d360 (ld-linux-x86-64.so.2:strcmp) redirected to 0x4c33ee0 (strcmp)
---4610-- REDIR: 0x401f830 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x4c374f0 (mempcpy)
---4610-- Reading syms from /usr/local/lib/libmpfr.so.6.0.1
---4610-- Reading syms from /lib/x86_64-linux-gnu/libm-2.27.so
---4610--   Considering /lib/x86_64-linux-gnu/libm-2.27.so ..
---4610--   .. CRC mismatch (computed 7feae033 wanted b29b2508)
---4610--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/libm-2.27.so ..
---4610--   .. CRC is valid
---4610-- Reading syms from /usr/local/lib/libgmp.so.10.3.2
---4610-- Reading syms from /lib/x86_64-linux-gnu/librt-2.27.so
---4610--   Considering /lib/x86_64-linux-gnu/librt-2.27.so ..
---4610--   .. CRC mismatch (computed 16979484 wanted f9e041e3)
---4610--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/librt-2.27.so ..
---4610--   .. CRC is valid
---4610-- Reading syms from /lib/x86_64-linux-gnu/libpthread-2.27.so
---4610--   Considering /usr/lib/debug/.build-id/28/c6aade70b2d40d1f0f3d0a1a0cad1ab816448f.debug ..
---4610--   .. build-id is valid
---4610-- Reading syms from /lib/x86_64-linux-gnu/libc-2.27.so
---4610--   Considering /lib/x86_64-linux-gnu/libc-2.27.so ..
---4610--   .. CRC mismatch (computed b1c74187 wanted 042cc048)
---4610--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/libc-2.27.so ..
---4610--   .. CRC is valid
---4610-- REDIR: 0x5b90c70 (libc.so.6:memmove) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---4610-- REDIR: 0x5b8fd40 (libc.so.6:strncpy) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---4610-- REDIR: 0x5b90f50 (libc.so.6:strcasecmp) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---4610-- REDIR: 0x5b8f790 (libc.so.6:strcat) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---4610-- REDIR: 0x5b8fd70 (libc.so.6:rindex) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---4610-- REDIR: 0x5b927c0 (libc.so.6:rawmemchr) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---4610-- REDIR: 0x5b90de0 (libc.so.6:mempcpy) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---4610-- REDIR: 0x5b90c10 (libc.so.6:bcmp) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---4610-- REDIR: 0x5b8fd00 (libc.so.6:strncmp) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---4610-- REDIR: 0x5b8f800 (libc.so.6:strcmp) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---4610-- REDIR: 0x5b90d40 (libc.so.6:memset) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---4610-- REDIR: 0x5bae0f0 (libc.so.6:wcschr) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---4610-- REDIR: 0x5b8fca0 (libc.so.6:strnlen) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---4610-- REDIR: 0x5b8f870 (libc.so.6:strcspn) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---4610-- REDIR: 0x5b90fa0 (libc.so.6:strncasecmp) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---4610-- REDIR: 0x5b8f840 (libc.so.6:strcpy) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---4610-- REDIR: 0x5b910e0 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---4610-- REDIR: 0x5b8fda0 (libc.so.6:strpbrk) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---4610-- REDIR: 0x5b8f7c0 (libc.so.6:index) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---4610-- REDIR: 0x5b8fc70 (libc.so.6:strlen) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---4610-- REDIR: 0x5b9a6c0 (libc.so.6:memrchr) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---4610-- REDIR: 0x5b90ff0 (libc.so.6:strcasecmp_l) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---4610-- REDIR: 0x5b90be0 (libc.so.6:memchr) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---4610-- REDIR: 0x5baeeb0 (libc.so.6:wcslen) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---4610-- REDIR: 0x5b90050 (libc.so.6:strspn) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---4610-- REDIR: 0x5b90f20 (libc.so.6:stpncpy) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---4610-- REDIR: 0x5b90ef0 (libc.so.6:stpcpy) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---4610-- REDIR: 0x5b927f0 (libc.so.6:strchrnul) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---4610-- REDIR: 0x5b91040 (libc.so.6:strncasecmp_l) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---4610-- REDIR: 0x5c803c0 (libc.so.6:__strrchr_avx2) redirected to 0x4c32730 (rindex)
---4610-- REDIR: 0x5b89070 (libc.so.6:malloc) redirected to 0x4c2faa0 (malloc)
---4610-- REDIR: 0x5b90590 (libc.so.6:__GI_strstr) redirected to 0x4c37760 (__strstr_sse2)
---4610-- REDIR: 0x5b8ac30 (libc.so.6:realloc) redirected to 0x4c31cb0 (realloc)
---4610-- REDIR: 0x5b89950 (libc.so.6:free) redirected to 0x4c30cd0 (free)
---4610-- REDIR: 0x5c80590 (libc.so.6:__strlen_avx2) redirected to 0x4c32cf0 (strlen)
---4610-- REDIR: 0x5c80ad0 (libc.so.6:__memcpy_avx_unaligned_erms) redirected to 0x4c366e0 (memmove)
---4610-- REDIR: 0x5c7ffa0 (libc.so.6:__strchr_avx2) redirected to 0x4c32950 (index)
---4610-- REDIR: 0x5c801d0 (libc.so.6:__strchrnul_avx2) redirected to 0x4c37020 (strchrnul)
---4610-- REDIR: 0x5c80ab0 (libc.so.6:__mempcpy_avx_unaligned_erms) redirected to 0x4c37130 (mempcpy)
---4610-- REDIR: 0x5c80f50 (libc.so.6:__memset_avx2_unaligned_erms) redirected to 0x4c365d0 (memset)
---4610-- REDIR: 0x5b8c030 (libc.so.6:calloc) redirected to 0x4c31a70 (calloc)
-==4610== 
-==4610== HEAP SUMMARY:
-==4610==     in use at exit: 48 bytes in 6 blocks
-==4610==   total heap usage: 5,900 allocs, 5,894 frees, 157,967 bytes allocated
-==4610== 
-==4610== Searching for pointers to 6 not-freed blocks
-==4610== Checked 115,640 bytes
-==4610== 
-==4610== 16 bytes in 2 blocks are definitely lost in loss record 1 of 2
-==4610==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==4610==    by 0x5461908: __gmp_default_allocate (in /usr/local/lib/libgmp.so.10.3.2)
-==4610==    by 0x546FC97: __gmpz_init (in /usr/local/lib/libgmp.so.10.3.2)
-==4610==    by 0x10E1AF: find_list_square_relation (math_function.c:248)
-==4610==    by 0x11BE45: thread_job_criv_quad (main.c:601)
-==4610==    by 0x1125CC: thread_job_polynomial (basic.c:260)
-==4610==    by 0x58DA6DA: start_thread (pthread_create.c:463)
-==4610==    by 0x5C1388E: clone (clone.S:95)
-==4610== 
-==4610== 32 bytes in 4 blocks are definitely lost in loss record 2 of 2
-==4610==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==4610==    by 0x5461908: __gmp_default_allocate (in /usr/local/lib/libgmp.so.10.3.2)
-==4610==    by 0x546FC97: __gmpz_init (in /usr/local/lib/libgmp.so.10.3.2)
-==4610==    by 0x11D449: create_relation_large_prime (list_square_relation.c:207)
-==4610==    by 0x11DBBD: combine_relation_B_smooth_and_semi_B_smooth (list_square_relation.c:338)
-==4610==    by 0x11B103: main (main.c:385)
-==4610== 
-==4610== LEAK SUMMARY:
-==4610==    definitely lost: 48 bytes in 6 blocks
-==4610==    indirectly lost: 0 bytes in 0 blocks
-==4610==      possibly lost: 0 bytes in 0 blocks
-==4610==    still reachable: 0 bytes in 0 blocks
-==4610==         suppressed: 0 bytes in 0 blocks
-==4610== 
-==4610== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
-==4610== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
+==6378== Memcheck, a memory error detector
+==6378== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==6378== Using Valgrind-3.13.0 and LibVEX; rerun with -h for copyright info
+==6378== Command: ./criv_quad biprime.txt
+==6378== Parent PID: 6377
+==6378== 
+--6378-- 
+--6378-- Valgrind options:
+--6378--    --leak-check=full
+--6378--    --show-leak-kinds=all
+--6378--    --track-origins=yes
+--6378--    --verbose
+--6378--    --log-file=valgrind-out.txt
+--6378-- Contents of /proc/version:
+--6378--   Linux version 4.15.0-24-generic (buildd@lgw01-amd64-056) (gcc version 7.3.0 (Ubuntu 7.3.0-16ubuntu3)) #26-Ubuntu SMP Wed Jun 13 08:44:47 UTC 2018
+--6378-- 
+--6378-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-avx-avx2-bmi
+--6378-- Page sizes: currently 4096, max supported 4096
+--6378-- Valgrind library directory: /usr/lib/valgrind
+--6378-- Reading syms from /home/cristian/Scrivania/crivello_quadratico (copia)1/crivello_quadratico (copia)/criv_quad
+--6378-- Reading syms from /lib/x86_64-linux-gnu/ld-2.27.so
+--6378--   Considering /lib/x86_64-linux-gnu/ld-2.27.so ..
+--6378--   .. CRC mismatch (computed 1b7c895e wanted 2943108a)
+--6378--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/ld-2.27.so ..
+--6378--   .. CRC is valid
+--6378-- Reading syms from /usr/lib/valgrind/memcheck-amd64-linux
+--6378--   Considering /usr/lib/valgrind/memcheck-amd64-linux ..
+--6378--   .. CRC mismatch (computed 62965bbf wanted eeb84137)
+--6378--    object doesn't have a symbol table
+--6378--    object doesn't have a dynamic symbol table
+--6378-- Scheduler: using generic scheduler lock implementation.
+--6378-- Reading suppressions file: /usr/lib/valgrind/default.supp
+==6378== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-6378-by-cristian-on-???
+==6378== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-6378-by-cristian-on-???
+==6378== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-6378-by-cristian-on-???
+==6378== 
+==6378== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==6378== don't want to do, unless you know exactly what you're doing,
+==6378== or are doing some strange experiment):
+==6378==   /usr/lib/valgrind/../../bin/vgdb --pid=6378 ...command...
+==6378== 
+==6378== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==6378==   /path/to/gdb ./criv_quad
+==6378== and then give GDB the following command
+==6378==   target remote | /usr/lib/valgrind/../../bin/vgdb --pid=6378
+==6378== --pid is optional if only one valgrind process is running
+==6378== 
+--6378-- REDIR: 0x401f2f0 (ld-linux-x86-64.so.2:strlen) redirected to 0x58060901 (???)
+--6378-- REDIR: 0x401f0d0 (ld-linux-x86-64.so.2:index) redirected to 0x5806091b (???)
+--6378-- Reading syms from /usr/lib/valgrind/vgpreload_core-amd64-linux.so
+--6378--   Considering /usr/lib/valgrind/vgpreload_core-amd64-linux.so ..
+--6378--   .. CRC mismatch (computed 13d5e98a wanted 1786ecf1)
+--6378--    object doesn't have a symbol table
+--6378-- Reading syms from /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so
+--6378--   Considering /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so ..
+--6378--   .. CRC mismatch (computed 8f77ef36 wanted fcbde737)
+--6378--    object doesn't have a symbol table
+==6378== WARNING: new redirection conflicts with existing -- ignoring it
+--6378--     old: 0x0401f2f0 (strlen              ) R-> (0000.0) 0x58060901 ???
+--6378--     new: 0x0401f2f0 (strlen              ) R-> (2007.0) 0x04c32db0 strlen
+--6378-- REDIR: 0x401d360 (ld-linux-x86-64.so.2:strcmp) redirected to 0x4c33ee0 (strcmp)
+--6378-- REDIR: 0x401f830 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x4c374f0 (mempcpy)
+--6378-- Reading syms from /usr/local/lib/libmpfr.so.6.0.1
+--6378-- Reading syms from /lib/x86_64-linux-gnu/libm-2.27.so
+--6378--   Considering /lib/x86_64-linux-gnu/libm-2.27.so ..
+--6378--   .. CRC mismatch (computed 7feae033 wanted b29b2508)
+--6378--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/libm-2.27.so ..
+--6378--   .. CRC is valid
+--6378-- Reading syms from /usr/local/lib/libgmp.so.10.3.2
+--6378-- Reading syms from /lib/x86_64-linux-gnu/librt-2.27.so
+--6378--   Considering /lib/x86_64-linux-gnu/librt-2.27.so ..
+--6378--   .. CRC mismatch (computed 16979484 wanted f9e041e3)
+--6378--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/librt-2.27.so ..
+--6378--   .. CRC is valid
+--6378-- Reading syms from /lib/x86_64-linux-gnu/libpthread-2.27.so
+--6378--   Considering /usr/lib/debug/.build-id/28/c6aade70b2d40d1f0f3d0a1a0cad1ab816448f.debug ..
+--6378--   .. build-id is valid
+--6378-- Reading syms from /lib/x86_64-linux-gnu/libc-2.27.so
+--6378--   Considering /lib/x86_64-linux-gnu/libc-2.27.so ..
+--6378--   .. CRC mismatch (computed b1c74187 wanted 042cc048)
+--6378--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/libc-2.27.so ..
+--6378--   .. CRC is valid
+--6378-- REDIR: 0x5b90c70 (libc.so.6:memmove) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--6378-- REDIR: 0x5b8fd40 (libc.so.6:strncpy) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--6378-- REDIR: 0x5b90f50 (libc.so.6:strcasecmp) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--6378-- REDIR: 0x5b8f790 (libc.so.6:strcat) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--6378-- REDIR: 0x5b8fd70 (libc.so.6:rindex) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--6378-- REDIR: 0x5b927c0 (libc.so.6:rawmemchr) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--6378-- REDIR: 0x5b90de0 (libc.so.6:mempcpy) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--6378-- REDIR: 0x5b90c10 (libc.so.6:bcmp) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--6378-- REDIR: 0x5b8fd00 (libc.so.6:strncmp) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--6378-- REDIR: 0x5b8f800 (libc.so.6:strcmp) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--6378-- REDIR: 0x5b90d40 (libc.so.6:memset) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--6378-- REDIR: 0x5bae0f0 (libc.so.6:wcschr) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--6378-- REDIR: 0x5b8fca0 (libc.so.6:strnlen) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--6378-- REDIR: 0x5b8f870 (libc.so.6:strcspn) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--6378-- REDIR: 0x5b90fa0 (libc.so.6:strncasecmp) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--6378-- REDIR: 0x5b8f840 (libc.so.6:strcpy) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--6378-- REDIR: 0x5b910e0 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--6378-- REDIR: 0x5b8fda0 (libc.so.6:strpbrk) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--6378-- REDIR: 0x5b8f7c0 (libc.so.6:index) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--6378-- REDIR: 0x5b8fc70 (libc.so.6:strlen) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--6378-- REDIR: 0x5b9a6c0 (libc.so.6:memrchr) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--6378-- REDIR: 0x5b90ff0 (libc.so.6:strcasecmp_l) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--6378-- REDIR: 0x5b90be0 (libc.so.6:memchr) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--6378-- REDIR: 0x5baeeb0 (libc.so.6:wcslen) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--6378-- REDIR: 0x5b90050 (libc.so.6:strspn) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--6378-- REDIR: 0x5b90f20 (libc.so.6:stpncpy) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--6378-- REDIR: 0x5b90ef0 (libc.so.6:stpcpy) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--6378-- REDIR: 0x5b927f0 (libc.so.6:strchrnul) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--6378-- REDIR: 0x5b91040 (libc.so.6:strncasecmp_l) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--6378-- REDIR: 0x5c803c0 (libc.so.6:__strrchr_avx2) redirected to 0x4c32730 (rindex)
+--6378-- REDIR: 0x5b89070 (libc.so.6:malloc) redirected to 0x4c2faa0 (malloc)
+--6378-- REDIR: 0x5b90590 (libc.so.6:__GI_strstr) redirected to 0x4c37760 (__strstr_sse2)
+--6378-- REDIR: 0x5b8ac30 (libc.so.6:realloc) redirected to 0x4c31cb0 (realloc)
+--6378-- REDIR: 0x5b89950 (libc.so.6:free) redirected to 0x4c30cd0 (free)
+--6378-- REDIR: 0x5c80590 (libc.so.6:__strlen_avx2) redirected to 0x4c32cf0 (strlen)
+--6378-- REDIR: 0x5c80ad0 (libc.so.6:__memcpy_avx_unaligned_erms) redirected to 0x4c366e0 (memmove)
+--6378-- REDIR: 0x5c7ffa0 (libc.so.6:__strchr_avx2) redirected to 0x4c32950 (index)
+--6378-- REDIR: 0x5c801d0 (libc.so.6:__strchrnul_avx2) redirected to 0x4c37020 (strchrnul)
+--6378-- REDIR: 0x5c80ab0 (libc.so.6:__mempcpy_avx_unaligned_erms) redirected to 0x4c37130 (mempcpy)
+--6378-- REDIR: 0x5c80f50 (libc.so.6:__memset_avx2_unaligned_erms) redirected to 0x4c365d0 (memset)
+--6378-- REDIR: 0x5b8c030 (libc.so.6:calloc) redirected to 0x4c31a70 (calloc)
+==6378== 
+==6378== HEAP SUMMARY:
+==6378==     in use at exit: 56 bytes in 7 blocks
+==6378==   total heap usage: 5,920 allocs, 5,913 frees, 160,616 bytes allocated
+==6378== 
+==6378== Searching for pointers to 7 not-freed blocks
+==6378== Checked 115,640 bytes
+==6378== 
+==6378== 16 bytes in 2 blocks are definitely lost in loss record 1 of 2
+==6378==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6378==    by 0x5461908: __gmp_default_allocate (in /usr/local/lib/libgmp.so.10.3.2)
+==6378==    by 0x546FC97: __gmpz_init (in /usr/local/lib/libgmp.so.10.3.2)
+==6378==    by 0x10E1AF: find_list_square_relation (math_function.c:248)
+==6378==    by 0x11BEAF: thread_job_criv_quad (main.c:598)
+==6378==    by 0x112639: thread_job_polynomial (basic.c:260)
+==6378==    by 0x58DA6DA: start_thread (pthread_create.c:463)
+==6378==    by 0x5C1388E: clone (clone.S:95)
+==6378== 
+==6378== 40 bytes in 5 blocks are definitely lost in loss record 2 of 2
+==6378==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6378==    by 0x5461908: __gmp_default_allocate (in /usr/local/lib/libgmp.so.10.3.2)
+==6378==    by 0x546FC97: __gmpz_init (in /usr/local/lib/libgmp.so.10.3.2)
+==6378==    by 0x11D4B3: create_relation_large_prime (list_square_relation.c:207)
+==6378==    by 0x11DC27: combine_relation_B_smooth_and_semi_B_smooth (list_square_relation.c:338)
+==6378==    by 0x11B16D: main (main.c:384)
+==6378== 
+==6378== LEAK SUMMARY:
+==6378==    definitely lost: 56 bytes in 7 blocks
+==6378==    indirectly lost: 0 bytes in 0 blocks
+==6378==      possibly lost: 0 bytes in 0 blocks
+==6378==    still reachable: 0 bytes in 0 blocks
+==6378==         suppressed: 0 bytes in 0 blocks
+==6378== 
+==6378== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
+==6378== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)

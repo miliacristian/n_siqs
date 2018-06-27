@@ -2655,7 +2655,6 @@ char divide_all_by_p_to_k_f(int rad,long p,int index_of_prime,long k,long M,stru
     mpz_init(j_temp);
     mpz_init(h_temp);
     mpz_init(index);
-
     mpz_set_si(p_to_k,p);//p^k=p
     mpz_set_si(r2,r.root2_n_mod_p[index_of_prime]);//r2=p^k-r seconda radice quadrata di n modulo p^k
     long j=0;//indici dell'array divisibile per p^k,se j!=0 j2 non esiste
@@ -2666,7 +2665,7 @@ char divide_all_by_p_to_k_f(int rad,long p,int index_of_prime,long k,long M,stru
 		mpz_add(j2t,j2t,r2);//j2=-b+r2
     }
 
-    else if(*index_array_a_struct<s && array_a_struct[*index_array_a_struct].index_prime_a!=index_of_prime){//p non divide a
+    else if((*index_array_a_struct<s && array_a_struct[*index_array_a_struct].index_prime_a!=index_of_prime) || *index_array_a_struct>=s){//p non divide a
         if(r.inverse_a_mod_p[index_of_prime]==-1){
             printf("p=%ld,index_of_prime=%d,index_array_a_struct=%d\n",p,index_of_prime,array_a_struct[*index_array_a_struct].index_prime_a);
             handle_error_with_exit("error in factorize_matrix,inverse not found\n");
@@ -2679,13 +2678,15 @@ char divide_all_by_p_to_k_f(int rad,long p,int index_of_prime,long k,long M,stru
         mpz_mul(j1t,j1t,inverse_a);//j1=(-b+r)*inverse_a;
         mpz_mul(j2t,j2t,inverse_a);//j2=(-b+r2)*inverse_a;
     }
-    else{//p divide a,esiste solo una soluzione,si usa solo j1,succede solamente poche volte(circa 10)
+    else if(array_a_struct[*index_array_a_struct].index_prime_a==index_of_prime){//p divide a,esiste solo una soluzione,si usa solo j1,succede solamente poche volte(circa 10)
         //calcolo di c
+        if(mpz_divisible_ui_p(a,p)==0){
+            handle_error_with_exit("errore p non divide a\n");
+        }
 		(*index_array_a_struct)++;
-
         mpz_mul(v,b,b);//v=b^2
         mpz_sub(v,v,n);//v=b^2-n
-        if(mpz_divisible_p(v,a)==0){//v non divide a
+        if(mpz_divisible_p(v,a)==0){//v non è divisibile per a
             handle_error_with_exit("error in mpz_divisible divide all by p_to_k\n");
         }
         mpz_divexact(c,v,a);//c=(b^2-n)/a
@@ -2703,6 +2704,9 @@ char divide_all_by_p_to_k_f(int rad,long p,int index_of_prime,long k,long M,stru
             calculate_root_poly_second_degree_mod_p_to_k(j1t,p_to_k,p,k,a,b,n);
             j=1;//solo 1 soluzione
         }
+    }
+    else{
+        handle_error_with_exit("caso non gestito in divide all by p_to_k\n");
     }
     mpz_mod(j1t,j1t,p_to_k);//j1t ridotto modulo p^k
     mpz_mod(j2t,j2t,p_to_k);//j1_t ridotto modulo p^k
