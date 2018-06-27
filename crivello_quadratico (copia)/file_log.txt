@@ -2653,3 +2653,54 @@ n=833706341411 M_start=492 B_start=156 k=1 card_f_base=17 p_min=2 p_max=16 a=214
 n=3749350322771 M_start=1177 B_start=277 k=1 card_f_base=34 p_min=2 p_max=33 a=1843 num_pot_B_smooth=3545 num_B_smooth=96 ,num_semi_B_smooth=3449 dim_sol=559 p=1012421 q=3703351 M_end=1177 B_end=277 num_increment=0 time_total:hour=0 min=0 sec:0 ms=125 ns:434709
 n=5506356259853 M_start=492 B_start=156 k=1 card_f_base=20 p_min=2 p_max=19 a=5423 num_pot_B_smooth=1691 num_B_smooth=11 ,num_semi_B_smooth=1680 dim_sol=43 p=4089011 q=1346623 M_end=492 B_end=156 num_increment=0 time_total:hour=0 min=0 sec:0 ms=26 ns:155993
 n=6521879885219 M_start=492 B_start=156 k=1 card_f_base=17 p_min=2 p_max=16 a=5959 num_pot_B_smooth=1029 num_B_smooth=4 ,num_semi_B_smooth=1025 card_f_base=17 p_min=2 p_max=16 a=5959 error in sorted list by num
+n=4 M_start=25 B_start=20 p=2 q=2 M_end=25 B_end=2 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:161030
+n=4 M_start=25 B_start=20 p=2 q=2 M_end=25 B_end=2 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:70549
+n=6 M_start=25 B_start=20 p=2 q=3 M_end=25 B_end=4 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:54342
+n=10 M_start=25 B_start=20 p=2 q=5 M_end=25 B_end=8 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:52012
+n=10 M_start=25 B_start=20 p=2 q=5 M_end=25 B_end=8 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:51429
+n=10 M_start=25 B_start=20 p=2 q=5 M_end=25 B_end=8 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:53527
+n=14 M_start=25 B_start=20 p=2 q=7 M_end=25 B_end=12 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:54388
+n=14 M_start=25 B_start=20 p=2 q=7 M_end=25 B_end=12 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:51837
+n=14 M_start=25 B_start=20 p=2 q=7 M_end=25 B_end=12 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:48382
+n=14 M_start=25 B_start=20 p=2 q=7 M_end=25 B_end=12 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:52223
+n=4 M_start=25 B_start=20 p=2 q=2 M_end=25 B_end=2 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:199839
+n=4 M_start=25 B_start=20 p=2 q=2 M_end=25 B_end=2 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:87586
+n=6 M_start=25 B_start=20 p=2 q=3 M_end=25 B_end=4 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:95265
+n=10 M_start=25 B_start=20 p=2 q=5 M_end=25 B_end=8 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:102243
+n=10 M_start=25 B_start=20 p=2 q=5 M_end=25 B_end=8 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:65502
+n=10 M_start=25 B_start=20 p=2 q=5 M_end=25 B_end=8 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:69348
+n=14 M_start=25 B_start=20 p=2 q=7 M_end=25 B_end=12 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:64845
+n=14 M_start=25 B_start=20 p=2 q=7 M_end=25 B_end=12 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:61286
+n=14 M_start=25 B_start=20 p=2 q=7 M_end=25 B_end=12 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:75836
+n=14 M_start=25 B_start=20 p=2 q=7 M_end=25 B_end=12 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:70610
+n=4 M_start=25 B_start=20 p=2 q=2 M_end=25 B_end=2 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:217263
+n=4 M_start=25 B_start=20 p=2 q=2 M_end=25 B_end=2 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:89395
+n=6 M_start=25 B_start=20 p=2 q=3 M_end=25 B_end=4 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:82398
+n=10 M_start=25 B_start=20 p=2 q=5 M_end=25 B_end=8 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:82185
+n=10 M_start=25 B_start=20 p=2 q=5 M_end=25 B_end=8 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:78394
+n=10 M_start=25 B_start=20 p=2 q=5 M_end=25 B_end=8 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:79228
+n=14 M_start=25 B_start=20 p=2 q=7 M_end=25 B_end=12 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:77957
+n=14 M_start=25 B_start=20 p=2 q=7 M_end=25 B_end=12 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:88351
+n=14 M_start=25 B_start=20 p=2 q=7 M_end=25 B_end=12 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:79396
+n=14 M_start=25 B_start=20 p=2 q=7 M_end=25 B_end=12 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:79456
+n=4 M_start=25 B_start=20 p=2 q=2 M_end=25 B_end=2 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:58275
+n=4 M_start=25 B_start=20 p=2 q=2 M_end=25 B_end=2 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:24653
+n=6 M_start=25 B_start=20 p=2 q=3 M_end=25 B_end=4 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:26213
+n=10 M_start=25 B_start=20 p=2 q=5 M_end=25 B_end=8 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:22408
+n=10 M_start=25 B_start=20 p=2 q=5 M_end=25 B_end=8 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:22322
+n=10 M_start=25 B_start=20 p=2 q=5 M_end=25 B_end=8 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:24412
+n=14 M_start=25 B_start=20 p=2 q=7 M_end=25 B_end=12 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:24513
+n=14 M_start=25 B_start=20 p=2 q=7 M_end=25 B_end=12 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:23850
+n=14 M_start=25 B_start=20 p=2 q=7 M_end=25 B_end=12 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:24121
+n=14 M_start=25 B_start=20 p=2 q=7 M_end=25 B_end=12 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:23283
+n=4 M_start=25 B_start=20 p=2 q=2 M_end=25 B_end=2 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:83730
+n=4 M_start=25 B_start=20 p=2 q=2 M_end=25 B_end=2 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:32146
+n=6 M_start=25 B_start=20 p=2 q=3 M_end=25 B_end=4 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:30756
+n=10 M_start=25 B_start=20 p=2 q=5 M_end=25 B_end=8 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:31404
+n=10 M_start=25 B_start=20 p=2 q=5 M_end=25 B_end=8 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:25815
+n=10 M_start=25 B_start=20 p=2 q=5 M_end=25 B_end=8 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:28694
+n=14 M_start=25 B_start=20 p=2 q=7 M_end=25 B_end=12 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:23194
+n=14 M_start=25 B_start=20 p=2 q=7 M_end=25 B_end=12 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:24407
+n=14 M_start=25 B_start=20 p=2 q=7 M_end=25 B_end=12 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:28040
+n=14 M_start=25 B_start=20 p=2 q=7 M_end=25 B_end=12 num_increment=0 time_total:hour=0 min=0 sec:0 ms=0 ns:26370
+n=21 M_start=25 B_start=20 k=1 card_f_base=4 p_min=2 p_max=3 a=0 num_pot_B_smooth=51 num_B_smooth=6 ,num_semi_B_smooth=16 error in sort square list by residuos

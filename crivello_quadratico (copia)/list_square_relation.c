@@ -457,34 +457,7 @@ void remove_same_square(struct node_square_relation**head,struct node_square_rel
     }
     return;
 }
-void remove_same_square_and_sort_by_num(struct node_square_relation*head,struct node_square_relation*tail,struct node_square_relation**head_final,struct node_square_relation**tail_final,int*num_B_smooth,int*num_semi_B_smooth){
-    if(head_final==NULL || tail_final==NULL || num_B_smooth==NULL || num_semi_B_smooth==NULL){
-        handle_error_with_exit("error in remove_same square and sort by num\n");
-    }
-    struct node_square_relation*l=head;
-    struct node_square_relation*l_next;
-    while(l!=NULL){
-        while(l->next!=NULL && (mpz_cmp(l->square_relation.square,(l->next)->square_relation.square)==0) ) {
-            printf("remove\n");
-            if (mpz_cmp_si(l->square_relation.residuos, 1) == 0){//trovati due numeri uguali con residuo uguale a 1
-                (*num_B_smooth)--;
-            }
-            else{//trovati due numeri uguali con residuo diverso da 1
-                (*num_semi_B_smooth)--;
-            }
-            remove_after_node_square_rel(&(l->next),tail);
-        }
-        if(l->next==NULL){
-            return;
-        }
-        //inserisci il nodo senza doppioni nella lista
-        l_next=l->next;
-        insert_ordered_num_square_rel(l->square_relation,head,tail);
-        free(l);
-        l=l_next;
-    }
-    return;
-}
+
 void union_list_square(struct node_square_relation**head,struct node_square_relation**tail,struct node_square_relation*head_square,struct node_square_relation*tail_square){
     //concatena la prima lista e la seconda lista =L1 unito L2=L1,L2
     if(head==NULL){

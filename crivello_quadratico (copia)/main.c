@@ -393,19 +393,23 @@ int main(int argc,char*argv[]){
             head=head_temp;
             tail=tail_temp;
             //la lista ora è ordinata per square
+            printf("verify sorted square list\n");
             if(verify_sorted_square_rel_list(head)==0){
                 handle_error_with_exit("error in sorted list by square\n");
             }
             print_time_elapsed("time to combine relation B_smooth");
 
             //rimuovi gli square uguali e ordina la lista per num
+            printf("remove same square\n");
             remove_same_square(&head,&tail,&num_B_smooth,&num_semi_B_smooth);
+            printf("sort relation by num\n");
             sort_relation_by_num(head,&head_temp,&tail_temp);
-            if(verify_sorted_residuos_square_rel_list(head)==0){
-                handle_error_with_exit("error in sort square list by residuos\n");
-            }
             head=head_temp;
             tail=tail_temp;
+            printf("verify sorted residuos list\n");
+            if(verify_sorted_num_square_rel_list(head)==0){
+                handle_error_with_exit("error in sort square list by num\n");
+            }
             print_time_elapsed("time to remove same square");
             printf("num_potential_B_smooth=%d,num_B_smooth=%d,num_semi_B_smooth=%d\n",num_potential_B_smooth,num_B_smooth,num_semi_B_smooth);
             print_list_square_relation(head,num_B_smooth);
