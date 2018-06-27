@@ -400,8 +400,8 @@ void insert_ordered_sort_square_rel(struct square_relation square_relation, stru
     }
     return;
 }
-char combine_relation_B_smooth_and_semi_B_smooth(struct node_square_relation*head,struct node_square_relation*tail,struct node_square_relation**head_final_list_relation,struct node_square_relation**tail_final_list_relation,mpz_t n,int*num_B_smooth){
-    if(head==NULL || tail==NULL || head_final_list_relation==NULL || tail_final_list_relation==NULL || num_B_smooth==NULL){
+char combine_relation_B_smooth_and_semi_B_smooth(struct node_square_relation*head,struct node_square_relation**head_final_list_relation,struct node_square_relation**tail_final_list_relation,mpz_t n,int*num_B_smooth){
+    if(head_final_list_relation==NULL || tail_final_list_relation==NULL || num_B_smooth==NULL){
         handle_error_with_exit("error in combine_relation_B_smooth and semi_B_smooth\n");
     }
     struct node_square_relation*head_sort_residuos=NULL;
@@ -423,8 +423,12 @@ char combine_relation_B_smooth_and_semi_B_smooth(struct node_square_relation*hea
             q=p->next;
             free(p);
             p=q;
+            printf("relazione b_smooth aggiunta con successo\n");
         }
         not_remove_residuos_one=0;
+        if(q==NULL){
+            return factorization_founded;
+        }
         q=p->next;
         //ciclo sulla lista per trovare residui uguali e creare nuove relazioni B_smooth e ordinale per square
         while (p!=NULL && q!=NULL && mpz_cmp(p->square_relation.residuos, q->square_relation.residuos) == 0) {//residui uguali
@@ -442,13 +446,15 @@ char combine_relation_B_smooth_and_semi_B_smooth(struct node_square_relation*hea
             }
         }
         //una volta che ho creato tutte le relazioni quadratiche sfruttando un numero semi_B_smooth lo tolgo dalla lista
-        q=p->next;
-        mpz_clear(p->square_relation.square);
-        mpz_clear(p->square_relation.num);
-        mpz_clear(p->square_relation.residuos);
-        free_list_factorization(p->square_relation.head_factorization);
-        free(p);
-        p=q;
+        if(p!=NULL) {
+            q = p->next;
+            mpz_clear(p->square_relation.square);
+            mpz_clear(p->square_relation.num);
+            mpz_clear(p->square_relation.residuos);
+            free_list_factorization(p->square_relation.head_factorization);
+            free(p);
+            p = q;
+        }
     }
     return factorization_founded;
 }

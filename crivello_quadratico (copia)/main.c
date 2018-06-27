@@ -390,7 +390,7 @@ int main(int argc,char*argv[]){
             printf("cardinality factor base=%d\n",cardinality_factor_base);
 
             //trova nuove relazioni quadratiche con un nuovo square,una nuova fattorizazzione e imposta num=0
-            factorizations_founded=combine_relation_B_smooth_and_semi_B_smooth(head,tail,&head_temp,&tail_temp,n,&num_B_smooth);
+            factorizations_founded=combine_relation_B_smooth_and_semi_B_smooth(head,&head_temp,&tail_temp,n,&num_B_smooth);
             //riassegna la lista delle relazioni quadratiche a head e tail
             head=head_temp;
             tail=tail_temp;
