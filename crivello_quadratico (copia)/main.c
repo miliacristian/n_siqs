@@ -302,9 +302,13 @@ int main(int argc,char*argv[]){
 			r.root2_n_mod_p=alloc_array_int(cardinality_factor_base);
 			r.inverse_a_mod_p=alloc_array_int(cardinality_factor_base);
 			create_row_factorization(head_f_base_f,cardinality_factor_base,a,array_a_struct,s);
+			printf("logaritmi(arrotondati) factor base:");
 			print_array_int(r.log_prime,cardinality_factor_base);
+            printf("factor base:");
 			print_array_int(r.prime,cardinality_factor_base);
+			printf("radice di n mod p:");
 			print_array_int(r.root_n_mod_p,cardinality_factor_base);
+            printf("inverse a mod p:");
 			print_array_int(r.inverse_a_mod_p,cardinality_factor_base);
 			print_time_elapsed("time to create row factorization");
 
@@ -316,6 +320,7 @@ int main(int argc,char*argv[]){
 			print_time_elapsed("time to create thread");
             mpz_set(thread_polynomial_data[NUM_THREAD_POLYNOMIAL].b,b_default);//imposta b
 			//fattorizza numeri nell'array lungo 2m+1
+            printf("main thread\n");
 			factor_matrix_f(n,M,(thread_polynomial_data[NUM_THREAD_POLYNOMIAL]),cardinality_factor_base,a_default,array_a_struct,s);//fattorizza numeri
 			print_time_elapsed("time_to_factor matrix_factorization main thread");
 			print_thread_data(thread_polynomial_data[NUM_THREAD_POLYNOMIAL],M);
@@ -590,6 +595,7 @@ int thread_job_criv_quad(int id_thread){//id inizia da 0,il lavoro di un thread 
         mpz_set(thread_polynomial_data[id_thread].b,array_bi[count]);//imposta ad ogni ciclo il valore di b
 		factor_matrix_f(n,M,(thread_polynomial_data[id_thread]),cardinality_factor_base,a,array_a_struct,s);//fattorizza una nuova matrice
 		print_time_elapsed_local("time to factor matrix_factorization",&timer_thread);
+        print_thread_data(thread_polynomial_data[id_thread],M);
 
 		//ricerca dei B_smooth potenziali,reali e fattorizzazione dei B_smooth reali
         find_list_square_relation(thread_polynomial_data[id_thread],&(thread_polynomial_data[id_thread].num_B_smooth),&(thread_polynomial_data[id_thread].num_semi_B_smooth),&(thread_polynomial_data[id_thread].num_potential_B_smooth),M,&head_square,&tail_square,n,a,array_a_struct,s);

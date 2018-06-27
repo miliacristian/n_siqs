@@ -80,9 +80,6 @@ void check_variable_in_defines(){
 	if(ENOUGH_RELATION<1){
 		handle_error_with_exit("error in value enough relation\n");
 	}
-	if(ERROR_LOG){
-		handle_error_with_exit("error in value error_log\n");
-	}
 	if(THRESOLD_B<=0){
 		handle_error_with_exit("error in value thresold_b\n");
 	}
