@@ -377,7 +377,6 @@ int main(int argc,char*argv[]){
             if(verify_sorted_num_square_rel_list(head)==0){
 			    handle_error_with_exit("error in sorted list by num\n");
 			}
-            print_time_elapsed("time to union all lists");
 			remove_same_num(&head,&tail,&num_B_smooth,&num_semi_B_smooth);//rimuovi relazioni con lo stesso numero(diverso da zero)
             print_time_elapsed("time to remove same num");
             if(verify_sorted_num_square_rel_list(head)==0){
@@ -400,27 +399,24 @@ int main(int argc,char*argv[]){
             print_time_elapsed("time to combine relation B_smooth");
             //la lista ora è ordinata per square
             print_list_square_relation(head,num_B_smooth);
-            printf("verify sorted square list\n");
             if(verify_sorted_square_rel_list(head)==0){
                 handle_error_with_exit("error in sorted list by square\n");
             }
 
             //rimuovi gli square uguali e ordina la lista per num
-            printf("remove same square\n");
             remove_same_square(&head,&tail,&num_B_smooth,&num_semi_B_smooth);
+            print_time_elapsed("time to remove same square");
             print_list_square_relation(head,num_B_smooth);
-            printf("sort relation by num\n");
             sort_relation_by_num(head,&head_temp,&tail_temp);
+            print_time_elapsed("time to sort relation by num");
             head=head_temp;
             tail=tail_temp;
             head_temp=NULL;
             tail_temp=NULL;
             print_list_square_relation(head,num_B_smooth);
-            printf("verify sorted num list\n");
             if(verify_sorted_num_square_rel_list(head)==0){
                 handle_error_with_exit("error in sort list by num\n");
             }
-            print_time_elapsed("time to remove same square");
             printf("num_potential_B_smooth=%d,num_B_smooth=%d,num_semi_B_smooth=%d\n",num_potential_B_smooth,num_B_smooth,num_semi_B_smooth);
             print_list_square_relation(head,num_B_smooth);
 

@@ -2977,3 +2977,5 @@ n=1517 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=0 num_pot_B_smo
 n=1517 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=0 num_pot_B_smooth=51 num_B_smooth=10 ,num_semi_B_smooth=22 error in sort list by num
 n=1517 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=0 num_pot_B_smooth=51 num_B_smooth=10 ,num_semi_B_smooth=22 dim_sol=8 p=41 q=37 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=338 ns:721626
 mean_increment=0.000000
+n=1517 M_start=25 B_start=20 k=1 card_f_base=5 p_min=2 p_max=4 a=0 num_pot_B_smooth=51 num_B_smooth=10 ,num_semi_B_smooth=22 dim_sol=8 p=41 q=37 M_end=25 B_end=20 num_increment=0 time_total:hour=0 min=0 sec:0 ms=346 ns:525551
+mean_increment=0.000000
