@@ -400,7 +400,63 @@ void insert_ordered_sort_square_rel(struct square_relation square_relation, stru
     }
     return;
 }
-char combine_relation_B_smooth_and_semi_B_smooth(struct node_square_relation*head,struct node_square_relation**head_final_list_relation,struct node_square_relation**tail_final_list_relation,mpz_t n,int*num_B_smooth){
+
+char combine_relation_B_smooth_and_semi_B_smooth(struct node_square_relation**head_sort_square,struct node_square_relation**tail_sort_square,struct node_square_relation*head_sort_residuos,mpz_t n,int*num_B_smooth,int*num_semi_B_smooth){
+    if(head_sort_square==NULL || tail_sort_square==NULL || num_B_smooth==NULL || num_semi_B_smooth==NULL ){
+        handle_error_with_exit("error in combine_relation_B_smooth and semi_B_smooth\n");
+    }
+    char factorization_founded=0;
+    if(head_sort_residuos==NULL){//nothing to do
+        return factorization_founded;
+    }
+
+    //lista relazioni quadratiche ordinata per residu
+    char not_remove_residuos_one=1;
+    struct node_square_relation*p=head_sort_residuos;//p=nodo
+    struct node_square_relation*q;
+    while(p!=NULL) {
+        //i numeri B_smooth li metto in lista ordinati per square
+        while(p!=NULL && not_remove_residuos_one && mpz_cmp_si(p->square_relation.residuos,1)==0){//se il residuo è uguale a 1
+            //gmp_printf("residuo uguale a 1 con square=%Zd\n",p->square_relation.square);
+            insert_ordered_sort_square_rel(p->square_relation,head_final_list_relation,tail_final_list_relation);
+            q=p->next;
+            free(p);
+            p=q;
+        }
+        not_remove_residuos_one=0;
+        if(q==NULL){
+            return factorization_founded;
+        }
+        q=p->next;
+        //ciclo sulla lista per trovare residui uguali e creare nuove relazioni B_smooth e ordinale per square
+        while (p!=NULL && q!=NULL && mpz_cmp(p->square_relation.residuos, q->square_relation.residuos) == 0) {//residui uguali
+            //gmp_printf("residui uguali a %Zd\n", p->square_relation.residuos);
+            (*num_B_smooth)++;
+            struct square_relation new_square_relation=create_relation_large_prime(p->square_relation,q->square_relation,n,&factorization_founded);
+            if(factorization_founded==1){
+                free_memory_list_square_relation(p);
+                head_sort_residuos=NULL;
+                return factorization_founded;
+            }
+            else if(factorization_founded!=-1) {
+                insert_ordered_sort_square_rel(new_square_relation, head_final_list_relation, tail_final_list_relation);
+                q = q->next;
+            }
+        }
+        //una volta che ho creato tutte le relazioni quadratiche sfruttando un numero semi_B_smooth lo tolgo dalla lista
+        if(p!=NULL) {
+            q = p->next;
+            mpz_clear(p->square_relation.square);
+            mpz_clear(p->square_relation.num);
+            mpz_clear(p->square_relation.residuos);
+            free_list_factorization(p->square_relation.head_factorization);
+            free(p);
+            p = q;
+        }
+    }
+    return factorization_founded;
+}
+/*char combine_relation_B_smooth_and_semi_B_smooth(struct node_square_relation*head,struct node_square_relation**head_final_list_relation,struct node_square_relation**tail_final_list_relation,mpz_t n,int*num_B_smooth){
     if(head_final_list_relation==NULL || tail_final_list_relation==NULL || num_B_smooth==NULL){
         handle_error_with_exit("error in combine_relation_B_smooth and semi_B_smooth\n");
     }
@@ -456,7 +512,7 @@ char combine_relation_B_smooth_and_semi_B_smooth(struct node_square_relation*hea
         }
     }
     return factorization_founded;
-}
+}*/
 
 void remove_same_num(struct node_square_relation**head,struct node_square_relation**tail,int*num_B_smooth,int*num_semi_B_smooth){
     if(head==NULL || tail==NULL || num_B_smooth==NULL || num_semi_B_smooth==NULL){

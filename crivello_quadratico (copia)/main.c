@@ -79,7 +79,6 @@ int main(int argc,char*argv[]){
 		char digit=-1;//numero cifre di n
 		struct node_square_relation*head_residuos=NULL,*tail_residuos=NULL;
         struct node_square_relation*head_square=NULL,*tail_square=NULL;
-        struct node_square_relation*head_temp=NULL,*tail_temp=NULL;
 		struct node_square_relation *head_sort_residuos=NULL,*tail_sort_residuos=NULL;//contengono tutte le relazioni quadratiche
 		struct node_square_relation *head_sort_square=NULL,*tail_sort_square=NULL;
         int last_prime_factor_base=1;//indica l'ultimo primo della factor base,e quindi da quale primo si inizia a creare la factor base se una factor base è già esistente
@@ -408,7 +407,7 @@ int main(int argc,char*argv[]){
             head_residuos=NULL;
             tail_residuos=NULL;
             //trova nuove relazioni quadratiche con un nuovo square,una nuova fattorizazzione e imposta num=0
-            factorizations_founded=combine_relation_B_smooth_and_semi_B_smooth(&head_sort_square,head_sort_residuos,n,&num_B_smooth,&num_semi_B_smooth);
+            factorizations_founded=combine_relation_B_smooth_and_semi_B_smooth(&head_sort_square,&tail_sort_square,head_sort_residuos,n,&num_B_smooth,&num_semi_B_smooth);
             //riassegna la lista delle relazioni quadratiche a head e tail
             head_sort_residuos=NULL;
             tail_sort_residuos=NULL;
@@ -425,15 +424,8 @@ int main(int argc,char*argv[]){
             //rimuovi gli square uguali e ordina la lista per num
             remove_same_square(&head_sort_square,&tail_sort_square,&num_B_smooth,&num_semi_B_smooth);
             print_time_elapsed("time to remove same square");
-           // print_list_square_relation(head,num_B_smooth);
-            sort_relation_by_num(head,&head_temp,&tail_temp);
-            print_time_elapsed("time to sort relation by num");
-            head=head_temp;
-            tail=tail_temp;
-            head_temp=NULL;
-            tail_temp=NULL;
             //print_list_square_relation(head,num_B_smooth);
-            if(verify_sorted_num_square_rel_list(head)==0){
+            if(verify_sorted_num_square_rel_list(head_sort_square)==0){
                 handle_error_with_exit("error in sort list by num\n");
             }
             printf("num_potential_B_smooth=%d,num_B_smooth=%d,num_semi_B_smooth=%d,card_f_base=%d\n",num_potential_B_smooth,num_B_smooth,num_semi_B_smooth,cardinality_factor_base);
@@ -471,7 +463,7 @@ int main(int argc,char*argv[]){
             }
 
 			//algebra step:sistema lineare
-            binary_linear_system=create_binary_linear_system(head,cardinality_factor_base,num_B_smooth,&num_col_binary_matrix);
+            binary_linear_system=create_binary_linear_system(head_sort_square,cardinality_factor_base,num_B_smooth,&num_col_binary_matrix);
             //print_binary_matrix(binary_linear_system,cardinality_factor_base,num_col_binary_matrix);
             print_time_elapsed("time_to_create_binary linear_system");
             reduce_echelon_form_binary_matrix(binary_linear_system,cardinality_factor_base,num_col_binary_matrix);
@@ -520,7 +512,7 @@ int main(int argc,char*argv[]){
 			print_time_elapsed("time to check solution base linear system");
             //algebra step:calcolo di tutti gli a,b del crivello quadratico
 			factorizations_founded=find_factor_of_n_from_base_matrix_char(base_matrix,num_col_linear_system,&dim_sol,
-			linear_system,cardinality_factor_base,num_col_linear_system,n,head,num_B_smooth,cardinality_factor_base);
+			linear_system,cardinality_factor_base,num_col_linear_system,n,head_sort_square,num_B_smooth,cardinality_factor_base);
 			free(linear_system);
             linear_system=NULL;
 			free_memory_matrix_int(base_matrix,num_col_linear_system,dim_sol);
@@ -572,9 +564,9 @@ int main(int argc,char*argv[]){
 			free_array_thread_data(thread_polynomial_data, NUM_THREAD_POLYNOMIAL + 1);
 			thread_polynomial_data = NULL;
 		}
-		if(head!=NULL) {
-			free_memory_list_square_relation(head);
-			head = NULL;
+		if(head_sort_square!=NULL) {
+			free_memory_list_square_relation(head_sort_square);
+			head_sort_square = NULL;
 		}
 
 		//mpz_clear
