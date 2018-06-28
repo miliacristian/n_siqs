@@ -18,7 +18,7 @@
 #define PERC_INCREMENT_M 5 //quanto aumenta in percentuale M se non si riesce a fattorizzare n
 #define PERC_INCREMENT_B 1 //quanto aumenta in percentuale B se non si riesce a fattorizzare n
 
-#define NUM_OF_N_TO_FACTORIZE 60
+#define NUM_OF_N_TO_FACTORIZE 100
 
 #define ENOUGH_RELATION 1.0 //numero maggiore o uguale a 1 indica quante relazioni
 //vanno trovate in più rispetto alla cardinalità della factor base num_b_smooth>cardinality*enough_relation
