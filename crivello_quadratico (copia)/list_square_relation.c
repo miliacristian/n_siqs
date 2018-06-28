@@ -525,6 +525,49 @@ void union_list_square(struct node_square_relation**head_square,struct node_squa
     }
     return;
 }
+void add_relation_semi_B_smooth_to_list(struct node_square_relation**head_sort_residuos,struct node_square_relation**tail_sort_residuos,struct node_square_relation*head_residuos,struct node_square_relation*tail_residuos){
+    if(head_sort_residuos==NULL || tail_sort_residuos==NULL){
+        handle_error_with_exit("error in add_relation_semi_B_smooth_to_list\n");
+    }
+    if(head_residuos==NULL){//nessuan relazione da aggiungere
+        return;
+    }
+    if(*tail_sort_residuos==NULL){//lista vuota,prendi l'altra lista
+        *head_sort_residuos=head_residuos;
+        *tail_sort_residuos=tail_residuos;
+        return;
+    }
+    struct node_square_relation*p=head_residuos;
+    while(p!=NULL){
+        struct node_square_relation*q=p->next;
+        insert_ordered_residuos_square_rel(p->square_relation,head_sort_residuos,tail_sort_residuos);
+        free(p);
+        p=q;
+    }
+    return;
+}
+
+void add_square_relation_to_list_sorted(struct node_square_relation**head_sort_square,struct node_square_relation**tail_sort_square,struct node_square_relation*head_square,struct node_square_relation*tail_square){
+    if(head_sort_square==NULL || tail_sort_square==NULL){
+        handle_error_with_exit("error in add_square_relation_to_list_sorted\n");
+    }
+    if(head_square==NULL){//nessuan relazione da aggiungere
+        return;
+    }
+    if(*tail_sort_square==NULL){//lista vuota,prendi l'altra lista
+        *head_sort_square=head_square;
+        *tail_sort_square=tail_square;
+        return;
+    }
+    struct node_square_relation*p=head_square;
+    while(p!=NULL){
+        struct node_square_relation*q=p->next;
+        insert_ordered_sort_square_rel(p->square_relation,head_sort_square,tail_sort_square);
+        free(p);
+        p=q;
+    }
+    return;
+}
 
 void union_list_residuos(struct node_square_relation**head_residuos,struct node_square_relation**tail_residuos,struct node_square_relation*phead_residuos,struct node_square_relation*ptail_residuos){
     //concatena la prima lista e la seconda lista =L1 unito L2=L1,L2

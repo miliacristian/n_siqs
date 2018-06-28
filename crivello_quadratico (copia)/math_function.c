@@ -214,7 +214,7 @@ void calculate_square(mpz_t square,const mpz_t a,int index,const mpz_t b,const m
     return;
 }
 void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth,int*num_semi_B_smooth, int *num_potential_B_smooth, long M,
-							   struct node_square_relation **head, struct node_square_relation **tail,
+							   struct node_square_relation **head_square, struct node_square_relation **tail_square,struct node_square_relation **head_residuos, struct node_square_relation **tail_residuos,
 							   const mpz_t n,const mpz_t a,struct a_struct*array_a_struct,int s) {
 	mpz_t num;
 	struct node_factorization*head_factor=NULL;
@@ -222,7 +222,9 @@ void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth
 	char is_semi_B_smooth=0;
 	mpz_t residuos;
 	mpz_init(residuos);
-	if(num_B_smooth==NULL || num_semi_B_smooth==NULL || num_potential_B_smooth==NULL || M<=0 || head==NULL || tail==NULL || (array_a_struct==NULL && s>0)){
+	if(num_B_smooth==NULL || num_semi_B_smooth==NULL || num_potential_B_smooth==NULL || M<=0 ||
+	   head_square==NULL || tail_square==NULL || head_residuos==NULL
+	   || tail_residuos==NULL || (array_a_struct==NULL && s>0)){
 		handle_error_with_exit("error in find_list_square_relation");
 	}
 	struct square_relation square_relation;
@@ -250,7 +252,7 @@ void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth
                 mpz_set(square_relation.num,num);
                 mpz_set(square_relation.residuos,residuos);
                 calculate_square(square_relation.square,a,i-M,thread_data.b,n);
-                insert_ordered_num_square_rel(square_relation,head,tail);
+                insert_ordered_num_square_rel(square_relation,head_square,tail_square);
             }
             else if(is_semi_B_smooth==1){
 				(*num_semi_B_smooth)++;
@@ -263,7 +265,7 @@ void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth
 				mpz_set(square_relation.num,num);
 				mpz_set(square_relation.residuos,residuos);
 				calculate_square(square_relation.square,a,i-M,thread_data.b,n);
-				insert_ordered_num_square_rel(square_relation,head,tail);
+				insert_ordered_num_square_rel(square_relation,head_residuos,tail_residuos);
 
             }
             else{
