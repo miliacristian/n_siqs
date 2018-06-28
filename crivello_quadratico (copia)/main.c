@@ -336,11 +336,11 @@ int main(int argc,char*argv[]){
 
 			//trova relazioni quadratiche o semi_B_smooth e ordinale per numero
             printf("lista relazioni quadratiche attuale:\n");
-            //print_list_square_relation(head,num_B_smooth);
+            print_list_square_relation(head_sort_square,num_B_smooth);
             printf("numeri B_smooth=%d\n",num_B_smooth);
 			find_list_square_relation(thread_polynomial_data[NUM_THREAD_POLYNOMIAL],&num_B_smooth,&num_semi_B_smooth,&num_potential_B_smooth,M,&head_square,&tail_square,&head_residuos,&tail_residuos,n,a_default,NULL,0);
 			print_time_elapsed("time_to find_list_square_relation main thread");
-            //print_list_square_relation(head,num_B_smooth);
+            print_list_square_relation(head_sort_square,num_B_smooth);
 
 			//aspetta tutti i thread e libera memoria
 			if(num_thread_job!=1 && NUM_THREAD_POLYNOMIAL>0){
@@ -392,7 +392,9 @@ int main(int argc,char*argv[]){
 
             //unisici tutte le relazioni quadrate(solamente quelle B_smooth)alla lista delle relazioni quadratiche,
             // la lista finale conterrà relazioni quadratiche ordinate per square
-            add_square_relation_to_list_sorted(&head_sort_square,&tail_sort_square,head_square,tail_square);
+            add_square_relation_to_list_sorted(&head_sort_square,&tail_sort_square,head_square);
+            print_list_square_relation(head_sort_square,num_B_smooth);
+            print_time_elapsed("time to add square relation to list sorted");
             head_square=NULL;
             tail_square=NULL;
             if(verify_sorted_square_rel_list(head_sort_square)==0){
@@ -400,14 +402,18 @@ int main(int argc,char*argv[]){
             }
             //unisici tutte le relazioni semi_B_smooth alla lista delle relazioni semi_B_smooth,
             // la lista finale conterrà relazioni semi_B_smooth ordinate per residuo
-            add_relation_semi_B_smooth_to_list(&head_sort_residuos,&tail_sort_residuos,head_residuos,tail_residuos);
+            add_relation_semi_B_smooth_to_list(&head_sort_residuos,&tail_sort_residuos,head_residuos);
+            print_list_square_relation(head_sort_residuos,num_B_smooth);
             if(verify_sorted_residuos_square_rel_list(head_sort_residuos)==0){
                 handle_error_with_exit("error in sort relation by square\n");
             }
             head_residuos=NULL;
             tail_residuos=NULL;
+
             //trova nuove relazioni quadratiche con un nuovo square,una nuova fattorizazzione e imposta num=0
             factorizations_founded=combine_relation_B_smooth_and_semi_B_smooth(&head_sort_square,&tail_sort_square,head_sort_residuos,n,&num_B_smooth,&num_semi_B_smooth);
+            printf("relazioni dopo combine:\n");
+            print_list_square_relation(head_sort_square,num_B_smooth);
             //riassegna la lista delle relazioni quadratiche a head e tail
             head_sort_residuos=NULL;
             tail_sort_residuos=NULL;
@@ -415,7 +421,6 @@ int main(int argc,char*argv[]){
             	break;
             }
             print_time_elapsed("time to combine relation B_smooth");
-            //la lista ora è ordinata per square
             //print_list_square_relation(head,num_B_smooth);
             if(verify_sorted_square_rel_list(head_sort_square)==0){
                 handle_error_with_exit("error in sorted list by square\n");
@@ -424,9 +429,10 @@ int main(int argc,char*argv[]){
             //rimuovi gli square uguali e ordina la lista per num
             remove_same_square(&head_sort_square,&tail_sort_square,&num_B_smooth,&num_semi_B_smooth);
             print_time_elapsed("time to remove same square");
-            //print_list_square_relation(head,num_B_smooth);
-            if(verify_sorted_num_square_rel_list(head_sort_square)==0){
-                handle_error_with_exit("error in sort list by num\n");
+            printf("lista dopo rimozione square\n");
+            print_list_square_relation(head_sort_square,num_B_smooth);
+            if(verify_sorted_square_rel_list(head_sort_square)==0){
+                handle_error_with_exit("error in sort list by square\n");
             }
             printf("num_potential_B_smooth=%d,num_B_smooth=%d,num_semi_B_smooth=%d,card_f_base=%d\n",num_potential_B_smooth,num_B_smooth,num_semi_B_smooth,cardinality_factor_base);
             //print_list_square_relation(head,num_B_smooth);
@@ -435,7 +441,7 @@ int main(int argc,char*argv[]){
 			timer.tv_sec=time_start.tv_sec;//timer=time_start
 			print_time_elapsed("time_total");
 			exit(0);*/
-
+            exit(0);
             //verifica che il numero di relazioni trovate è sufficiente
             if(num_B_smooth<cardinality_factor_base*ENOUGH_RELATION){
                 calculate_news_M_and_B(&M,&B);

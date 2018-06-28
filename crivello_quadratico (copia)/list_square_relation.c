@@ -409,25 +409,13 @@ char combine_relation_B_smooth_and_semi_B_smooth(struct node_square_relation**he
     if(head_sort_residuos==NULL){//nothing to do
         return factorization_founded;
     }
-
-    //lista relazioni quadratiche ordinata per residu
-    char not_remove_residuos_one=1;
     struct node_square_relation*p=head_sort_residuos;//p=nodo
     struct node_square_relation*q;
     while(p!=NULL) {
-        //i numeri B_smooth li metto in lista ordinati per square
-        while(p!=NULL && not_remove_residuos_one && mpz_cmp_si(p->square_relation.residuos,1)==0){//se il residuo è uguale a 1
-            //gmp_printf("residuo uguale a 1 con square=%Zd\n",p->square_relation.square);
-            insert_ordered_sort_square_rel(p->square_relation,head_final_list_relation,tail_final_list_relation);
-            q=p->next;
-            free(p);
-            p=q;
-        }
-        not_remove_residuos_one=0;
+        q=p->next;
         if(q==NULL){
             return factorization_founded;
         }
-        q=p->next;
         //ciclo sulla lista per trovare residui uguali e creare nuove relazioni B_smooth e ordinale per square
         while (p!=NULL && q!=NULL && mpz_cmp(p->square_relation.residuos, q->square_relation.residuos) == 0) {//residui uguali
             //gmp_printf("residui uguali a %Zd\n", p->square_relation.residuos);
@@ -439,7 +427,7 @@ char combine_relation_B_smooth_and_semi_B_smooth(struct node_square_relation**he
                 return factorization_founded;
             }
             else if(factorization_founded!=-1) {
-                insert_ordered_sort_square_rel(new_square_relation, head_final_list_relation, tail_final_list_relation);
+                insert_ordered_sort_square_rel(new_square_relation, head_sort_square, tail_sort_square);
                 q = q->next;
             }
         }
@@ -581,16 +569,11 @@ void union_list_square(struct node_square_relation**head_square,struct node_squa
     }
     return;
 }
-void add_relation_semi_B_smooth_to_list(struct node_square_relation**head_sort_residuos,struct node_square_relation**tail_sort_residuos,struct node_square_relation*head_residuos,struct node_square_relation*tail_residuos){
+void add_relation_semi_B_smooth_to_list(struct node_square_relation**head_sort_residuos,struct node_square_relation**tail_sort_residuos,struct node_square_relation*head_residuos){
     if(head_sort_residuos==NULL || tail_sort_residuos==NULL){
         handle_error_with_exit("error in add_relation_semi_B_smooth_to_list\n");
     }
     if(head_residuos==NULL){//nessuan relazione da aggiungere
-        return;
-    }
-    if(*tail_sort_residuos==NULL){//lista vuota,prendi l'altra lista
-        *head_sort_residuos=head_residuos;
-        *tail_sort_residuos=tail_residuos;
         return;
     }
     struct node_square_relation*p=head_residuos;
@@ -603,16 +586,11 @@ void add_relation_semi_B_smooth_to_list(struct node_square_relation**head_sort_r
     return;
 }
 
-void add_square_relation_to_list_sorted(struct node_square_relation**head_sort_square,struct node_square_relation**tail_sort_square,struct node_square_relation*head_square,struct node_square_relation*tail_square){
+void add_square_relation_to_list_sorted(struct node_square_relation**head_sort_square,struct node_square_relation**tail_sort_square,struct node_square_relation*head_square){
     if(head_sort_square==NULL || tail_sort_square==NULL){
         handle_error_with_exit("error in add_square_relation_to_list_sorted\n");
     }
     if(head_square==NULL){//nessuan relazione da aggiungere
-        return;
-    }
-    if(*tail_sort_square==NULL){//lista vuota,prendi l'altra lista
-        *head_sort_square=head_square;
-        *tail_sort_square=tail_square;
         return;
     }
     struct node_square_relation*p=head_square;
