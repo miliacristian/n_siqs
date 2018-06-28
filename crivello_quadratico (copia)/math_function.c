@@ -15,7 +15,7 @@
 extern struct row_factorization r;
 extern long M;
 extern mpz_t n;
-extern mpz_t a;
+extern mpz_t a_old;
 extern struct a_struct*array_a_struct;
 extern int cardinality_factor_base;
 extern int s;
@@ -2973,7 +2973,7 @@ void*thread_factorization_job(void*arg){
     	mpz_set_si(a1,1);
     }
     else{
-    	mpz_set(a1,a);
+    	mpz_set(a1,a_old);
     }
     for(int i=start;i<=end;i++){
     	if(i==0){//skippa indice 0 e indice 1

@@ -21,12 +21,10 @@ void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B){
 	//*M=5000000
 	//*M=400000;
 	//*B=4000000;
-	*M=25;
-	*B=20;
-	return;
+
 	if(digit_n<7){
 		*M=25;
-		*B=20;
+		*B=200;
 		return;
 	}
 	if(digit_n<9){
@@ -91,7 +89,6 @@ void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B){
 		*B=19000;
 		return;
 	}
-	printf("digit_n=%d\n",digit_n);
 	if(digit_n<55){//da 53 a 54 cifre,1 minuto e 5 secondi
         handle_error_with_exit("error criv_quad <55\n");
 		*M=60000;
@@ -136,6 +133,28 @@ void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B){
 	handle_error_with_exit("num not handle\n");
 	return;
 }
+void increment_M_and_B(long*M,long*B){
+    //calcola i valori nuovi di M e B secondo una formula scelta opportunamente
+    //new_m=(m+perc_m)+(m+perc_m)*perc_m/100
+    //new_b=(b+perc_b)+(b+perc_b)*perc_b/100
+    return;
+    if(M==NULL || B==NULL || *M<=0 || *B<=0){
+        handle_error_with_exit("error in calculate_news_M_and_B\n");
+    }
+    double temp;
+    //calculate new M
+    temp=*M+PERC_INCREMENT_M;
+    temp=temp+(temp*PERC_INCREMENT_M)/100;
+    *M=temp;
+
+    //calculate new B
+    temp=*B+PERC_INCREMENT_B;
+    temp=temp+(temp*PERC_INCREMENT_B)/100;
+    *B=temp;
+    num_increment_M_and_B++;
+    return;
+}
+
 void calculate_news_M_and_B(long*M,long*B){
 	//calcola i valori nuovi di M e B secondo una formula scelta opportunamente
 	//new_m=(m+perc_m)+(m+perc_m)*perc_m/100

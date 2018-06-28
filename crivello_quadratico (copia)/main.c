@@ -32,7 +32,7 @@
 	struct node_factor_base*head_f_base_f=NULL;//testa della lista dinamica factor base
 	struct node_factor_base*tail_f_base_f=NULL;//coda della lista dinamica factor base
 	mpz_t n,x0;//dichiarazione di n,n da fattorizzare,deve essere inizializzato a zero,e deve essere sovrascritto con il numero preso da riga 		di comando o da file
-	mpz_t a;//valore del coefficiente a del polinomio,soglia q e q
+	mpz_t a_old,a_new;//valore del coefficiente a del polinomio,soglia q e q
 	mpfr_t thresold_a;//soglia per il calcolo di a
 	mpz_t temp;//mpz temporaneo
 	int s=-1;//numero di primi della factor base distinti che compongono a
@@ -89,7 +89,8 @@ int main(int argc,char*argv[]){
 
 		//mpz_init
 		mpz_init(n);
-		mpz_init(a);
+		mpz_init(a_old);
+		mpz_init(a_new);
 		mpz_init(temp);
 		mpz_init(x0);
 		mpfr_init(thresold_a);
@@ -239,14 +240,29 @@ int main(int argc,char*argv[]){
             }
 			print_time_elapsed("time to verify factor base");
 			//a,per siqs e generare tutti gli altri b,prodotto di primi dispari distinti
-			calculate_a_f2(a,thresold_a,&s,head_f_base_f,cardinality_factor_base,&index_prime_a,&number_prime_a);
+			calculate_a_f2(a_new,thresold_a,&s,head_f_base_f,cardinality_factor_base,&index_prime_a,&number_prime_a);
+			while(s>0 && mpz_cmp(a_old,a_new)==0){
+				increment_M_and_B(&M,&B);
+                if(index_prime_a!=NULL){
+                    free(index_prime_a);
+                    index_prime_a=NULL;
+                }
+                if(number_prime_a!=NULL){
+                    free(number_prime_a);
+                    number_prime_a=NULL;
+                }
+				calculate_a_f2(a_new,thresold_a,&s,head_f_base_f,cardinality_factor_base,&index_prime_a,&number_prime_a);
+			}
+			if(s>0){
+				mpz_set(a_old,a_new);
+			}
 			if(s>0) {
 				//crea array a struct e ordina i fattori di a
                 array_a_struct = create_array_a_struct(number_prime_a, index_prime_a, s);
                 qsort(array_a_struct, (size_t)s, sizeof(struct a_struct), compare_a_struct);
                 print_array_a_struct(array_a_struct, s);
             }
-			gmp_printf("a=%Zd\n",a);
+			gmp_printf("a=%Zd\n",a_old);
 			//fprintf(file_log,"a=");
 			//mpz_out_str(file_log,10,a);
 			//fprintf(file_log," ");
@@ -263,7 +279,7 @@ int main(int argc,char*argv[]){
 			}
 
 			//array Bk,può essere ridotto modulo a
-			array_Bk=calculate_array_Bk_f(number_prime_a,cardinality_factor_base,n,s,a,b1);
+			array_Bk=calculate_array_Bk_f(number_prime_a,cardinality_factor_base,n,s,a_old,b1);
 			if(array_Bk!=NULL){
 				gmp_printf("b1=%Zd\n",b1);
 				print_array_Bk(array_Bk,s);
@@ -277,8 +293,8 @@ int main(int argc,char*argv[]){
 				array_Bk=NULL;
 			}
 			if(array_bi!=NULL){//bi può essere ridotto modulo a
-				reduce_array_mpz_mod_n(array_bi,(int)pow(2,s-1),a);
-				adjust_array_bi(array_bi,s,a);
+				reduce_array_mpz_mod_n(array_bi,(int)pow(2,s-1),a_old);
+				adjust_array_bi(array_bi,s,a_old);
 				print_array_bi(array_bi,s);
 			}
 			print_time_elapsed("time to calculate array bi");
@@ -306,7 +322,7 @@ int main(int argc,char*argv[]){
 			r.root_n_mod_p=alloc_array_int(cardinality_factor_base);
 			r.root2_n_mod_p=alloc_array_int(cardinality_factor_base);
 			r.inverse_a_mod_p=alloc_array_int(cardinality_factor_base);
-			create_row_factorization(head_f_base_f,cardinality_factor_base,a,array_a_struct,s);
+			create_row_factorization(head_f_base_f,cardinality_factor_base,a_old,array_a_struct,s);
 			printf("logaritmi(arrotondati) factor base:");
 			print_array_int(r.log_prime,cardinality_factor_base);
             printf("factor base:");
@@ -338,6 +354,8 @@ int main(int argc,char*argv[]){
             printf("lista relazioni quadratiche attuale:\n");
             print_list_square_relation(head_sort_square,num_B_smooth);
             printf("numeri B_smooth=%d\n",num_B_smooth);
+            head_residuos=NULL;
+            tail_residuos=NULL;
 			find_list_square_relation(thread_polynomial_data[NUM_THREAD_POLYNOMIAL],&num_B_smooth,&num_semi_B_smooth,&num_potential_B_smooth,M,&head_square,&tail_square,&head_residuos,&tail_residuos,n,a_default,NULL,0);
 			print_time_elapsed("time_to find_list_square_relation main thread");
             print_list_square_relation(head_sort_square,num_B_smooth);
@@ -404,6 +422,7 @@ int main(int argc,char*argv[]){
             // la lista finale conterrà relazioni semi_B_smooth ordinate per residuo
             add_relation_semi_B_smooth_to_list(&head_sort_residuos,&tail_sort_residuos,head_residuos);
             print_list_square_relation(head_sort_residuos,num_B_smooth);
+            print_time_elapsed("time to add relation semi_B_smooth");
             if(verify_sorted_residuos_square_rel_list(head_sort_residuos)==0){
                 handle_error_with_exit("error in sort relation by square\n");
             }
@@ -412,6 +431,7 @@ int main(int argc,char*argv[]){
 
             //trova nuove relazioni quadratiche con un nuovo square,una nuova fattorizazzione e imposta num=0
             factorizations_founded=combine_relation_B_smooth_and_semi_B_smooth(&head_sort_square,&tail_sort_square,head_sort_residuos,n,&num_B_smooth,&num_semi_B_smooth);
+            print_time_elapsed("time_to_combine relation_B_smooth");
             printf("relazioni dopo combine:\n");
             print_list_square_relation(head_sort_square,num_B_smooth);
             //riassegna la lista delle relazioni quadratiche a head e tail
@@ -441,7 +461,7 @@ int main(int argc,char*argv[]){
 			timer.tv_sec=time_start.tv_sec;//timer=time_start
 			print_time_elapsed("time_total");
 			exit(0);*/
-            exit(0);
+
             //verifica che il numero di relazioni trovate è sufficiente
             if(num_B_smooth<cardinality_factor_base*ENOUGH_RELATION){
                 calculate_news_M_and_B(&M,&B);
@@ -577,7 +597,8 @@ int main(int argc,char*argv[]){
 
 		//mpz_clear
 		mpz_clear(n);
-		mpz_clear(a);
+		mpz_clear(a_old);
+		mpz_clear(a_new);
 		mpz_clear(temp);
 		mpz_clear(x0);
 		mpfr_clear(thresold_a);
@@ -602,9 +623,9 @@ int main(int argc,char*argv[]){
 	//if(fclose(file_log)!=0){
 	//		handle_error_with_exit("error in close file_log\n");
 	//	}
-	//if(fclose(file_number)!=0){
-	//	handle_error_with_exit("error in close file_number\n");
-	//}
+	if(fclose(file_number)!=0){
+		handle_error_with_exit("error in close file_number\n");
+	}
 	return 0;
 }
 
@@ -641,12 +662,12 @@ int thread_job_criv_quad(int id_thread){//id inizia da 0,il lavoro di un thread 
 		//fattorizza array di 2m+1 elementi e memorizza la somma dei logaritmi per ogni posizione e
         // indici last e first che ci dicono il primo elemento divisibile per num e l'ultimo(questo facilita la trial division)
         mpz_set(thread_polynomial_data[id_thread].b,array_bi[count]);//imposta ad ogni ciclo il valore di b
-		factor_matrix_f(n,M,(thread_polynomial_data[id_thread]),cardinality_factor_base,a,array_a_struct,s);//fattorizza una nuova matrice
+		factor_matrix_f(n,M,(thread_polynomial_data[id_thread]),cardinality_factor_base,a_old,array_a_struct,s);//fattorizza una nuova matrice
 		print_time_elapsed_local("time to factor matrix_factorization",&timer_thread);
         //print_thread_data(thread_polynomial_data[id_thread],M);
 
 		//ricerca dei B_smooth potenziali,reali e fattorizzazione dei B_smooth reali
-        find_list_square_relation(thread_polynomial_data[id_thread],&(thread_polynomial_data[id_thread].num_B_smooth),&(thread_polynomial_data[id_thread].num_semi_B_smooth),&(thread_polynomial_data[id_thread].num_potential_B_smooth),M,&head_square,&tail_square,&head_residuos,&tail_residuos,n,a,array_a_struct,s);
+        find_list_square_relation(thread_polynomial_data[id_thread],&(thread_polynomial_data[id_thread].num_B_smooth),&(thread_polynomial_data[id_thread].num_semi_B_smooth),&(thread_polynomial_data[id_thread].num_potential_B_smooth),M,&head_square,&tail_square,&head_residuos,&tail_residuos,n,a_old,array_a_struct,s);
 		printf("num_potential_B_smooth=%d,num_B_smooth=%d,num_semi_B_smooth=%d\n",thread_polynomial_data[id_thread].num_potential_B_smooth,thread_polynomial_data[id_thread].num_B_smooth,thread_polynomial_data[id_thread].num_semi_B_smooth);
 		print_time_elapsed_local("time to find_list_square_relation",&timer_thread);
 		//pulisci struttura dati del thread per ricominciare con un altro polinomio

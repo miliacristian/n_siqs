@@ -413,9 +413,6 @@ char combine_relation_B_smooth_and_semi_B_smooth(struct node_square_relation**he
     struct node_square_relation*q;
     while(p!=NULL) {
         q=p->next;
-        if(q==NULL){
-            return factorization_founded;
-        }
         //ciclo sulla lista per trovare residui uguali e creare nuove relazioni B_smooth e ordinale per square
         while (p!=NULL && q!=NULL && mpz_cmp(p->square_relation.residuos, q->square_relation.residuos) == 0) {//residui uguali
             //gmp_printf("residui uguali a %Zd\n", p->square_relation.residuos);
@@ -440,6 +437,9 @@ char combine_relation_B_smooth_and_semi_B_smooth(struct node_square_relation**he
             free_list_factorization(p->square_relation.head_factorization);
             free(p);
             p = q;
+        }
+        if(q==NULL){
+            return factorization_founded;
         }
     }
     return factorization_founded;
