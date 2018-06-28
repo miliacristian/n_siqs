@@ -397,7 +397,6 @@ char get_and_check_n(mpz_t n,FILE*file_number){
 		handle_error_with_exit("error in get and check n,invalid filename\n");
 	}
 	int digit=mpz_inp_str(n,file_number,10);//leggi dal file n in base 10
-	//digit-=1;//la mpz_inp_str legge anche un altro carattere
 	if(mpz_sgn(n)<0){
 		mpz_neg(n,n);//n=-n;//inverte il segno di n
 	}

@@ -89,15 +89,18 @@ void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B){
 		*B=19000;
 		return;
 	}
-	if(digit_n<55){//da 53 a 54 cifre,
-		*M=20000;
-		*B=19000;
+	printf("digit_n=%d\n",digit_n);
+	if(digit_n<55){//da 53 a 54 cifre,1 minuto e 5 secondi
+        handle_error_with_exit("error criv_quad <55\n");
+		*M=60000;
+		*B=97000;
+		return;
 	}
-	if(digit_n<60){
-		handle_error_with_exit("error criv_quad <60\n");
-		*M=35000;
-		*B=15000;
-	}
+    if(digit_n<60){//90 sec
+        *M=40000;
+        *B=130000;
+        return;
+    }
 	if(digit_n<65){
 		handle_error_with_exit("error criv_quad <65\n");
 		*M=35000;
@@ -128,7 +131,7 @@ void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B){
 		*B=15000;
 		return;
 	}
-	handle_error_with_exit("num_too long\n");
+	handle_error_with_exit("num not handle\n");
 	return;
 }
 void calculate_news_M_and_B(long*M,long*B){

@@ -426,10 +426,10 @@ int main(int argc,char*argv[]){
             printf("num_potential_B_smooth=%d,num_B_smooth=%d,num_semi_B_smooth=%d,card_f_base=%d\n",num_potential_B_smooth,num_B_smooth,num_semi_B_smooth,cardinality_factor_base);
             //print_list_square_relation(head,num_B_smooth);
 
-			timer.tv_nsec=time_start.tv_nsec;//timer=time_start
+			/*timer.tv_nsec=time_start.tv_nsec;//timer=time_start
 			timer.tv_sec=time_start.tv_sec;//timer=time_start
 			print_time_elapsed("time_total");
-			exit(0);
+			exit(0);*/
 
             //verifica che il numero di relazioni trovate è sufficiente
             if(num_B_smooth<cardinality_factor_base*ENOUGH_RELATION){
