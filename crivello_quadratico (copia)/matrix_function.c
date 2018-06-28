@@ -8,6 +8,8 @@
 #include "list_square_relation.h"
 #include "list_factorization.h"
 #include <mpfr.h>
+#include <unistd.h>
+
 extern struct row_factorization r;
 extern struct timespec timer;
 extern struct timespec time_start;
@@ -2076,7 +2078,7 @@ int**calculate_base_linear_system_char(char*matrix_linear_system,int num_row,int
     *dim_sol=calculate_dim_sol_char(matrix_linear_system,num_row,num_col);//calcola la dimensione della base del sistema lineare
     //fprintf(file_log,"dim_sol=%d ",*dim_sol);
     if(*dim_sol<0){
-        handle_error_with_exit("error in calculate dim sol linear system\n");
+        return NULL;
     }
     if(*dim_sol==0){
         return NULL;

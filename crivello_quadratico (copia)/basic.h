@@ -6,7 +6,7 @@
 
 #define SIQS_MIN_PRIME_POLYNOMIAL 400 //parametri per il calcolo di a
 #define SIQS_MAX_PRIME_POLYNOMIAL 4000 //parametri per il calcolo di a
-#define NUM_ITER_FOR_CALCULATE_A 100 //parametri per il calcolo di a,a diversi che vengono generati,si sceglie quello migliore
+#define NUM_ITER_FOR_CALCULATE_A 30 //parametri per il calcolo di a,a diversi che vengono generati,si sceglie quello migliore
 #define MAX_ITER 3000 //iterazioni massime per calcolare a
 #define MAX_ITER2 3000 //iterazioni massime per calcolare a,
 #define RATIO_A 1.0 //rapporto tra "a" ideale e "a" trovato,se ratio=1 si vuole a trovato molto molto vicino ad a ideale
@@ -20,7 +20,7 @@
 
 #define NUM_OF_N_TO_FACTORIZE 1
 
-#define ENOUGH_RELATION 1.00 //numero maggiore o uguale a 1 indica quante relazioni
+#define ENOUGH_RELATION 0.95 //numero maggiore o uguale a 1 indica quante relazioni
 //vanno trovate in più rispetto alla cardinalità della factor base num_b_smooth>cardinality*enough_relation
 #define ERROR_LOG 25//errore del logaritmo,aumentare per trovare più numeri B_smooth potenziali ma maggior computazione,
 //diminuire per trovare meno numeri B_smooth potenziali ma minor computazione,valore default=25
@@ -51,8 +51,10 @@ struct thread_data {
     int num_B_smooth;
     int num_semi_B_smooth;
 	struct number*numbers;//array di struct di numberi
-	struct node_square_relation*head;//ogni thread dopo il suo compito ha una lista di relazioni quadratiche
-	struct node_square_relation*tail;//ogni thread dopo il suo compito ha una lista di relazioni quadratiche
+	struct node_square_relation*head_square;//ogni thread dopo il suo compito ha una lista di relazioni quadratiche
+	struct node_square_relation*tail_square;//ogni thread dopo il suo compito ha una lista di relazioni quadratiche
+	struct node_square_relation*head_residuos;
+    struct node_square_relation*tail_residuos;
 	//ogni volta che un thread analizza un dato appende la lista delle relazioni quadratiche a quella
 	// precedentemente calcolata
 };

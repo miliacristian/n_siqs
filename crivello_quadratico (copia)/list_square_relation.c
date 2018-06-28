@@ -503,32 +503,55 @@ void remove_same_square(struct node_square_relation**head,struct node_square_rel
     }
     return;
 }
-
-void union_list_square(struct node_square_relation**head,struct node_square_relation**tail,struct node_square_relation*head_square,struct node_square_relation*tail_square){
+void union_list_square(struct node_square_relation**head_square,struct node_square_relation**tail_square,struct node_square_relation*phead_square,struct node_square_relation*ptail_square){
     //concatena la prima lista e la seconda lista =L1 unito L2=L1,L2
-    if(head==NULL){
+    if(head_square==NULL || tail_square==NULL){
         handle_error_with_exit("error in union_list_square\n");
     }
-    if(tail==NULL){
-        handle_error_with_exit("error in union_list_square\n");
-    }
-    if(head_square==NULL){
+    if(phead_square==NULL){
         return;
     }
-    if(*tail==NULL){//lista vuota,prendi l'altra lista
-        *head=head_square;
-        *tail=tail_square;
+    if(*tail_square==NULL){//lista vuota,prendi l'altra lista
+        *head_square=phead_square;
+        *tail_square=ptail_square;
         return;
     }
-    struct node_square_relation*p=head_square;
+    struct node_square_relation*p=phead_square;
     while(p!=NULL){
         struct node_square_relation*q=p->next;
-        insert_ordered_num_square_rel(p->square_relation,head,tail);
+        insert_ordered_num_square_rel(p->square_relation,head_square,tail_square);
         free(p);
         p=q;
     }
     return;
 }
+
+void union_list_residuos(struct node_square_relation**head_residuos,struct node_square_relation**tail_residuos,struct node_square_relation*phead_residuos,struct node_square_relation*ptail_residuos){
+    //concatena la prima lista e la seconda lista =L1 unito L2=L1,L2
+    if(head_residuos==NULL || tail_residuos==NULL){
+        handle_error_with_exit("error in union_list_square\n");
+    }
+    if(head_residuos==NULL || tail_residuos==NULL){
+        handle_error_with_exit("error in union_list_square\n");
+    }
+    if(phead_residuos==NULL){
+        return;
+    }
+    if(*tail_residuos==NULL){//lista vuota,prendi l'altra lista
+        *head_residuos=phead_residuos;
+        *tail_residuos=ptail_residuos;
+        return;
+    }
+    struct node_square_relation*p=phead_residuos;
+    while(p!=NULL){
+        struct node_square_relation*q=p->next;
+        insert_ordered_num_square_rel(p->square_relation,head_residuos,tail_residuos);
+        free(p);
+        p=q;
+    }
+    return;
+}
+
 void insert_ordered_residuos_square_rel(struct square_relation square_relation, struct node_square_relation** head, struct node_square_relation** tail){
     //inserisce ordinatamente un nodo nella lista ordinata per istanti temporali
     if(square_relation.head_factorization==NULL){

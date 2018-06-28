@@ -1548,7 +1548,7 @@ void calculate_a_and_b(int*solution,mpz_t**matrix_B_smooth,int num_B_smooth,int 
 	return;
 }
 void calculate_a_and_b_siqs(const int*solution,struct node_square_relation*head,int num_B_smooth,int card_f_base,mpz_t a,mpz_t b,const mpz_t n){
-    if(solution==NULL || head==NULL || num_B_smooth<=0 || card_f_base<=0 || num_B_smooth<card_f_base || a==NULL || b==NULL || n==NULL){
+    if(solution==NULL || head==NULL || num_B_smooth<=0 || card_f_base<=0 || num_B_smooth<card_f_base*ENOUGH_RELATION || a==NULL || b==NULL || n==NULL){
         handle_error_with_exit("error in parameter calculate a and b\n");
     }
     //il vettore solution ci dice quali relazioni vanno moltiplicate,ogni elemento di solution che è 1 è una relazione da moltiplicare con le altre

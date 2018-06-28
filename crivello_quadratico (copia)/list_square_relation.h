@@ -20,3 +20,4 @@ char verify_sorted_square_rel_list(struct node_square_relation*head);
 char verify_sorted_residuos_square_rel_list(struct node_square_relation*head);
 void sort_relation_by_residuos(struct node_square_relation*head,struct node_square_relation**head_sort_residuos,struct node_square_relation**tail_sort_residuos);
 void sort_relation_by_num(struct node_square_relation*head,struct node_square_relation**head_sort_residuos,struct node_square_relation**tail_sort_residuos);
+void union_list_residuos(struct node_square_relation**head_residuos,struct node_square_relation**tail_residuos,struct node_square_relation*phead_residuos,struct node_square_relation*ptail_residuos);

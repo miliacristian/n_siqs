@@ -77,7 +77,7 @@ void check_variable_in_defines(){
 	if(NUM_OF_N_TO_FACTORIZE<1){
 		handle_error_with_exit("error in value num_of_n_to_factorize\n");
 	}
-	if(ENOUGH_RELATION<1){
+	if(ENOUGH_RELATION<0){
 		handle_error_with_exit("error in value enough relation\n");
 	}
 	if(THRESOLD_B<=0){
@@ -181,8 +181,10 @@ void free_array_thread_data(struct thread_data*thread_data,int length_array_thre
 	}
 	for(int i=0;i<length_array_thread_data;i++){
 		mpz_clear(thread_data[i].b);
-		thread_data[i].head=NULL;
-		thread_data[i].tail=NULL;
+		thread_data[i].head_square=NULL;
+		thread_data[i].tail_square=NULL;
+        thread_data[i].head_residuos=NULL;
+        thread_data[i].tail_residuos=NULL;
 		free(thread_data[i].numbers);
 	}
 	free(thread_data);
@@ -223,8 +225,10 @@ struct thread_data*alloc_array_polynomial_thread_data(int length_array_thread_da
 		t_data[i].num_potential_B_smooth=0;
 		t_data[i].num_B_smooth=0;
 		t_data[i].num_semi_B_smooth=0;
-		t_data[i].head=NULL;
-		t_data[i].tail=NULL;
+		t_data[i].head_square=NULL;
+		t_data[i].tail_square=NULL;
+		t_data[i].head_residuos=NULL;
+		t_data[i].tail_residuos=NULL;
 		t_data[i].numbers=malloc(sizeof(struct number)*(2*M+1));
 		if(t_data[i].numbers==NULL){
 			handle_error_with_exit("error in malloc alloc numbers");

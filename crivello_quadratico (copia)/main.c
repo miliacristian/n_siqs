@@ -77,7 +77,11 @@ int main(int argc,char*argv[]){
 		int factorizations_founded=-1;//numero di fattorizazzioni trovate
 		char factorized=0;//indica se il numero è stato fattorizzato o no
 		char digit=-1;//numero cifre di n
-		struct node_square_relation*head=NULL,*tail=NULL,*head_temp=NULL,*tail_temp=NULL;//contengono tutte le relazioni quadratiche
+		struct node_square_relation*head_residuos=NULL,*tail_residuos=NULL;
+        struct node_square_relation*head_square=NULL,*tail_square=NULL;
+        struct node_square_relation*head_temp=NULL,*tail_temp=NULL;
+		struct node_square_relation *head_sort_residuos=NULL,*tail_sort_residuos=NULL;//contengono tutte le relazioni quadratiche
+		struct node_square_relation *head_sort_square=NULL,*tail_sort_square=NULL;
         int last_prime_factor_base=1;//indica l'ultimo primo della factor base,e quindi da quale primo si inizia a creare la factor base se una factor base è già esistente
                 //se last_prime==1 allora si aggiungono alla factor base anche -1 e 2
         char factor_base_already_exist=0;//indica se la factor base è già esistente oppure no
@@ -383,8 +387,8 @@ int main(int argc,char*argv[]){
             if(verify_sorted_num_square_rel_list(head)==0){
 			    handle_error_with_exit("error in sorted list by num\n");
 			}
-			remove_same_num(&head,&tail,&num_B_smooth,&num_semi_B_smooth);//rimuovi relazioni con lo stesso numero(diverso da zero)
-            print_time_elapsed("time to remove same num");
+			//remove_same_num(&head,&tail,&num_B_smooth,&num_semi_B_smooth);//rimuovi relazioni con lo stesso numero(diverso da zero)
+            //print_time_elapsed("time to remove same num");
             if(verify_sorted_num_square_rel_list(head)==0){
                 handle_error_with_exit("error in sorted list by num\n");
             }
@@ -403,6 +407,7 @@ int main(int argc,char*argv[]){
             	break;
             }
             print_time_elapsed("time to combine relation B_smooth");
+            //usleep(1000*500);//500 millisecondi
             //la lista ora è ordinata per square
             //print_list_square_relation(head,num_B_smooth);
             if(verify_sorted_square_rel_list(head)==0){
@@ -614,6 +619,8 @@ int thread_job_criv_quad(int id_thread){//id inizia da 0,il lavoro di un thread 
     struct timespec timer_thread;//istante di tempo
 	int count=id_thread;//indica quale polinomio deve usare per fare il crivello quadratico
     struct node_square_relation*head_square=NULL,*tail_square=NULL;
+    struct node_square_relation*head_residuos=NULL,*tail_residuos=NULL;
+
     //gettime
     gettime(&timer_thread);
     thread_polynomial_data[id_thread].log_thresold=calculate_log_thresold(n,M);
@@ -633,17 +640,20 @@ int thread_job_criv_quad(int id_thread){//id inizia da 0,il lavoro di un thread 
         //print_thread_data(thread_polynomial_data[id_thread],M);
 
 		//ricerca dei B_smooth potenziali,reali e fattorizzazione dei B_smooth reali
-        find_list_square_relation(thread_polynomial_data[id_thread],&(thread_polynomial_data[id_thread].num_B_smooth),&(thread_polynomial_data[id_thread].num_semi_B_smooth),&(thread_polynomial_data[id_thread].num_potential_B_smooth),M,&head_square,&tail_square,n,a,array_a_struct,s);
+        find_list_square_relation(thread_polynomial_data[id_thread],&(thread_polynomial_data[id_thread].num_B_smooth),&(thread_polynomial_data[id_thread].num_semi_B_smooth),&(thread_polynomial_data[id_thread].num_potential_B_smooth),M,&head_square,&tail_square,&head_residuos,&tail_residuos,n,a,array_a_struct,s);
 		printf("num_potential_B_smooth=%d,num_B_smooth=%d,num_semi_B_smooth=%d\n",thread_polynomial_data[id_thread].num_potential_B_smooth,thread_polynomial_data[id_thread].num_B_smooth,thread_polynomial_data[id_thread].num_semi_B_smooth);
 		print_time_elapsed_local("time to find_list_square_relation",&timer_thread);
 		//pulisci struttura dati del thread per ricominciare con un altro polinomio
 		clear_struct_thread_data(thread_polynomial_data[id_thread],M);
 		print_time_elapsed_local("time to clear struct thread_data",&timer_thread);
 		//unisci la lista dei quadrati trovata con il polinomio con la lista dei quadrati del thread,alla fine ogni thread ha un unica lista dei quadrati
-        union_list_square(&(thread_polynomial_data[id_thread].head),&(thread_polynomial_data[id_thread].tail),head_square,tail_square);
+        union_list_square(&(thread_polynomial_data[id_thread].head_square),&(thread_polynomial_data[id_thread].tail_square),head_square,tail_square);
+        union_list_residuos(&(thread_polynomial_data[id_thread].head_residuos),&(thread_polynomial_data[id_thread].tail_residuos),head_residuos,tail_residuos);
 		head_square=NULL;//resetta la lista locale delle relazioni quadratiche
 		tail_square=NULL;//resetta la lista locale delle relazioni quadratiche
-		 print_time_elapsed_local("time to union list",&timer_thread);
+        head_residuos=NULL;
+        tail_residuos=NULL;
+        print_time_elapsed_local("time to union list",&timer_thread);
 		count+=NUM_THREAD_POLYNOMIAL;//modulo numero dei thread
 	}
 	return 0;
