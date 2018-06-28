@@ -18,7 +18,7 @@
 struct timespec;
 struct timespec timer;
 struct timespec time_start;
-FILE*file_log;
+//FILE*file_log;
 extern int M;
 extern int cardinality_factor_base;
 extern long B;
@@ -488,7 +488,7 @@ void print_time_elapsed_local(char*string,struct timespec*timer_thread){
 	printf("%s:hour=%ld min=%ld sec:%ld ms=%ld ns:%ld\n",string,hour,min,sec,ms,ns);
 	return;
 }
-void print_time_elapsed_on_file_log(char*string){
+/*void print_time_elapsed_on_file_log(char*string){
 	//ns=1000000000=1 sec
 	//ns=1000000 1 ms
 	long ns,ms,sec,min,hour,temp;
@@ -508,9 +508,9 @@ void print_time_elapsed_on_file_log(char*string){
 	temp=min%60;//temp min
 	hour=(min-temp)/60;
 	min=temp;
-	fprintf(file_log,"%s:hour=%ld min=%ld sec:%ld ms=%ld ns:%ld",string,hour,min,sec,ms,ns);
+	//fprintf(file_log,"%s:hour=%ld min=%ld sec:%ld ms=%ld ns:%ld",string,hour,min,sec,ms,ns);
 	return;
-}
+}*/
 void free_memory_matrix_mpz(mpz_t**matrix,int num_row,int num_col){
 	if(matrix==NULL || *matrix==NULL || num_row<=0 || num_col<=0){
 		handle_error_with_exit("error in free memory matrix mpz\n");
@@ -603,6 +603,6 @@ void handle_error_with_exit(char*error_string){//uccide il processo dopo essersi
     }
     printf("%s",error_string);
     //verifica che la stringa contenga il carattere newline
-    fprintf(file_log,"%s",error_string);
+    //fprintf(file_log,"%s",error_string);
     exit(EXIT_FAILURE);
 }

@@ -418,12 +418,11 @@ char combine_relation_B_smooth_and_semi_B_smooth(struct node_square_relation*hea
     while(p!=NULL) {
         //i numeri B_smooth li metto in lista ordinati per square
         while(p!=NULL && not_remove_residuos_one && mpz_cmp_si(p->square_relation.residuos,1)==0){//se il residuo è uguale a 1
-            gmp_printf("residuo uguale a 1 con square=%Zd\n",p->square_relation.square);//
+            //gmp_printf("residuo uguale a 1 con square=%Zd\n",p->square_relation.square);
             insert_ordered_sort_square_rel(p->square_relation,head_final_list_relation,tail_final_list_relation);
             q=p->next;
             free(p);
             p=q;
-            printf("relazione b_smooth aggiunta con successo\n");
         }
         not_remove_residuos_one=0;
         if(q==NULL){
@@ -432,7 +431,7 @@ char combine_relation_B_smooth_and_semi_B_smooth(struct node_square_relation*hea
         q=p->next;
         //ciclo sulla lista per trovare residui uguali e creare nuove relazioni B_smooth e ordinale per square
         while (p!=NULL && q!=NULL && mpz_cmp(p->square_relation.residuos, q->square_relation.residuos) == 0) {//residui uguali
-            gmp_printf("residui uguali a %Zd\n", p->square_relation.residuos);
+            //gmp_printf("residui uguali a %Zd\n", p->square_relation.residuos);
             (*num_B_smooth)++;
             struct square_relation new_square_relation=create_relation_large_prime(p->square_relation,q->square_relation,n,&factorization_founded);
             if(factorization_founded==1){

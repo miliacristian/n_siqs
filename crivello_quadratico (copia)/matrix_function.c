@@ -11,7 +11,7 @@
 extern struct row_factorization r;
 extern struct timespec timer;
 extern struct timespec time_start;
-extern FILE*file_log;
+//extern FILE*file_log;
 
 char*from_matrix_binary_to_matrix_char(unsigned long**binary_linear_system,int num_row,int num_col_binary_matrix,int*num_col_linear_system){
 	if(binary_linear_system==NULL || *binary_linear_system==NULL || num_row<=0 || num_col_binary_matrix<=0 || num_col_linear_system==NULL){
@@ -2074,8 +2074,7 @@ int**calculate_base_linear_system_char(char*matrix_linear_system,int num_row,int
         handle_error_with_exit("error in calculate_base_linear_system\n");
     }
     *dim_sol=calculate_dim_sol_char(matrix_linear_system,num_row,num_col);//calcola la dimensione della base del sistema lineare
-    printf("dim_sol=%d\n",*dim_sol);
-    fprintf(file_log,"dim_sol=%d ",*dim_sol);
+    //fprintf(file_log,"dim_sol=%d ",*dim_sol);
     if(*dim_sol<0){
         handle_error_with_exit("error in calculate dim sol linear system\n");
     }

@@ -9,10 +9,128 @@
 extern long k;
 extern struct timespec timer;
 extern struct timespec time_start;
-extern FILE*file_log;
+//extern FILE*file_log;
 extern int num_increment_M_and_B;
 extern struct row_factorization r;
+void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B){
+	//calcola valori di M e B cercando di minimizzare il numero di volte che i numeri devono essere aumentati
+	if(n==NULL || digit_n<=0 || M==NULL || B==NULL){
+		handle_error_with_exit("error in calculate best M and B\n");
+	}
+	//*B=100*1000*1000;
+	//*M=5000000
+	//*M=400000;
+	//*B=4000000;
 
+	if(digit_n<7){
+		*M=25;
+		*B=20;
+		return;
+	}
+	if(digit_n<9){
+		*M=68;
+		*B=38;
+		return;
+	}
+	if(digit_n<11){
+		*M=125;
+		*B=59;
+		return;
+	}
+	if(digit_n<13){
+		*M=303;
+		*B=112;
+		return;
+	}
+	if(digit_n<15){
+		*M=492;
+		*B=156;
+		return;
+	}
+	if(digit_n<17){
+		*M=1177;
+		*B=277;
+		return;
+	}
+	if(digit_n<19){
+		*M=2835;
+		*B=502;
+		return;
+	}
+	if(digit_n<21){
+		*M=9922;
+		*B=1668;
+		return;
+	}
+	if(digit_n<23){
+		*M=14958;
+		*B=2577;
+		return;
+	}
+	if(digit_n<25){
+		*M=22512;
+		*B=3540;
+		return;
+	}
+	if(digit_n<40){//da 37 cifre a 39,4 secondi di media
+		*M=22512;
+		*B=3540;
+		return;
+	}
+	if(digit_n<45){//da 42 a 44 cifre 4 secondi di media
+		handle_error_with_exit("error criv_quad <45\n");
+		*M=20000;
+		*B=8000;
+		return;
+	}
+	if(digit_n<50){//da 47 a 49 cifre, 6,5 secondi di media
+		handle_error_with_exit("error criv_quad <50\n");
+		*M=20000;
+		*B=19000;
+		return;
+	}
+	if(digit_n<55){//da 53 a 54 cifre,
+		*M=20000;
+		*B=19000;
+	}
+	if(digit_n<60){
+		handle_error_with_exit("error criv_quad <60\n");
+		*M=35000;
+		*B=15000;
+	}
+	if(digit_n<65){
+		handle_error_with_exit("error criv_quad <65\n");
+		*M=35000;
+		*B=15000;
+		return;
+	}
+	if(digit_n<70){
+		handle_error_with_exit("error criv_quad <70\n");
+		*M=35000;
+		*B=15000;
+		return;
+	}
+	if(digit_n<75){
+		handle_error_with_exit("error criv_quad <75\n");
+		*M=35000;
+		*B=15000;
+		return;
+	}
+	if(digit_n<80){
+		handle_error_with_exit("error criv_quad <80\n");
+		*M=35000;
+		*B=15000;
+		return;
+	}
+	if(digit_n>=80){
+		handle_error_with_exit("error criv_quad >=80\n");
+		*M=35000;
+		*B=15000;
+		return;
+	}
+	handle_error_with_exit("num_too long\n");
+	return;
+}
 void calculate_news_M_and_B(long*M,long*B){
 	//calcola i valori nuovi di M e B secondo una formula scelta opportunamente
 	//new_m=(m+perc_m)+(m+perc_m)*perc_m/100
@@ -119,12 +237,12 @@ void calculate_x0(mpz_t x0,const mpz_t n,int k,char *factorized){
 	mpz_mul(s,x0,x0);//s=x0^2
 	if(mpz_cmp(s,n_temp)==0){//se s=x0^2=n_temp
 		gmp_printf("factorization of n=%Zd*%Zd\n",x0,x0);
-		fprintf(file_log,"p=");
+		/*fprintf(file_log,"p=");
 		mpz_out_str(file_log,10,x0);
 		fprintf(file_log," ");
 		fprintf(file_log,"q=");
 		mpz_out_str(file_log,10,x0);
-		fprintf(file_log," ");
+		fprintf(file_log," ");*/
 		*factorized=1;
 		mpz_clear(s);
 		mpz_clear(n_temp);
@@ -140,13 +258,13 @@ void calculate_x0(mpz_t x0,const mpz_t n,int k,char *factorized){
 		mpz_divexact_ui(s,n,k*k);//s=/k
 		mpz_sqrt(s,s);
 		gmp_printf("factorization of n=%Zd*%Zd*%d\n",s,s,k);
-		fprintf(file_log,"p=");
+		/*fprintf(file_log,"p=");
 		mpz_out_str(file_log,10,s);
 		fprintf(file_log," ");
 		fprintf(file_log,"q=");
 		mpz_out_str(file_log,10,s);
 		fprintf(file_log," ");
-		fprintf(file_log,"z=%d ",k);
+		fprintf(file_log,"z=%d ",k);*/
 		*factorized=1;
 		mpz_clear(s);
 		mpz_clear(n_temp);
@@ -157,92 +275,7 @@ void calculate_x0(mpz_t x0,const mpz_t n,int k,char *factorized){
 	mpz_clear(n_temp);
 	return;
 }
-void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B){
-	//calcola valori di M e B cercando di minimizzare il numero di volte che i numeri devono essere aumentati
-	if(n==NULL || digit_n<=0 || M==NULL || B==NULL){
-		handle_error_with_exit("error in calculate best M and B\n");
-	}
-	//*B=100*1000*1000;
-	//*M=5000000
-    //*M=400000;
-	//*B=4000000;
 
-	if(digit_n<7){
-		*M=25;
-		*B=20;
-		return;
-	}
-	if(digit_n<9){
-		*M=68;
-		*B=38;
-		return;
-	}
-	if(digit_n<11){
-		*M=125;
-		*B=59;
-		return;
-	}
-	if(digit_n<13){
-		*M=303;
-		*B=112;
-		return;
-	}
-	if(digit_n<15){
-		*M=492;
-		*B=156;
-		return;
-	}
-	if(digit_n<17){
-		*M=1177;
-		*B=277;
-		return;
-	}
-	if(digit_n<19){
-		*M=2835;
-		*B=502;
-		return;
-	}
-	if(digit_n<21){
-		*M=9922;
-		*B=1668;
-		return;
-	}
-	if(digit_n<23){
-		*M=14958;
-		*B=2577;
-		return;
-	}
-	if(digit_n<25){
-		*M=22512;
-		*B=3540;
-		return;
-	}
-    if(digit_n<41){
-        *M=22512;
-        *B=3540;
-        return;
-    }
-    if(digit_n<49){
-        *M=20000;
-        *B=8000;
-        return;
-    }
-    if(digit_n<55){
-        *M=50000;
-        *B=20000;
-	}
-    if(digit_n<60){
-        *M=35000;
-        *B=15000;
-    }
-	if(digit_n>=50){
-		*M=35000;
-		*B=15000;
-		return;
-	}
-	handle_error_with_exit("num_too long\n");
-	return;
-}
 
 
 /*void calculate_best_M(const mpz_t n,long*M){
@@ -995,14 +1028,14 @@ void calculate_a_f2(mpz_t a,const mpfr_t target_a,int*s,struct node_factor_base*
 		mpz_clear(v);
 		*best_q=NULL;
 		*best_q_number=NULL;
-		fprintf(file_log,"pmin=0,p_max=0 ");
+		//fprintf(file_log,"pmin=0,p_max=0 ");
 		return;//ritorna array_of_prime_chosen_for_a==NULL e a=0
 	}
 	if(cardinality_factor_base==3){
 		get_element_linked_list_f(&value,head_f_base_f,2);//a=valore del 3 primo della factor base
 		mpz_set_si(a,value);
 		*s=1;
-		fprintf(file_log,"p_min=p_max=2 ");
+		//fprintf(file_log,"p_min=p_max=2 ");
 		*best_q_number=alloc_array_int(1);//array che contiene i dei primi scelti
 		*best_q=alloc_array_int(1);	
 		(*best_q_number)[0]=value;
@@ -1036,7 +1069,7 @@ void calculate_a_f2(mpz_t a,const mpfr_t target_a,int*s,struct node_factor_base*
 
 	calculate_p_min_p_max_i_f(&p_min_i,&p_max_i,head_f_base_f,cardinality_factor_base);
 	printf("p_min=%ld p_max=%ld\n",p_min_i,p_max_i);
-	fprintf(file_log,"p_min=%ld p_max=%ld ",p_min_i,p_max_i);
+	//fprintf(file_log,"p_min=%ld p_max=%ld ",p_min_i,p_max_i);
 	s_max=p_max_i-p_min_i+1;//nel caso peggiore s=p_max-p_min+1
 	if(s_max>S_MAX){
 		s_max=S_MAX;
@@ -1316,10 +1349,10 @@ void multiply_n_for_k(mpz_t n,int *k,char*factorized){//n=n*k in modo tale che n
 	if(mpz_divisible_2exp_p(n,1)){
 		mpz_divexact_ui(n,n,2);
 		gmp_printf("factorization of n=2*%Zd\n",n);
-		fprintf(file_log,"p=2 ");
+		/*fprintf(file_log,"p=2 ");
 		fprintf(file_log,"q=");
 		mpz_out_str(file_log,10,n);
-		fprintf(file_log," ");
+		fprintf(file_log," ");*/
 		*factorized=1;
 		return;
 	}
@@ -1772,12 +1805,12 @@ int find_factor_of_n_from_base_matrix_char(int **base_matrix,int num_row,int* nu
         calculate_a_and_b_siqs(solution,head,num_B_smooth,card_f_base,a,b,n_copy);//calcola un a e un b
         factor_founded_from_a_and_b=try_to_factor(a,b,n_copy,factor1,factor2);
         if(factor_founded_from_a_and_b>0){
-            fprintf(file_log,"p=");
+            /*fprintf(file_log,"p=");
             mpz_out_str(file_log,10,factor1);
             fprintf(file_log," ");
             fprintf(file_log,"q=");
             mpz_out_str(file_log,10,factor2);
-            fprintf(file_log," ");
+            fprintf(file_log," ");*/
             free(combination);
             free(solution);
             mpz_clear(n_copy);
