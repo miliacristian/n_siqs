@@ -169,7 +169,22 @@ struct node_square_relation* get_new_node_square_rel(struct square_relation squa
     new_node->next = NULL;
     return new_node;
 }
-
+void insert_at_tail_square_relation(struct square_relation relation,struct node_square_relation**head,struct node_square_relation** tail){//inserisce un nodo in coda
+    if(head==NULL){
+        handle_error_with_exit("error in insert_at_head **head is NULL\n");
+    }
+    if(tail==NULL){
+        handle_error_with_exit("error in insert_at_head **tail is NULL\n");
+    }
+    struct node_square_relation*new_node=get_new_node_square_rel(relation);
+    if(*head == NULL) {
+        insert_first_square_rel(new_node, head, tail);
+        return;
+    }
+    (*tail)->next = new_node;
+    new_node->prev = *tail;
+    *tail = new_node;
+}
 
 void insert_at_head_square_rel(struct node_square_relation* new_node,struct node_square_relation** head,struct node_square_relation** tail) {//inserisce un nodo in testa alla lista
     if(head==NULL){
@@ -547,6 +562,8 @@ void remove_same_square(struct node_square_relation**head,struct node_square_rel
     }
     return;
 }
+
+
 void union_list_square(struct node_square_relation**head_square,struct node_square_relation**tail_square,struct node_square_relation*phead_square,struct node_square_relation*ptail_square){
     //concatena la prima lista e la seconda lista =L1 unito L2=L1,L2
     if(head_square==NULL || tail_square==NULL){
@@ -560,13 +577,27 @@ void union_list_square(struct node_square_relation**head_square,struct node_squa
         *tail_square=ptail_square;
         return;
     }
-    struct node_square_relation*p=phead_square;
-    while(p!=NULL){
-        struct node_square_relation*q=p->next;
-        insert_ordered_num_square_rel(p->square_relation,head_square,tail_square);
-        free(p);
-        p=q;
+    phead_square->prev=(*tail_square);//il primo nodo della seconda lista punta all'ultimo nodo della prima lista
+    (*tail_square)->next=phead_square;//l'ultimo nodo della prima lista punta al primo nodo dell'altra lista
+    *tail_square=ptail_square;//la coda della prima lista punta alla coda della seconda lista
+    return;
+}
+void union_list_residuos(struct node_square_relation**head_residuos,struct node_square_relation**tail_residuos,struct node_square_relation*phead_residuos,struct node_square_relation*ptail_residuos){
+    //concatena la prima lista e la seconda lista =L1 unito L2=L1,L2
+    if(head_residuos==NULL || tail_residuos==NULL){
+        handle_error_with_exit("error in union_list_square\n");
     }
+    if(phead_residuos==NULL){
+        return;
+    }
+    if(*tail_residuos==NULL){//lista vuota,prendi l'altra lista
+        *head_residuos=phead_residuos;
+        *tail_residuos=ptail_residuos;
+        return;
+    }
+    phead_residuos->prev=(*tail_residuos);//il primo nodo della seconda lista punta all'ultimo nodo della prima lista
+    (*tail_residuos)->next=phead_residuos;//l'ultimo nodo della prima lista punta al primo nodo dell'altra lista
+    *tail_residuos=ptail_residuos;//la coda della prima lista punta alla coda della seconda lista
     return;
 }
 void add_relation_semi_B_smooth_to_list(struct node_square_relation**head_sort_residuos,struct node_square_relation**tail_sort_residuos,struct node_square_relation*head_residuos){
@@ -597,32 +628,6 @@ void add_square_relation_to_list_sorted(struct node_square_relation**head_sort_s
     while(p!=NULL){
         struct node_square_relation*q=p->next;
         insert_ordered_sort_square_rel(p->square_relation,head_sort_square,tail_sort_square);
-        free(p);
-        p=q;
-    }
-    return;
-}
-
-void union_list_residuos(struct node_square_relation**head_residuos,struct node_square_relation**tail_residuos,struct node_square_relation*phead_residuos,struct node_square_relation*ptail_residuos){
-    //concatena la prima lista e la seconda lista =L1 unito L2=L1,L2
-    if(head_residuos==NULL || tail_residuos==NULL){
-        handle_error_with_exit("error in union_list_square\n");
-    }
-    if(head_residuos==NULL || tail_residuos==NULL){
-        handle_error_with_exit("error in union_list_square\n");
-    }
-    if(phead_residuos==NULL){
-        return;
-    }
-    if(*tail_residuos==NULL){//lista vuota,prendi l'altra lista
-        *head_residuos=phead_residuos;
-        *tail_residuos=ptail_residuos;
-        return;
-    }
-    struct node_square_relation*p=phead_residuos;
-    while(p!=NULL){
-        struct node_square_relation*q=p->next;
-        insert_ordered_num_square_rel(p->square_relation,head_residuos,tail_residuos);
         free(p);
         p=q;
     }

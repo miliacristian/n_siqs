@@ -23,3 +23,5 @@ void sort_relation_by_num(struct node_square_relation*head,struct node_square_re
 void union_list_residuos(struct node_square_relation**head_residuos,struct node_square_relation**tail_residuos,struct node_square_relation*phead_residuos,struct node_square_relation*ptail_residuos);
 void add_square_relation_to_list_sorted(struct node_square_relation**head_sort_square,struct node_square_relation**tail_sort_square,struct node_square_relation*head_square);
 void add_relation_semi_B_smooth_to_list(struct node_square_relation**head_sort_residuos,struct node_square_relation**tail_sort_residuos,struct node_square_relation*head_residuos);
+void insert_at_tail_square_rel(struct node_square_relation *new_node,struct node_square_relation**head,struct node_square_relation** tail);
+void insert_at_tail_square_relation(struct square_relation relation,struct node_square_relation**head,struct node_square_relation** tail);
