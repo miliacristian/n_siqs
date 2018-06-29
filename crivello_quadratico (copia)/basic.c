@@ -192,6 +192,7 @@ void free_array_thread_data(struct thread_data*thread_data,int length_array_thre
 		thread_data[i].j1_mod_p=NULL;
 		free(thread_data[i].j2_mod_p);
 		thread_data[i].j2_mod_p=NULL;
+		//
 	}
 	free(thread_data);
 	return;
