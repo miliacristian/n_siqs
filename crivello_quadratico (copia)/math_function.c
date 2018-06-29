@@ -149,7 +149,19 @@ struct node_factorization*factorize_num(const mpz_t num,int j_of_num,int first_i
 	    	index++;//aumneta l'indice
             //n.b. i fattori di a possono comparire nella fattorizzazione con un esponente maggiore di 1
 	    }
-	    prime=r.prime[i];
+		prime=r.prime[i];
+	    if(i==first_index_f_base || i==last_index_f_base){//se è uguale al primo o all'ultimo indice è sicuramente divisibile per p
+			mpz_divexact_ui(temp, temp,prime);//dividilo la prima volta per prime
+	    	exp+=1;
+			while(mpz_divisible_ui_p(temp,prime)!=0) {//se il numero è divisibile per un primo della fattor base
+				mpz_divexact_ui(temp, temp,prime);//dividilo
+				exp+=1;//aumenta esponente
+			}
+			if(exp>0) {//è stato diviso almeno 1 volta
+				insert_ordered_factor(prime, exp, i, &head, &tail);
+			}
+			exp=0;//resetta esponente
+	    }
 	    j1=thread_data.j1_mod_p[i];
 	    j2=thread_data.j2_mod_p[i];
 	    j_of_num_mod_p=j_of_num%prime;//j_of_num ridotto mod p
@@ -162,15 +174,11 @@ struct node_factorization*factorize_num(const mpz_t num,int j_of_num,int first_i
                 mpz_divexact_ui(temp, temp,prime);//dividilo
                 exp+=1;//aumenta esponente
             }
+			if(exp>0) {//è stato diviso almeno 1 volta
+				insert_ordered_factor(prime, exp, i, &head, &tail);
+			}
+			exp=0;//resetta esponente
 	    }
-        /*while(mpz_divisible_ui_p(temp,prime)!=0) {//se il numero è divisibile per un primo della fattor base
-            mpz_divexact_ui(temp, temp,prime);//dividilo
-            exp+=1;//aumenta esponente
-        }*/
-        if(exp>0) {//è stato diviso almeno 1 volta
-            insert_ordered_factor(prime, exp, i, &head, &tail);
-        }
-        exp=0;//resetta esponente
     }
     if(s!=0) {
         //se i numeri di a sono ad un indice più grande del last_index_f_base allora aggiungili dopo
@@ -2731,6 +2739,8 @@ char divide_all_by_p_to_k_f(int rad,long p,int index_of_prime,long k,long M,stru
 	j2=mpz_get_si(j2t);//j2=j2t
     thread_data.j1_mod_p[index_of_prime]=j1;
     thread_data.j2_mod_p[index_of_prime]=j2;
+    printf("j1=%d,p=%d\n",j1,p);
+    printf("j2=%d,p=%d\n",j2,p);
     j_temp2=j1;
     indexv=j_temp2+M;//l'indice deve essere positivo
 	while(j_temp2<=M){//all'inizio j_temp=0*p+j1t,poi diventa k*p+j1t(a salti di p)

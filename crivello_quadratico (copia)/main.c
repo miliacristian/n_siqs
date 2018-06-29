@@ -334,7 +334,7 @@ int main(int argc,char*argv[]){
             printf("main thread\n");
 			factor_matrix_f(n,M,(thread_polynomial_data[NUM_THREAD_POLYNOMIAL]),cardinality_factor_base,a_default,array_a_struct,s);//fattorizza numeri
 			print_time_elapsed("time_to_factor matrix_factorization main thread");
-			//print_thread_data(thread_polynomial_data[NUM_THREAD_POLYNOMIAL],M);
+			print_thread_data(thread_polynomial_data[NUM_THREAD_POLYNOMIAL],M,cardinality_factor_base);
 
 			//log_thresold main thread
 			thread_polynomial_data[NUM_THREAD_POLYNOMIAL].log_thresold=calculate_log_thresold(n,M);
@@ -344,6 +344,11 @@ int main(int argc,char*argv[]){
             head_residuos=NULL;
             tail_residuos=NULL;
 			find_list_square_relation(thread_polynomial_data[NUM_THREAD_POLYNOMIAL],&num_B_smooth,&num_semi_B_smooth,&num_potential_B_smooth,M,&head_square,&tail_square,&head_residuos,&tail_residuos,n,a_default,NULL,0);
+			printf("square\n");
+			print_list_square_relation(head_square,num_B_smooth);
+			printf("residuos\n");
+			print_list_square_relation(head_residuos,num_B_smooth);
+			exit(0);
 			print_time_elapsed("time_to find_list_square_relation main thread");
 
 			//aspetta tutti i thread e libera memoria
@@ -427,8 +432,8 @@ int main(int argc,char*argv[]){
                 handle_error_with_exit("error in sorted list by square\n");
             }*/
             printf("card_f_base=%d\n",cardinality_factor_base);
-			print_estimated_time(cardinality_factor_base,num_B_smooth);
-			exit(0);
+			//print_estimated_time(cardinality_factor_base,num_B_smooth);
+			//exit(0);
 
             if(num_B_smooth>=cardinality_factor_base*ENOUGH_RELATION){
                 remove_same_square(&head_sort_square,&tail_sort_square,&num_B_smooth,&num_semi_B_smooth);

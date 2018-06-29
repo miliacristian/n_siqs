@@ -12,7 +12,7 @@
 #define RATIO_A 1.0 //rapporto tra "a" ideale e "a" trovato,se ratio=1 si vuole a trovato molto molto vicino ad a ideale
 
 #define NUM_THREAD_FACTOR_BASE 8//numero thread supplementari per costruire factor base
-#define NUM_THREAD_POLYNOMIAL 10 //numero di thread supplementari per calcolare i polinomi di siqs
+#define NUM_THREAD_POLYNOMIAL 0 //numero di thread supplementari per calcolare i polinomi di siqs
 #define S_MAX 11//corrisponde a 2^(S_MAX-1) polinomi diversi,limita il numero di polinomi possibili
 #define MAX_DIM_SOL 16 //dimensione soluzione massima del sistema lineare
 #define PERC_INCREMENT_M 5 //quanto aumenta in percentuale M se non si riesce a fattorizzare n

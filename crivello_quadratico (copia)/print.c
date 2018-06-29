@@ -539,7 +539,10 @@ void print_matrix_factorization(mpz_t**matrix_factorization,int M,int cardinalit
 	print_matrix_mpz(matrix_factorization,2*M+1,cardinality_factor_base*2+2);
 	return;
 }
-void print_thread_data(struct thread_data thread_data,long M){
+void print_thread_data(struct thread_data thread_data,long M,int cardinality_factor_base){
+	if(M<=0 || cardinality_factor_base<=0){
+		handle_error_with_exit("error in print_thread_data\n");
+	}
 	if(M>THRESOLD_PRINT_ARRAY/2){
 		return;
 	}
@@ -547,6 +550,8 @@ void print_thread_data(struct thread_data thread_data,long M){
 		gmp_printf("b=%Zd,",thread_data.b);
 		printf("first_index=%d,last_index=%d,sum_log=%d,j=%d\n",thread_data.numbers[i].first_index_f_base,thread_data.numbers[i].last_index_f_base,thread_data.numbers[i].sum_log,thread_data.numbers[i].j);
 	}
+	print_array_long(thread_data.j1_mod_p,cardinality_factor_base);
+	print_array_long(thread_data.j2_mod_p,cardinality_factor_base);
 }
 
 void print_array_matrix_same_dimension(mpz_t***array_matrix_mpz,int length_array,int num_row,int num_col){

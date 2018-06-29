@@ -33,7 +33,6 @@ void print_array_matrix_same_dimension(mpz_t***array_matrix_mpz,int length_array
 //void print_matrix_factorization_f(struct matrix_factorization m);
 void print_array_float(float*array,int length);
 void print_list_factor(struct node_factor_base*head,int length);
-void print_thread_data(struct thread_data thread_data,long M);
 void print_factorization(const mpz_t num,struct node_factorization*head_factor);
 void print_list_square_relation(struct node_square_relation*head,int length);
 void print_array_a_struct(struct a_struct*array_a_struct,int length);
@@ -41,3 +40,4 @@ void print_linear_system(char*linear_system,int cardinality_factor_base,int num_
 void print_matrix_char(char**matrix,int num_row,int num_col);
 void print_binary_matrix(unsigned long**binary_matrix,int num_row,int num_col);
 void print_struct_square_relation(struct square_relation square_relation);
+void print_thread_data(struct thread_data thread_data,long M,int cardinality_factor_base);
