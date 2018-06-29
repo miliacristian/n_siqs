@@ -187,13 +187,17 @@ void free_array_thread_data(struct thread_data*thread_data,int length_array_thre
         thread_data[i].head_residuos=NULL;
         thread_data[i].tail_residuos=NULL;
 		free(thread_data[i].numbers);
+		thread_data[i].numbers=NULL;
+		free(thread_data[i].j1_mod_p);
+		thread_data[i].j1_mod_p=NULL;
+		free(thread_data[i].j2_mod_p);
+		thread_data[i].j2_mod_p=NULL;
 	}
 	free(thread_data);
 	return;
 }
 void clear_struct_thread_data(struct thread_data t_data,int M) {
 	for (int i = 0; i < 2 * M + 1; i++) {
-		//t_data.numbers[i].j = i - M;
 		t_data.numbers[i].first_index_f_base = -1;
 		t_data.numbers[i].sum_log = 0;
 		t_data.numbers[i].last_index_f_base = -1;
@@ -234,6 +238,8 @@ struct thread_data*alloc_array_polynomial_thread_data(int length_array_thread_da
 		if(t_data[i].numbers==NULL){
 			handle_error_with_exit("error in malloc alloc numbers");
 		}
+		t_data[i].j1_mod_p=alloc_array_long(cardinality_factor_base);
+		t_data[i].j2_mod_p=alloc_array_long(cardinality_factor_base);
 	}
 	for(int i=0;i<2*M+1;i++){
 		t_data[0].numbers[i].j=i-M;

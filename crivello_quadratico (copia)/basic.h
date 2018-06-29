@@ -42,7 +42,6 @@ struct row_factorization{
     int*root_n_mod_p;//prima radice di n mod p
     int*root2_n_mod_p;//seconda radice di n mod p
     int*inverse_a_mod_p;//a^-1 mod p
-    int*j_mod_p;
 };
 
 struct thread_data {
@@ -56,6 +55,9 @@ struct thread_data {
 	struct node_square_relation*tail_square;//ogni thread dopo il suo compito ha una lista di relazioni quadratiche
 	struct node_square_relation*head_residuos;
     struct node_square_relation*tail_residuos;
+    long*j1_mod_p;//j1=-b+r)*a^-1 mod p
+    long*j2_mod_p;//j2=(-b+r2)*a^-1 mod p
+
 	//ogni volta che un thread analizza un dato appende la lista delle relazioni quadratiche a quella
 	// precedentemente calcolata
 };

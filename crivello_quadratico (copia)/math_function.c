@@ -103,17 +103,18 @@ void create_num(mpz_t num,const mpz_t a,const mpz_t b,const mpz_t n,long j){
 	mpz_clear(double_b_mul_j);
 	mpz_clear(a_mul_square_j);
 }
-struct node_factorization*factorize_num(const mpz_t num,int first_index_f_base,int last_index_f_base,
-        char*is_B_smooth,char*is_semi_B_smooth,mpz_t residuos,struct a_struct*array_a_struct,int s){
+struct node_factorization*factorize_num(const mpz_t num,int j_of_num,int first_index_f_base,int last_index_f_base,
+        char*is_B_smooth,char*is_semi_B_smooth,mpz_t residuos,struct a_struct*array_a_struct,int s,struct thread_data thread_data){
 	if((first_index_f_base<0 && first_index_f_base!=-1)|| (last_index_f_base<0 && last_index_f_base!=-1)
         || is_B_smooth==NULL || is_semi_B_smooth==NULL
             || first_index_f_base>last_index_f_base || (array_a_struct==NULL && s>0)){
 		handle_error_with_exit("error in factorize_num\n");
 	}
-
+    //j_of_num va da -M a +M
 	int prime=0;
 	int exp=0;
 	int index=0;
+	long j1,j2,j_of_num_mod_p;
 	mpz_t temp;
 	mpz_init(temp);
 	mpz_set(temp,num);
@@ -149,10 +150,23 @@ struct node_factorization*factorize_num(const mpz_t num,int first_index_f_base,i
             //n.b. i fattori di a possono comparire nella fattorizzazione con un esponente maggiore di 1
 	    }
 	    prime=r.prime[i];
-        while(mpz_divisible_ui_p(temp,prime)!=0) {//se il numero è divisibile per un primo della fattor base
+	    j1=thread_data.j1_mod_p[i];
+	    j2=thread_data.j2_mod_p[i];
+	    j_of_num_mod_p=j_of_num%prime;//j_of_num ridotto mod p
+        //j_of_num ridotto modulo prime se è uguale a j1 o j2 allora è divisibile per p
+	    if(j_of_num_mod_p==j1 || j_of_num_mod_p==j2){
+            mpz_divexact_ui(temp, temp,prime);//dividilo la prima volta per prime
+            exp+=1;//aumenta esponente
+            //verifica se è ulteriormente divisibile per prime facendo la divisione
+            while(mpz_divisible_ui_p(temp,prime)!=0) {//se il numero è divisibile per un primo della fattor base
+                mpz_divexact_ui(temp, temp,prime);//dividilo
+                exp+=1;//aumenta esponente
+            }
+	    }
+        /*while(mpz_divisible_ui_p(temp,prime)!=0) {//se il numero è divisibile per un primo della fattor base
             mpz_divexact_ui(temp, temp,prime);//dividilo
             exp+=1;//aumenta esponente
-        }
+        }*/
         if(exp>0) {//è stato diviso almeno 1 volta
             insert_ordered_factor(prime, exp, i, &head, &tail);
         }
@@ -235,7 +249,7 @@ void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth
             //possibile B_smooth trovato
             (*num_potential_B_smooth)++;
             create_num(num,a,thread_data.b,n,thread_data.numbers[i].j);
-            head_factor=factorize_num(num,thread_data.numbers[i].first_index_f_base,thread_data.numbers[i].last_index_f_base,&is_B_smooth,&is_semi_B_smooth,residuos,array_a_struct,s);
+            head_factor=factorize_num(num,thread_data.numbers[i].j,thread_data.numbers[i].first_index_f_base,thread_data.numbers[i].last_index_f_base,&is_B_smooth,&is_semi_B_smooth,residuos,array_a_struct,s,thread_data);
             if(head_factor==NULL && (is_B_smooth==1 || is_semi_B_smooth==1)){
             	handle_error_with_exit("error invalid factorize_num\n");
             }
@@ -2715,6 +2729,8 @@ char divide_all_by_p_to_k_f(int rad,long p,int index_of_prime,long k,long M,stru
     mpz_mod(j2t,j2t,p_to_k);//j1_t ridotto modulo p^k
 	j1=mpz_get_si(j1t);//j1=j1t
 	j2=mpz_get_si(j2t);//j2=j2t
+    thread_data.j1_mod_p[index_of_prime]=j1;
+    thread_data.j2_mod_p[index_of_prime]=j2;
     j_temp2=j1;
     indexv=j_temp2+M;//l'indice deve essere positivo
 	while(j_temp2<=M){//all'inizio j_temp=0*p+j1t,poi diventa k*p+j1t(a salti di p)
