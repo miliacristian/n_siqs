@@ -39,9 +39,10 @@ struct row_factorization{
     int length;
 	int*prime;//contiene primo factor base e
 	int*log_prime;//valore del suo logaritmo
-    int*root_n_mod_p;
-    int*root2_n_mod_p;
-    int*inverse_a_mod_p;
+    int*root_n_mod_p;//prima radice di n mod p
+    int*root2_n_mod_p;//seconda radice di n mod p
+    int*inverse_a_mod_p;//a^-1 mod p
+    int*j_mod_p;
 };
 
 struct thread_data {

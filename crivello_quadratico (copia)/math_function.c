@@ -111,7 +111,7 @@ struct node_factorization*factorize_num(const mpz_t num,int first_index_f_base,i
 		handle_error_with_exit("error in factorize_num\n");
 	}
 
-	int number=0;
+	int prime=0;
 	int exp=0;
 	int index=0;
 	mpz_t temp;
@@ -148,18 +148,19 @@ struct node_factorization*factorize_num(const mpz_t num,int first_index_f_base,i
 	    	index++;//aumneta l'indice
             //n.b. i fattori di a possono comparire nella fattorizzazione con un esponente maggiore di 1
 	    }
-	    number=r.prime[i];
-        while(mpz_divisible_ui_p(temp,r.prime[i])!=0) {//se il numero è divisibile per un primo della fattor base
-            mpz_divexact_ui(temp, temp, r.prime[i]);//dividilo
+	    prime=r.prime[i];
+        while(mpz_divisible_ui_p(temp,prime)!=0) {//se il numero è divisibile per un primo della fattor base
+            mpz_divexact_ui(temp, temp,prime);//dividilo
             exp+=1;//aumenta esponente
         }
         if(exp>0) {//è stato diviso almeno 1 volta
-            insert_ordered_factor(number, exp, i, &head, &tail);
+            insert_ordered_factor(prime, exp, i, &head, &tail);
         }
         exp=0;//resetta esponente
     }
     if(s!=0) {
         //se i numeri di a sono ad un indice più grande del last_index_f_base allora aggiungili dopo
+		//questi fattori di a non dividono il polinomio a*j^2+2bj+c ->avranno sempre esponente 1
         while (index!=s && array_a_struct[index].index_prime_a > last_index_f_base && index < s) {
             insert_ordered_factor(array_a_struct[index].number_prime_a, 1, array_a_struct[index].index_prime_a, &head,
                                   &tail);//inserisci nodo

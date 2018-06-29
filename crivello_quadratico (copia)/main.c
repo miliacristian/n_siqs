@@ -312,6 +312,7 @@ int main(int argc,char*argv[]){
 			r.root_n_mod_p=alloc_array_int(cardinality_factor_base);
 			r.root2_n_mod_p=alloc_array_int(cardinality_factor_base);
 			r.inverse_a_mod_p=alloc_array_int(cardinality_factor_base);
+			r.j_mod_p=alloc_array_int(2*M+1);
 			create_row_factorization(head_f_base_f,cardinality_factor_base,a_old,array_a_struct,s);
 			printf("logaritmi(arrotondati) factor base:");
 			print_array_int(r.log_prime,cardinality_factor_base);
