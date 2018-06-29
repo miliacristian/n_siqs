@@ -253,7 +253,6 @@ void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth
                 mpz_set(square_relation.residuos,residuos);
                 calculate_square(square_relation.square,a,i-M,thread_data.b,n);
                 insert_at_tail_square_relation(square_relation,head_square,tail_square);
-                //insert_ordered_num_square_rel(square_relation,head_square,tail_square);
             }
             else if(is_semi_B_smooth==1){
 				(*num_semi_B_smooth)++;
@@ -267,7 +266,6 @@ void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth
 				mpz_set(square_relation.residuos,residuos);
 				calculate_square(square_relation.square,a,i-M,thread_data.b,n);
                 insert_at_tail_square_relation(square_relation,head_residuos,tail_residuos);
-				//insert_ordered_num_square_rel(square_relation,head_residuos,tail_residuos);
 
             }
             else{

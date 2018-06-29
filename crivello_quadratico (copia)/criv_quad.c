@@ -89,8 +89,8 @@ void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B){
 		*B=19000;
 		return;
 	}
-	if(digit_n<55){//da 53 a 54 cifre,1 minuto e 5 secondi
-        handle_error_with_exit("error criv_quad <55\n");
+	if(digit_n<55){//da 53 a 54 cifre,37 secondi
+		handle_error_with_exit("error criv_quad <55\n");
 		*M=60000;
 		*B=97000;
 		return;
@@ -102,20 +102,50 @@ void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B){
         return;
     }
 	if(digit_n<65){//4 minuti
+        handle_error_with_exit("error criv_quad <65\n");
 		*M=35000;
 		*B=140000;
 		return;
 	}
-	if(digit_n<70){
+    if(digit_n<70){//7,5 minuti
 		handle_error_with_exit("error criv_quad <70\n");
-		*M=35000;
-		*B=15000;
+        *M=50000;
+        *B=370000;
+        return;
+    }
+    /*if(digit_n<70){//4-5-6 minuti sistema lineare grande
+        *M=45000;
+        *B=350000;
+        return;
+    }*/
+    /*if(digit_n<70){//6-7-8 stabile
+        *M=40000;
+        *B=300000;
+        return;
+    }*/
+    /*if(digit_n<70){//3-6-6-6-7-9-14-14
+        *M=30000;
+        *B=160000;
+        return;
+    }*/
+    /*if(digit_n<70){5-6-7-8-9 minuti
+        *M=50000;
+        *B=165000;
+        return;
+    }*/
+    /*if(digit_n<70){//7-8-9 minuti
+        *M=45000;
+        *B=140000;
+        return;
+    }*/
+	/*if(digit_n<70){ 7-8-9 minuti
+		*M=40000;
+		*B=130000;
 		return;
-	}
+	}*/
 	if(digit_n<75){
-		handle_error_with_exit("error criv_quad <75\n");
-		*M=35000;
-		*B=15000;
+		*M=250000;
+		*B=1000000;
 		return;
 	}
 	if(digit_n<80){

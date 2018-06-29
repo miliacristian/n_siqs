@@ -24,6 +24,7 @@
 	//extern FILE*file_log;//file di log
 	extern struct timespec timer;//istante di tempo 
 	extern struct timespec time_start;//istante di tempo iniziale
+	extern struct timespec timer_test;
 
 	//valori globali del file main
 	struct row_factorization r;//contiene tutti i primi della factor base e i relativi log
@@ -100,6 +101,7 @@ int main(int argc,char*argv[]){
 	
 		//gettime
 		gettime(&timer);
+		gettime(&timer_test);
 		gettime(&time_start);
 
 		//n
@@ -373,7 +375,8 @@ int main(int argc,char*argv[]){
 			array_a_struct=NULL;
 
 			printf("threads ended the job\n");
-			print_time_elapsed("time to wait all threads");
+			timer_test=print_time_elapsed("time to wait all threads");
+
 			printf("num_potential_B_smooth_main_thread=%d,num_B_smooth_main_thread=%d,num_semi_B_smooth main thread=%d\n",
                    num_potential_B_smooth,num_B_smooth,num_semi_B_smooth);
 
@@ -389,7 +392,6 @@ int main(int argc,char*argv[]){
 				printf("num_potential_B_smooth=%d,num_B_smooth=%d,num_semi_B_smooth=%d\n",num_potential_B_smooth,num_B_smooth,num_semi_B_smooth);
 			}
             printf("num_potential_B_smooth=%d,num_B_smooth=%d,num_semi_B_smooth=%d\n",num_potential_B_smooth,num_B_smooth,num_semi_B_smooth);
-            //fprintf(file_log,"num_pot_B_smooth=%d num_B_smooth=%d ,num_semi_B_smooth=%d ",num_potential_B_smooth,num_B_smooth,num_semi_B_smooth);
 
             //unisici tutte le relazioni quadrate(solamente quelle B_smooth)alla lista delle relazioni quadratiche,
             // la lista finale conterrà relazioni quadratiche ordinate per square
@@ -424,11 +426,9 @@ int main(int argc,char*argv[]){
             /*if(verify_sorted_square_rel_list(head_sort_square)==0){
                 handle_error_with_exit("error in sorted list by square\n");
             }*/
-            /*printf("card_f_base=%d\n",cardinality_factor_base);
-			timer.tv_nsec=time_start.tv_nsec;//timer=time_start
-			timer.tv_sec=time_start.tv_sec;//timer=time_start
-			print_time_elapsed("time_total");
-			exit(0);*/
+            printf("card_f_base=%d\n",cardinality_factor_base);
+			print_estimated_time(cardinality_factor_base,num_B_smooth);
+			exit(0);
 
             if(num_B_smooth>=cardinality_factor_base*ENOUGH_RELATION){
                 remove_same_square(&head_sort_square,&tail_sort_square,&num_B_smooth,&num_semi_B_smooth);

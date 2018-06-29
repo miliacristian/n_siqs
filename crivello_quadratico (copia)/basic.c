@@ -18,6 +18,7 @@
 struct timespec;
 struct timespec timer;
 struct timespec time_start;
+struct timespec timer_test;
 //FILE*file_log;
 extern int M;
 extern int cardinality_factor_base;
@@ -438,7 +439,43 @@ struct timespec diff_timespec(struct timespec time_current,struct timespec timer
 	}
 	return time_sub;
 }
-void print_time_elapsed(char*string){
+void print_estimated_time(int cardinality_factor_base,int num_B_smooth){
+    if(cardinality_factor_base<=0 || num_B_smooth<0){
+        handle_error_with_exit("error in print_estimated_time");
+    }
+    long ns,ms,sec,min,hour,temp;
+    struct timespec empty_struct,time_sub;
+    empty_struct.tv_nsec=0;
+    empty_struct.tv_sec=0;
+    time_sub=diff_timespec(timer_test,empty_struct);
+    ns=time_sub.tv_nsec%1000000;
+    time_sub.tv_nsec-=ns;
+    ms=time_sub.tv_nsec/1000000;
+    sec=time_sub.tv_sec%60;//i secondi sono modulo 60
+    min=(time_sub.tv_sec-sec)/60;
+    temp=min%60;//temp min
+    hour=(min-temp)/60;
+    min=temp;
+
+    long times=cardinality_factor_base/num_B_smooth;
+    ms=ms*times;
+    long remainder=ms%1000;
+    int plus_sec=(ms-remainder)/1000;//secondi in più
+    ms=remainder;
+    sec=sec*times;
+    remainder=sec%60;
+    int plus_min=(sec-remainder)/60;
+    sec=remainder;
+    min+=plus_min;
+    sec+=plus_sec;
+	remainder=sec%60;
+	plus_min=(sec-remainder)/60;
+	sec=remainder;
+	min+=plus_min;
+    printf("hour=%ld min=%ld sec:%ld ms=%ld ns:%ld\n",hour,min,sec,ms,ns);
+    return;
+}
+struct timespec print_time_elapsed(char*string){
 	//ns=1000000000=1 sec
 	//ns=1000000 1 ms
 	long ns,ms,sec,min,hour,temp;
@@ -462,7 +499,7 @@ void print_time_elapsed(char*string){
 	hour=(min-temp)/60;
 	min=temp;
 	printf("%s:hour=%ld min=%ld sec:%ld ms=%ld ns:%ld\n",string,hour,min,sec,ms,ns);
-	return;
+	return time_sub;
 }
 
 void print_time_elapsed_local(char*string,struct timespec*timer_thread){

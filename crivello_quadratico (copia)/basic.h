@@ -22,7 +22,7 @@
 
 #define ENOUGH_RELATION 0.95 //numero maggiore o uguale a 1 indica quante relazioni
 //vanno trovate in più rispetto alla cardinalità della factor base num_b_smooth>cardinality*enough_relation
-#define ERROR_LOG 25//errore del logaritmo,aumentare per trovare più numeri B_smooth potenziali ma maggior computazione,
+#define ERROR_LOG 35//errore del logaritmo,aumentare per trovare più numeri B_smooth potenziali ma maggior computazione,
 //diminuire per trovare meno numeri B_smooth potenziali ma minor computazione,valore default=25
 #define THRESOLD_B 20000 //se B è minore di thresold b non dividere il processo di creazione factor base in più thread
 #define BIT_OF_UNSIGNED_LONG (8*sizeof(unsigned long))//numero di bit di una variabile unsigned long
@@ -92,7 +92,7 @@ struct factorization_thread_data{
     struct thread_data thread_data;
 };
 
-void print_time_elapsed(char*string);
+struct timespec print_time_elapsed(char*string);
 void handle_error_with_exit(char*error_string);
 char array_is_fill_of_value(char*combination,int length,char value);
 void free_memory_matrix_int(int **matrix,int num_row,int num_col);
@@ -126,4 +126,5 @@ void free_list_factorization(struct node_factorization*head_factorization);
 int calculate_start_factor_base(int id_thread);
 void check_variable_in_defines();
 int compare_a_struct( const void* a, const void* b);
+void print_estimated_time(int cardinality_factor_base,int num_B_smooth);
 #endif
