@@ -226,9 +226,9 @@ int main(int argc,char*argv[]){
 			print_time_elapsed("time to calculate factor base");
 
 			//verifica che la factor base è corretta
-            if(verify_factor_base(head_f_base_f,cardinality_factor_base,last_prime_factor_base)==0){
+            /*if(verify_factor_base(head_f_base_f,cardinality_factor_base,last_prime_factor_base)==0){
                 handle_error_with_exit("error in main verify factor base\n");
-            }
+            }*/
 			print_time_elapsed("time to verify factor base");
 			//a,per siqs e generare tutti gli altri b,prodotto di primi dispari distinti
 			calculate_a_f2(a_new,thresold_a,&s,head_f_base_f,cardinality_factor_base,&index_prime_a,&number_prime_a);
@@ -397,16 +397,16 @@ int main(int argc,char*argv[]){
             print_time_elapsed("time to add square relation to list sorted");
             head_square=NULL;
             tail_square=NULL;
-            if(verify_sorted_square_rel_list(head_sort_square)==0){
+            /*if(verify_sorted_square_rel_list(head_sort_square)==0){
                 handle_error_with_exit("error in sort relation by square\n");
-            }
+            }*/
             //unisici tutte le relazioni semi_B_smooth alla lista delle relazioni semi_B_smooth,
             // la lista finale conterrà relazioni semi_B_smooth ordinate per residuo
             add_relation_semi_B_smooth_to_list(&head_sort_residuos,&tail_sort_residuos,head_residuos);
             print_time_elapsed("time to add relation semi_B_smooth");
-            if(verify_sorted_residuos_square_rel_list(head_sort_residuos)==0){
+            /*if(verify_sorted_residuos_square_rel_list(head_sort_residuos)==0){
                 handle_error_with_exit("error in sort relation by square\n");
-            }
+            }*/
             head_residuos=NULL;
             tail_residuos=NULL;
 
@@ -421,11 +421,11 @@ int main(int argc,char*argv[]){
             }
             print_time_elapsed("time to combine relation B_smooth");
             //print_list_square_relation(head,num_B_smooth);
-            if(verify_sorted_square_rel_list(head_sort_square)==0){
+            /*if(verify_sorted_square_rel_list(head_sort_square)==0){
                 handle_error_with_exit("error in sorted list by square\n");
-            }
-
-			/*timer.tv_nsec=time_start.tv_nsec;//timer=time_start
+            }*/
+            /*printf("card_f_base=%d\n",cardinality_factor_base);
+			timer.tv_nsec=time_start.tv_nsec;//timer=time_start
 			timer.tv_sec=time_start.tv_sec;//timer=time_start
 			print_time_elapsed("time_total");
 			exit(0);*/
@@ -433,9 +433,9 @@ int main(int argc,char*argv[]){
             if(num_B_smooth>=cardinality_factor_base*ENOUGH_RELATION){
                 remove_same_square(&head_sort_square,&tail_sort_square,&num_B_smooth,&num_semi_B_smooth);
                 print_time_elapsed("time to remove same square");
-                if(verify_sorted_square_rel_list(head_sort_square)==0){
+                /*if(verify_sorted_square_rel_list(head_sort_square)==0){
                     handle_error_with_exit("error in sort list by square\n");
-                }
+                }*/
             }
             //verifica che il numero di relazioni trovate è ancora sufficiente dopo aver rimosso gli square uguali
             if(num_B_smooth<cardinality_factor_base*ENOUGH_RELATION){
@@ -502,16 +502,16 @@ int main(int argc,char*argv[]){
 				number_cycle++;
 				continue;
 			}
-			if(check_if_matrix_is_reduce_mod_n(base_matrix,num_B_smooth,dim_sol,2)==0){
+			/*if(check_if_matrix_is_reduce_mod_n(base_matrix,num_B_smooth,dim_sol,2)==0){
 				handle_error_with_exit("error in main,calculate base_linear_system\n");
-			}
+			}*/
 			printf("dim_sol=%d\n",dim_sol);
 			print_time_elapsed("time to calculate base linear system");
-			if(check_solution_base_matrix_char(linear_system,cardinality_factor_base,num_col_linear_system,
+			/*if(check_solution_base_matrix_char(linear_system,cardinality_factor_base,num_col_linear_system,
             base_matrix,num_B_smooth,dim_sol)==0){
 				handle_error_with_exit("error in main,invalid solution\n");
 			}
-			print_time_elapsed("time to check solution base linear system");
+			print_time_elapsed("time to check solution base linear system");*/
 
             //algebra step:calcolo di tutti gli a,b del crivello quadratico
 			factorizations_founded=find_factor_of_n_from_base_matrix_char(base_matrix,num_col_linear_system,&dim_sol,

@@ -95,15 +95,15 @@ void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B){
 		*B=97000;
 		return;
 	}
-    if(digit_n<60){//90 sec
+    if(digit_n<60){//1 minuto e 20 secondi
+        handle_error_with_exit("error criv_quad <60\n");
         *M=40000;
         *B=130000;
         return;
     }
-	if(digit_n<65){
-		handle_error_with_exit("error criv_quad <65\n");
+	if(digit_n<65){//4 minuti
 		*M=35000;
-		*B=15000;
+		*B=140000;
 		return;
 	}
 	if(digit_n<70){
