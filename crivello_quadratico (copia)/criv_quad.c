@@ -1600,27 +1600,27 @@ void calculate_a_and_b_siqs(const int*solution,struct node_square_relation*head,
     struct node_square_relation*p=head;
     int*sum_exponent_relation=alloc_array_int(card_f_base);//contiene la somma degli esponenti dei numeri usati per le relazioni che forniscono la soluzione del sistema lineare
     //mpz_t*v=create_array_temp_factorization(card_f_base,matrix_B_smooth[0]);//-1 0 2 0 3 0 ecc primi della factor base con esponente zero
-    for(int i=0;i<num_B_smooth;i++){
+    for(int i=0;i<num_B_smooth;i++){//scansiona tutto l'array solution
         if(solution[i]==1){//se solution==1 allora bisogna moltiplicare le relazioni
             mpz_set(square,p->square_relation.square);//moltiplica le radici quadrate dei numeri B-smooth mod n
             mpz_mul(a,a,square);//a=a*square
             mpz_mod(a,a,n);//a=a*square mod n
             struct node_factorization*q=p->square_relation.head_factorization;
-            while(q!=NULL){
-                exponent=q->exp_of_number;
-                index=q->index;
+            while(q!=NULL){//scansiona fattorizzazione del numero
+                exponent=q->exp_of_number;//ottieni esponente
+                index=q->index;//ottieni indice
                 q=q->next;
-                sum_exponent_relation[index]+=exponent;
+                sum_exponent_relation[index]+=exponent;//metti nell'array in posizione indice l'esponente+la somma preceente degli esponenti
             }
         }
-        p=p->next;//passa alla prossima relazione
+        p=p->next;//passa alla prossima relazione,se il prossimo elemento di solution[i] è 0 passa al prossimo
     }
     divide_vector_multiple_of_2_by_2(sum_exponent_relation,card_f_base);
     for(int j=0;j<card_f_base;j++){//per ogni primo della factor base
         if(sum_exponent_relation[j]==0){
             continue;
         }
-        mpz_set_si(v_temp,r.prime[j]);
+        mpz_set_si(v_temp,r.prime[j]);//v_temp=primo
         mpz_powm_ui(v_temp,v_temp,sum_exponent_relation[j],n);//v_temp=primo^exp mod n
         mpz_mul(b,b,v_temp);//b=primo factor base*esponente del primo della factor base
         mpz_mod(b,b,n);//b mod n

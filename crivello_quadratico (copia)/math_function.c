@@ -121,10 +121,7 @@ struct node_factorization*factorize_num_v2(const mpz_t num,int j_of_num,int firs
 	struct node_factorization*head=NULL;
 	struct node_factorization*tail=NULL;
 	//bisogna aggiungere i fattori di a alla fattorizzazione
-	if(first_index_f_base==-1 || last_index_f_base==-1){//nessun fattore trovato,
-		mpz_clear(temp);
-	    return NULL;
-	}
+
 	if(mpz_cmp_si(num,0)<0){//valore negativo->divisibile per 1
 		mpz_neg(temp,temp);//rendilo positivo
 		insert_ordered_factor(-1,1,0,&head,&tail);//inserisci nodo -1
@@ -142,7 +139,10 @@ struct node_factorization*factorize_num_v2(const mpz_t num,int j_of_num,int firs
         }
     }
 	for(int i=first_index_f_base;i<=last_index_f_base;i++){//scorri i primi da fist index a last index compresi
-	    if(r.prime[i]==-1){//salta il -1,l'abbiamo già considerato
+		if(first_index_f_base==-1 || last_index_f_base==-1){//nessun fattore trovato,
+			break;//aggiungi solamente i fattori di a
+		}
+		if(r.prime[i]==-1){//salta il -1,l'abbiamo già considerato
 	        continue;
 	    }
 	    if(s!=0 && index!=s && array_a_struct[index].index_prime_a==i){//se un fattore di a ha un indice compreso
@@ -225,6 +225,11 @@ struct node_factorization*factorize_num_v2(const mpz_t num,int j_of_num,int firs
     }
 	if(s!=0 && index!=s){
 		handle_error_with_exit("error in factorize num invalid s\n");
+	}
+	if(head==NULL){
+		mpz_set(residuos, temp);//imposta il residuo
+		mpz_clear(temp);
+		return NULL;
 	}
     if(mpz_cmp_si(temp,1)==0){//se il residuo della divisione è 1 allora è B-smooth
 	    *is_B_smooth=1;
@@ -462,8 +467,8 @@ void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth
             //possibile B_smooth trovato
             (*num_potential_B_smooth)++;
             create_num(num,a,thread_data.b,n,thread_data.numbers[i].j);
-            head_factor=factorize_num_v1(num,thread_data.numbers[i].first_index_f_base,thread_data.numbers[i].last_index_f_base,&is_B_smooth,&is_semi_B_smooth,residuos,array_a_struct,s);
-			//head_factor=factorize_num_v2(num,thread_data.numbers[i].j,thread_data.numbers[i].first_index_f_base,thread_data.numbers[i].last_index_f_base,&is_B_smooth,&is_semi_B_smooth,residuos,array_a_struct,s,thread_data);
+            //head_factor=factorize_num_v1(num,thread_data.numbers[i].first_index_f_base,thread_data.numbers[i].last_index_f_base,&is_B_smooth,&is_semi_B_smooth,residuos,array_a_struct,s);
+			head_factor=factorize_num_v2(num,thread_data.numbers[i].j,thread_data.numbers[i].first_index_f_base,thread_data.numbers[i].last_index_f_base,&is_B_smooth,&is_semi_B_smooth,residuos,array_a_struct,s,thread_data);
             if(head_factor==NULL && (is_B_smooth==1 || is_semi_B_smooth==1)){
             	handle_error_with_exit("error invalid factorize_num\n");
             }

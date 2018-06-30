@@ -1058,7 +1058,7 @@ void divide_vector_multiple_of_2_by_2(int*vector,int length){
             continue;
         }
         if((vector[i] & 1)!=0){
-            handle_error_with_exit("error in divde_elem_by_2\n");
+            handle_error_with_exit("error in divide_elem_by_2\n");
         }
         vector[i]=vector[i]/2;
     }
