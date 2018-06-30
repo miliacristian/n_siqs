@@ -872,16 +872,10 @@ void calculate_target_a1_f(mpfr_t target_a1,const mpfr_t target_a,struct node_fa
 	mpz_add(prime_sum,prime_max,prime_min);//prime_sum=prime_min+prime_max
 	mpfr_set_z(prime_avg,prime_sum,MPFR_RNDN);//prime_avg=prime_sum
 	mpfr_div_2ui(prime_avg,prime_avg,1,MPFR_RNDN);//prime_avg=(pmax+pmin)/2
-	printf("prime_avg=");
-	mpfr_out_str(stdout,10,0,prime_avg,MPFR_RNDN);
-	printf("\n");
 	mpfr_sqrt(sqrt_prime_avg,prime_avg,MPFR_RNDN);//sqrt_prime=rad((pmax+pmin)/2)
 	mpfr_set(temp,target_a,MPFR_RNDN);//temp=target=rad(2*n)/M
 	mpfr_div(temp,temp,sqrt_prime_avg,MPFR_RNDN);//temp=target/rad((pmax+pmin)/2)
 	mpfr_set(target_a1,temp,MPFR_RNDN);//target_a1=temp=target/rad((pmax+pmin)/2)
-	printf("target_a1=");
-	mpfr_out_str(stdout,10,0,target_a1,MPFR_RNDN);
-	printf("\n");
 	mpz_clear(prime_min);
 	mpz_clear(prime_max);
 	mpz_clear(prime_sum);
@@ -1117,13 +1111,10 @@ void calculate_a_f2(mpz_t a,const mpfr_t target_a,int*s,struct node_factor_base*
 	mpfr_set_si(best_ratio,0,MPFR_RNDN);//best_target=0
 
 	calculate_p_min_p_max_i_f(&p_min_i,&p_max_i,head_f_base_f,cardinality_factor_base);
-	printf("p_min=%ld p_max=%ld\n",p_min_i,p_max_i);
-	//fprintf(file_log,"p_min=%ld p_max=%ld ",p_min_i,p_max_i);
 	s_max=p_max_i-p_min_i+1;//nel caso peggiore s=p_max-p_min+1
 	if(s_max>S_MAX){
 		s_max=S_MAX;
 	}
-	printf("s_max=%ld\n",s_max);
 	calculate_target_a1_f(target_a1,target_a,head_f_base_f,p_min_i,p_max_i,cardinality_factor_base);
 	if(mpfr_cmp_si(target_a1,1)<=0){//se target_a1<0 poni s=0 e ritorna
 		mpz_set_si(a,0);//poni a=0
@@ -1223,7 +1214,6 @@ void calculate_a_f2(mpz_t a,const mpfr_t target_a,int*s,struct node_factor_base*
 		handle_error_with_exit("error in calculate a\n");
 	}
 	*s=length_best_q;//imposta il valore di s
-	printf("s=%d,s_max=%ld\n",*s,s_max);
 	if(*s>s_max){
 		handle_error_with_exit("error in calculate a,s must be minor or equal to s_max\n");
 	}

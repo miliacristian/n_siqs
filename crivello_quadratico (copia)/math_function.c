@@ -257,6 +257,7 @@ struct node_factorization*factorize_num_v1(const mpz_t num,int first_index_f_bas
 	struct node_factorization *tail = NULL;
 	//bisogna aggiungere i fattori di a alla fattorizzazione
 	if (first_index_f_base == -1 || last_index_f_base == -1) {//nessun fattore trovato,
+		mpz_set(residuos, temp);//imposta il residuo
 		mpz_clear(temp);
 		return NULL;
 	}
@@ -350,45 +351,60 @@ void calculate_square(mpz_t square,const mpz_t a,int index,const mpz_t b,const m
 	mpz_mod(square,square,n);// a*j+b mod n
     return;
 }
-char verify_factorization(const mpz_t num,mpz_t residuos,struct node_factorization*head_factor){
-	mpz_t temp;
+char verify_factorization(const mpz_t num,mpz_t residuos,struct node_factorization*head_factor,const mpz_t a){
+	gmp_printf("residuos=%Zd,num=%Zd\n",residuos,num);
+	print_factorization(num,head_factor);
+	mpz_t temp,num_temp;
 	long exp_of_factor,factor;
 	mpz_t factor_raise_to_exp;
+	mpz_init(num_temp);
 	mpz_init(temp);
 	mpz_init(factor_raise_to_exp);
+	mpz_set(num_temp,num);
+	if(mpz_cmp_si(num_temp,0)<0){
+		mpz_neg(num_temp,num_temp);
+	}
 	mpz_set_si(temp,1);//temp=1
 	if(head_factor==NULL){
-		printf("no factorization\n");
 		if(mpz_cmp(num,residuos)!=0){
 			mpz_clear(temp);
 			mpz_clear(factor_raise_to_exp);
+			mpz_clear(num_temp);
 			printf("residuo !=num\n");
 			return 0;
 		}
 		mpz_clear(temp);
 		mpz_clear(factor_raise_to_exp);
+		mpz_clear(num_temp);
 		return 1;
 	}
 	struct node_factorization*p=head_factor;
 	while(p!=NULL){
 		factor=p->number;
+		//factor
 		if(factor<0 && factor!=-1){
 			mpz_clear(temp);
 			mpz_clear(factor_raise_to_exp);
+			mpz_clear(num_temp);
 			printf("fattore minore di 0\n");
 			return 0;
 		}
 		if(factor==0){
 			printf("fattore 0\n");
+            mpz_clear(temp);
+            mpz_clear(factor_raise_to_exp);
+			mpz_clear(num_temp);
 			return 0;
 		}
-		if(factor<0 && factor==-1){
+		if(factor==-1){
 			factor=1;
 		}
+		//exp of factor
 		exp_of_factor=p->exp_of_number;
 		if(exp_of_factor<=0){
 			mpz_clear(temp);
 			mpz_clear(factor_raise_to_exp);
+			mpz_clear(num_temp);
 			printf("esponente minore o uguale a 0\n");
 			return 0;
 		}
@@ -396,21 +412,29 @@ char verify_factorization(const mpz_t num,mpz_t residuos,struct node_factorizati
 		mpz_mul(temp,temp,factor_raise_to_exp);
 		p=p->next;
 	}
-	if(mpz_cmp(residuos,0)<=0){
+	if(mpz_cmp_si(residuos,0)<=0){
 		printf("residuo minore o uguale a 0\n");
+        mpz_clear(temp);
+        mpz_clear(factor_raise_to_exp);
+		mpz_clear(num_temp);
 		return 0;
 	}
 	mpz_mul(temp,temp,residuos);//moltiplica temp per il residuo alla fine
-	if(mpz_cmp(temp,num)!=0){//se non sono uguali nega temp
-		mpz_neg(temp,temp);
-		if(mpz_cmp(temp,num)!=0) {//se temp è diverso anche da num negato allora ritorna 0
+	mpz_mul(temp,temp,a);
+	if(mpz_cmp_si(temp,0)<=0){
+		handle_error_with_exit("error in function verify factorization\n");
+	}
+	if(mpz_cmp(temp,num_temp)!=0){//se non sono uguali nega temp
 			mpz_clear(temp);
 			mpz_clear(factor_raise_to_exp);
+			mpz_clear(num_temp);
+			gmp_printf("temp e num diversi,residuos=%Zd,num=%Zd,temp=%Zd\n",residuos,num,temp);
+			print_factorization(num,head_factor);
 			return 0;
-		}
 	}
 	mpz_clear(temp);
 	mpz_clear(factor_raise_to_exp);
+	mpz_clear(num_temp);
 	return 1;
 }
 void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth,int*num_semi_B_smooth, int *num_potential_B_smooth, long M,
@@ -439,7 +463,7 @@ void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth
             if(head_factor==NULL && (is_B_smooth==1 || is_semi_B_smooth==1)){
             	handle_error_with_exit("error invalid factorize_num\n");
             }
-			if(verify_factorization(num,residuos,head_factor)==0){
+			if(verify_factorization(num,residuos,head_factor,a)==0){
             	handle_error_with_exit("error in factorization\n");
             }
             if(head_factor==NULL){
