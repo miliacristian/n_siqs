@@ -252,6 +252,7 @@ int main(int argc,char*argv[]){
 				printf("\n");
 				calculate_a_f2(a_new,thresold_a,&s,head_f_base_f,cardinality_factor_base,&index_prime_a,&number_prime_a);
 			}
+			//
 			if(s==0 && mpz_cmp_si(a_new,0)==0){
 				increment_M_and_B(&M,&B);//aumenta M e B
 				create_factor_base_f(&cardinality_factor_base,B,&head_f_base_f,&tail_f_base_f,n,&last_prime_factor_base);
