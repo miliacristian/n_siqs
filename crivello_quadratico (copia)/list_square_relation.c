@@ -321,8 +321,8 @@ struct square_relation create_relation_large_prime(struct square_relation rel1,s
     mpz_mul(new_relation.square,new_relation.square,rel2.square);
     mpz_mod(new_relation.square,new_relation.square,n);//square=residuos^-1*square1*square2 mod n
 
-    print_struct_square_relation(rel1);//
-    print_struct_square_relation(rel2);//
+    //print_struct_square_relation(rel1);
+    //print_struct_square_relation(rel2);
 
     struct node_factorization*p1=rel1.head_factorization;
     struct node_factorization*p2=rel2.head_factorization;
@@ -373,8 +373,8 @@ struct square_relation create_relation_large_prime(struct square_relation rel1,s
             handle_error_with_exit("error in create relation large prime,caso non gestito\n");
         }
     }
-    printf("new relation\n");//
-    print_struct_square_relation(new_relation);//
+    //printf("new relation\n");//
+    //print_struct_square_relation(new_relation);//
     mpz_clear(temp);
     mpz_clear(temp2);
     return new_relation;

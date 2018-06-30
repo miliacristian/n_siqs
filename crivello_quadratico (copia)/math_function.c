@@ -162,9 +162,6 @@ struct node_factorization*factorize_num_v2(const mpz_t num,int j_of_num,int firs
 		prime=r.prime[i];
 	    if(i==first_index_f_base || i==last_index_f_base){//se è uguale al primo o all'ultimo indice è sicuramente divisibile per p
 			if(i==1){//divisibile per 2
-				if(mpz_divisible_ui_p(temp,prime)==0){
-					handle_error_with_exit("error in factorize num v2 if\n");
-				}
                 mpz_divexact_ui(temp, temp,prime);//dividilo la prima volta per prime
                 exp+=1;
                 while(mpz_divisible_2exp_p(temp,1)!=0){//finquando è divisibie per 2
@@ -178,9 +175,6 @@ struct node_factorization*factorize_num_v2(const mpz_t num,int j_of_num,int firs
                 continue;
 			}
 			else {
-				if(mpz_divisible_ui_p(temp,prime)==0){
-					handle_error_with_exit("error in factorize num v2 else \n");
-				}
                 mpz_divexact_ui(temp, temp, prime);//dividilo la prima volta per prime
                 exp += 1;
                 while (mpz_divisible_ui_p(temp, prime) != 0) {//se il numero è divisibile per un primo della fattor base
@@ -199,9 +193,6 @@ struct node_factorization*factorize_num_v2(const mpz_t num,int j_of_num,int firs
         j_of_num_mod_p=reduce_int_mod_n_v2(j_of_num,prime);
         //j_of_num ridotto modulo prime se è uguale a j1 o j2 allora è divisibile per p
 	    if(j_of_num_mod_p==j1 || j_of_num_mod_p==j2){
-			if(mpz_divisible_ui_p(temp,prime)==0){
-				handle_error_with_exit("error in factorize num v2 secondo if\n");
-			}
             mpz_divexact_ui(temp, temp,prime);//dividilo la prima volta per prime
             exp+=1;//aumenta esponente
             //verifica se è ulteriormente divisibile per prime facendo la divisione
@@ -478,14 +469,14 @@ void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth
             //possibile B_smooth trovato
             (*num_potential_B_smooth)++;
             create_num(num,a,thread_data.b,n,thread_data.numbers[i].j);
-            //head_factor=factorize_num_v1(num,thread_data.numbers[i].first_index_f_base,thread_data.numbers[i].last_index_f_base,&is_B_smooth,&is_semi_B_smooth,residuos,array_a_struct,s);
-			head_factor=factorize_num_v2(num,thread_data.numbers[i].j,thread_data.numbers[i].first_index_f_base,thread_data.numbers[i].last_index_f_base,&is_B_smooth,&is_semi_B_smooth,residuos,array_a_struct,s,thread_data);
+            head_factor=factorize_num_v1(num,thread_data.numbers[i].first_index_f_base,thread_data.numbers[i].last_index_f_base,&is_B_smooth,&is_semi_B_smooth,residuos,array_a_struct,s);
+			//head_factor=factorize_num_v2(num,thread_data.numbers[i].j,thread_data.numbers[i].first_index_f_base,thread_data.numbers[i].last_index_f_base,&is_B_smooth,&is_semi_B_smooth,residuos,array_a_struct,s,thread_data);
             if(head_factor==NULL && (is_B_smooth==1 || is_semi_B_smooth==1)){
             	handle_error_with_exit("error invalid factorize_num\n");
             }
-			if(verify_factorization(num,residuos,head_factor,a)==0){
+			/*if(verify_factorization(num,residuos,head_factor,a)==0){
             	handle_error_with_exit("error in factorization\n");
-            }
+            }*/
             if(head_factor==NULL){
             	continue;
             }

@@ -2069,21 +2069,21 @@ int**calculate_base_linear_system_char(char*matrix_linear_system,int num_row,int
     if(matrix_linear_system==NULL || num_row<=0 || num_col<=0 || dim_sol==NULL){
         handle_error_with_exit("error in parameter get_coli\n");
     }
-    if(check_if_matrix_char_is_reduce_mod_n(matrix_linear_system,num_row,num_col,2)==0){
+    /*if(check_if_matrix_char_is_reduce_mod_n(matrix_linear_system,num_row,num_col,2)==0){
         handle_error_with_exit("matrix is not reduce mod n");
     }
     if(check_if_matrix_char_is_echelon_reduce(matrix_linear_system,num_row,num_col)==0){
         handle_error_with_exit("error in calculate_base_linear_system\n");
-    }
+    }*/
     *dim_sol=calculate_dim_sol_char(matrix_linear_system,num_row,num_col);//calcola la dimensione della base del sistema lineare
-    //fprintf(file_log,"dim_sol=%d ",*dim_sol);
+    print_time_elapsed("time to calculate_dim_sol");
     if(*dim_sol<0){
         return NULL;
     }
     if(*dim_sol==0){
         return NULL;
     }
-    int free_var=*dim_sol;
+    //n.b. int free_var=*dim_sol;
     if(*dim_sol>MAX_DIM_SOL){
         *dim_sol=MAX_DIM_SOL;
     }
@@ -2091,14 +2091,14 @@ int**calculate_base_linear_system_char(char*matrix_linear_system,int num_row,int
     char*array_var=NULL;
     array_var=find_free_var_char(matrix_linear_system,num_row,num_col);//calcola array delle variabili libere che specifica tutte le 				variabili che sono state impostate come libere per tutto il sistema,è lungo num_col,è necessario 				allocarlo ogni volta perchè viene sporcato
     //dalla funzione calculate_vector_base
-    if(check_if_array_var_is_correct(array_var,num_col,free_var)==0){
+    /*if(check_if_array_var_is_correct(array_var,num_col,free_var)==0){
         handle_error_with_exit("error in calculate array_var\n");
     }
     if(check_if_array_var_is_valid_char(matrix_linear_system,num_row,num_col,array_var)==0){
         printf("array :");
         print_array_char(array_var,num_col);
         handle_error_with_exit("array_var is not valid\n");
-    }
+    }*/
     char*array_var_temp=alloc_array_char(num_col);
     int s=0;//s==start,indice della posizione delle variabili libere
     for(int i=0;i<*dim_sol;i++){//ripeti il procedimento per il numero di vettori linearmente indipendenti,e crea ad ogni ciclo un vettore

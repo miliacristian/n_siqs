@@ -93,21 +93,23 @@ void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B){
 		return;
 	}
     if(digit_n<60){//1 minuto e 20 secondi
-        handle_error_with_exit("error criv_quad <60\n");
         *M=40000;
         *B=130000;
         return;
     }
 	if(digit_n<65){//4 minuti
-        handle_error_with_exit("error criv_quad <65\n");
 		*M=35000;
 		*B=140000;
 		return;
 	}
-    if(digit_n<70){//7,5 minuti
-		handle_error_with_exit("error criv_quad <70\n");
+    /*if(digit_n<70){//7,5 minuti
         *M=50000;
         *B=370000;
+        return;
+    }*/
+    if(digit_n<70){//da eliminare
+        *M=100000;
+        *B=800000;
         return;
     }
     /*if(digit_n<70){//4-5-6 minuti sistema lineare grande
@@ -1835,21 +1837,15 @@ int find_factor_of_n_from_base_matrix_char(int **base_matrix,int num_row,int* nu
         }
         count_combination++;
         reduce_array_mod_n(solution,num_row,2);//riduce la matrice soluzione mod 2
-        if(check_if_array_is_reduce_mod_n(solution,num_row,2)==0){
+        /*if(check_if_array_is_reduce_mod_n(solution,num_row,2)==0){
             handle_error_with_exit("error in calculate solution\n");
         }
         if(verify_solution_char(matrix_linear_system,num_row_matrix,num_col_matrix,solution)==0){
             handle_error_with_exit("invalid solution in find_factor_of_n_from_base_matrix\n");
-        }
+        }*/
         calculate_a_and_b_siqs(solution,head,num_B_smooth,card_f_base,a,b,n_copy);//calcola un a e un b
         factor_founded_from_a_and_b=try_to_factor(a,b,n_copy,factor1,factor2);
         if(factor_founded_from_a_and_b>0){
-            /*fprintf(file_log,"p=");
-            mpz_out_str(file_log,10,factor1);
-            fprintf(file_log," ");
-            fprintf(file_log,"q=");
-            mpz_out_str(file_log,10,factor2);
-            fprintf(file_log," ");*/
             free(combination);
             free(solution);
             mpz_clear(n_copy);
