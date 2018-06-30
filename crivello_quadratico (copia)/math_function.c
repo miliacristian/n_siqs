@@ -138,7 +138,11 @@ struct node_factorization*factorize_num_v2(const mpz_t num,int j_of_num,int firs
             index++;
         }
     }
+	exp=0;
 	for(int i=first_index_f_base;i<=last_index_f_base;i++){//scorri i primi da fist index a last index compresi
+		if(exp!=0){
+			handle_error_with_exit("error in factorize num v2,invalid exponent\n");
+		}
 		if(first_index_f_base==-1 || last_index_f_base==-1){//nessun fattore trovato,
 			break;//aggiungi solamente i fattori di a
 		}
@@ -151,8 +155,8 @@ struct node_factorization*factorize_num_v2(const mpz_t num,int j_of_num,int firs
             if(thread_data.j2_mod_p[array_a_struct[index].index_prime_a]!=-1){
                 handle_error_with_exit("error in factorize num\n");
             }
-	    	exp=1;//poni esponente a 1
-	    	index++;//aumneta l'indice
+	    	exp+=1;//poni esponente a 1
+	    	index++;//aumenta l'indice
             //n.b. i fattori di a possono comparire nella fattorizzazione con un esponente maggiore di 1
 	    }
 		prime=r.prime[i];
@@ -209,7 +213,13 @@ struct node_factorization*factorize_num_v2(const mpz_t num,int j_of_num,int firs
 				insert_ordered_factor(prime, exp, i, &head, &tail);
 			}
 			exp=0;//resetta esponente
+			continue;
 	    }
+		if(exp>0) {//è stato diviso almeno 1 volta
+			insert_ordered_factor(prime, exp, i, &head, &tail);
+		}
+		exp=0;//resetta esponente
+		continue;
     }
     if(s!=0) {
         //se i numeri di a sono ad un indice più grande del last_index_f_base allora aggiungili dopo
@@ -361,6 +371,7 @@ void calculate_square(mpz_t square,const mpz_t a,int index,const mpz_t b,const m
     return;
 }
 char verify_factorization(const mpz_t num,mpz_t residuos,struct node_factorization*head_factor,const mpz_t a){
+	//num*a deve essere uguale a fattorizzazione*residuo
 	gmp_printf("inizio verifica num=%Zd\n",num);
 	mpz_t temp,num_temp;
 	long exp_of_factor,factor;
@@ -429,15 +440,15 @@ char verify_factorization(const mpz_t num,mpz_t residuos,struct node_factorizati
 		return 0;
 	}
 	mpz_mul(temp,temp,residuos);//moltiplica temp per il residuo alla fine
-	mpz_mul(num_temp,num_temp,a);
+	mpz_mul(num_temp,num_temp,a);//num*a
 	if(mpz_cmp_si(temp,0)<=0){
 		handle_error_with_exit("error in function verify factorization\n");
 	}
 	if(mpz_cmp(temp,num_temp)!=0){//se non sono uguali nega temp
+			gmp_printf("temp e num diversi,residuos=%Zd,num=%Zd,temp=%Zd,a=%Zd\n",residuos,num,temp,a);
 			mpz_clear(temp);
 			mpz_clear(factor_raise_to_exp);
 			mpz_clear(num_temp);
-			gmp_printf("temp e num diversi,residuos=%Zd,num=%Zd,temp=%Zd,a=%Zd\n",residuos,num,temp,a);
 			print_factorization(num,head_factor);
 			return 0;
 	}
