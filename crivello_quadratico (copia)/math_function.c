@@ -135,9 +135,13 @@ struct node_factorization*factorize_num(const mpz_t num,int j_of_num,int first_i
         while (index!=s && array_a_struct[index].index_prime_a < first_index_f_base) {
             insert_ordered_factor(array_a_struct[index].number_prime_a, 1, array_a_struct[index].index_prime_a, &head,
                                   &tail);//inserisci nodo con esponente 1
+            if(thread_data.j2_mod_p[array_a_struct[index].index_prime_a]!=-1){
+                handle_error_with_exit("error in factorize num\n");
+            }
             index++;
         }
     }
+    printf("j_of_num=%d\n",j_of_num);
 	for(int i=first_index_f_base;i<=last_index_f_base;i++){//scorri i primi da fist index a last index compresi
 	    if(r.prime[i]==-1){//salta il -1,l'abbiamo già considerato
 	        continue;
@@ -145,6 +149,9 @@ struct node_factorization*factorize_num(const mpz_t num,int j_of_num,int first_i
 	    if(s!=0 && index!=s && array_a_struct[index].index_prime_a==i){//se un fattore di a ha un indice compreso
 	    	// tra first e last index metti ad uno l'esponente anche se non è divisibile per quel numero
 			// (sappiamo che il polinomio è divisibile per quel numero)
+            if(thread_data.j2_mod_p[array_a_struct[index].index_prime_a]!=-1){
+                handle_error_with_exit("error in factorize num\n");
+            }
 	    	exp=1;//poni esponente a 1
 	    	index++;//aumneta l'indice
             //n.b. i fattori di a possono comparire nella fattorizzazione con un esponente maggiore di 1
@@ -161,10 +168,15 @@ struct node_factorization*factorize_num(const mpz_t num,int j_of_num,int first_i
 				insert_ordered_factor(prime, exp, i, &head, &tail);
 			}
 			exp=0;//resetta esponente
+			continue;
 	    }
+	    printf("prime=%d\n",prime);
 	    j1=thread_data.j1_mod_p[i];
+	    printf("j1=%d\n",j1);
 	    j2=thread_data.j2_mod_p[i];
-	    j_of_num_mod_p=j_of_num%prime;//j_of_num ridotto mod p
+        printf("j2=%d\n",j2);
+        j_of_num_mod_p=reduce_int_mod_n_v2(j_of_num,prime);
+	    printf("j_of_num_mod_p=%d\n",j_of_num_mod_p);
         //j_of_num ridotto modulo prime se è uguale a j1 o j2 allora è divisibile per p
 	    if(j_of_num_mod_p==j1 || j_of_num_mod_p==j2){
             mpz_divexact_ui(temp, temp,prime);//dividilo la prima volta per prime
@@ -186,6 +198,9 @@ struct node_factorization*factorize_num(const mpz_t num,int j_of_num,int first_i
         while (index!=s && array_a_struct[index].index_prime_a > last_index_f_base && index < s) {
             insert_ordered_factor(array_a_struct[index].number_prime_a, 1, array_a_struct[index].index_prime_a, &head,
                                   &tail);//inserisci nodo
+            if(thread_data.j2_mod_p[array_a_struct[index].index_prime_a]!=-1){
+                handle_error_with_exit("error in factorize num\n");
+            }
             index++;
         }
     }
@@ -767,18 +782,20 @@ char divide_all_by_2_log(long M,struct thread_data thread_data){//divide gli ele
     else{
         count+=1;
     }
-    //i=1 indice dispari,il primo elemento è dispari,i=0 indice pari,il primo elemento è pari*/
+    //i=1 indice dispari,il primo elemento è dispari,il secondo è pari,i=0 indice pari,il primo elemento è pari
     if(count%2==0){
-        i=0;
+        i=0;//primo elemento divisibile per 2
     }
     else{
-        i=1;
+        i=1;//secondo elemento divisibile per 2
     }
     for(;i<2*M+1;i=i+2){
         thread_data.numbers[i].last_index_f_base=1;
         thread_data.numbers[i].first_index_f_base=1;
         thread_data.numbers[i].sum_log=r.log_prime[1];
     }
+    thread_data.j1_mod_p[1]=-1;
+    thread_data.j2_mod_p[1]=-1;
     return 1;
 }
 /*char divide_all_by_4(mpz_t*array_of_number,long M,mpz_t**matrix_factorization,const mpz_t n,const mpz_t a,const mpz_t b){//ritorna 1 se c'è stata almeno 1 divisione,zero altrimenti
@@ -2738,9 +2755,14 @@ char divide_all_by_p_to_k_f(int rad,long p,int index_of_prime,long k,long M,stru
 	j1=mpz_get_si(j1t);//j1=j1t
 	j2=mpz_get_si(j2t);//j2=j2t
     thread_data.j1_mod_p[index_of_prime]=j1;
-    thread_data.j2_mod_p[index_of_prime]=j2;
-    printf("j1=%d,p=%d\n",j1,p);
-    printf("j2=%d,p=%d\n",j2,p);
+    printf("j1=%d,p=%d\n",thread_data.j1_mod_p[index_of_prime],p);
+    if(j!=1) {
+        thread_data.j2_mod_p[index_of_prime] = j2;
+    }
+    else{
+        thread_data.j2_mod_p[index_of_prime]= -1;
+    }
+	printf("j2=%d,p=%d\n", thread_data.j2_mod_p[index_of_prime], p);
     j_temp2=j1;
     indexv=j_temp2+M;//l'indice deve essere positivo
 	while(j_temp2<=M){//all'inizio j_temp=0*p+j1t,poi diventa k*p+j1t(a salti di p)
@@ -3079,6 +3101,8 @@ void factor_matrix_f(const mpz_t n,long M,struct thread_data thread_data,int car
     for (int i=0;i<cardinality_factor_base;i++){//per ogni elemento della factor base
         p=r.prime[i];//primo iesimo della factor base
         if(p==-1){
+            thread_data.j1_mod_p[i]=-1;
+            thread_data.j2_mod_p[i]=-1;
             continue;
         }
         if(p==2){

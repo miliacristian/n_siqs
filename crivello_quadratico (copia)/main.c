@@ -332,6 +332,7 @@ int main(int argc,char*argv[]){
             mpz_set(thread_polynomial_data[NUM_THREAD_POLYNOMIAL].b,b_default);//imposta b
 			//fattorizza numeri nell'array lungo 2m+1
             printf("main thread\n");
+            sleep(100);
 			factor_matrix_f(n,M,(thread_polynomial_data[NUM_THREAD_POLYNOMIAL]),cardinality_factor_base,a_default,array_a_struct,s);//fattorizza numeri
 			print_time_elapsed("time_to_factor matrix_factorization main thread");
 			print_thread_data(thread_polynomial_data[NUM_THREAD_POLYNOMIAL],M,cardinality_factor_base);
@@ -348,7 +349,6 @@ int main(int argc,char*argv[]){
 			print_list_square_relation(head_square,num_B_smooth);
 			printf("residuos\n");
 			print_list_square_relation(head_residuos,num_B_smooth);
-			exit(0);
 			print_time_elapsed("time_to find_list_square_relation main thread");
 
 			//aspetta tutti i thread e libera memoria
@@ -404,6 +404,7 @@ int main(int argc,char*argv[]){
             print_time_elapsed("time to add square relation to list sorted");
             head_square=NULL;
             tail_square=NULL;
+            exit(0);
             /*if(verify_sorted_square_rel_list(head_sort_square)==0){
                 handle_error_with_exit("error in sort relation by square\n");
             }*/
@@ -633,12 +634,17 @@ int thread_job_criv_quad(int id_thread){//id inizia da 0,il lavoro di un thread 
         // indici last e first che ci dicono il primo elemento divisibile per num e l'ultimo(questo facilita la trial division)
         mpz_set(thread_polynomial_data[id_thread].b,array_bi[count]);//imposta ad ogni ciclo il valore di b
 		factor_matrix_f(n,M,(thread_polynomial_data[id_thread]),cardinality_factor_base,a_old,array_a_struct,s);//fattorizza una nuova matrice
-		print_time_elapsed_local("time to factor matrix_factorization",&timer_thread);
+        print_time_elapsed_local("time to factor matrix_factorization",&timer_thread);
         //print_thread_data(thread_polynomial_data[id_thread],M);
 
 		//ricerca dei B_smooth potenziali,reali e fattorizzazione dei B_smooth reali
         find_list_square_relation(thread_polynomial_data[id_thread],&(thread_polynomial_data[id_thread].num_B_smooth),&(thread_polynomial_data[id_thread].num_semi_B_smooth),&(thread_polynomial_data[id_thread].num_potential_B_smooth),M,&head_square,&tail_square,&head_residuos,&tail_residuos,n,a_old,array_a_struct,s);
-		printf("num_potential_B_smooth=%d,num_B_smooth=%d,num_semi_B_smooth=%d\n",thread_polynomial_data[id_thread].num_potential_B_smooth,thread_polynomial_data[id_thread].num_B_smooth,thread_polynomial_data[id_thread].num_semi_B_smooth);
+		printf("square\n");
+		print_list_square_relation(head_square,thread_polynomial_data[id_thread].num_B_smooth);
+		printf("residuos\n");
+		print_list_square_relation(head_residuos,thread_polynomial_data[id_thread].num_B_smooth);
+        sleep(100);
+        printf("num_potential_B_smooth=%d,num_B_smooth=%d,num_semi_B_smooth=%d\n",thread_polynomial_data[id_thread].num_potential_B_smooth,thread_polynomial_data[id_thread].num_B_smooth,thread_polynomial_data[id_thread].num_semi_B_smooth);
 		print_time_elapsed_local("time to find_list_square_relation",&timer_thread);
 		//pulisci struttura dati del thread per ricominciare con un altro polinomio
 		clear_struct_thread_data(thread_polynomial_data[id_thread],M);
