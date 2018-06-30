@@ -5,7 +5,7 @@
 #define THRESOLD_PRINT_LIST 1000 //dopo il valore di soglia la lista non viene stampata
 
 #define SIQS_MIN_PRIME_POLYNOMIAL 400 //parametri per il calcolo di a
-#define SIQS_MAX_PRIME_POLYNOMIAL 4000 //parametri per il calcolo di a
+#define SIQS_MAX_PRIME_POLYNOMIAL 16000 //parametri per il calcolo di a
 #define NUM_ITER_FOR_CALCULATE_A 30 //parametri per il calcolo di a,a diversi che vengono generati,si sceglie quello migliore
 #define MAX_ITER 3000 //iterazioni massime per calcolare a
 #define MAX_ITER2 3000 //iterazioni massime per calcolare a,

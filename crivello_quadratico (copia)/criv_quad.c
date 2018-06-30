@@ -107,44 +107,14 @@ void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B){
         *B=370000;
         return;
     }*/
-    if(digit_n<70){//da eliminare
-        *M=100000;
-        *B=800000;
+    if(digit_n<70){//5-6 minuti ha B più piccolo
+        *M=50000;
+        *B=250000;
         return;
     }
-    /*if(digit_n<70){//4-5-6 minuti sistema lineare grande
-        *M=45000;
-        *B=350000;
-        return;
-    }*/
-    /*if(digit_n<70){//6-7-8 stabile
-        *M=40000;
-        *B=300000;
-        return;
-    }*/
-    /*if(digit_n<70){//3-6-6-6-7-9-14-14
-        *M=30000;
-        *B=160000;
-        return;
-    }*/
-    /*if(digit_n<70){5-6-7-8-9 minuti
-        *M=50000;
-        *B=165000;
-        return;
-    }*/
-    /*if(digit_n<70){//7-8-9 minuti
-        *M=45000;
-        *B=140000;
-        return;
-    }*/
-	/*if(digit_n<70){ 7-8-9 minuti
-		*M=40000;
-		*B=130000;
-		return;
-	}*/
 	if(digit_n<75){
-		*M=250000;
-		*B=1000000;
+		*M=50000;
+		*B=1100000;
 		return;
 	}
 	if(digit_n<80){
