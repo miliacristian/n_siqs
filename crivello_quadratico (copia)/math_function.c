@@ -103,7 +103,7 @@ void create_num(mpz_t num,const mpz_t a,const mpz_t b,const mpz_t n,long j){
 	mpz_clear(double_b_mul_j);
 	mpz_clear(a_mul_square_j);
 }
-/*struct node_factorization*factorize_num(const mpz_t num,int j_of_num,int first_index_f_base,int last_index_f_base,
+struct node_factorization*factorize_num_v2(const mpz_t num,int j_of_num,int first_index_f_base,int last_index_f_base,
         char*is_B_smooth,char*is_semi_B_smooth,mpz_t residuos,struct a_struct*array_a_struct,int s,struct thread_data thread_data){
 	if((first_index_f_base<0 && first_index_f_base!=-1)|| (last_index_f_base<0 && last_index_f_base!=-1)
         || is_B_smooth==NULL || is_semi_B_smooth==NULL
@@ -158,6 +158,9 @@ void create_num(mpz_t num,const mpz_t a,const mpz_t b,const mpz_t n,long j){
 		prime=r.prime[i];
 	    if(i==first_index_f_base || i==last_index_f_base){//se è uguale al primo o all'ultimo indice è sicuramente divisibile per p
 			if(i==1){//divisibile per 2
+				if(mpz_divisible_ui_p(temp,prime)==0){
+					handle_error_with_exit("error in factorize num v2 if\n");
+				}
                 mpz_divexact_ui(temp, temp,prime);//dividilo la prima volta per prime
                 exp+=1;
                 while(mpz_divisible_2exp_p(temp,1)!=0){//finquando è divisibie per 2
@@ -171,6 +174,9 @@ void create_num(mpz_t num,const mpz_t a,const mpz_t b,const mpz_t n,long j){
                 continue;
 			}
 			else {
+				if(mpz_divisible_ui_p(temp,prime)==0){
+					handle_error_with_exit("error in factorize num v2 else \n");
+				}
                 mpz_divexact_ui(temp, temp, prime);//dividilo la prima volta per prime
                 exp += 1;
                 while (mpz_divisible_ui_p(temp, prime) != 0) {//se il numero è divisibile per un primo della fattor base
@@ -189,6 +195,9 @@ void create_num(mpz_t num,const mpz_t a,const mpz_t b,const mpz_t n,long j){
         j_of_num_mod_p=reduce_int_mod_n_v2(j_of_num,prime);
         //j_of_num ridotto modulo prime se è uguale a j1 o j2 allora è divisibile per p
 	    if(j_of_num_mod_p==j1 || j_of_num_mod_p==j2){
+			if(mpz_divisible_ui_p(temp,prime)==0){
+				handle_error_with_exit("error in factorize num v2 secondo if\n");
+			}
             mpz_divexact_ui(temp, temp,prime);//dividilo la prima volta per prime
             exp+=1;//aumenta esponente
             //verifica se è ulteriormente divisibile per prime facendo la divisione
@@ -229,7 +238,7 @@ void create_num(mpz_t num,const mpz_t a,const mpz_t b,const mpz_t n,long j){
     }
     mpz_clear(temp);
 	return head;
-}*/
+}
 struct node_factorization*factorize_num_v1(const mpz_t num,int first_index_f_base,int last_index_f_base,
 										char*is_B_smooth,char*is_semi_B_smooth,mpz_t residuos,struct a_struct*array_a_struct,int s) {
 	if ((first_index_f_base < 0 && first_index_f_base != -1) || (last_index_f_base < 0 && last_index_f_base != -1)
@@ -341,6 +350,69 @@ void calculate_square(mpz_t square,const mpz_t a,int index,const mpz_t b,const m
 	mpz_mod(square,square,n);// a*j+b mod n
     return;
 }
+char verify_factorization(const mpz_t num,mpz_t residuos,struct node_factorization*head_factor){
+	mpz_t temp;
+	long exp_of_factor,factor;
+	mpz_t factor_raise_to_exp;
+	mpz_init(temp);
+	mpz_init(factor_raise_to_exp);
+	mpz_set_si(temp,1);//temp=1
+	if(head_factor==NULL){
+		printf("no factorization\n");
+		if(mpz_cmp(num,residuos)!=0){
+			mpz_clear(temp);
+			mpz_clear(factor_raise_to_exp);
+			printf("residuo !=num\n");
+			return 0;
+		}
+		mpz_clear(temp);
+		mpz_clear(factor_raise_to_exp);
+		return 1;
+	}
+	struct node_factorization*p=head_factor;
+	while(p!=NULL){
+		factor=p->number;
+		if(factor<0 && factor!=-1){
+			mpz_clear(temp);
+			mpz_clear(factor_raise_to_exp);
+			printf("fattore minore di 0\n");
+			return 0;
+		}
+		if(factor==0){
+			printf("fattore 0\n");
+			return 0;
+		}
+		if(factor<0 && factor==-1){
+			factor=1;
+		}
+		exp_of_factor=p->exp_of_number;
+		if(exp_of_factor<=0){
+			mpz_clear(temp);
+			mpz_clear(factor_raise_to_exp);
+			printf("esponente minore o uguale a 0\n");
+			return 0;
+		}
+		mpz_ui_pow_ui (factor_raise_to_exp,factor,exp_of_factor);
+		mpz_mul(temp,temp,factor_raise_to_exp);
+		p=p->next;
+	}
+	if(mpz_cmp(residuos,0)<=0){
+		printf("residuo minore o uguale a 0\n");
+		return 0;
+	}
+	mpz_mul(temp,temp,residuos);//moltiplica temp per il residuo alla fine
+	if(mpz_cmp(temp,num)!=0){//se non sono uguali nega temp
+		mpz_neg(temp,temp);
+		if(mpz_cmp(temp,num)!=0) {//se temp è diverso anche da num negato allora ritorna 0
+			mpz_clear(temp);
+			mpz_clear(factor_raise_to_exp);
+			return 0;
+		}
+	}
+	mpz_clear(temp);
+	mpz_clear(factor_raise_to_exp);
+	return 1;
+}
 void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth,int*num_semi_B_smooth, int *num_potential_B_smooth, long M,
 							   struct node_square_relation **head_square, struct node_square_relation **tail_square,struct node_square_relation **head_residuos, struct node_square_relation **tail_residuos,
 							   const mpz_t n,const mpz_t a,struct a_struct*array_a_struct,int s) {
@@ -366,6 +438,9 @@ void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth
 			//head_factor=factorize_num_v2(num,thread_data.numbers[i].j,thread_data.numbers[i].first_index_f_base,thread_data.numbers[i].last_index_f_base,&is_B_smooth,&is_semi_B_smooth,residuos,array_a_struct,s,thread_data);
             if(head_factor==NULL && (is_B_smooth==1 || is_semi_B_smooth==1)){
             	handle_error_with_exit("error invalid factorize_num\n");
+            }
+			if(verify_factorization(num,residuos,head_factor)==0){
+            	handle_error_with_exit("error in factorization\n");
             }
             if(head_factor==NULL){
             	continue;
