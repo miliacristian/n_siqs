@@ -228,14 +228,14 @@ int main(int argc,char*argv[]){
 			print_time_elapsed("time to calculate factor base");
 
 			//verifica che la factor base è corretta
-            /*if(verify_factor_base(head_f_base_f,cardinality_factor_base,last_prime_factor_base)==0){
+            if(verify_factor_base(head_f_base_f,cardinality_factor_base,last_prime_factor_base)==0){
                 handle_error_with_exit("error in main verify factor base\n");
-            }*/
+            }
 			print_time_elapsed("time to verify factor base");
 			//a,per siqs e generare tutti gli altri b,prodotto di primi dispari distinti
 			calculate_a_f2(a_new,thresold_a,&s,head_f_base_f,cardinality_factor_base,&index_prime_a,&number_prime_a);
 
-			while(s>0 || (mpz_cmp(a_old,a_new)==0 && mpz_cmp_si(a_new,0)!=0)){//continua fino a quando non trovi un a diverso
+			/*while(s>0 && (mpz_cmp(a_old,a_new)==0 && mpz_cmp_si(a_new,0)!=0)){//continua fino a quando non trovi un a diverso
 				increment_M_and_B(&M,&B);//aumenta M e B
 				create_factor_base_f(&cardinality_factor_base,B,&head_f_base_f,&tail_f_base_f,n,&last_prime_factor_base);
                 if(index_prime_a!=NULL){
@@ -252,7 +252,6 @@ int main(int argc,char*argv[]){
 				printf("\n");
 				calculate_a_f2(a_new,thresold_a,&s,head_f_base_f,cardinality_factor_base,&index_prime_a,&number_prime_a);
 			}
-			//
 			if(s==0 && mpz_cmp_si(a_new,0)==0){
 				increment_M_and_B(&M,&B);//aumenta M e B
 				create_factor_base_f(&cardinality_factor_base,B,&head_f_base_f,&tail_f_base_f,n,&last_prime_factor_base);
@@ -264,7 +263,7 @@ int main(int argc,char*argv[]){
 					free(number_prime_a);
 					number_prime_a=NULL;
 				}
-			}
+			}*/
 			if(s>0){
 				mpz_set(a_old,a_new);
 			}
@@ -422,16 +421,16 @@ int main(int argc,char*argv[]){
             print_time_elapsed("time to add square relation to list sorted");
             head_square=NULL;
             tail_square=NULL;
-            /*if(verify_sorted_square_rel_list(head_sort_square)==0){
+            if(verify_sorted_square_rel_list(head_sort_square)==0){
                 handle_error_with_exit("error in sort relation by square\n");
-            }*/
+            }
             //unisici tutte le relazioni semi_B_smooth alla lista delle relazioni semi_B_smooth,
             // la lista finale conterrà relazioni semi_B_smooth ordinate per residuo
             add_relation_semi_B_smooth_to_list(&head_sort_residuos,&tail_sort_residuos,head_residuos);
             print_time_elapsed("time to add relation semi_B_smooth");
-            /*if(verify_sorted_residuos_square_rel_list(head_sort_residuos)==0){
+            if(verify_sorted_residuos_square_rel_list(head_sort_residuos)==0){
                 handle_error_with_exit("error in sort relation by square\n");
-            }*/
+            }
             head_residuos=NULL;
             tail_residuos=NULL;
 

@@ -55,6 +55,8 @@ void calculate_index_min_max_a(int*number_prime_a,int*index_prime_a,int length,i
 struct a_struct*create_array_a_struct(int*number_prime_a,int*index_number_a,int length);
 void*thread_factorization_job(void*arg);
 char divide_all_by_p_to_k_with_thread(int rad,long p,int index_of_prime,long k,long M,struct thread_data thread_data,const mpz_t n,const mpz_t a,const mpz_t b,struct a_struct*array_a_struct);
+struct node_factorization*factorize_num_v1(const mpz_t num,int first_index_f_base,int last_index_f_base,
+                                           char*is_B_smooth,char*is_semi_B_smooth,mpz_t residuos,struct a_struct*array_a_struct,int s);
 
 
 

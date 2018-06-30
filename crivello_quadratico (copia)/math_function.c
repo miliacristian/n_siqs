@@ -103,7 +103,7 @@ void create_num(mpz_t num,const mpz_t a,const mpz_t b,const mpz_t n,long j){
 	mpz_clear(double_b_mul_j);
 	mpz_clear(a_mul_square_j);
 }
-struct node_factorization*factorize_num(const mpz_t num,int j_of_num,int first_index_f_base,int last_index_f_base,
+/*struct node_factorization*factorize_num(const mpz_t num,int j_of_num,int first_index_f_base,int last_index_f_base,
         char*is_B_smooth,char*is_semi_B_smooth,mpz_t residuos,struct a_struct*array_a_struct,int s,struct thread_data thread_data){
 	if((first_index_f_base<0 && first_index_f_base!=-1)|| (last_index_f_base<0 && last_index_f_base!=-1)
         || is_B_smooth==NULL || is_semi_B_smooth==NULL
@@ -229,8 +229,88 @@ struct node_factorization*factorize_num(const mpz_t num,int j_of_num,int first_i
     }
     mpz_clear(temp);
 	return head;
+}*/
+struct node_factorization*factorize_num_v1(const mpz_t num,int first_index_f_base,int last_index_f_base,
+										char*is_B_smooth,char*is_semi_B_smooth,mpz_t residuos,struct a_struct*array_a_struct,int s) {
+	if ((first_index_f_base < 0 && first_index_f_base != -1) || (last_index_f_base < 0 && last_index_f_base != -1)
+		|| is_B_smooth == NULL || is_semi_B_smooth == NULL
+		|| first_index_f_base > last_index_f_base || (array_a_struct == NULL && s > 0)) {
+		handle_error_with_exit("error in factorize_num\n");
+	}
+	//j_of_num va da -M a +M
+	int prime = 0;
+	int exp = 0;
+	int index = 0;
+	mpz_t temp;
+	mpz_init(temp);
+	mpz_set(temp, num);
+	struct node_factorization *head = NULL;
+	struct node_factorization *tail = NULL;
+	//bisogna aggiungere i fattori di a alla fattorizzazione
+	if (first_index_f_base == -1 || last_index_f_base == -1) {//nessun fattore trovato,
+		mpz_clear(temp);
+		return NULL;
+	}
+	if (mpz_cmp_si(num, 0) < 0) {//valore negativo->divisibile per 1
+		mpz_neg(temp, temp);//rendilo positivo
+		insert_ordered_factor(-1, 1, 0, &head, &tail);//inserisci nodo -1
+	}
+	if (s != 0) {
+		//se i numeri di a sono ad un indice più piccolo del first_index_f_base allora aggiungili prima
+		//questi fattori di a non dividono il polinomio a*j^2+2bj+c ->avranno sempre esponente 1
+		while (index != s && array_a_struct[index].index_prime_a < first_index_f_base) {
+			insert_ordered_factor(array_a_struct[index].number_prime_a, 1, array_a_struct[index].index_prime_a, &head,
+								  &tail);//inserisci nodo con esponente 1
+			index++;
+		}
+	}
+	for (int i = first_index_f_base; i <= last_index_f_base; i++) {//scorri i primi da fist index a last index compresi
+		if (r.prime[i] == -1) {//salta il -1,l'abbiamo già considerato
+			continue;
+		}
+		if (s != 0 && index != s &&
+			array_a_struct[index].index_prime_a == i) {//se un fattore di a ha un indice compreso
+			// tra first e last index metti ad uno l'esponente anche se non è divisibile per quel numero
+			// (sappiamo che il polinomio è divisibile per quel numero)
+			exp = 1;//poni esponente a 1
+			index++;//aumneta l'indice
+			//n.b. i fattori di a possono comparire nella fattorizzazione con un esponente maggiore di 1
+		}
+		prime = r.prime[i];
+		while (mpz_divisible_ui_p(temp, prime) != 0) {//se il numero è divisibile per un primo della fattor base
+			mpz_divexact_ui(temp, temp, prime);//dividilo
+			exp += 1;//aumenta esponente
+		}
+		if (exp > 0) {//è stato diviso almeno 1 volta
+			insert_ordered_factor(prime, exp, i, &head, &tail);
+		}
+		exp = 0;//resetta esponente
+		continue;
+	}
+	if (s != 0) {
+		//se i numeri di a sono ad un indice più grande del last_index_f_base allora aggiungili dopo
+		//questi fattori di a non dividono il polinomio a*j^2+2bj+c ->avranno sempre esponente 1
+		while (index != s && array_a_struct[index].index_prime_a > last_index_f_base && index < s) {
+			insert_ordered_factor(array_a_struct[index].number_prime_a, 1, array_a_struct[index].index_prime_a, &head,
+								  &tail);//inserisci nodo
+			index++;
+		}
+	}
+	if (s != 0 && index != s) {
+		handle_error_with_exit("error in factorize num invalid s\n");
+	}
+	if (mpz_cmp_si(temp, 1) == 0) {//se il residuo della divisione è 1 allora è B-smooth
+		*is_B_smooth = 1;
+		*is_semi_B_smooth = 0;
+		mpz_set(residuos, temp);//imposta il residuo
+	} else {//non è B-smooth è semi_B_smooth
+		*is_B_smooth = 0;
+		*is_semi_B_smooth = 1;
+		mpz_set(residuos, temp);//imposta il residuo
+	}
+	mpz_clear(temp);
+	return head;
 }
-
 /*char factorize_num_B_smooth(int*array_factorization,int len_array,struct row *row){
 	mpz_t temp;
 	mpz_init(temp);
@@ -282,7 +362,8 @@ void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth
             //possibile B_smooth trovato
             (*num_potential_B_smooth)++;
             create_num(num,a,thread_data.b,n,thread_data.numbers[i].j);
-            head_factor=factorize_num(num,thread_data.numbers[i].j,thread_data.numbers[i].first_index_f_base,thread_data.numbers[i].last_index_f_base,&is_B_smooth,&is_semi_B_smooth,residuos,array_a_struct,s,thread_data);
+            head_factor=factorize_num_v1(num,thread_data.numbers[i].first_index_f_base,thread_data.numbers[i].last_index_f_base,&is_B_smooth,&is_semi_B_smooth,residuos,array_a_struct,s);
+			//head_factor=factorize_num_v2(num,thread_data.numbers[i].j,thread_data.numbers[i].first_index_f_base,thread_data.numbers[i].last_index_f_base,&is_B_smooth,&is_semi_B_smooth,residuos,array_a_struct,s,thread_data);
             if(head_factor==NULL && (is_B_smooth==1 || is_semi_B_smooth==1)){
             	handle_error_with_exit("error invalid factorize_num\n");
             }
