@@ -234,8 +234,10 @@ int main(int argc,char*argv[]){
 			print_time_elapsed("time to verify factor base");
 			//a,per siqs e generare tutti gli altri b,prodotto di primi dispari distinti
 			calculate_a_f2(a_new,thresold_a,&s,head_f_base_f,cardinality_factor_base,&index_prime_a,&number_prime_a);
-			while(s>0 && mpz_cmp(a_old,a_new)==0){
-				increment_M_and_B(&M,&B);
+
+			while(s>0 || (mpz_cmp(a_old,a_new)==0 && mpz_cmp_si(a_new,0)!=0)){//continua fino a quando non trovi un a diverso
+				increment_M_and_B(&M,&B);//aumenta M e B
+				create_factor_base_f(&cardinality_factor_base,B,&head_f_base_f,&tail_f_base_f,n,&last_prime_factor_base);
                 if(index_prime_a!=NULL){
                     free(index_prime_a);
                     index_prime_a=NULL;
@@ -244,7 +246,23 @@ int main(int argc,char*argv[]){
                     free(number_prime_a);
                     number_prime_a=NULL;
                 }
+				calculate_thresold_a(thresold_a,n,M);
+				printf("thresold_a=");
+				mpfr_out_str(stdout,10,0,thresold_a,MPFR_RNDN);
+				printf("\n");
 				calculate_a_f2(a_new,thresold_a,&s,head_f_base_f,cardinality_factor_base,&index_prime_a,&number_prime_a);
+			}
+			if(s==0 && mpz_cmp_si(a_new,0)==0){
+				increment_M_and_B(&M,&B);//aumenta M e B
+				create_factor_base_f(&cardinality_factor_base,B,&head_f_base_f,&tail_f_base_f,n,&last_prime_factor_base);
+				if(index_prime_a!=NULL){
+					free(index_prime_a);
+					index_prime_a=NULL;
+				}
+				if(number_prime_a!=NULL){
+					free(number_prime_a);
+					number_prime_a=NULL;
+				}
 			}
 			if(s>0){
 				mpz_set(a_old,a_new);
@@ -332,7 +350,6 @@ int main(int argc,char*argv[]){
             mpz_set(thread_polynomial_data[NUM_THREAD_POLYNOMIAL].b,b_default);//imposta b
 			//fattorizza numeri nell'array lungo 2m+1
             printf("main thread\n");
-            sleep(100);
 			factor_matrix_f(n,M,(thread_polynomial_data[NUM_THREAD_POLYNOMIAL]),cardinality_factor_base,a_default,array_a_struct,s);//fattorizza numeri
 			print_time_elapsed("time_to_factor matrix_factorization main thread");
 			print_thread_data(thread_polynomial_data[NUM_THREAD_POLYNOMIAL],M,cardinality_factor_base);
@@ -404,7 +421,6 @@ int main(int argc,char*argv[]){
             print_time_elapsed("time to add square relation to list sorted");
             head_square=NULL;
             tail_square=NULL;
-            exit(0);
             /*if(verify_sorted_square_rel_list(head_sort_square)==0){
                 handle_error_with_exit("error in sort relation by square\n");
             }*/
@@ -643,7 +659,6 @@ int thread_job_criv_quad(int id_thread){//id inizia da 0,il lavoro di un thread 
 		print_list_square_relation(head_square,thread_polynomial_data[id_thread].num_B_smooth);
 		printf("residuos\n");
 		print_list_square_relation(head_residuos,thread_polynomial_data[id_thread].num_B_smooth);
-        sleep(100);
         printf("num_potential_B_smooth=%d,num_B_smooth=%d,num_semi_B_smooth=%d\n",thread_polynomial_data[id_thread].num_potential_B_smooth,thread_polynomial_data[id_thread].num_B_smooth,thread_polynomial_data[id_thread].num_semi_B_smooth);
 		print_time_elapsed_local("time to find_list_square_relation",&timer_thread);
 		//pulisci struttura dati del thread per ricominciare con un altro polinomio

@@ -141,7 +141,6 @@ struct node_factorization*factorize_num(const mpz_t num,int j_of_num,int first_i
             index++;
         }
     }
-    printf("j_of_num=%d\n",j_of_num);
 	for(int i=first_index_f_base;i<=last_index_f_base;i++){//scorri i primi da fist index a last index compresi
 	    if(r.prime[i]==-1){//salta il -1,l'abbiamo già considerato
 	        continue;
@@ -158,25 +157,36 @@ struct node_factorization*factorize_num(const mpz_t num,int j_of_num,int first_i
 	    }
 		prime=r.prime[i];
 	    if(i==first_index_f_base || i==last_index_f_base){//se è uguale al primo o all'ultimo indice è sicuramente divisibile per p
-			mpz_divexact_ui(temp, temp,prime);//dividilo la prima volta per prime
-	    	exp+=1;
-			while(mpz_divisible_ui_p(temp,prime)!=0) {//se il numero è divisibile per un primo della fattor base
-				mpz_divexact_ui(temp, temp,prime);//dividilo
-				exp+=1;//aumenta esponente
+			if(i==1){//divisibile per 2
+                mpz_divexact_ui(temp, temp,prime);//dividilo la prima volta per prime
+                exp+=1;
+                while(mpz_divisible_2exp_p(temp,1)!=0){//finquando è divisibie per 2
+                    mpz_divexact_ui(temp, temp,prime);//dividilo
+                    exp+=1;//aumenta esponente
+                }
+                if(exp>0) {//è stato diviso almeno 1 volta
+                    insert_ordered_factor(prime, exp, i, &head, &tail);
+                }
+                exp=0;//resetta esponente
+                continue;
 			}
-			if(exp>0) {//è stato diviso almeno 1 volta
-				insert_ordered_factor(prime, exp, i, &head, &tail);
-			}
-			exp=0;//resetta esponente
-			continue;
+			else {
+                mpz_divexact_ui(temp, temp, prime);//dividilo la prima volta per prime
+                exp += 1;
+                while (mpz_divisible_ui_p(temp, prime) != 0) {//se il numero è divisibile per un primo della fattor base
+                    mpz_divexact_ui(temp, temp, prime);//dividilo
+                    exp += 1;//aumenta esponente
+                }
+                if (exp > 0) {//è stato diviso almeno 1 volta
+                    insert_ordered_factor(prime, exp, i, &head, &tail);
+                }
+                exp = 0;//resetta esponente
+                continue;
+            }
 	    }
-	    printf("prime=%d\n",prime);
 	    j1=thread_data.j1_mod_p[i];
-	    printf("j1=%d\n",j1);
 	    j2=thread_data.j2_mod_p[i];
-        printf("j2=%d\n",j2);
         j_of_num_mod_p=reduce_int_mod_n_v2(j_of_num,prime);
-	    printf("j_of_num_mod_p=%d\n",j_of_num_mod_p);
         //j_of_num ridotto modulo prime se è uguale a j1 o j2 allora è divisibile per p
 	    if(j_of_num_mod_p==j1 || j_of_num_mod_p==j2){
             mpz_divexact_ui(temp, temp,prime);//dividilo la prima volta per prime
@@ -2755,14 +2765,12 @@ char divide_all_by_p_to_k_f(int rad,long p,int index_of_prime,long k,long M,stru
 	j1=mpz_get_si(j1t);//j1=j1t
 	j2=mpz_get_si(j2t);//j2=j2t
     thread_data.j1_mod_p[index_of_prime]=j1;
-    printf("j1=%d,p=%d\n",thread_data.j1_mod_p[index_of_prime],p);
     if(j!=1) {
         thread_data.j2_mod_p[index_of_prime] = j2;
     }
     else{
         thread_data.j2_mod_p[index_of_prime]= -1;
     }
-	printf("j2=%d,p=%d\n", thread_data.j2_mod_p[index_of_prime], p);
     j_temp2=j1;
     indexv=j_temp2+M;//l'indice deve essere positivo
 	while(j_temp2<=M){//all'inizio j_temp=0*p+j1t,poi diventa k*p+j1t(a salti di p)

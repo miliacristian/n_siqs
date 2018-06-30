@@ -169,7 +169,6 @@ void increment_M_and_B(long*M,long*B){
     //calcola i valori nuovi di M e B secondo una formula scelta opportunamente
     //new_m=(m+perc_m)+(m+perc_m)*perc_m/100
     //new_b=(b+perc_b)+(b+perc_b)*perc_b/100
-    return;
     if(M==NULL || B==NULL || *M<=0 || *B<=0){
         handle_error_with_exit("error in calculate_news_M_and_B\n");
     }
@@ -1084,7 +1083,6 @@ void calculate_a_f2(mpz_t a,const mpfr_t target_a,int*s,struct node_factor_base*
 		mpz_clear(v);
 		*best_q=NULL;
 		*best_q_number=NULL;
-		//fprintf(file_log,"pmin=0,p_max=0 ");
 		return;//ritorna array_of_prime_chosen_for_a==NULL e a=0
 	}
 	if(cardinality_factor_base==3){
@@ -1157,7 +1155,6 @@ void calculate_a_f2(mpz_t a,const mpfr_t target_a,int*s,struct node_factor_base*
 	*best_q_number=alloc_array_int(s_max);//array che contiene i numeri dei primi scelti
 	*best_q=alloc_array_int(s_max);//array che contiene gli indici dei primi scelti
 	int length_best_q=0;//inizialmente la lunghezza della lista migliore è zero
-
 	for(int i=0;i<NUM_ITER_FOR_CALCULATE_A;i++){//iterazioni per cercare di migliorare a
 		mpz_set_si(a2_int,1);//a2=1 azzera a2
 		memset(q,0,sizeof(int)*s_max);//azzera q
@@ -1235,8 +1232,9 @@ void calculate_a_f2(mpz_t a,const mpfr_t target_a,int*s,struct node_factor_base*
 	if(*s>s_max){
 		handle_error_with_exit("error in calculate a,s must be minor or equal to s_max\n");
 	}
-
-
+	if(*s==0 && mpz_cmp(a,0)!=0){
+		handle_error_with_exit("error in function calculate_a s or a\n");
+	}
 	free(q);
 	free(q_number);
 	mpfr_clear(p_rational);
