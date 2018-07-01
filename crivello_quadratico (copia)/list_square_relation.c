@@ -429,7 +429,7 @@ char combine_relation_B_smooth_and_semi_B_smooth(struct node_square_relation**he
     while(p!=NULL) {
         q=p->next;
         //ciclo sulla lista per trovare residui uguali e creare nuove relazioni B_smooth e ordinale per square
-        while (p!=NULL && q!=NULL && mpz_cmp(p->square_relation.residuos, q->square_relation.residuos) == 0) {//residui uguali
+        while (p!=NULL && q!=NULL && mpz_cmp(p->square_relation.residuos, q->square_relation.residuos) == 0 && mpz_cmp(p->square_relation.square, q->square_relation.square) != 0) {//residui uguali
             //gmp_printf("residui uguali a %Zd\n", p->square_relation.residuos);
             (*num_B_smooth)++;
             struct square_relation new_square_relation=create_relation_large_prime(p->square_relation,q->square_relation,n,&factorization_founded);

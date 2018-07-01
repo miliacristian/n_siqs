@@ -112,11 +112,16 @@ void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B){
         *B=250000;
         return;
     }
-	if(digit_n<75){
-		*M=50000;
-		*B=1100000;
+	/*if(digit_n<75){//26 minuti
+		*M=150000;
+		*B=1500000;
 		return;
-	}
+	}*/
+    if(digit_n<75){//26 minuti
+        *M=200000;
+        *B=2000000;
+        return;
+    }
 	if(digit_n<80){
 		handle_error_with_exit("error criv_quad <80\n");
 		*M=35000;

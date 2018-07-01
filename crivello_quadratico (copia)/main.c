@@ -439,29 +439,44 @@ int main(int argc,char*argv[]){
             // la lista finale conterrà relazioni semi_B_smooth ordinate per residuo
             add_relation_semi_B_smooth_to_list(&head_sort_residuos,&tail_sort_residuos,head_residuos);
             print_time_elapsed("time to add relation semi_B_smooth");
-            if(verify_sorted_residuos_square_rel_list(head_sort_residuos)==0){
+            /*if(verify_sorted_residuos_square_rel_list(head_sort_residuos)==0){
                 handle_error_with_exit("error in sort relation by square\n");
-            }
+            }*/
             head_residuos=NULL;
             tail_residuos=NULL;
 
+			factorizations_founded = combine_relation_B_smooth_and_semi_B_smooth(&head_sort_square,
+																				 &tail_sort_square, head_sort_residuos, n, &num_B_smooth, &num_semi_B_smooth);
+			print_time_elapsed("time_to_combine relation_B_smooth");
+			//riassegna la lista delle relazioni quadratiche a head e tail
+			head_sort_residuos = NULL;
+			tail_sort_residuos = NULL;
+			if (factorizations_founded == 1) {
+				break;
+			}
             //trova nuove relazioni quadratiche con un nuovo square,una nuova fattorizazzione e imposta num=0
-            factorizations_founded=combine_relation_B_smooth_and_semi_B_smooth(&head_sort_square,&tail_sort_square,head_sort_residuos,n,&num_B_smooth,&num_semi_B_smooth);
-            print_time_elapsed("time_to_combine relation_B_smooth");
-            //riassegna la lista delle relazioni quadratiche a head e tail
-            head_sort_residuos=NULL;
-            tail_sort_residuos=NULL;
-            if(factorizations_founded==1){
-            	break;
-            }
-            print_time_elapsed("time to combine relation B_smooth");
+            /*if(num_B_smooth>=cardinality_factor_base*THRESOLD_RELATION) {
+				add_relation_semi_B_smooth_to_list(&head_sort_residuos,&tail_sort_residuos,head_residuos);
+				print_time_elapsed("time to add relation semi_B_smooth");
+				head_residuos=NULL;
+				tail_residuos=NULL;
+				factorizations_founded = combine_relation_B_smooth_and_semi_B_smooth(&head_sort_square,
+						&tail_sort_square, head_sort_residuos, n, &num_B_smooth, &num_semi_B_smooth);
+				print_time_elapsed("time_to_combine relation_B_smooth");
+				//riassegna la lista delle relazioni quadratiche a head e tail
+				head_sort_residuos = NULL;
+				tail_sort_residuos = NULL;
+				if (factorizations_founded == 1) {
+					break;
+				}
+			}*/
             //print_list_square_relation(head,num_B_smooth);
             /*if(verify_sorted_square_rel_list(head_sort_square)==0){
                 handle_error_with_exit("error in sorted list by square\n");
             }*/
             printf("card_f_base=%d\n",cardinality_factor_base);
-			print_estimated_time(cardinality_factor_base,num_B_smooth);
-			exit(0);
+			//print_estimated_time(cardinality_factor_base,num_B_smooth);
+			//exit(0);
 
             if(num_B_smooth>=cardinality_factor_base*ENOUGH_RELATION){
                 remove_same_square(&head_sort_square,&tail_sort_square,&num_B_smooth,&num_semi_B_smooth);
