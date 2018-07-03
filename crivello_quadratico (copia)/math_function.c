@@ -474,9 +474,9 @@ void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth
             if(head_factor==NULL && (is_B_smooth==1 || is_semi_B_smooth==1)){
             	handle_error_with_exit("error invalid factorize_num\n");
             }
-			/*if(verify_factorization(num,residuos,head_factor,a)==0){
+			if(verify_factorization(num,residuos,head_factor,a)==0){
             	handle_error_with_exit("error in factorization\n");
-            }*/
+            }
             if(head_factor==NULL){
             	continue;
             }

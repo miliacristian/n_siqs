@@ -51,6 +51,7 @@
 	int*index_prime_a=NULL;//indice dei primi usati per ottenere a,rispetto alla factor base
 	int*number_prime_a=NULL;//numeri primi usati per ottenere a
     struct a_struct*array_a_struct=NULL;
+    int combined_relations=0;
 
 
 int main(int argc,char*argv[]){
@@ -230,9 +231,9 @@ int main(int argc,char*argv[]){
 			print_time_elapsed("time to calculate factor base");
 
 			//verifica che la factor base è corretta
-            /*if(verify_factor_base(head_f_base_f,cardinality_factor_base,last_prime_factor_base)==0){
+            if(verify_factor_base(head_f_base_f,cardinality_factor_base,last_prime_factor_base)==0){
                 handle_error_with_exit("error in main verify factor base\n");
-            }*/
+            }
 			print_time_elapsed("time to verify factor base");
 			//a,per siqs e generare tutti gli altri b,prodotto di primi dispari distinti
 			calculate_a_f2(a_new,thresold_a,&s,head_f_base_f,cardinality_factor_base,&index_prime_a,&number_prime_a);
@@ -435,13 +436,15 @@ int main(int argc,char*argv[]){
             if(verify_sorted_square_rel_list(head_sort_square)==0){
                 handle_error_with_exit("error in sort relation by square\n");
             }
+
             //unisici tutte le relazioni semi_B_smooth alla lista delle relazioni semi_B_smooth,
             // la lista finale conterrà relazioni semi_B_smooth ordinate per residuo
-            add_relation_semi_B_smooth_to_list(&head_sort_residuos,&tail_sort_residuos,head_residuos);
+
+            /*add_relation_semi_B_smooth_to_list(&head_sort_residuos,&tail_sort_residuos,head_residuos);//commentare questa riga
             print_time_elapsed("time to add relation semi_B_smooth");
-            /*if(verify_sorted_residuos_square_rel_list(head_sort_residuos)==0){
+            if(verify_sorted_residuos_square_rel_list(head_sort_residuos)==0){
                 handle_error_with_exit("error in sort relation by square\n");
-            }*/
+            }
             head_residuos=NULL;
             tail_residuos=NULL;
 
@@ -453,15 +456,16 @@ int main(int argc,char*argv[]){
 			tail_sort_residuos = NULL;
 			if (factorizations_founded == 1) {
 				break;
-			}
+			}*///commentare questa riga
+
             //trova nuove relazioni quadratiche con un nuovo square,una nuova fattorizazzione e imposta num=0
-            /*if(num_B_smooth>=cardinality_factor_base*THRESOLD_RELATION) {
+            if(num_B_smooth>=cardinality_factor_base*THRESOLD_RELATION) {
 				add_relation_semi_B_smooth_to_list(&head_sort_residuos,&tail_sort_residuos,head_residuos);
 				print_time_elapsed("time to add relation semi_B_smooth");
 				head_residuos=NULL;
 				tail_residuos=NULL;
 				factorizations_founded = combine_relation_B_smooth_and_semi_B_smooth(&head_sort_square,
-						&tail_sort_square, head_sort_residuos, n, &num_B_smooth, &num_semi_B_smooth);
+						&tail_sort_square, head_sort_residuos, n, &num_B_smooth, &num_semi_B_smooth,&combined_relations);
 				print_time_elapsed("time_to_combine relation_B_smooth");
 				//riassegna la lista delle relazioni quadratiche a head e tail
 				head_sort_residuos = NULL;
@@ -469,21 +473,19 @@ int main(int argc,char*argv[]){
 				if (factorizations_founded == 1) {
 					break;
 				}
-			}*/
+			}
             //print_list_square_relation(head,num_B_smooth);
-            /*if(verify_sorted_square_rel_list(head_sort_square)==0){
+            if(verify_sorted_square_rel_list(head_sort_square)==0){
                 handle_error_with_exit("error in sorted list by square\n");
-            }*/
+            }
             printf("card_f_base=%d\n",cardinality_factor_base);
-			//print_estimated_time(cardinality_factor_base,num_B_smooth);
-			//exit(0);
 
             if(num_B_smooth>=cardinality_factor_base*ENOUGH_RELATION){
                 remove_same_square(&head_sort_square,&tail_sort_square,&num_B_smooth,&num_semi_B_smooth);
                 print_time_elapsed("time to remove same square");
-                /*if(verify_sorted_square_rel_list(head_sort_square)==0){
+                if(verify_sorted_square_rel_list(head_sort_square)==0){
                     handle_error_with_exit("error in sort list by square\n");
-                }*/
+                }
             }
             //verifica che il numero di relazioni trovate è ancora sufficiente dopo aver rimosso gli square uguali
             if(num_B_smooth<cardinality_factor_base*ENOUGH_RELATION){
@@ -639,6 +641,7 @@ int main(int argc,char*argv[]){
 	if(fclose(file_number)!=0){
 		handle_error_with_exit("error in close file_number\n");
 	}
+	printf("combined_relations=%d\n",combined_relations);
 	return 0;
 }
 

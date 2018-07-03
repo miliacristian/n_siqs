@@ -416,8 +416,9 @@ void insert_ordered_sort_square_rel(struct square_relation square_relation, stru
     return;
 }
 
-char combine_relation_B_smooth_and_semi_B_smooth(struct node_square_relation**head_sort_square,struct node_square_relation**tail_sort_square,struct node_square_relation*head_sort_residuos,mpz_t n,int*num_B_smooth,int*num_semi_B_smooth){
-    if(head_sort_square==NULL || tail_sort_square==NULL || num_B_smooth==NULL || num_semi_B_smooth==NULL ){
+char combine_relation_B_smooth_and_semi_B_smooth(struct node_square_relation**head_sort_square,struct node_square_relation**tail_sort_square,
+        struct node_square_relation*head_sort_residuos,mpz_t n,int*num_B_smooth,int*num_semi_B_smooth,int*combined_relations){
+    if(head_sort_square==NULL || tail_sort_square==NULL || num_B_smooth==NULL || num_semi_B_smooth==NULL || combined_relations==NULL){
         handle_error_with_exit("error in combine_relation_B_smooth and semi_B_smooth\n");
     }
     char factorization_founded=0;
@@ -429,18 +430,24 @@ char combine_relation_B_smooth_and_semi_B_smooth(struct node_square_relation**he
     while(p!=NULL) {
         q=p->next;
         //ciclo sulla lista per trovare residui uguali e creare nuove relazioni B_smooth e ordinale per square
-        while (p!=NULL && q!=NULL && mpz_cmp(p->square_relation.residuos, q->square_relation.residuos) == 0 && mpz_cmp(p->square_relation.square, q->square_relation.square) != 0) {//residui uguali
-            //gmp_printf("residui uguali a %Zd\n", p->square_relation.residuos);
-            (*num_B_smooth)++;
-            struct square_relation new_square_relation=create_relation_large_prime(p->square_relation,q->square_relation,n,&factorization_founded);
-            if(factorization_founded==1){
-                free_memory_list_square_relation(p);
-                head_sort_residuos=NULL;
-                return factorization_founded;
+        while (p!=NULL && q!=NULL && mpz_cmp(p->square_relation.residuos, q->square_relation.residuos) == 0) {//residui uguali
+            if (mpz_cmp(p->square_relation.square, q->square_relation.square) != 0) {
+                (*num_B_smooth)++;
+                (*combined_relations)++;
+                struct square_relation new_square_relation = create_relation_large_prime(p->square_relation,
+                                                                                         q->square_relation, n,
+                                                                                         &factorization_founded);
+                if (factorization_founded == 1) {
+                    free_memory_list_square_relation(p);
+                    head_sort_residuos = NULL;
+                    return factorization_founded;
+                } else if (factorization_founded != -1) {
+                    insert_ordered_sort_square_rel(new_square_relation, head_sort_square, tail_sort_square);
+                    q = q->next;
+                }
             }
-            else if(factorization_founded!=-1) {
-                insert_ordered_sort_square_rel(new_square_relation, head_sort_square, tail_sort_square);
-                q = q->next;
+            else{//relazioni con lo stesso residuo ma con lo stesso quadrato
+                q=q->next;
             }
         }
         //una volta che ho creato tutte le relazioni quadratiche sfruttando un numero semi_B_smooth lo tolgo dalla lista

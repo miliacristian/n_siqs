@@ -19,8 +19,8 @@
 #define PERC_INCREMENT_B 5 //quanto aumenta in percentuale B se non si riesce a fattorizzare n
 
 #define NUM_OF_N_TO_FACTORIZE 1
-#define THRESOLD_RELATION 0.5
-#define ENOUGH_RELATION 1 //numero maggiore o uguale a 1 indica quante relazioni
+#define THRESOLD_RELATION 0.6
+#define ENOUGH_RELATION 1.0 //numero maggiore o uguale a 1 indica quante relazioni
 //vanno trovate in più rispetto alla cardinalità della factor base num_b_smooth>cardinality*enough_relation
 #define ERROR_LOG 25//errore del logaritmo,aumentare per trovare più numeri B_smooth potenziali ma maggior computazione,
 //diminuire per trovare meno numeri B_smooth potenziali ma minor computazione,valore default=25
