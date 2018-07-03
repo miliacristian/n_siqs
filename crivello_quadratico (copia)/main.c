@@ -234,6 +234,9 @@ int main(int argc,char*argv[]){
             if(verify_factor_base(head_f_base_f,cardinality_factor_base,last_prime_factor_base)==0){
                 handle_error_with_exit("error in main verify factor base\n");
             }
+            if(verify_cardinality_list_factor_base(head_f_base_f,cardinality_factor_base)==0){
+            	handle_error_with_exit("invalid dimension list factor base\n");
+            }
 			print_time_elapsed("time to verify factor base");
 			//a,per siqs e generare tutti gli altri b,prodotto di primi dispari distinti
 			calculate_a_f2(a_new,thresold_a,&s,head_f_base_f,cardinality_factor_base,&index_prime_a,&number_prime_a);
@@ -270,6 +273,12 @@ int main(int argc,char*argv[]){
 			if(s==0 && mpz_cmp_si(a_new,0)==0){
 				increment_M_and_B(&M,&B);//aumenta M e B
 				create_factor_base_f(&cardinality_factor_base,B,&head_f_base_f,&tail_f_base_f,n,&last_prime_factor_base);
+				if(verify_factor_base(head_f_base_f,cardinality_factor_base,last_prime_factor_base)==0){
+					handle_error_with_exit("error in main verify factor base\n");
+				}
+				if(verify_cardinality_list_factor_base(head_f_base_f,cardinality_factor_base)==0){
+					handle_error_with_exit("invalid dimension list factor base\n");
+				}
 				if(index_prime_a!=NULL){
 					free(index_prime_a);
 					index_prime_a=NULL;
@@ -434,7 +443,9 @@ int main(int argc,char*argv[]){
             if(verify_sorted_square_rel_list(head_sort_square)==0){
                 handle_error_with_exit("error in sort relation by square\n");
             }
-
+			if(verify_cardinality_list_square_relation(head_sort_square,num_B_smooth)==0){
+            	handle_error_with_exit("error in cardinality square relation\n");
+            }
             //unisici tutte le relazioni semi_B_smooth alla lista delle relazioni semi_B_smooth,
             // la lista finale conterrà relazioni semi_B_smooth ordinate per residuo
 
@@ -468,6 +479,9 @@ int main(int argc,char*argv[]){
 				//riassegna la lista delle relazioni quadratiche a head e tail
 				head_sort_residuos = NULL;
 				tail_sort_residuos = NULL;
+				if(verify_cardinality_list_square_relation(head_sort_square,num_B_smooth)==0){
+					handle_error_with_exit("error in cardinality square relation\n");
+				}
 				if (factorizations_founded == 1) {
 					break;
 				}
@@ -483,6 +497,9 @@ int main(int argc,char*argv[]){
                 if(verify_sorted_square_rel_list(head_sort_square)==0){
                     handle_error_with_exit("error in sort list by square\n");
                 }
+				if(verify_cardinality_list_square_relation(head_sort_square,num_B_smooth)==0){
+					handle_error_with_exit("error in cardinality square relation\n");
+				}
             }
             //verifica che il numero di relazioni trovate è ancora sufficiente dopo aver rimosso gli square uguali
             if(num_B_smooth<cardinality_factor_base*ENOUGH_RELATION){
@@ -659,8 +676,8 @@ int thread_job_criv_quad(int id_thread){//id inizia da 0,il lavoro di un thread 
 	}
     struct timespec timer_thread;//istante di tempo
 	int count=id_thread;//indica quale polinomio deve usare per fare il crivello quadratico
-    struct node_square_relation*head_square=NULL,*tail_square=NULL;
-    struct node_square_relation*head_residuos=NULL,*tail_residuos=NULL;
+    struct node_square_relation*head_squares=NULL,*tail_squares=NULL;
+    struct node_square_relation*head_residuoss=NULL,*tail_residuoss=NULL;
 
     //gettime
     gettime(&timer_thread);
@@ -692,12 +709,12 @@ int thread_job_criv_quad(int id_thread){//id inizia da 0,il lavoro di un thread 
 		clear_struct_thread_data(thread_polynomial_data[id_thread],M);
 		print_time_elapsed_local("time to clear struct thread_data",&timer_thread);
 		//unisci la lista dei quadrati trovata con il polinomio con la lista dei quadrati del thread,alla fine ogni thread ha un unica lista dei quadrati
-        union_list_square(&(thread_polynomial_data[id_thread].head_square),&(thread_polynomial_data[id_thread].tail_square),head_square,tail_square);
-        union_list_residuos(&(thread_polynomial_data[id_thread].head_residuos),&(thread_polynomial_data[id_thread].tail_residuos),head_residuos,tail_residuos);
-		head_square=NULL;//resetta la lista locale delle relazioni quadratiche
-		tail_square=NULL;//resetta la lista locale delle relazioni quadratiche
-        head_residuos=NULL;
-        tail_residuos=NULL;
+        union_list_square(&(thread_polynomial_data[id_thread].head_square),&(thread_polynomial_data[id_thread].tail_square),head_squares,tail_squares);
+        union_list_residuos(&(thread_polynomial_data[id_thread].head_residuos),&(thread_polynomial_data[id_thread].tail_residuos),head_residuoss,tail_residuoss);
+		head_squares=NULL;//resetta la lista locale delle relazioni quadratiche
+		tail_squares=NULL;//resetta la lista locale delle relazioni quadratiche
+        head_residuoss=NULL;
+        tail_residuoss=NULL;
         print_time_elapsed_local("time to union list square and list residuos",&timer_thread);
 		count+=NUM_THREAD_POLYNOMIAL;//modulo numero dei thread
 	}

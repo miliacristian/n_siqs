@@ -589,14 +589,53 @@ void remove_same_square(struct node_square_relation**head,struct node_square_rel
     }
     return;
 }
-
+void union_list_square_v2(struct node_square_relation**head_square1,struct node_square_relation**tail_square1,struct node_square_relation**head_square2,struct node_square_relation**tail_square2){
+    //concatena la prima lista e la seconda lista =L1 unito L2=L1,L2
+    if(head_square1==NULL || tail_square1==NULL || head_square2==NULL || tail_square2==NULL){
+        handle_error_with_exit("error in union_list_square_v2\n");
+    }
+    if(*head_square2==NULL){//nulla da fare
+        return;
+    }
+    if(*tail_square1==NULL){//lista vuota,prendi l'altra lista
+        *head_square1=*head_square2;
+        *tail_square1=*tail_square2;
+        return;
+    }
+    (*head_square2)->prev=(*tail_square1);//il primo nodo della seconda lista punta all'ultimo nodo della prima lista
+    (*tail_square1)->next=*head_square2;//l'ultimo nodo della prima lista punta al primo nodo dell'altra lista
+    *tail_square1=*tail_square2;//la coda della prima lista punta alla coda della seconda lista
+    *tail_square2=NULL;
+    *head_square2=NULL;
+    return;
+}
+void union_list_residuos_v2(struct node_square_relation**head_square1,struct node_square_relation**tail_square1,struct node_square_relation**head_square2,struct node_square_relation**tail_square2){
+    //concatena la prima lista e la seconda lista =L1 unito L2=L1,L2
+    if(head_square1==NULL || tail_square1==NULL || head_square2==NULL || tail_square2==NULL){
+        handle_error_with_exit("error in union_list_square_v2\n");
+    }
+    if(*head_square2==NULL){//nulla da fare
+        return;
+    }
+    if(*tail_square1==NULL){//lista vuota,prendi l'altra lista
+        *head_square1=*head_square2;
+        *tail_square1=*tail_square2;
+        return;
+    }
+    (*head_square2)->prev=(*tail_square1);//il primo nodo della seconda lista punta all'ultimo nodo della prima lista
+    (*tail_square1)->next=*head_square2;//l'ultimo nodo della prima lista punta al primo nodo dell'altra lista
+    *tail_square1=*tail_square2;//la coda della prima lista punta alla coda della seconda lista
+    *tail_square2=NULL;
+    *head_square2=NULL;
+    return;
+}
 
 void union_list_square(struct node_square_relation**head_square,struct node_square_relation**tail_square,struct node_square_relation*phead_square,struct node_square_relation*ptail_square){
     //concatena la prima lista e la seconda lista =L1 unito L2=L1,L2
     if(head_square==NULL || tail_square==NULL){
         handle_error_with_exit("error in union_list_square\n");
     }
-    if(phead_square==NULL){
+    if(phead_square==NULL){//nulla da fare
         return;
     }
     if(*tail_square==NULL){//lista vuota,prendi l'altra lista
