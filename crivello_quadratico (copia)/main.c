@@ -371,8 +371,6 @@ int main(int argc,char*argv[]){
 			printf("log_thresold main thread=%f\n",thread_polynomial_data[NUM_THREAD_POLYNOMIAL].log_thresold);
 
 			//trova relazioni quadratiche o semi_B_smooth e ordinale per numero
-            head_residuos=NULL;
-            tail_residuos=NULL;
 			find_list_square_relation(thread_polynomial_data[NUM_THREAD_POLYNOMIAL],&num_B_smooth,&num_semi_B_smooth,&num_potential_B_smooth,M,&head_square,&tail_square,&head_residuos,&tail_residuos,n,a_default,NULL,0);
 			//printf("square\n");
 			//print_list_square_relation(head_square,num_B_smooth);
@@ -449,7 +447,7 @@ int main(int argc,char*argv[]){
             tail_residuos=NULL;
 
 			factorizations_founded = combine_relation_B_smooth_and_semi_B_smooth(&head_sort_square,
-																				 &tail_sort_square, head_sort_residuos, n, &num_B_smooth, &num_semi_B_smooth);
+																				 &tail_sort_square, head_sort_residuos, n, &num_B_smooth, &num_semi_B_smooth,&combined_relations);
 			print_time_elapsed("time_to_combine relation_B_smooth");
 			//riassegna la lista delle relazioni quadratiche a head e tail
 			head_sort_residuos = NULL;
@@ -479,7 +477,6 @@ int main(int argc,char*argv[]){
                 handle_error_with_exit("error in sorted list by square\n");
             }
             printf("card_f_base=%d\n",cardinality_factor_base);
-
             if(num_B_smooth>=cardinality_factor_base*ENOUGH_RELATION){
                 remove_same_square(&head_sort_square,&tail_sort_square,&num_B_smooth,&num_semi_B_smooth);
                 print_time_elapsed("time to remove same square");
