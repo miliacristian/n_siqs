@@ -21,6 +21,26 @@ char verify_sorted_num_square_rel_list(struct node_square_relation*head){
     }
     return 1;
 }
+char verify_cardinality_list_square_relation(struct node_square_relation*head,int length){
+    if(length<0){
+        printf("length minore di zero\n");
+        return 0;
+    }
+    int counter=0;
+    if(head==NULL && length==0){
+        return 1;
+    }
+    struct node_square_relation*p=head;
+    while(p!=NULL){
+        counter++;
+        p=p->next;
+    }
+    if(counter!=length){
+        printf("lunghezza errata\n");
+        return 0;
+    }
+    return 1;
+}
 char verify_sorted_residuos_square_rel_list(struct node_square_relation*head){
     if(head==NULL){
         return 1;

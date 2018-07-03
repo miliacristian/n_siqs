@@ -108,7 +108,26 @@ void remove_after_node_f(struct node_factor_base**ppos,struct node_factor_base**
     }
     return;
 }
-
+char verify_cardinality_list_factor_base(struct node_factor_base*head,int length){
+    if(length<0){
+        printf("length minore di zero\n");
+        return 0;
+    }
+    int counter=0;
+    if(head==NULL && length==0){
+        return 1;
+    }
+    struct node_factor_base*p=head;
+    while(p!=NULL){
+        counter++;
+        p=p->next;
+    }
+    if(counter!=length){
+        printf("lunghezza errata\n");
+        return 0;
+    }
+    return 1;
+}
 int delete_head_f(struct node_factor_base** head){//non è importante il valore iniziale di oldhead
     //initializza oldhead con il primo nodo della lista e distrugge il primo nodo della lista
     if(head==NULL){

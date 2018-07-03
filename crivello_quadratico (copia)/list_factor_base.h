@@ -30,3 +30,4 @@ void insert_ordered_f(int num,const mpz_t n, struct node_factor_base** head, str
 void free_memory_list_f(struct node_factor_base*head);
 void union_list_factor_base(struct node_factor_base**head1,struct node_factor_base**tail1,int*cardinality_factor_base1,int*last_prime_factor_base1,
                             struct node_factor_base*head2,struct node_factor_base*tail2,int cardinality_factor_base2,int last_prime_factor_base2);
+char verify_cardinality_list_factor_base(struct node_factor_base*head,int length);

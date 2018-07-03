@@ -5,7 +5,26 @@
 #include <math.h>
 #include "basic.h"
 #include <gmp.h>
-
+char verify_cardinality_list_factorization(struct node_factorization*head,int length){
+    if(length<0){
+        printf("length minore di zero\n");
+        return 0;
+    }
+    int counter=0;
+    if(head==NULL && length==0){
+        return 1;
+    }
+    struct node_factorization*p=head;
+    while(p!=NULL){
+        counter++;
+        p=p->next;
+    }
+    if(counter!=length){
+        printf("lunghezza errata\n");
+        return 0;
+    }
+    return 1;
+}
 int count_element_linked_list_factor(struct node_factorization*head){
     int count=0;
     if (head==NULL){

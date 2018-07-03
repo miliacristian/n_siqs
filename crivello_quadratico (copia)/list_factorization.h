@@ -28,3 +28,4 @@ char first_is_smaller_factor(struct node_factorization node1, struct node_factor
 
 void insert_ordered_factor(int number,int exp_of_number,int index, struct node_factorization** head, struct node_factorization** tail);
 void free_memory_list_factor(struct node_factorization*head);
+char verify_cardinality_list_factorization(struct node_factorization*head,int length);
