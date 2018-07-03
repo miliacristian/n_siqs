@@ -1,132 +1,418 @@
-==26396== Memcheck, a memory error detector
-==26396== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==26396== Using Valgrind-3.13.0 and LibVEX; rerun with -h for copyright info
-==26396== Command: ./criv_quad biprime2.txt
-==26396== Parent PID: 26395
-==26396== 
---26396-- 
---26396-- Valgrind options:
---26396--    --leak-check=full
---26396--    --show-leak-kinds=all
---26396--    --track-origins=yes
---26396--    --verbose
---26396--    --log-file=valgrind-out.txt
---26396-- Contents of /proc/version:
---26396--   Linux version 4.15.0-24-generic (buildd@lgw01-amd64-056) (gcc version 7.3.0 (Ubuntu 7.3.0-16ubuntu3)) #26-Ubuntu SMP Wed Jun 13 08:44:47 UTC 2018
---26396-- 
---26396-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-avx-avx2-bmi
---26396-- Page sizes: currently 4096, max supported 4096
---26396-- Valgrind library directory: /usr/lib/valgrind
---26396-- Reading syms from /home/cristian/Scrivania/crivello_quadratico (copia)1/crivello_quadratico (copia)/criv_quad
---26396-- Reading syms from /lib/x86_64-linux-gnu/ld-2.27.so
---26396--   Considering /lib/x86_64-linux-gnu/ld-2.27.so ..
---26396--   .. CRC mismatch (computed 1b7c895e wanted 2943108a)
---26396--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/ld-2.27.so ..
---26396--   .. CRC is valid
---26396-- Reading syms from /usr/lib/valgrind/memcheck-amd64-linux
---26396--   Considering /usr/lib/valgrind/memcheck-amd64-linux ..
---26396--   .. CRC mismatch (computed 62965bbf wanted eeb84137)
---26396--    object doesn't have a symbol table
---26396--    object doesn't have a dynamic symbol table
---26396-- Scheduler: using generic scheduler lock implementation.
---26396-- Reading suppressions file: /usr/lib/valgrind/default.supp
-==26396== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-26396-by-cristian-on-???
-==26396== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-26396-by-cristian-on-???
-==26396== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-26396-by-cristian-on-???
-==26396== 
-==26396== TO CONTROL THIS PROCESS USING vgdb (which you probably
-==26396== don't want to do, unless you know exactly what you're doing,
-==26396== or are doing some strange experiment):
-==26396==   /usr/lib/valgrind/../../bin/vgdb --pid=26396 ...command...
-==26396== 
-==26396== TO DEBUG THIS PROCESS USING GDB: start GDB like this
-==26396==   /path/to/gdb ./criv_quad
-==26396== and then give GDB the following command
-==26396==   target remote | /usr/lib/valgrind/../../bin/vgdb --pid=26396
-==26396== --pid is optional if only one valgrind process is running
-==26396== 
---26396-- REDIR: 0x401f2f0 (ld-linux-x86-64.so.2:strlen) redirected to 0x58060901 (???)
---26396-- REDIR: 0x401f0d0 (ld-linux-x86-64.so.2:index) redirected to 0x5806091b (???)
---26396-- Reading syms from /usr/lib/valgrind/vgpreload_core-amd64-linux.so
---26396--   Considering /usr/lib/valgrind/vgpreload_core-amd64-linux.so ..
---26396--   .. CRC mismatch (computed 13d5e98a wanted 1786ecf1)
---26396--    object doesn't have a symbol table
---26396-- Reading syms from /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so
---26396--   Considering /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so ..
---26396--   .. CRC mismatch (computed 8f77ef36 wanted fcbde737)
---26396--    object doesn't have a symbol table
-==26396== WARNING: new redirection conflicts with existing -- ignoring it
---26396--     old: 0x0401f2f0 (strlen              ) R-> (0000.0) 0x58060901 ???
---26396--     new: 0x0401f2f0 (strlen              ) R-> (2007.0) 0x04c32db0 strlen
---26396-- REDIR: 0x401d360 (ld-linux-x86-64.so.2:strcmp) redirected to 0x4c33ee0 (strcmp)
---26396-- REDIR: 0x401f830 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x4c374f0 (mempcpy)
---26396-- Reading syms from /usr/local/lib/libmpfr.so.6.0.1
---26396-- Reading syms from /lib/x86_64-linux-gnu/libm-2.27.so
---26396--   Considering /lib/x86_64-linux-gnu/libm-2.27.so ..
---26396--   .. CRC mismatch (computed 7feae033 wanted b29b2508)
---26396--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/libm-2.27.so ..
---26396--   .. CRC is valid
---26396-- Reading syms from /usr/local/lib/libgmp.so.10.3.2
---26396-- Reading syms from /lib/x86_64-linux-gnu/librt-2.27.so
---26396--   Considering /lib/x86_64-linux-gnu/librt-2.27.so ..
---26396--   .. CRC mismatch (computed 16979484 wanted f9e041e3)
---26396--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/librt-2.27.so ..
---26396--   .. CRC is valid
---26396-- Reading syms from /lib/x86_64-linux-gnu/libpthread-2.27.so
---26396--   Considering /usr/lib/debug/.build-id/28/c6aade70b2d40d1f0f3d0a1a0cad1ab816448f.debug ..
---26396--   .. build-id is valid
---26396-- Reading syms from /lib/x86_64-linux-gnu/libc-2.27.so
---26396--   Considering /lib/x86_64-linux-gnu/libc-2.27.so ..
---26396--   .. CRC mismatch (computed b1c74187 wanted 042cc048)
---26396--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/libc-2.27.so ..
---26396--   .. CRC is valid
---26396-- REDIR: 0x5b90c70 (libc.so.6:memmove) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---26396-- REDIR: 0x5b8fd40 (libc.so.6:strncpy) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---26396-- REDIR: 0x5b90f50 (libc.so.6:strcasecmp) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---26396-- REDIR: 0x5b8f790 (libc.so.6:strcat) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---26396-- REDIR: 0x5b8fd70 (libc.so.6:rindex) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---26396-- REDIR: 0x5b927c0 (libc.so.6:rawmemchr) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---26396-- REDIR: 0x5b90de0 (libc.so.6:mempcpy) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---26396-- REDIR: 0x5b90c10 (libc.so.6:bcmp) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---26396-- REDIR: 0x5b8fd00 (libc.so.6:strncmp) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---26396-- REDIR: 0x5b8f800 (libc.so.6:strcmp) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---26396-- REDIR: 0x5b90d40 (libc.so.6:memset) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---26396-- REDIR: 0x5bae0f0 (libc.so.6:wcschr) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---26396-- REDIR: 0x5b8fca0 (libc.so.6:strnlen) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---26396-- REDIR: 0x5b8f870 (libc.so.6:strcspn) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---26396-- REDIR: 0x5b90fa0 (libc.so.6:strncasecmp) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---26396-- REDIR: 0x5b8f840 (libc.so.6:strcpy) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---26396-- REDIR: 0x5b910e0 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---26396-- REDIR: 0x5b8fda0 (libc.so.6:strpbrk) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---26396-- REDIR: 0x5b8f7c0 (libc.so.6:index) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---26396-- REDIR: 0x5b8fc70 (libc.so.6:strlen) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---26396-- REDIR: 0x5b9a6c0 (libc.so.6:memrchr) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---26396-- REDIR: 0x5b90ff0 (libc.so.6:strcasecmp_l) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---26396-- REDIR: 0x5b90be0 (libc.so.6:memchr) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---26396-- REDIR: 0x5baeeb0 (libc.so.6:wcslen) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---26396-- REDIR: 0x5b90050 (libc.so.6:strspn) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---26396-- REDIR: 0x5b90f20 (libc.so.6:stpncpy) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---26396-- REDIR: 0x5b90ef0 (libc.so.6:stpcpy) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---26396-- REDIR: 0x5b927f0 (libc.so.6:strchrnul) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---26396-- REDIR: 0x5b91040 (libc.so.6:strncasecmp_l) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---26396-- REDIR: 0x5c803c0 (libc.so.6:__strrchr_avx2) redirected to 0x4c32730 (rindex)
---26396-- REDIR: 0x5b89070 (libc.so.6:malloc) redirected to 0x4c2faa0 (malloc)
---26396-- REDIR: 0x5b90590 (libc.so.6:__GI_strstr) redirected to 0x4c37760 (__strstr_sse2)
---26396-- REDIR: 0x5b8ac30 (libc.so.6:realloc) redirected to 0x4c31cb0 (realloc)
---26396-- REDIR: 0x5b89950 (libc.so.6:free) redirected to 0x4c30cd0 (free)
---26396-- REDIR: 0x5c80590 (libc.so.6:__strlen_avx2) redirected to 0x4c32cf0 (strlen)
---26396-- REDIR: 0x5c80ad0 (libc.so.6:__memcpy_avx_unaligned_erms) redirected to 0x4c366e0 (memmove)
---26396-- REDIR: 0x5c7ffa0 (libc.so.6:__strchr_avx2) redirected to 0x4c32950 (index)
---26396-- REDIR: 0x5c801d0 (libc.so.6:__strchrnul_avx2) redirected to 0x4c37020 (strchrnul)
---26396-- REDIR: 0x5c80ab0 (libc.so.6:__mempcpy_avx_unaligned_erms) redirected to 0x4c37130 (mempcpy)
---26396-- REDIR: 0x5c80f50 (libc.so.6:__memset_avx2_unaligned_erms) redirected to 0x4c365d0 (memset)
---26396-- REDIR: 0x5b8c030 (libc.so.6:calloc) redirected to 0x4c31a70 (calloc)
-==26396== 
-==26396== HEAP SUMMARY:
-==26396==     in use at exit: 0 bytes in 0 blocks
-==26396==   total heap usage: 540,599 allocs, 540,599 frees, 64,974,506 bytes allocated
-==26396== 
-==26396== All heap blocks were freed -- no leaks are possible
-==26396== 
-==26396== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
-==26396== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==27041== Memcheck, a memory error detector
+==27041== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==27041== Using Valgrind-3.13.0 and LibVEX; rerun with -h for copyright info
+==27041== Command: ./criv_quad biprime2.txt
+==27041== Parent PID: 27040
+==27041== 
+--27041-- 
+--27041-- Valgrind options:
+--27041--    --leak-check=full
+--27041--    --show-leak-kinds=all
+--27041--    --track-origins=yes
+--27041--    --verbose
+--27041--    --log-file=valgrind-out.txt
+--27041-- Contents of /proc/version:
+--27041--   Linux version 4.15.0-24-generic (buildd@lgw01-amd64-056) (gcc version 7.3.0 (Ubuntu 7.3.0-16ubuntu3)) #26-Ubuntu SMP Wed Jun 13 08:44:47 UTC 2018
+--27041-- 
+--27041-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-avx-avx2-bmi
+--27041-- Page sizes: currently 4096, max supported 4096
+--27041-- Valgrind library directory: /usr/lib/valgrind
+--27041-- Reading syms from /home/cristian/Scrivania/crivello_quadratico (copia)1/crivello_quadratico (copia)/criv_quad
+--27041-- Reading syms from /lib/x86_64-linux-gnu/ld-2.27.so
+--27041--   Considering /lib/x86_64-linux-gnu/ld-2.27.so ..
+--27041--   .. CRC mismatch (computed 1b7c895e wanted 2943108a)
+--27041--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/ld-2.27.so ..
+--27041--   .. CRC is valid
+--27041-- Reading syms from /usr/lib/valgrind/memcheck-amd64-linux
+--27041--   Considering /usr/lib/valgrind/memcheck-amd64-linux ..
+--27041--   .. CRC mismatch (computed 62965bbf wanted eeb84137)
+--27041--    object doesn't have a symbol table
+--27041--    object doesn't have a dynamic symbol table
+--27041-- Scheduler: using generic scheduler lock implementation.
+--27041-- Reading suppressions file: /usr/lib/valgrind/default.supp
+==27041== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-27041-by-cristian-on-???
+==27041== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-27041-by-cristian-on-???
+==27041== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-27041-by-cristian-on-???
+==27041== 
+==27041== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==27041== don't want to do, unless you know exactly what you're doing,
+==27041== or are doing some strange experiment):
+==27041==   /usr/lib/valgrind/../../bin/vgdb --pid=27041 ...command...
+==27041== 
+==27041== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==27041==   /path/to/gdb ./criv_quad
+==27041== and then give GDB the following command
+==27041==   target remote | /usr/lib/valgrind/../../bin/vgdb --pid=27041
+==27041== --pid is optional if only one valgrind process is running
+==27041== 
+--27041-- REDIR: 0x401f2f0 (ld-linux-x86-64.so.2:strlen) redirected to 0x58060901 (???)
+--27041-- REDIR: 0x401f0d0 (ld-linux-x86-64.so.2:index) redirected to 0x5806091b (???)
+--27041-- Reading syms from /usr/lib/valgrind/vgpreload_core-amd64-linux.so
+--27041--   Considering /usr/lib/valgrind/vgpreload_core-amd64-linux.so ..
+--27041--   .. CRC mismatch (computed 13d5e98a wanted 1786ecf1)
+--27041--    object doesn't have a symbol table
+--27041-- Reading syms from /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so
+--27041--   Considering /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so ..
+--27041--   .. CRC mismatch (computed 8f77ef36 wanted fcbde737)
+--27041--    object doesn't have a symbol table
+==27041== WARNING: new redirection conflicts with existing -- ignoring it
+--27041--     old: 0x0401f2f0 (strlen              ) R-> (0000.0) 0x58060901 ???
+--27041--     new: 0x0401f2f0 (strlen              ) R-> (2007.0) 0x04c32db0 strlen
+--27041-- REDIR: 0x401d360 (ld-linux-x86-64.so.2:strcmp) redirected to 0x4c33ee0 (strcmp)
+--27041-- REDIR: 0x401f830 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x4c374f0 (mempcpy)
+--27041-- Reading syms from /usr/local/lib/libmpfr.so.6.0.1
+--27041-- Reading syms from /lib/x86_64-linux-gnu/libm-2.27.so
+--27041--   Considering /lib/x86_64-linux-gnu/libm-2.27.so ..
+--27041--   .. CRC mismatch (computed 7feae033 wanted b29b2508)
+--27041--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/libm-2.27.so ..
+--27041--   .. CRC is valid
+--27041-- Reading syms from /usr/local/lib/libgmp.so.10.3.2
+--27041-- Reading syms from /lib/x86_64-linux-gnu/librt-2.27.so
+--27041--   Considering /lib/x86_64-linux-gnu/librt-2.27.so ..
+--27041--   .. CRC mismatch (computed 16979484 wanted f9e041e3)
+--27041--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/librt-2.27.so ..
+--27041--   .. CRC is valid
+--27041-- Reading syms from /lib/x86_64-linux-gnu/libpthread-2.27.so
+--27041--   Considering /usr/lib/debug/.build-id/28/c6aade70b2d40d1f0f3d0a1a0cad1ab816448f.debug ..
+--27041--   .. build-id is valid
+--27041-- Reading syms from /lib/x86_64-linux-gnu/libc-2.27.so
+--27041--   Considering /lib/x86_64-linux-gnu/libc-2.27.so ..
+--27041--   .. CRC mismatch (computed b1c74187 wanted 042cc048)
+--27041--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/libc-2.27.so ..
+--27041--   .. CRC is valid
+--27041-- REDIR: 0x5b90c70 (libc.so.6:memmove) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--27041-- REDIR: 0x5b8fd40 (libc.so.6:strncpy) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--27041-- REDIR: 0x5b90f50 (libc.so.6:strcasecmp) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--27041-- REDIR: 0x5b8f790 (libc.so.6:strcat) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--27041-- REDIR: 0x5b8fd70 (libc.so.6:rindex) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--27041-- REDIR: 0x5b927c0 (libc.so.6:rawmemchr) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--27041-- REDIR: 0x5b90de0 (libc.so.6:mempcpy) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--27041-- REDIR: 0x5b90c10 (libc.so.6:bcmp) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--27041-- REDIR: 0x5b8fd00 (libc.so.6:strncmp) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--27041-- REDIR: 0x5b8f800 (libc.so.6:strcmp) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--27041-- REDIR: 0x5b90d40 (libc.so.6:memset) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--27041-- REDIR: 0x5bae0f0 (libc.so.6:wcschr) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--27041-- REDIR: 0x5b8fca0 (libc.so.6:strnlen) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--27041-- REDIR: 0x5b8f870 (libc.so.6:strcspn) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--27041-- REDIR: 0x5b90fa0 (libc.so.6:strncasecmp) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--27041-- REDIR: 0x5b8f840 (libc.so.6:strcpy) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--27041-- REDIR: 0x5b910e0 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--27041-- REDIR: 0x5b8fda0 (libc.so.6:strpbrk) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--27041-- REDIR: 0x5b8f7c0 (libc.so.6:index) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--27041-- REDIR: 0x5b8fc70 (libc.so.6:strlen) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--27041-- REDIR: 0x5b9a6c0 (libc.so.6:memrchr) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--27041-- REDIR: 0x5b90ff0 (libc.so.6:strcasecmp_l) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--27041-- REDIR: 0x5b90be0 (libc.so.6:memchr) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--27041-- REDIR: 0x5baeeb0 (libc.so.6:wcslen) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--27041-- REDIR: 0x5b90050 (libc.so.6:strspn) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--27041-- REDIR: 0x5b90f20 (libc.so.6:stpncpy) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--27041-- REDIR: 0x5b90ef0 (libc.so.6:stpcpy) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--27041-- REDIR: 0x5b927f0 (libc.so.6:strchrnul) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--27041-- REDIR: 0x5b91040 (libc.so.6:strncasecmp_l) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--27041-- REDIR: 0x5c803c0 (libc.so.6:__strrchr_avx2) redirected to 0x4c32730 (rindex)
+--27041-- REDIR: 0x5b89070 (libc.so.6:malloc) redirected to 0x4c2faa0 (malloc)
+--27041-- REDIR: 0x5b90590 (libc.so.6:__GI_strstr) redirected to 0x4c37760 (__strstr_sse2)
+--27041-- REDIR: 0x5b8ac30 (libc.so.6:realloc) redirected to 0x4c31cb0 (realloc)
+--27041-- REDIR: 0x5b89950 (libc.so.6:free) redirected to 0x4c30cd0 (free)
+--27041-- REDIR: 0x5c80590 (libc.so.6:__strlen_avx2) redirected to 0x4c32cf0 (strlen)
+--27041-- REDIR: 0x5c80ad0 (libc.so.6:__memcpy_avx_unaligned_erms) redirected to 0x4c366e0 (memmove)
+--27041-- REDIR: 0x5c7ffa0 (libc.so.6:__strchr_avx2) redirected to 0x4c32950 (index)
+--27041-- REDIR: 0x5c801d0 (libc.so.6:__strchrnul_avx2) redirected to 0x4c37020 (strchrnul)
+--27041-- REDIR: 0x5c80ab0 (libc.so.6:__mempcpy_avx_unaligned_erms) redirected to 0x4c37130 (mempcpy)
+--27041-- REDIR: 0x5c80f50 (libc.so.6:__memset_avx2_unaligned_erms) redirected to 0x4c365d0 (memset)
+--27041-- REDIR: 0x5b8c030 (libc.so.6:calloc) redirected to 0x4c31a70 (calloc)
+==27041== 
+==27041== Process terminating with default action of signal 2 (SIGINT)
+==27041==    at 0x5475043: __gmpz_powm_ui (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x547228C: __gmpz_millerrabin (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x5473365: __gmpz_nextprime (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x10AEB6: create_factor_base_f (criv_quad.c:587)
+==27041==    by 0x11CB9E: thread_job_to_create_factor_base (main.c:652)
+==27041==    by 0x113319: thread_job_factor_base (basic.c:277)
+==27041==    by 0x58DA6DA: start_thread (pthread_create.c:463)
+==27041==    by 0x5C1388E: clone (clone.S:95)
+==27041== 
+==27041== HEAP SUMMARY:
+==27041==     in use at exit: 38,256 bytes in 1,064 blocks
+==27041==   total heap usage: 13,599 allocs, 12,535 frees, 5,341,326 bytes allocated
+==27041== 
+==27041== Searching for pointers to 1,064 not-freed blocks
+==27041== Checked 50,458,016 bytes
+==27041== 
+==27041== 8 bytes in 1 blocks are still reachable in loss record 1 of 29
+==27041==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==27041==    by 0x5461908: __gmp_default_allocate (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x546FC97: __gmpz_init (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x11ACD0: main (main.c:92)
+==27041== 
+==27041== 8 bytes in 1 blocks are still reachable in loss record 2 of 29
+==27041==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==27041==    by 0x5461908: __gmp_default_allocate (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x546FC97: __gmpz_init (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x11ACDC: main (main.c:93)
+==27041== 
+==27041== 8 bytes in 1 blocks are still reachable in loss record 3 of 29
+==27041==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==27041==    by 0x5461908: __gmp_default_allocate (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x546FC97: __gmpz_init (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x11ACE8: main (main.c:94)
+==27041== 
+==27041== 8 bytes in 1 blocks are still reachable in loss record 4 of 29
+==27041==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==27041==    by 0x5461908: __gmp_default_allocate (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x546FC97: __gmpz_init (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x11AD18: main (main.c:98)
+==27041== 
+==27041== 8 bytes in 1 blocks are still reachable in loss record 5 of 29
+==27041==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==27041==    by 0x5461908: __gmp_default_allocate (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x546FC97: __gmpz_init (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x11AD24: main (main.c:99)
+==27041== 
+==27041== 8 bytes in 1 blocks are still reachable in loss record 6 of 29
+==27041==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==27041==    by 0x5461908: __gmp_default_allocate (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x546FC97: __gmpz_init (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x11D6BC: get_new_node_f (list_factor_base.c:193)
+==27041==    by 0x10AF49: create_factor_base_f (criv_quad.c:595)
+==27041==    by 0x11CB9E: thread_job_to_create_factor_base (main.c:652)
+==27041==    by 0x113319: thread_job_factor_base (basic.c:277)
+==27041==    by 0x58DA6DA: start_thread (pthread_create.c:463)
+==27041==    by 0x5C1388E: clone (clone.S:95)
+==27041== 
+==27041== 8 bytes in 1 blocks are still reachable in loss record 7 of 29
+==27041==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==27041==    by 0x5461908: __gmp_default_allocate (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x546FC97: __gmpz_init (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x11D6C8: get_new_node_f (list_factor_base.c:194)
+==27041==    by 0x10AF49: create_factor_base_f (criv_quad.c:595)
+==27041==    by 0x11CB9E: thread_job_to_create_factor_base (main.c:652)
+==27041==    by 0x113319: thread_job_factor_base (basic.c:277)
+==27041==    by 0x58DA6DA: start_thread (pthread_create.c:463)
+==27041==    by 0x5C1388E: clone (clone.S:95)
+==27041== 
+==27041== 16 bytes in 1 blocks are still reachable in loss record 8 of 29
+==27041==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==27041==    by 0x5461908: __gmp_default_allocate (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x4E5234F: mpfr_allocate_func (in /usr/local/lib/libmpfr.so.6.0.1)
+==27041==    by 0x4E4FD4D: mpfr_init2 (in /usr/local/lib/libmpfr.so.6.0.1)
+==27041==    by 0x11AD00: main (main.c:96)
+==27041== 
+==27041== 16 bytes in 1 blocks are still reachable in loss record 9 of 29
+==27041==    at 0x4C31D2F: realloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==27041==    by 0x5461953: __gmp_default_reallocate (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x5475A79: __gmpz_realloc (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x54770CB: __gmpz_sqrt (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x10AADC: calculate_x0 (criv_quad.c:263)
+==27041==    by 0x11AF46: main (main.c:143)
+==27041== 
+==27041== 16 bytes in 1 blocks are still reachable in loss record 10 of 29
+==27041==    at 0x4C31D2F: realloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==27041==    by 0x5461953: __gmp_default_reallocate (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x5475A79: __gmpz_realloc (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x5476864: __gmpz_set (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x11AFB5: main (main.c:155)
+==27041== 
+==27041== 16 bytes in 1 blocks are still reachable in loss record 11 of 29
+==27041==    at 0x4C31D2F: realloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==27041==    by 0x5461953: __gmp_default_reallocate (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x5475A79: __gmpz_realloc (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x5477715: __gmpz_sub_ui (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x10F19C: quadratic_residue (math_function.c:639)
+==27041==    by 0x11D753: get_new_node_f (list_factor_base.c:204)
+==27041==    by 0x10AF49: create_factor_base_f (criv_quad.c:595)
+==27041==    by 0x11CB9E: thread_job_to_create_factor_base (main.c:652)
+==27041==    by 0x113319: thread_job_factor_base (basic.c:277)
+==27041==    by 0x58DA6DA: start_thread (pthread_create.c:463)
+==27041==    by 0x5C1388E: clone (clone.S:95)
+==27041== 
+==27041== 16 bytes in 1 blocks are still reachable in loss record 12 of 29
+==27041==    at 0x4C31D2F: realloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==27041==    by 0x5461953: __gmp_default_reallocate (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x5475A79: __gmpz_realloc (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x5467D35: __gmpz_add_ui (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x10F208: quadratic_residue (math_function.c:647)
+==27041==    by 0x11D753: get_new_node_f (list_factor_base.c:204)
+==27041==    by 0x10AF49: create_factor_base_f (criv_quad.c:595)
+==27041==    by 0x11CB9E: thread_job_to_create_factor_base (main.c:652)
+==27041==    by 0x113319: thread_job_factor_base (basic.c:277)
+==27041==    by 0x58DA6DA: start_thread (pthread_create.c:463)
+==27041==    by 0x5C1388E: clone (clone.S:95)
+==27041== 
+==27041== 16 bytes in 1 blocks are still reachable in loss record 13 of 29
+==27041==    at 0x4C31D2F: realloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==27041==    by 0x5461953: __gmp_default_reallocate (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x5475A79: __gmpz_realloc (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x547279F: __gmpz_mul (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x10F3AB: quadratic_residue (math_function.c:675)
+==27041==    by 0x11D753: get_new_node_f (list_factor_base.c:204)
+==27041==    by 0x10AF49: create_factor_base_f (criv_quad.c:595)
+==27041==    by 0x11CB9E: thread_job_to_create_factor_base (main.c:652)
+==27041==    by 0x113319: thread_job_factor_base (basic.c:277)
+==27041==    by 0x58DA6DA: start_thread (pthread_create.c:463)
+==27041==    by 0x5C1388E: clone (clone.S:95)
+==27041== 
+==27041== 16 bytes in 1 blocks are still reachable in loss record 14 of 29
+==27041==    at 0x4C31D2F: realloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==27041==    by 0x5461953: __gmp_default_reallocate (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x5475A79: __gmpz_realloc (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x547279F: __gmpz_mul (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x10F3DC: quadratic_residue (math_function.c:677)
+==27041==    by 0x11D753: get_new_node_f (list_factor_base.c:204)
+==27041==    by 0x10AF49: create_factor_base_f (criv_quad.c:595)
+==27041==    by 0x11CB9E: thread_job_to_create_factor_base (main.c:652)
+==27041==    by 0x113319: thread_job_factor_base (basic.c:277)
+==27041==    by 0x58DA6DA: start_thread (pthread_create.c:463)
+==27041==    by 0x5C1388E: clone (clone.S:95)
+==27041== 
+==27041== 24 bytes in 3 blocks are still reachable in loss record 15 of 29
+==27041==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==27041==    by 0x5461908: __gmp_default_allocate (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x546FC97: __gmpz_init (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x10AE01: create_factor_base_f (criv_quad.c:572)
+==27041==    by 0x11CB9E: thread_job_to_create_factor_base (main.c:652)
+==27041==    by 0x113319: thread_job_factor_base (basic.c:277)
+==27041==    by 0x58DA6DA: start_thread (pthread_create.c:463)
+==27041==    by 0x5C1388E: clone (clone.S:95)
+==27041== 
+==27041== 24 bytes in 3 blocks are still reachable in loss record 16 of 29
+==27041==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==27041==    by 0x5461908: __gmp_default_allocate (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x546FC97: __gmpz_init (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x10AE0D: create_factor_base_f (criv_quad.c:573)
+==27041==    by 0x11CB9E: thread_job_to_create_factor_base (main.c:652)
+==27041==    by 0x113319: thread_job_factor_base (basic.c:277)
+==27041==    by 0x58DA6DA: start_thread (pthread_create.c:463)
+==27041==    by 0x5C1388E: clone (clone.S:95)
+==27041== 
+==27041== 24 bytes in 3 blocks are still reachable in loss record 17 of 29
+==27041==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==27041==    by 0x5461908: __gmp_default_allocate (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x546FD9D: __gmpz_inits (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x10F184: quadratic_residue (math_function.c:636)
+==27041==    by 0x11D753: get_new_node_f (list_factor_base.c:204)
+==27041==    by 0x10AF49: create_factor_base_f (criv_quad.c:595)
+==27041==    by 0x11CB9E: thread_job_to_create_factor_base (main.c:652)
+==27041==    by 0x113319: thread_job_factor_base (basic.c:277)
+==27041==    by 0x58DA6DA: start_thread (pthread_create.c:463)
+==27041==    by 0x5C1388E: clone (clone.S:95)
+==27041== 
+==27041== 32 bytes in 1 blocks are still reachable in loss record 18 of 29
+==27041==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==27041==    by 0x115629: alloc_array_int (matrix_function.c:347)
+==27041==    by 0x1136F4: create_factor_base_threads (basic.c:347)
+==27041==    by 0x11B109: main (main.c:181)
+==27041== 
+==27041== 32 bytes in 1 blocks are still reachable in loss record 19 of 29
+==27041==    at 0x4C31D2F: realloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==27041==    by 0x5461953: __gmp_default_reallocate (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x5475A79: __gmpz_realloc (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x5476864: __gmpz_set (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x11D710: get_new_node_f (list_factor_base.c:201)
+==27041==    by 0x10AF49: create_factor_base_f (criv_quad.c:595)
+==27041==    by 0x11CB9E: thread_job_to_create_factor_base (main.c:652)
+==27041==    by 0x113319: thread_job_factor_base (basic.c:277)
+==27041==    by 0x58DA6DA: start_thread (pthread_create.c:463)
+==27041==    by 0x5C1388E: clone (clone.S:95)
+==27041== 
+==27041== 32 bytes in 1 blocks are still reachable in loss record 20 of 29
+==27041==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==27041==    by 0x11D68D: get_new_node_f (list_factor_base.c:188)
+==27041==    by 0x11D8B0: insert_ordered_f (list_factor_base.c:250)
+==27041==    by 0x10ACF1: initialize_factor_base (criv_quad.c:552)
+==27041==    by 0x10AE43: create_factor_base_f (criv_quad.c:576)
+==27041==    by 0x11CB9E: thread_job_to_create_factor_base (main.c:652)
+==27041==    by 0x113319: thread_job_factor_base (basic.c:277)
+==27041==    by 0x58DA6DA: start_thread (pthread_create.c:463)
+==27041==    by 0x5C1388E: clone (clone.S:95)
+==27041== 
+==27041== 32 bytes in 1 blocks are still reachable in loss record 21 of 29
+==27041==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==27041==    by 0x11D68D: get_new_node_f (list_factor_base.c:188)
+==27041==    by 0x11D8B0: insert_ordered_f (list_factor_base.c:250)
+==27041==    by 0x10AD39: initialize_factor_base (criv_quad.c:556)
+==27041==    by 0x10AE43: create_factor_base_f (criv_quad.c:576)
+==27041==    by 0x11CB9E: thread_job_to_create_factor_base (main.c:652)
+==27041==    by 0x113319: thread_job_factor_base (basic.c:277)
+==27041==    by 0x58DA6DA: start_thread (pthread_create.c:463)
+==27041==    by 0x5C1388E: clone (clone.S:95)
+==27041== 
+==27041== 40 bytes in 1 blocks are still reachable in loss record 22 of 29
+==27041==    at 0x4C31D2F: realloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==27041==    by 0x5461953: __gmp_default_reallocate (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x5475A79: __gmpz_realloc (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x547027F: __gmpz_inp_str_nowhite (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x113974: get_and_check_n (basic.c:411)
+==27041==    by 0x11AD90: main (main.c:111)
+==27041== 
+==27041== 48 bytes in 3 blocks are still reachable in loss record 23 of 29
+==27041==    at 0x4C31D2F: realloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==27041==    by 0x5461953: __gmp_default_reallocate (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x5475A79: __gmpz_realloc (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x5467D35: __gmpz_add_ui (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x547320A: __gmpz_nextprime (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x10AEB6: create_factor_base_f (criv_quad.c:587)
+==27041==    by 0x11CB9E: thread_job_to_create_factor_base (main.c:652)
+==27041==    by 0x113319: thread_job_factor_base (basic.c:277)
+==27041==    by 0x58DA6DA: start_thread (pthread_create.c:463)
+==27041==    by 0x5C1388E: clone (clone.S:95)
+==27041== 
+==27041== 64 bytes in 1 blocks are still reachable in loss record 24 of 29
+==27041==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==27041==    by 0x11382D: alloc_array_tid (basic.c:378)
+==27041==    by 0x11B0F4: main (main.c:180)
+==27041== 
+==27041== 216 bytes in 1 blocks are still reachable in loss record 25 of 29
+==27041==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==27041==    by 0x112E84: alloc_array_factor_base_data (basic.c:212)
+==27041==    by 0x11B0E3: main (main.c:178)
+==27041== 
+==27041== 552 bytes in 1 blocks are still reachable in loss record 26 of 29
+==27041==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==27041==    by 0x5B70E49: __fopen_internal (iofopen.c:65)
+==27041==    by 0x5B70E49: fopen@@GLIBC_2.2.5 (iofopen.c:89)
+==27041==    by 0x113915: open_file (basic.c:401)
+==27041==    by 0x11ABB2: main (main.c:63)
+==27041== 
+==27041== 1,728 bytes in 6 blocks are possibly lost in loss record 27 of 29
+==27041==    at 0x4C31B25: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==27041==    by 0x40134A6: allocate_dtv (dl-tls.c:286)
+==27041==    by 0x40134A6: _dl_allocate_tls (dl-tls.c:530)
+==27041==    by 0x58DB227: allocate_stack (allocatestack.c:627)
+==27041==    by 0x58DB227: pthread_create@@GLIBC_2.2.5 (pthread_create.c:644)
+==27041==    by 0x113759: create_factor_base_threads (basic.c:350)
+==27041==    by 0x11B109: main (main.c:181)
+==27041== 
+==27041== 2,504 bytes in 1 blocks are still reachable in loss record 28 of 29
+==27041==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==27041==    by 0x5461908: __gmp_default_allocate (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x54B2ACC: __gmp_randinit_mt_noseed (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x54B2D58: __gmp_randinit_mt (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x54721C6: __gmpz_millerrabin (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x5473365: __gmpz_nextprime (in /usr/local/lib/libgmp.so.10.3.2)
+==27041==    by 0x10AEB6: create_factor_base_f (criv_quad.c:587)
+==27041==    by 0x11CB9E: thread_job_to_create_factor_base (main.c:652)
+==27041==    by 0x113319: thread_job_factor_base (basic.c:277)
+==27041==    by 0x58DA6DA: start_thread (pthread_create.c:463)
+==27041==    by 0x5C1388E: clone (clone.S:95)
+==27041== 
+==27041== 32,736 bytes in 1,023 blocks are still reachable in loss record 29 of 29
+==27041==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==27041==    by 0x11D68D: get_new_node_f (list_factor_base.c:188)
+==27041==    by 0x10AF49: create_factor_base_f (criv_quad.c:595)
+==27041==    by 0x11CB9E: thread_job_to_create_factor_base (main.c:652)
+==27041==    by 0x113319: thread_job_factor_base (basic.c:277)
+==27041==    by 0x58DA6DA: start_thread (pthread_create.c:463)
+==27041==    by 0x5C1388E: clone (clone.S:95)
+==27041== 
+==27041== LEAK SUMMARY:
+==27041==    definitely lost: 0 bytes in 0 blocks
+==27041==    indirectly lost: 0 bytes in 0 blocks
+==27041==      possibly lost: 1,728 bytes in 6 blocks
+==27041==    still reachable: 36,528 bytes in 1,058 blocks
+==27041==                       of which reachable via heuristic:
+==27041==                         newarray           : 16 bytes in 1 blocks
+==27041==         suppressed: 0 bytes in 0 blocks
+==27041== 
+==27041== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+==27041== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)

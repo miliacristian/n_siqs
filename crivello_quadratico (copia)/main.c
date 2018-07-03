@@ -554,11 +554,12 @@ int main(int argc,char*argv[]){
 			}*/
 			printf("dim_sol=%d\n",dim_sol);
 			print_time_elapsed("time to calculate base linear system");
-			/*if(check_solution_base_matrix_char(linear_system,cardinality_factor_base,num_col_linear_system,
+			printf("combined_relations=%d\n",combined_relations);
+			if(check_solution_base_matrix_char(linear_system,cardinality_factor_base,num_col_linear_system,
             base_matrix,num_B_smooth,dim_sol)==0){
 				handle_error_with_exit("error in main,invalid solution\n");
 			}
-			print_time_elapsed("time to check solution base linear system");*/
+			print_time_elapsed("time to check solution base linear system");
 
             //algebra step:calcolo di tutti gli a,b del crivello quadratico
 			factorizations_founded=find_factor_of_n_from_base_matrix_char(base_matrix,num_col_linear_system,&dim_sol,
