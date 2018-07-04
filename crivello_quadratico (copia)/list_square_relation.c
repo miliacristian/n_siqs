@@ -6,6 +6,7 @@
 #include "basic.h"
 #include "list_factorization.h"
 #include "print.h"
+#include "math_function.h"
 #include <gmp.h>
 #include <unistd.h>
 char verify_sorted_num_square_rel_list(struct node_square_relation*head){
@@ -457,6 +458,9 @@ char combine_relation_B_smooth_and_semi_B_smooth(struct node_square_relation**he
                 struct square_relation new_square_relation = create_relation_large_prime(p->square_relation,
                                                                                          q->square_relation, n,
                                                                                          &factorization_founded);
+                if(verify_square_relation(new_square_relation,n)==0){
+                    handle_error_with_exit("error in create relation with combine function\n");
+                }
                 if (factorization_founded == 1) {
                     free_memory_list_square_relation(p);
                     head_sort_residuos = NULL;
@@ -609,24 +613,24 @@ void union_list_square_v2(struct node_square_relation**head_square1,struct node_
     *head_square2=NULL;
     return;
 }
-void union_list_residuos_v2(struct node_square_relation**head_square1,struct node_square_relation**tail_square1,struct node_square_relation**head_square2,struct node_square_relation**tail_square2){
+void union_list_residuos_v2(struct node_square_relation**head_residuos1,struct node_square_relation**tai_residuos1,struct node_square_relation**head_residuos2,struct node_square_relation**tail_residuos2){
     //concatena la prima lista e la seconda lista =L1 unito L2=L1,L2
-    if(head_square1==NULL || tail_square1==NULL || head_square2==NULL || tail_square2==NULL){
+    if(head_residuos1==NULL || tai_residuos1==NULL || head_residuos2==NULL || tail_residuos2==NULL){
         handle_error_with_exit("error in union_list_square_v2\n");
     }
-    if(*head_square2==NULL){//nulla da fare
+    if(*head_residuos2==NULL){//nulla da fare
         return;
     }
-    if(*tail_square1==NULL){//lista vuota,prendi l'altra lista
-        *head_square1=*head_square2;
-        *tail_square1=*tail_square2;
+    if(*tai_residuos1==NULL){//lista vuota,prendi l'altra lista
+        *head_residuos1=*head_residuos2;
+        *tai_residuos1=*tail_residuos2;
         return;
     }
-    (*head_square2)->prev=(*tail_square1);//il primo nodo della seconda lista punta all'ultimo nodo della prima lista
-    (*tail_square1)->next=*head_square2;//l'ultimo nodo della prima lista punta al primo nodo dell'altra lista
-    *tail_square1=*tail_square2;//la coda della prima lista punta alla coda della seconda lista
-    *tail_square2=NULL;
-    *head_square2=NULL;
+    (*head_residuos2)->prev=(*tai_residuos1);//il primo nodo della seconda lista punta all'ultimo nodo della prima lista
+    (*tai_residuos1)->next=*head_residuos2;//l'ultimo nodo della prima lista punta al primo nodo dell'altra lista
+    *tai_residuos1=*tail_residuos2;//la coda della prima lista punta alla coda della seconda lista
+    *tail_residuos2=NULL;
+    *head_residuos2=NULL;
     return;
 }
 

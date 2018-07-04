@@ -59,6 +59,8 @@ struct node_factorization*factorize_num_v2(const mpz_t num,int j_of_num,int firs
                                            char*is_B_smooth,char*is_semi_B_smooth,mpz_t residuos,struct a_struct*array_a_struct,int s,struct thread_data thread_data);
 struct node_factorization*factorize_num_v1(const mpz_t num,int first_index_f_base,int last_index_f_base,
                                            char*is_B_smooth,char*is_semi_B_smooth,mpz_t residuos,struct a_struct*array_a_struct,int s);
+char calculate_num_from_factorization(mpz_t num_temp,struct node_factorization*head_factor);
+char verify_square_relation(struct square_relation square_relation,const mpz_t n);
 
 
 

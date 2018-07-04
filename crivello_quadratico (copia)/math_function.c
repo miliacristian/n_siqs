@@ -361,6 +361,86 @@ void calculate_square(mpz_t square,const mpz_t a,int index,const mpz_t b,const m
 	mpz_mod(square,square,n);// a*j+b mod n
     return;
 }
+char calculate_num_from_factorization(mpz_t num_temp,struct node_factorization*head_factor){
+	long exp_of_factor,factor;
+	mpz_t factor_raise_to_exp;
+	mpz_t temp;
+	mpz_init(temp);
+	mpz_init(factor_raise_to_exp);
+
+	mpz_set_si(temp,1);//temp=1
+	if(head_factor==NULL){
+		mpz_clear(temp);
+		mpz_clear(factor_raise_to_exp);
+		printf("fattorizzazione vuota\n");
+		return 0;
+	}
+	struct node_factorization*p=head_factor;
+	while(p!=NULL){
+		mpz_set_si(factor_raise_to_exp,1);
+		factor=p->number;
+		//factor
+		if(factor<0 && factor!=-1){
+			mpz_clear(temp);
+			mpz_clear(factor_raise_to_exp);
+			printf("fattore minore di 0\n");
+			return 0;
+		}
+		if(factor==0){
+			printf("fattore 0\n");
+			mpz_clear(temp);
+			mpz_clear(factor_raise_to_exp);
+			return 0;
+		}
+		//exp of factor
+		exp_of_factor=p->exp_of_number;
+		if(exp_of_factor<=0){
+			mpz_clear(temp);
+			mpz_clear(factor_raise_to_exp);
+			printf("esponente minore o uguale a 0\n");
+			return 0;
+		}
+		if(factor==-1) {
+			if(exp_of_factor!=1) {
+				handle_error_with_exit("exponent of -1 greater than 1\n");
+			}
+			else {
+				mpz_neg(temp,temp);
+				p=p->next;
+				continue;
+			}
+		}
+		mpz_ui_pow_ui (factor_raise_to_exp,factor,exp_of_factor);
+		mpz_mul(temp,temp,factor_raise_to_exp);
+		p=p->next;
+	}
+	mpz_set(num_temp,temp);
+	mpz_clear(temp);
+	mpz_clear(factor_raise_to_exp);
+	return 1;
+}
+char verify_square_relation(struct square_relation square_relation,const mpz_t n){
+	gmp_printf("inizio verifica square=%Zd\n",square_relation.square);
+	struct node_factorization*head_factor=square_relation.head_factorization;
+	mpz_t temp,num_temp,square;
+	mpz_init(num_temp);
+	mpz_init(temp);
+	mpz_init(square);
+
+	if(calculate_num_from_factorization(num_temp,head_factor)==0){
+		handle_error_with_exit("error in calculate_num_from_factorization\n");
+	}
+	mpz_mod(num_temp,num_temp,n);//num modulo n
+	mpz_mul(square,square_relation.square,square_relation.square);//square=x^2
+	mpz_mod(square,square,n);
+	if(mpz_cmp(num_temp,square)!=0){//non sono congrui modulo n
+		handle_error_with_exit("error in verify square relation\n");
+	}
+	mpz_clear(temp);
+	mpz_clear(num_temp);
+	mpz_clear(square);
+	return 1;
+}
 char verify_factorization(const mpz_t num,mpz_t residuos,struct node_factorization*head_factor,const mpz_t a){
 	//num*a deve essere uguale a fattorizzazione*residuo
 	gmp_printf("inizio verifica num=%Zd\n",num);
@@ -492,6 +572,9 @@ void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth
                 mpz_set(square_relation.residuos,residuos);
                 calculate_square(square_relation.square,a,i-M,thread_data.b,n);
                 insert_at_tail_square_relation(square_relation,head_square,tail_square);
+                if(verify_square_relation(square_relation,n)==0){
+                	handle_error_with_exit("error in create square relation\n");
+                }
             }
             else if(is_semi_B_smooth==1){
 				(*num_semi_B_smooth)++;

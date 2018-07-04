@@ -26,3 +26,5 @@ void add_relation_semi_B_smooth_to_list(struct node_square_relation**head_sort_r
 void insert_at_tail_square_rel(struct node_square_relation *new_node,struct node_square_relation**head,struct node_square_relation** tail);
 void insert_at_tail_square_relation(struct square_relation relation,struct node_square_relation**head,struct node_square_relation** tail);
 char verify_cardinality_list_square_relation(struct node_square_relation*head,int length);
+void union_list_residuos_v2(struct node_square_relation**head_residuos1,struct node_square_relation**tai_residuos1,struct node_square_relation**head_residuos2,struct node_square_relation**tail_residuos2);
+void union_list_square_v2(struct node_square_relation**head_square1,struct node_square_relation**tail_square1,struct node_square_relation**head_square2,struct node_square_relation**tail_square2);
