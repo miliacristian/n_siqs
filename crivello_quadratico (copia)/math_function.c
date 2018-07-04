@@ -421,6 +421,7 @@ char calculate_num_from_factorization(mpz_t num_temp,struct node_factorization*h
 }
 char verify_square_relation(struct square_relation square_relation,const mpz_t n){
 	gmp_printf("inizio verifica square=%Zd\n",square_relation.square);
+	print_factorization(square_relation.num,square_relation.head_factorization);
 	struct node_factorization*head_factor=square_relation.head_factorization;
 	mpz_t temp,num_temp,square;
 	mpz_init(num_temp);

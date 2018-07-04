@@ -458,9 +458,6 @@ char combine_relation_B_smooth_and_semi_B_smooth(struct node_square_relation**he
                 struct square_relation new_square_relation = create_relation_large_prime(p->square_relation,
                                                                                          q->square_relation, n,
                                                                                          &factorization_founded);
-                if(verify_square_relation(new_square_relation,n)==0){
-                    handle_error_with_exit("error in create relation with combine function\n");
-                }
                 if (factorization_founded == 1) {
                     free_memory_list_square_relation(p);
                     head_sort_residuos = NULL;
@@ -468,6 +465,9 @@ char combine_relation_B_smooth_and_semi_B_smooth(struct node_square_relation**he
                 } else if (factorization_founded != -1) {
                     insert_ordered_sort_square_rel(new_square_relation, head_sort_square, tail_sort_square);
                     q = q->next;
+                    if(verify_square_relation(new_square_relation,n)==0){
+                        handle_error_with_exit("error in create relation with combine function\n");
+                    }
                 }
             }
             else{//relazioni con lo stesso residuo ma con lo stesso quadrato
