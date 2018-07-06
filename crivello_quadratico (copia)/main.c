@@ -51,7 +51,7 @@
 	int*index_prime_a=NULL;//indice dei primi usati per ottenere a,rispetto alla factor base
 	int*number_prime_a=NULL;//numeri primi usati per ottenere a
     struct a_struct*array_a_struct=NULL;
-    int combined_relations=0;
+    int combined_relations;
     char combined;
     mpz_t thresold_large_prime;
 
@@ -70,6 +70,7 @@ int main(int argc,char*argv[]){
 		cardinality_factor_base=0;
 		char main_thread_work=0;
 		combined=0;
+		combined_relations=0;
 		mpz_t a_default,b_default;//a,b sono i coefficienti del polinomio aj^2+2bj+c,thresold a serve per calcolare il valore di a
 		int*array_id=NULL;//array che contiene gli id dei nuovi thread creati a partire da 0
 		int num_B_smooth=0,num_semi_B_smooth=0,num_potential_B_smooth=0;//numero di numeri b-smooth potenziali e reali trovati nell'array
@@ -380,20 +381,25 @@ int main(int argc,char*argv[]){
 			print_time_elapsed("time to create thread");
 
 			//fattorizza numeri nell'array lungo 2m+1
-            printf("main thread\n");
-			mpz_set(thread_polynomial_data[NUM_THREAD_POLYNOMIAL].b,b_default);//imposta b
-			factor_matrix_f(n,M,(thread_polynomial_data[NUM_THREAD_POLYNOMIAL]),cardinality_factor_base,a_default,array_a_struct,s);//fattorizza numeri
-			print_time_elapsed("time_to_factor matrix_factorization main thread");
-			//print_thread_data(thread_polynomial_data[NUM_THREAD_POLYNOMIAL],M,cardinality_factor_base);
+			if(main_thread_work==0) {
+				main_thread_work=1;
+				printf("main thread\n");
+				mpz_set(thread_polynomial_data[NUM_THREAD_POLYNOMIAL].b, b_default);//imposta b
+				factor_matrix_f(n, M, (thread_polynomial_data[NUM_THREAD_POLYNOMIAL]), cardinality_factor_base,
+								a_default, array_a_struct, s);//fattorizza numeri
+				print_time_elapsed("time_to_factor matrix_factorization main thread");
+				//print_thread_data(thread_polynomial_data[NUM_THREAD_POLYNOMIAL],M,cardinality_factor_base);
 
-			//log_thresold main thread
-			thread_polynomial_data[NUM_THREAD_POLYNOMIAL].log_thresold=calculate_log_thresold(n,M);
-			printf("log_thresold main thread=%f\n",thread_polynomial_data[NUM_THREAD_POLYNOMIAL].log_thresold);
+				//log_thresold main thread
+				thread_polynomial_data[NUM_THREAD_POLYNOMIAL].log_thresold = calculate_log_thresold(n, M);
+				printf("log_thresold main thread=%f\n", thread_polynomial_data[NUM_THREAD_POLYNOMIAL].log_thresold);
 
-			//trova relazioni quadratiche o semi_B_smooth e ordinale per numero
-			find_list_square_relation(thread_polynomial_data[NUM_THREAD_POLYNOMIAL],&num_B_smooth,&num_semi_B_smooth,&num_potential_B_smooth,M,&head_square,&tail_square,&head_residuos,&tail_residuos,n,a_default,NULL,0);
-			print_time_elapsed("time_to find_list_square_relation main thread");
-
+				//trova relazioni quadratiche o semi_B_smooth e ordinale per numero
+				find_list_square_relation(thread_polynomial_data[NUM_THREAD_POLYNOMIAL], &num_B_smooth,
+										  &num_semi_B_smooth, &num_potential_B_smooth, M, &head_square, &tail_square,
+										  &head_residuos, &tail_residuos, n, a_default, NULL, 0);
+				print_time_elapsed("time_to find_list_square_relation main thread");
+			}
 			//aspetta tutti i thread e libera memoria
 			if(num_thread_job!=1 && NUM_THREAD_POLYNOMIAL>0){
 				join_all_threads(array_tid,NUM_THREAD_POLYNOMIAL);//aspetta tutti i thread
@@ -475,8 +481,8 @@ int main(int argc,char*argv[]){
 			}*///commentare questa riga
 
             //trova nuove relazioni quadratiche con un nuovo square,una nuova fattorizazzione e imposta num=0
-            if(num_B_smooth>=cardinality_factor_base*THRESOLD_RELATION && combined==0) {
-                combined=1;
+            if((num_B_smooth>=cardinality_factor_base*THRESOLD_RELATION) && (combined==0)) {
+            	combined=1;
 				add_relation_semi_B_smooth_to_list(&head_sort_residuos,&tail_sort_residuos,head_residuos);
 				print_time_elapsed("time to add relation semi_B_smooth");
 				head_residuos=NULL;
@@ -663,11 +669,11 @@ int main(int argc,char*argv[]){
 		timer.tv_nsec=time_start.tv_nsec;//timer=time_start
 		timer.tv_sec=time_start.tv_sec;//timer=time_start
 		print_time_elapsed("time_total");
+		printf("combined_relations=%d,combined=%d\n",combined_relations,combined);
 	}
 	if(fclose(file_number)!=0){
 		handle_error_with_exit("error in close file_number\n");
 	}
-	printf("combined_relations=%d\n",combined_relations);
 	return 0;
 }
 
