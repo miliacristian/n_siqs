@@ -34,4 +34,7 @@ void swap_square_relation(struct square_relation *pnode1,struct square_relation 
 struct node_square_relation *lastNode(struct node_square_relation *root);
 struct node_square_relation* partition(struct node_square_relation *l,struct node_square_relation *h);
 void _quickSort(struct node_square_relation* l,struct node_square_relation *h);
-void quickSort(struct node_square_relation *head);
+void quickSort_square(struct node_square_relation *head);
+void quickSort_residuos(struct node_square_relation *head);
+char combine_relation_B_smooth_and_semi_B_smooth_v3(struct node_square_relation**head_square,struct node_square_relation**tail_square,
+                                                    struct node_square_relation**head_sort_residuos,struct node_square_relation**tail_sort_residuos,mpz_t n,int*num_B_smooth,int*num_semi_B_smooth,int*combined_relations);

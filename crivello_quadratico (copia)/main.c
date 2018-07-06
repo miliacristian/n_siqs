@@ -403,7 +403,7 @@ int main(int argc,char*argv[]){
 			//aspetta tutti i thread e libera memoria
 			if(num_thread_job!=1 && NUM_THREAD_POLYNOMIAL>0){
 
-                //unisici tutte le relazioni quadrate(solamente quelle B_smooth)alla lista delle relazioni quadratiche,
+                /*//unisici tutte le relazioni quadrate(solamente quelle B_smooth)alla lista delle relazioni quadratiche,
                 // la lista finale conterrà relazioni quadratiche ordinate per square
                 add_square_relation_to_list_sorted(&head_sort_square,&tail_sort_square,head_square);
                 print_time_elapsed("time to add square relation to list sorted");
@@ -414,7 +414,7 @@ int main(int argc,char*argv[]){
                 }
                 if(verify_cardinality_list_square_relation(head_sort_square,num_B_smooth)==0){
                     handle_error_with_exit("error in cardinality square relation\n");
-                }
+                }*/
 				join_all_threads(array_tid,NUM_THREAD_POLYNOMIAL);//aspetta tutti i thread
 				
 				if(array_tid!=NULL){//libera memoria allocata
@@ -463,7 +463,7 @@ int main(int argc,char*argv[]){
             //trova nuove relazioni quadratiche con un nuovo square,una nuova fattorizazzione e imposta num=0
             if((num_B_smooth>=cardinality_factor_base*THRESOLD_RELATION) && (combined==0)) {
             	combined=1;
-                //unisici tutte le relazioni quadrate(solamente quelle B_smooth)alla lista delle relazioni quadratiche,
+                /*//unisici tutte le relazioni quadrate(solamente quelle B_smooth)alla lista delle relazioni quadratiche,
                 // la lista finale conterrà relazioni quadratiche ordinate per square
                 add_square_relation_to_list_sorted(&head_sort_square,&tail_sort_square,head_square);
                 print_time_elapsed("time to add square relation to list sorted");
@@ -474,8 +474,8 @@ int main(int argc,char*argv[]){
                 }
                 if(verify_cardinality_list_square_relation(head_sort_square,num_B_smooth)==0){
                     handle_error_with_exit("error in cardinality square relation\n");
-                }
-                quickSort(head_residuos);
+                }*/
+                quickSort_residuos(head_residuos);
                 head_sort_residuos=head_residuos;
                 tail_sort_residuos=lastNode(head_sort_residuos);
                 head_residuos=NULL;
@@ -483,29 +483,33 @@ int main(int argc,char*argv[]){
                 if(verify_sorted_residuos_square_rel_list(head_sort_residuos)==0){
                     handle_error_with_exit("error in sort relation by square\n");
                 }
-				factorizations_founded = combine_relation_B_smooth_and_semi_B_smooth_v2(&head_sort_square,
-																					 &tail_sort_square, &head_sort_residuos,&tail_sort_residuos, n, &num_B_smooth, &num_semi_B_smooth,&combined_relations);
+				//factorizations_founded = combine_relation_B_smooth_and_semi_B_smooth_v2(&head_sort_square,
+				//																	 &tail_sort_square, &head_sort_residuos,&tail_sort_residuos, n, &num_B_smooth, &num_semi_B_smooth,&combined_relations);
+				factorizations_founded = combine_relation_B_smooth_and_semi_B_smooth_v3(&head_square,
+																						&tail_square, &head_sort_residuos,&tail_sort_residuos, n, &num_B_smooth, &num_semi_B_smooth,&combined_relations);
 				print_time_elapsed("time_to_combine relation_B_smooth");
 				head_sort_residuos = NULL;
 				tail_sort_residuos = NULL;
                 if (factorizations_founded == 1) {
                     break;
                 }
-				if(verify_cardinality_list_square_relation(head_sort_square,num_B_smooth)==0){
-					handle_error_with_exit("error in cardinality square relation\n");
-				}
+				//if(verify_cardinality_list_square_relation(head_sort_square,num_B_smooth)==0){
+				//	handle_error_with_exit("error in cardinality square relation\n");
+				//}
 			}
-            if(verify_sorted_square_rel_list(head_sort_square)==0){
-                handle_error_with_exit("error in sorted list by square\n");
-            }
-            printf("card_f_base=%d\n",cardinality_factor_base);
             if(num_B_smooth>=cardinality_factor_base*ENOUGH_RELATION){
-                //unisici tutte le relazioni quadrate(solamente quelle B_smooth)alla lista delle relazioni quadratiche,
+
+                /*//unisici tutte le relazioni quadrate(solamente quelle B_smooth)alla lista delle relazioni quadratiche,
                 // la lista finale conterrà relazioni quadratiche ordinate per square
                 add_square_relation_to_list_sorted(&head_sort_square,&tail_sort_square,head_square);
                 print_time_elapsed("time to add square relation to list sorted");
                 head_square=NULL;
-                tail_square=NULL;
+                tail_square=NULL;*/
+				quickSort_square(head_square);
+				head_sort_square=head_square;
+				tail_sort_square=lastNode(head_sort_square);
+
+				//head_square e tail_square rimangono !=null fino alla fine
                 if(verify_sorted_square_rel_list(head_sort_square)==0){
                     handle_error_with_exit("error in sort relation by square\n");
                 }
@@ -654,6 +658,10 @@ int main(int argc,char*argv[]){
 		if(head_sort_square!=NULL) {
 			free_memory_list_square_relation(head_sort_square);
 			head_sort_square = NULL;
+		}
+		if(head_square!=NULL) {
+			free_memory_list_square_relation(head_square);
+			head_square = NULL;
 		}
 
 		//mpz_clear

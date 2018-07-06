@@ -29,7 +29,7 @@ struct node_square_relation *lastNode(struct node_square_relation *root)
     return root;
 }
 
-struct node_square_relation* partition(struct node_square_relation *l,struct node_square_relation *h)
+struct node_square_relation* partition_residuos(struct node_square_relation *l,struct node_square_relation *h)
 {
     // set pivot as h element
     struct square_relation x  = h->square_relation;
@@ -51,27 +51,64 @@ struct node_square_relation* partition(struct node_square_relation *l,struct nod
     swap_square_relation(&(i->square_relation), &(h->square_relation));
     return i;
 }
+struct node_square_relation* partition_square(struct node_square_relation *l,struct node_square_relation *h)
+{
+    // set pivot as h element
+    struct square_relation x  = h->square_relation;
+
+    // similar to i = l-1 for array implementation
+    struct node_square_relation *i = l->prev;
+
+    // Similar to "for (int j = l; j <= h- 1; j++)"
+    for (struct node_square_relation *j = l; j != h; j = j->next)
+    {
+        if (mpz_cmp(j->square_relation.square,x.square)<=0)
+        {
+            // Similar to i++ for array
+            i = (i == NULL)? l : i->next;
+            swap_square_relation(&(i->square_relation), &(j->square_relation));
+        }
+    }
+    i = (i == NULL)? l : i->next; // Similar to i++
+    swap_square_relation(&(i->square_relation), &(h->square_relation));
+    return i;
+}
 /* A recursive implementation of quicksort for linked list */
-void _quickSort(struct node_square_relation* l,struct node_square_relation *h)
+void _quickSort_square(struct node_square_relation* l,struct node_square_relation *h)
 {
     if (h != NULL && l != h && l != h->next)
     {
-        struct node_square_relation *p = partition(l, h);
-        _quickSort(l, p->prev);
-        _quickSort(p->next, h);
+        struct node_square_relation *p = partition_square(l, h);
+        _quickSort_square(l, p->prev);
+        _quickSort_square(p->next, h);
     }
 }
-
+void _quickSort_residuos(struct node_square_relation* l,struct node_square_relation *h)
+{
+    if (h != NULL && l != h && l != h->next)
+    {
+        struct node_square_relation *p = partition_residuos(l, h);
+        _quickSort_residuos(l, p->prev);
+        _quickSort_residuos(p->next, h);
+    }
+}
 // The main function to sort a linked list. It mainly calls _quickSort()
-void quickSort(struct node_square_relation *head)
+void quickSort_square(struct node_square_relation *head)
 {
     // Find last node
     struct node_square_relation *h = lastNode(head);
 
     // Call the recursive QuickSort
-    _quickSort(head, h);
+    _quickSort_square(head, h);
 }
+void quickSort_residuos(struct node_square_relation *head)
+{
+    // Find last node
+    struct node_square_relation *h = lastNode(head);
 
+    // Call the recursive QuickSort
+    _quickSort_residuos(head, h);
+}
 char verify_sorted_num_square_rel_list(struct node_square_relation*head){
     if(head==NULL){
         return 1;
@@ -545,7 +582,52 @@ char combine_relation_B_smooth_and_semi_B_smooth(struct node_square_relation**he
     }
     return factorization_founded;
 }
-
+char combine_relation_B_smooth_and_semi_B_smooth_v3(struct node_square_relation**head_square,struct node_square_relation**tail_square,
+                                                    struct node_square_relation**head_sort_residuos,struct node_square_relation**tail_sort_residuos,mpz_t n,int*num_B_smooth,int*num_semi_B_smooth,int*combined_relations){
+    if(head_square==NULL || tail_square==NULL || num_B_smooth==NULL || num_semi_B_smooth==NULL || combined_relations==NULL || head_sort_residuos==NULL || tail_sort_residuos==NULL){
+        handle_error_with_exit("error in combine_relation_B_smooth and semi_B_smooth\n");
+    }
+    char factorization_founded=0;
+    if(*head_sort_residuos==NULL){//nothing to do
+        return factorization_founded;
+    }
+    struct node_square_relation*p=*head_sort_residuos;//p=nodo
+    struct node_square_relation*q;
+    while(p!=NULL) {
+        //ciclo sulla lista per trovare residui uguali e creare nuove relazioni B_smooth e ordinale per square
+        while (p!=NULL && p->next!=NULL && mpz_cmp(p->square_relation.residuos, p->next->square_relation.residuos) == 0) {//residui uguali
+            if (mpz_cmp(p->square_relation.square, p->next->square_relation.square) != 0) {
+                (*num_B_smooth)++;
+                (*combined_relations)++;
+                struct square_relation new_square_relation = create_relation_large_prime(p->square_relation,
+                                                                                         p->next->square_relation, n,
+                                                                                         &factorization_founded);
+                if (factorization_founded == 1) {
+                    free_memory_list_square_relation(p);
+                    head_sort_residuos = NULL;
+                    return factorization_founded;
+                } else if (factorization_founded != -1) {
+                    insert_at_tail_square_relation(new_square_relation, head_square, tail_square);
+                    remove_after_node_square_rel(&(p->next),tail_sort_residuos);
+                    if(verify_square_relation(new_square_relation,n)==0){
+                        handle_error_with_exit("error in create relation with combine function\n");
+                    }
+                }
+            }
+            else{//relazioni con lo stesso residuo ma con lo stesso quadrato
+                remove_after_node_square_rel(&(p->next),tail_sort_residuos);
+            }
+        }
+        //una volta che ho creato tutte le relazioni quadratiche sfruttando un numero semi_B_smooth lo tolgo dalla lista
+        q=p->next;
+        remove_after_node_square_rel(&p,tail_sort_residuos);
+        p=q;
+        if(q==NULL){
+            return factorization_founded;
+        }
+    }
+    return factorization_founded;
+}
 char combine_relation_B_smooth_and_semi_B_smooth_v2(struct node_square_relation**head_sort_square,struct node_square_relation**tail_sort_square,
                                                  struct node_square_relation**head_sort_residuos,struct node_square_relation**tail_sort_residuos,mpz_t n,int*num_B_smooth,int*num_semi_B_smooth,int*combined_relations){
     if(head_sort_square==NULL || tail_sort_square==NULL || num_B_smooth==NULL || num_semi_B_smooth==NULL || combined_relations==NULL || head_sort_residuos==NULL || tail_sort_residuos==NULL){
