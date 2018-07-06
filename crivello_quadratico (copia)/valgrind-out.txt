@@ -1,590 +1,258 @@
-==31374== Memcheck, a memory error detector
-==31374== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==31374== Using Valgrind-3.13.0 and LibVEX; rerun with -h for copyright info
-==31374== Command: ./criv_quad biprime2.txt
-==31374== Parent PID: 31373
-==31374== 
---31374-- 
---31374-- Valgrind options:
---31374--    --leak-check=full
---31374--    --show-leak-kinds=all
---31374--    --track-origins=yes
---31374--    --verbose
---31374--    --log-file=valgrind-out.txt
---31374-- Contents of /proc/version:
---31374--   Linux version 4.15.0-24-generic (buildd@lgw01-amd64-056) (gcc version 7.3.0 (Ubuntu 7.3.0-16ubuntu3)) #26-Ubuntu SMP Wed Jun 13 08:44:47 UTC 2018
---31374-- 
---31374-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-avx-avx2-bmi
---31374-- Page sizes: currently 4096, max supported 4096
---31374-- Valgrind library directory: /usr/lib/valgrind
---31374-- Reading syms from /home/cristian/Scrivania/crivello_quadratico (copia)1/crivello_quadratico (copia)/criv_quad
---31374-- Reading syms from /lib/x86_64-linux-gnu/ld-2.27.so
---31374--   Considering /lib/x86_64-linux-gnu/ld-2.27.so ..
---31374--   .. CRC mismatch (computed 1b7c895e wanted 2943108a)
---31374--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/ld-2.27.so ..
---31374--   .. CRC is valid
---31374-- Reading syms from /usr/lib/valgrind/memcheck-amd64-linux
---31374--   Considering /usr/lib/valgrind/memcheck-amd64-linux ..
---31374--   .. CRC mismatch (computed 62965bbf wanted eeb84137)
---31374--    object doesn't have a symbol table
---31374--    object doesn't have a dynamic symbol table
---31374-- Scheduler: using generic scheduler lock implementation.
---31374-- Reading suppressions file: /usr/lib/valgrind/default.supp
-==31374== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-31374-by-cristian-on-???
-==31374== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-31374-by-cristian-on-???
-==31374== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-31374-by-cristian-on-???
-==31374== 
-==31374== TO CONTROL THIS PROCESS USING vgdb (which you probably
-==31374== don't want to do, unless you know exactly what you're doing,
-==31374== or are doing some strange experiment):
-==31374==   /usr/lib/valgrind/../../bin/vgdb --pid=31374 ...command...
-==31374== 
-==31374== TO DEBUG THIS PROCESS USING GDB: start GDB like this
-==31374==   /path/to/gdb ./criv_quad
-==31374== and then give GDB the following command
-==31374==   target remote | /usr/lib/valgrind/../../bin/vgdb --pid=31374
-==31374== --pid is optional if only one valgrind process is running
-==31374== 
---31374-- REDIR: 0x401f2f0 (ld-linux-x86-64.so.2:strlen) redirected to 0x58060901 (???)
---31374-- REDIR: 0x401f0d0 (ld-linux-x86-64.so.2:index) redirected to 0x5806091b (???)
---31374-- Reading syms from /usr/lib/valgrind/vgpreload_core-amd64-linux.so
---31374--   Considering /usr/lib/valgrind/vgpreload_core-amd64-linux.so ..
---31374--   .. CRC mismatch (computed 13d5e98a wanted 1786ecf1)
---31374--    object doesn't have a symbol table
---31374-- Reading syms from /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so
---31374--   Considering /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so ..
---31374--   .. CRC mismatch (computed 8f77ef36 wanted fcbde737)
---31374--    object doesn't have a symbol table
-==31374== WARNING: new redirection conflicts with existing -- ignoring it
---31374--     old: 0x0401f2f0 (strlen              ) R-> (0000.0) 0x58060901 ???
---31374--     new: 0x0401f2f0 (strlen              ) R-> (2007.0) 0x04c32db0 strlen
---31374-- REDIR: 0x401d360 (ld-linux-x86-64.so.2:strcmp) redirected to 0x4c33ee0 (strcmp)
---31374-- REDIR: 0x401f830 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x4c374f0 (mempcpy)
---31374-- Reading syms from /usr/local/lib/libmpfr.so.6.0.1
---31374-- Reading syms from /lib/x86_64-linux-gnu/libm-2.27.so
---31374--   Considering /lib/x86_64-linux-gnu/libm-2.27.so ..
---31374--   .. CRC mismatch (computed 7feae033 wanted b29b2508)
---31374--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/libm-2.27.so ..
---31374--   .. CRC is valid
---31374-- Reading syms from /usr/local/lib/libgmp.so.10.3.2
---31374-- Reading syms from /lib/x86_64-linux-gnu/librt-2.27.so
---31374--   Considering /lib/x86_64-linux-gnu/librt-2.27.so ..
---31374--   .. CRC mismatch (computed 16979484 wanted f9e041e3)
---31374--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/librt-2.27.so ..
---31374--   .. CRC is valid
---31374-- Reading syms from /lib/x86_64-linux-gnu/libpthread-2.27.so
---31374--   Considering /usr/lib/debug/.build-id/28/c6aade70b2d40d1f0f3d0a1a0cad1ab816448f.debug ..
---31374--   .. build-id is valid
---31374-- Reading syms from /lib/x86_64-linux-gnu/libc-2.27.so
---31374--   Considering /lib/x86_64-linux-gnu/libc-2.27.so ..
---31374--   .. CRC mismatch (computed b1c74187 wanted 042cc048)
---31374--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/libc-2.27.so ..
---31374--   .. CRC is valid
---31374-- REDIR: 0x5b90c70 (libc.so.6:memmove) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---31374-- REDIR: 0x5b8fd40 (libc.so.6:strncpy) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---31374-- REDIR: 0x5b90f50 (libc.so.6:strcasecmp) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---31374-- REDIR: 0x5b8f790 (libc.so.6:strcat) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---31374-- REDIR: 0x5b8fd70 (libc.so.6:rindex) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---31374-- REDIR: 0x5b927c0 (libc.so.6:rawmemchr) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---31374-- REDIR: 0x5b90de0 (libc.so.6:mempcpy) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---31374-- REDIR: 0x5b90c10 (libc.so.6:bcmp) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---31374-- REDIR: 0x5b8fd00 (libc.so.6:strncmp) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---31374-- REDIR: 0x5b8f800 (libc.so.6:strcmp) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---31374-- REDIR: 0x5b90d40 (libc.so.6:memset) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---31374-- REDIR: 0x5bae0f0 (libc.so.6:wcschr) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---31374-- REDIR: 0x5b8fca0 (libc.so.6:strnlen) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---31374-- REDIR: 0x5b8f870 (libc.so.6:strcspn) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---31374-- REDIR: 0x5b90fa0 (libc.so.6:strncasecmp) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---31374-- REDIR: 0x5b8f840 (libc.so.6:strcpy) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---31374-- REDIR: 0x5b910e0 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---31374-- REDIR: 0x5b8fda0 (libc.so.6:strpbrk) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---31374-- REDIR: 0x5b8f7c0 (libc.so.6:index) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---31374-- REDIR: 0x5b8fc70 (libc.so.6:strlen) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---31374-- REDIR: 0x5b9a6c0 (libc.so.6:memrchr) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---31374-- REDIR: 0x5b90ff0 (libc.so.6:strcasecmp_l) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---31374-- REDIR: 0x5b90be0 (libc.so.6:memchr) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---31374-- REDIR: 0x5baeeb0 (libc.so.6:wcslen) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---31374-- REDIR: 0x5b90050 (libc.so.6:strspn) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---31374-- REDIR: 0x5b90f20 (libc.so.6:stpncpy) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---31374-- REDIR: 0x5b90ef0 (libc.so.6:stpcpy) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---31374-- REDIR: 0x5b927f0 (libc.so.6:strchrnul) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---31374-- REDIR: 0x5b91040 (libc.so.6:strncasecmp_l) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---31374-- REDIR: 0x5c803c0 (libc.so.6:__strrchr_avx2) redirected to 0x4c32730 (rindex)
---31374-- REDIR: 0x5b89070 (libc.so.6:malloc) redirected to 0x4c2faa0 (malloc)
---31374-- REDIR: 0x5b90590 (libc.so.6:__GI_strstr) redirected to 0x4c37760 (__strstr_sse2)
---31374-- REDIR: 0x5b8ac30 (libc.so.6:realloc) redirected to 0x4c31cb0 (realloc)
---31374-- REDIR: 0x5b89950 (libc.so.6:free) redirected to 0x4c30cd0 (free)
---31374-- REDIR: 0x5c80590 (libc.so.6:__strlen_avx2) redirected to 0x4c32cf0 (strlen)
---31374-- REDIR: 0x5c80ad0 (libc.so.6:__memcpy_avx_unaligned_erms) redirected to 0x4c366e0 (memmove)
---31374-- REDIR: 0x5c7ffa0 (libc.so.6:__strchr_avx2) redirected to 0x4c32950 (index)
---31374-- REDIR: 0x5c801d0 (libc.so.6:__strchrnul_avx2) redirected to 0x4c37020 (strchrnul)
---31374-- REDIR: 0x5c80ab0 (libc.so.6:__mempcpy_avx_unaligned_erms) redirected to 0x4c37130 (mempcpy)
---31374-- REDIR: 0x5c80f50 (libc.so.6:__memset_avx2_unaligned_erms) redirected to 0x4c365d0 (memset)
---31374-- REDIR: 0x5b8c030 (libc.so.6:calloc) redirected to 0x4c31a70 (calloc)
-==31374== Invalid read of size 8
-==31374==    at 0x112FF9: free_memory_list_square_relation (basic.c:171)
-==31374==    by 0x11D070: main (main.c:663)
-==31374==  Address 0x5ef8ca8 is 56 bytes inside a block of size 72 free'd
-==31374==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x113048: free_memory_list_square_relation (basic.c:176)
-==31374==    by 0x11D04D: main (main.c:659)
-==31374==  Block was alloc'd at
-==31374==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x11F1AA: get_new_node_square_rel (list_square_relation.c:296)
-==31374==    by 0x11F26E: insert_at_tail_square_relation (list_square_relation.c:312)
-==31374==    by 0x10EFAC: find_list_square_relation (math_function.c:605)
-==31374==    by 0x11C3D9: main (main.c:397)
-==31374== 
-==31374== Invalid read of size 4
-==31374==    at 0x546ADE0: __gmpz_clear (in /usr/local/lib/libgmp.so.10.3.2)
-==31374==    by 0x11300C: free_memory_list_square_relation (basic.c:172)
-==31374==    by 0x11D070: main (main.c:663)
-==31374==  Address 0x5ef8c70 is 0 bytes inside a block of size 72 free'd
-==31374==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x113048: free_memory_list_square_relation (basic.c:176)
-==31374==    by 0x11D04D: main (main.c:659)
-==31374==  Block was alloc'd at
-==31374==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x11F1AA: get_new_node_square_rel (list_square_relation.c:296)
-==31374==    by 0x11F26E: insert_at_tail_square_relation (list_square_relation.c:312)
-==31374==    by 0x10EFAC: find_list_square_relation (math_function.c:605)
-==31374==    by 0x11C3D9: main (main.c:397)
-==31374== 
-==31374== Invalid read of size 8
-==31374==    at 0x546ADEA: __gmpz_clear (in /usr/local/lib/libgmp.so.10.3.2)
-==31374==    by 0x11300C: free_memory_list_square_relation (basic.c:172)
-==31374==    by 0x11D070: main (main.c:663)
-==31374==  Address 0x5ef8c78 is 8 bytes inside a block of size 72 free'd
-==31374==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x113048: free_memory_list_square_relation (basic.c:176)
-==31374==    by 0x11D04D: main (main.c:659)
-==31374==  Block was alloc'd at
-==31374==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x11F1AA: get_new_node_square_rel (list_square_relation.c:296)
-==31374==    by 0x11F26E: insert_at_tail_square_relation (list_square_relation.c:312)
-==31374==    by 0x10EFAC: find_list_square_relation (math_function.c:605)
-==31374==    by 0x11C3D9: main (main.c:397)
-==31374== 
-==31374== Invalid free() / delete / delete[] / realloc()
-==31374==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x11300C: free_memory_list_square_relation (basic.c:172)
-==31374==    by 0x11D070: main (main.c:663)
-==31374==  Address 0x5ef8c20 is 0 bytes inside a block of size 16 free'd
-==31374==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x11300C: free_memory_list_square_relation (basic.c:172)
-==31374==    by 0x11D04D: main (main.c:659)
-==31374==  Block was alloc'd at
-==31374==    at 0x4C31D2F: realloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x5461953: __gmp_default_reallocate (in /usr/local/lib/libgmp.so.10.3.2)
-==31374==    by 0x5475A79: __gmpz_realloc (in /usr/local/lib/libgmp.so.10.3.2)
-==31374==    by 0x5467B9D: __gmpz_add (in /usr/local/lib/libgmp.so.10.3.2)
-==31374==    by 0x10E4F4: calculate_square (math_function.c:375)
-==31374==    by 0x10EF7A: find_list_square_relation (math_function.c:604)
-==31374==    by 0x11C3D9: main (main.c:397)
-==31374== 
-==31374== Invalid read of size 4
-==31374==    at 0x546ADE0: __gmpz_clear (in /usr/local/lib/libgmp.so.10.3.2)
-==31374==    by 0x11301C: free_memory_list_square_relation (basic.c:173)
-==31374==    by 0x11D070: main (main.c:663)
-==31374==  Address 0x5ef8c88 is 24 bytes inside a block of size 72 free'd
-==31374==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x113048: free_memory_list_square_relation (basic.c:176)
-==31374==    by 0x11D04D: main (main.c:659)
-==31374==  Block was alloc'd at
-==31374==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x11F1AA: get_new_node_square_rel (list_square_relation.c:296)
-==31374==    by 0x11F26E: insert_at_tail_square_relation (list_square_relation.c:312)
-==31374==    by 0x10EFAC: find_list_square_relation (math_function.c:605)
-==31374==    by 0x11C3D9: main (main.c:397)
-==31374== 
-==31374== Invalid read of size 8
-==31374==    at 0x546ADEA: __gmpz_clear (in /usr/local/lib/libgmp.so.10.3.2)
-==31374==    by 0x11301C: free_memory_list_square_relation (basic.c:173)
-==31374==    by 0x11D070: main (main.c:663)
-==31374==  Address 0x5ef8c90 is 32 bytes inside a block of size 72 free'd
-==31374==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x113048: free_memory_list_square_relation (basic.c:176)
-==31374==    by 0x11D04D: main (main.c:659)
-==31374==  Block was alloc'd at
-==31374==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x11F1AA: get_new_node_square_rel (list_square_relation.c:296)
-==31374==    by 0x11F26E: insert_at_tail_square_relation (list_square_relation.c:312)
-==31374==    by 0x10EFAC: find_list_square_relation (math_function.c:605)
-==31374==    by 0x11C3D9: main (main.c:397)
-==31374== 
-==31374== Invalid free() / delete / delete[] / realloc()
-==31374==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x11301C: free_memory_list_square_relation (basic.c:173)
-==31374==    by 0x11D070: main (main.c:663)
-==31374==  Address 0x5ef8b80 is 0 bytes inside a block of size 8 free'd
-==31374==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x11301C: free_memory_list_square_relation (basic.c:173)
-==31374==    by 0x11D04D: main (main.c:659)
-==31374==  Block was alloc'd at
-==31374==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x5461908: __gmp_default_allocate (in /usr/local/lib/libgmp.so.10.3.2)
-==31374==    by 0x546FC97: __gmpz_init (in /usr/local/lib/libgmp.so.10.3.2)
-==31374==    by 0x10EF03: find_list_square_relation (math_function.c:600)
-==31374==    by 0x11C3D9: main (main.c:397)
-==31374== 
-==31374== Invalid read of size 4
-==31374==    at 0x546ADE0: __gmpz_clear (in /usr/local/lib/libgmp.so.10.3.2)
-==31374==    by 0x11302C: free_memory_list_square_relation (basic.c:174)
-==31374==    by 0x11D070: main (main.c:663)
-==31374==  Address 0x5ef8c98 is 40 bytes inside a block of size 72 free'd
-==31374==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x113048: free_memory_list_square_relation (basic.c:176)
-==31374==    by 0x11D04D: main (main.c:659)
-==31374==  Block was alloc'd at
-==31374==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x11F1AA: get_new_node_square_rel (list_square_relation.c:296)
-==31374==    by 0x11F26E: insert_at_tail_square_relation (list_square_relation.c:312)
-==31374==    by 0x10EFAC: find_list_square_relation (math_function.c:605)
-==31374==    by 0x11C3D9: main (main.c:397)
-==31374== 
-==31374== Invalid read of size 8
-==31374==    at 0x546ADEA: __gmpz_clear (in /usr/local/lib/libgmp.so.10.3.2)
-==31374==    by 0x11302C: free_memory_list_square_relation (basic.c:174)
-==31374==    by 0x11D070: main (main.c:663)
-==31374==  Address 0x5ef8ca0 is 48 bytes inside a block of size 72 free'd
-==31374==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x113048: free_memory_list_square_relation (basic.c:176)
-==31374==    by 0x11D04D: main (main.c:659)
-==31374==  Block was alloc'd at
-==31374==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x11F1AA: get_new_node_square_rel (list_square_relation.c:296)
-==31374==    by 0x11F26E: insert_at_tail_square_relation (list_square_relation.c:312)
-==31374==    by 0x10EFAC: find_list_square_relation (math_function.c:605)
-==31374==    by 0x11C3D9: main (main.c:397)
-==31374== 
-==31374== Invalid free() / delete / delete[] / realloc()
-==31374==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x11302C: free_memory_list_square_relation (basic.c:174)
-==31374==    by 0x11D070: main (main.c:663)
-==31374==  Address 0x5ef8bd0 is 0 bytes inside a block of size 8 free'd
-==31374==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x11302C: free_memory_list_square_relation (basic.c:174)
-==31374==    by 0x11D04D: main (main.c:659)
-==31374==  Block was alloc'd at
-==31374==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x5461908: __gmp_default_allocate (in /usr/local/lib/libgmp.so.10.3.2)
-==31374==    by 0x546FC97: __gmpz_init (in /usr/local/lib/libgmp.so.10.3.2)
-==31374==    by 0x10EF13: find_list_square_relation (math_function.c:601)
-==31374==    by 0x11C3D9: main (main.c:397)
-==31374== 
-==31374== Invalid read of size 8
-==31374==    at 0x113031: free_memory_list_square_relation (basic.c:175)
-==31374==    by 0x11D070: main (main.c:663)
-==31374==  Address 0x5ef8c80 is 16 bytes inside a block of size 72 free'd
-==31374==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x113048: free_memory_list_square_relation (basic.c:176)
-==31374==    by 0x11D04D: main (main.c:659)
-==31374==  Block was alloc'd at
-==31374==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x11F1AA: get_new_node_square_rel (list_square_relation.c:296)
-==31374==    by 0x11F26E: insert_at_tail_square_relation (list_square_relation.c:312)
-==31374==    by 0x10EFAC: find_list_square_relation (math_function.c:605)
-==31374==    by 0x11C3D9: main (main.c:397)
-==31374== 
-==31374== Invalid read of size 8
-==31374==    at 0x112FAF: free_list_factorization (basic.c:158)
-==31374==    by 0x11303C: free_memory_list_square_relation (basic.c:175)
-==31374==    by 0x11D070: main (main.c:663)
-==31374==  Address 0x5ef8820 is 16 bytes inside a block of size 32 free'd
-==31374==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x112FC2: free_list_factorization (basic.c:159)
-==31374==    by 0x11303C: free_memory_list_square_relation (basic.c:175)
-==31374==    by 0x11D04D: main (main.c:659)
-==31374==  Block was alloc'd at
-==31374==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x11E531: get_new_node_factor (list_factorization.c:135)
-==31374==    by 0x11E6A6: insert_ordered_factor (list_factorization.c:183)
-==31374==    by 0x10DB5A: factorize_num_v2 (math_function.c:140)
-==31374==    by 0x10EE55: find_list_square_relation (math_function.c:581)
-==31374==    by 0x11C3D9: main (main.c:397)
-==31374== 
-==31374== Invalid free() / delete / delete[] / realloc()
-==31374==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x112FC2: free_list_factorization (basic.c:159)
-==31374==    by 0x11303C: free_memory_list_square_relation (basic.c:175)
-==31374==    by 0x11D070: main (main.c:663)
-==31374==  Address 0x5ef8810 is 0 bytes inside a block of size 32 free'd
-==31374==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x112FC2: free_list_factorization (basic.c:159)
-==31374==    by 0x11303C: free_memory_list_square_relation (basic.c:175)
-==31374==    by 0x11D04D: main (main.c:659)
-==31374==  Block was alloc'd at
-==31374==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x11E531: get_new_node_factor (list_factorization.c:135)
-==31374==    by 0x11E6A6: insert_ordered_factor (list_factorization.c:183)
-==31374==    by 0x10DB5A: factorize_num_v2 (math_function.c:140)
-==31374==    by 0x10EE55: find_list_square_relation (math_function.c:581)
-==31374==    by 0x11C3D9: main (main.c:397)
-==31374== 
-==31374== Invalid free() / delete / delete[] / realloc()
-==31374==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x113048: free_memory_list_square_relation (basic.c:176)
-==31374==    by 0x11D070: main (main.c:663)
-==31374==  Address 0x5ef8c70 is 0 bytes inside a block of size 72 free'd
-==31374==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x113048: free_memory_list_square_relation (basic.c:176)
-==31374==    by 0x11D04D: main (main.c:659)
-==31374==  Block was alloc'd at
-==31374==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x11F1AA: get_new_node_square_rel (list_square_relation.c:296)
-==31374==    by 0x11F26E: insert_at_tail_square_relation (list_square_relation.c:312)
-==31374==    by 0x10EFAC: find_list_square_relation (math_function.c:605)
-==31374==    by 0x11C3D9: main (main.c:397)
-==31374== 
-==31374== 
-==31374== HEAP SUMMARY:
-==31374==     in use at exit: 0 bytes in 0 blocks
-==31374==   total heap usage: 2,045 allocs, 2,077 frees, 63,359 bytes allocated
-==31374== 
-==31374== All heap blocks were freed -- no leaks are possible
-==31374== 
-==31374== ERROR SUMMARY: 84 errors from 14 contexts (suppressed: 0 from 0)
-==31374== 
-==31374== 5 errors in context 1 of 14:
-==31374== Invalid free() / delete / delete[] / realloc()
-==31374==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x113048: free_memory_list_square_relation (basic.c:176)
-==31374==    by 0x11D070: main (main.c:663)
-==31374==  Address 0x5ef8c70 is 0 bytes inside a block of size 72 free'd
-==31374==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x113048: free_memory_list_square_relation (basic.c:176)
-==31374==    by 0x11D04D: main (main.c:659)
-==31374==  Block was alloc'd at
-==31374==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x11F1AA: get_new_node_square_rel (list_square_relation.c:296)
-==31374==    by 0x11F26E: insert_at_tail_square_relation (list_square_relation.c:312)
-==31374==    by 0x10EFAC: find_list_square_relation (math_function.c:605)
-==31374==    by 0x11C3D9: main (main.c:397)
-==31374== 
-==31374== 
-==31374== 5 errors in context 2 of 14:
-==31374== Invalid read of size 8
-==31374==    at 0x113031: free_memory_list_square_relation (basic.c:175)
-==31374==    by 0x11D070: main (main.c:663)
-==31374==  Address 0x5ef8c80 is 16 bytes inside a block of size 72 free'd
-==31374==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x113048: free_memory_list_square_relation (basic.c:176)
-==31374==    by 0x11D04D: main (main.c:659)
-==31374==  Block was alloc'd at
-==31374==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x11F1AA: get_new_node_square_rel (list_square_relation.c:296)
-==31374==    by 0x11F26E: insert_at_tail_square_relation (list_square_relation.c:312)
-==31374==    by 0x10EFAC: find_list_square_relation (math_function.c:605)
-==31374==    by 0x11C3D9: main (main.c:397)
-==31374== 
-==31374== 
-==31374== 5 errors in context 3 of 14:
-==31374== Invalid free() / delete / delete[] / realloc()
-==31374==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x11302C: free_memory_list_square_relation (basic.c:174)
-==31374==    by 0x11D070: main (main.c:663)
-==31374==  Address 0x5ef8bd0 is 0 bytes inside a block of size 8 free'd
-==31374==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x11302C: free_memory_list_square_relation (basic.c:174)
-==31374==    by 0x11D04D: main (main.c:659)
-==31374==  Block was alloc'd at
-==31374==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x5461908: __gmp_default_allocate (in /usr/local/lib/libgmp.so.10.3.2)
-==31374==    by 0x546FC97: __gmpz_init (in /usr/local/lib/libgmp.so.10.3.2)
-==31374==    by 0x10EF13: find_list_square_relation (math_function.c:601)
-==31374==    by 0x11C3D9: main (main.c:397)
-==31374== 
-==31374== 
-==31374== 5 errors in context 4 of 14:
-==31374== Invalid read of size 8
-==31374==    at 0x546ADEA: __gmpz_clear (in /usr/local/lib/libgmp.so.10.3.2)
-==31374==    by 0x11302C: free_memory_list_square_relation (basic.c:174)
-==31374==    by 0x11D070: main (main.c:663)
-==31374==  Address 0x5ef8ca0 is 48 bytes inside a block of size 72 free'd
-==31374==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x113048: free_memory_list_square_relation (basic.c:176)
-==31374==    by 0x11D04D: main (main.c:659)
-==31374==  Block was alloc'd at
-==31374==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x11F1AA: get_new_node_square_rel (list_square_relation.c:296)
-==31374==    by 0x11F26E: insert_at_tail_square_relation (list_square_relation.c:312)
-==31374==    by 0x10EFAC: find_list_square_relation (math_function.c:605)
-==31374==    by 0x11C3D9: main (main.c:397)
-==31374== 
-==31374== 
-==31374== 5 errors in context 5 of 14:
-==31374== Invalid read of size 4
-==31374==    at 0x546ADE0: __gmpz_clear (in /usr/local/lib/libgmp.so.10.3.2)
-==31374==    by 0x11302C: free_memory_list_square_relation (basic.c:174)
-==31374==    by 0x11D070: main (main.c:663)
-==31374==  Address 0x5ef8c98 is 40 bytes inside a block of size 72 free'd
-==31374==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x113048: free_memory_list_square_relation (basic.c:176)
-==31374==    by 0x11D04D: main (main.c:659)
-==31374==  Block was alloc'd at
-==31374==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x11F1AA: get_new_node_square_rel (list_square_relation.c:296)
-==31374==    by 0x11F26E: insert_at_tail_square_relation (list_square_relation.c:312)
-==31374==    by 0x10EFAC: find_list_square_relation (math_function.c:605)
-==31374==    by 0x11C3D9: main (main.c:397)
-==31374== 
-==31374== 
-==31374== 5 errors in context 6 of 14:
-==31374== Invalid free() / delete / delete[] / realloc()
-==31374==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x11301C: free_memory_list_square_relation (basic.c:173)
-==31374==    by 0x11D070: main (main.c:663)
-==31374==  Address 0x5ef8b80 is 0 bytes inside a block of size 8 free'd
-==31374==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x11301C: free_memory_list_square_relation (basic.c:173)
-==31374==    by 0x11D04D: main (main.c:659)
-==31374==  Block was alloc'd at
-==31374==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x5461908: __gmp_default_allocate (in /usr/local/lib/libgmp.so.10.3.2)
-==31374==    by 0x546FC97: __gmpz_init (in /usr/local/lib/libgmp.so.10.3.2)
-==31374==    by 0x10EF03: find_list_square_relation (math_function.c:600)
-==31374==    by 0x11C3D9: main (main.c:397)
-==31374== 
-==31374== 
-==31374== 5 errors in context 7 of 14:
-==31374== Invalid read of size 8
-==31374==    at 0x546ADEA: __gmpz_clear (in /usr/local/lib/libgmp.so.10.3.2)
-==31374==    by 0x11301C: free_memory_list_square_relation (basic.c:173)
-==31374==    by 0x11D070: main (main.c:663)
-==31374==  Address 0x5ef8c90 is 32 bytes inside a block of size 72 free'd
-==31374==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x113048: free_memory_list_square_relation (basic.c:176)
-==31374==    by 0x11D04D: main (main.c:659)
-==31374==  Block was alloc'd at
-==31374==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x11F1AA: get_new_node_square_rel (list_square_relation.c:296)
-==31374==    by 0x11F26E: insert_at_tail_square_relation (list_square_relation.c:312)
-==31374==    by 0x10EFAC: find_list_square_relation (math_function.c:605)
-==31374==    by 0x11C3D9: main (main.c:397)
-==31374== 
-==31374== 
-==31374== 5 errors in context 8 of 14:
-==31374== Invalid read of size 4
-==31374==    at 0x546ADE0: __gmpz_clear (in /usr/local/lib/libgmp.so.10.3.2)
-==31374==    by 0x11301C: free_memory_list_square_relation (basic.c:173)
-==31374==    by 0x11D070: main (main.c:663)
-==31374==  Address 0x5ef8c88 is 24 bytes inside a block of size 72 free'd
-==31374==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x113048: free_memory_list_square_relation (basic.c:176)
-==31374==    by 0x11D04D: main (main.c:659)
-==31374==  Block was alloc'd at
-==31374==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x11F1AA: get_new_node_square_rel (list_square_relation.c:296)
-==31374==    by 0x11F26E: insert_at_tail_square_relation (list_square_relation.c:312)
-==31374==    by 0x10EFAC: find_list_square_relation (math_function.c:605)
-==31374==    by 0x11C3D9: main (main.c:397)
-==31374== 
-==31374== 
-==31374== 5 errors in context 9 of 14:
-==31374== Invalid free() / delete / delete[] / realloc()
-==31374==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x11300C: free_memory_list_square_relation (basic.c:172)
-==31374==    by 0x11D070: main (main.c:663)
-==31374==  Address 0x5ef8c20 is 0 bytes inside a block of size 16 free'd
-==31374==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x11300C: free_memory_list_square_relation (basic.c:172)
-==31374==    by 0x11D04D: main (main.c:659)
-==31374==  Block was alloc'd at
-==31374==    at 0x4C31D2F: realloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x5461953: __gmp_default_reallocate (in /usr/local/lib/libgmp.so.10.3.2)
-==31374==    by 0x5475A79: __gmpz_realloc (in /usr/local/lib/libgmp.so.10.3.2)
-==31374==    by 0x5467B9D: __gmpz_add (in /usr/local/lib/libgmp.so.10.3.2)
-==31374==    by 0x10E4F4: calculate_square (math_function.c:375)
-==31374==    by 0x10EF7A: find_list_square_relation (math_function.c:604)
-==31374==    by 0x11C3D9: main (main.c:397)
-==31374== 
-==31374== 
-==31374== 5 errors in context 10 of 14:
-==31374== Invalid read of size 8
-==31374==    at 0x546ADEA: __gmpz_clear (in /usr/local/lib/libgmp.so.10.3.2)
-==31374==    by 0x11300C: free_memory_list_square_relation (basic.c:172)
-==31374==    by 0x11D070: main (main.c:663)
-==31374==  Address 0x5ef8c78 is 8 bytes inside a block of size 72 free'd
-==31374==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x113048: free_memory_list_square_relation (basic.c:176)
-==31374==    by 0x11D04D: main (main.c:659)
-==31374==  Block was alloc'd at
-==31374==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x11F1AA: get_new_node_square_rel (list_square_relation.c:296)
-==31374==    by 0x11F26E: insert_at_tail_square_relation (list_square_relation.c:312)
-==31374==    by 0x10EFAC: find_list_square_relation (math_function.c:605)
-==31374==    by 0x11C3D9: main (main.c:397)
-==31374== 
-==31374== 
-==31374== 5 errors in context 11 of 14:
-==31374== Invalid read of size 4
-==31374==    at 0x546ADE0: __gmpz_clear (in /usr/local/lib/libgmp.so.10.3.2)
-==31374==    by 0x11300C: free_memory_list_square_relation (basic.c:172)
-==31374==    by 0x11D070: main (main.c:663)
-==31374==  Address 0x5ef8c70 is 0 bytes inside a block of size 72 free'd
-==31374==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x113048: free_memory_list_square_relation (basic.c:176)
-==31374==    by 0x11D04D: main (main.c:659)
-==31374==  Block was alloc'd at
-==31374==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x11F1AA: get_new_node_square_rel (list_square_relation.c:296)
-==31374==    by 0x11F26E: insert_at_tail_square_relation (list_square_relation.c:312)
-==31374==    by 0x10EFAC: find_list_square_relation (math_function.c:605)
-==31374==    by 0x11C3D9: main (main.c:397)
-==31374== 
-==31374== 
-==31374== 5 errors in context 12 of 14:
-==31374== Invalid read of size 8
-==31374==    at 0x112FF9: free_memory_list_square_relation (basic.c:171)
-==31374==    by 0x11D070: main (main.c:663)
-==31374==  Address 0x5ef8ca8 is 56 bytes inside a block of size 72 free'd
-==31374==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x113048: free_memory_list_square_relation (basic.c:176)
-==31374==    by 0x11D04D: main (main.c:659)
-==31374==  Block was alloc'd at
-==31374==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x11F1AA: get_new_node_square_rel (list_square_relation.c:296)
-==31374==    by 0x11F26E: insert_at_tail_square_relation (list_square_relation.c:312)
-==31374==    by 0x10EFAC: find_list_square_relation (math_function.c:605)
-==31374==    by 0x11C3D9: main (main.c:397)
-==31374== 
-==31374== 
-==31374== 12 errors in context 13 of 14:
-==31374== Invalid free() / delete / delete[] / realloc()
-==31374==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x112FC2: free_list_factorization (basic.c:159)
-==31374==    by 0x11303C: free_memory_list_square_relation (basic.c:175)
-==31374==    by 0x11D070: main (main.c:663)
-==31374==  Address 0x5ef8810 is 0 bytes inside a block of size 32 free'd
-==31374==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x112FC2: free_list_factorization (basic.c:159)
-==31374==    by 0x11303C: free_memory_list_square_relation (basic.c:175)
-==31374==    by 0x11D04D: main (main.c:659)
-==31374==  Block was alloc'd at
-==31374==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x11E531: get_new_node_factor (list_factorization.c:135)
-==31374==    by 0x11E6A6: insert_ordered_factor (list_factorization.c:183)
-==31374==    by 0x10DB5A: factorize_num_v2 (math_function.c:140)
-==31374==    by 0x10EE55: find_list_square_relation (math_function.c:581)
-==31374==    by 0x11C3D9: main (main.c:397)
-==31374== 
-==31374== 
-==31374== 12 errors in context 14 of 14:
-==31374== Invalid read of size 8
-==31374==    at 0x112FAF: free_list_factorization (basic.c:158)
-==31374==    by 0x11303C: free_memory_list_square_relation (basic.c:175)
-==31374==    by 0x11D070: main (main.c:663)
-==31374==  Address 0x5ef8820 is 16 bytes inside a block of size 32 free'd
-==31374==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x112FC2: free_list_factorization (basic.c:159)
-==31374==    by 0x11303C: free_memory_list_square_relation (basic.c:175)
-==31374==    by 0x11D04D: main (main.c:659)
-==31374==  Block was alloc'd at
-==31374==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==31374==    by 0x11E531: get_new_node_factor (list_factorization.c:135)
-==31374==    by 0x11E6A6: insert_ordered_factor (list_factorization.c:183)
-==31374==    by 0x10DB5A: factorize_num_v2 (math_function.c:140)
-==31374==    by 0x10EE55: find_list_square_relation (math_function.c:581)
-==31374==    by 0x11C3D9: main (main.c:397)
-==31374== 
-==31374== ERROR SUMMARY: 84 errors from 14 contexts (suppressed: 0 from 0)
+==3110== Memcheck, a memory error detector
+==3110== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==3110== Using Valgrind-3.13.0 and LibVEX; rerun with -h for copyright info
+==3110== Command: ./criv_quad biprime2.txt
+==3110== Parent PID: 3109
+==3110== 
+--3110-- 
+--3110-- Valgrind options:
+--3110--    --leak-check=full
+--3110--    --show-leak-kinds=all
+--3110--    --track-origins=yes
+--3110--    --verbose
+--3110--    --log-file=valgrind-out.txt
+--3110-- Contents of /proc/version:
+--3110--   Linux version 4.15.0-24-generic (buildd@lgw01-amd64-056) (gcc version 7.3.0 (Ubuntu 7.3.0-16ubuntu3)) #26-Ubuntu SMP Wed Jun 13 08:44:47 UTC 2018
+--3110-- 
+--3110-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-avx-avx2-bmi
+--3110-- Page sizes: currently 4096, max supported 4096
+--3110-- Valgrind library directory: /usr/lib/valgrind
+--3110-- Reading syms from /home/cristian/Scrivania/crivello_quadratico (copia)1/crivello_quadratico (copia)/criv_quad
+--3110-- Reading syms from /lib/x86_64-linux-gnu/ld-2.27.so
+--3110--   Considering /lib/x86_64-linux-gnu/ld-2.27.so ..
+--3110--   .. CRC mismatch (computed 1b7c895e wanted 2943108a)
+--3110--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/ld-2.27.so ..
+--3110--   .. CRC is valid
+--3110-- Reading syms from /usr/lib/valgrind/memcheck-amd64-linux
+--3110--   Considering /usr/lib/valgrind/memcheck-amd64-linux ..
+--3110--   .. CRC mismatch (computed 62965bbf wanted eeb84137)
+--3110--    object doesn't have a symbol table
+--3110--    object doesn't have a dynamic symbol table
+--3110-- Scheduler: using generic scheduler lock implementation.
+--3110-- Reading suppressions file: /usr/lib/valgrind/default.supp
+==3110== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-3110-by-cristian-on-???
+==3110== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-3110-by-cristian-on-???
+==3110== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-3110-by-cristian-on-???
+==3110== 
+==3110== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==3110== don't want to do, unless you know exactly what you're doing,
+==3110== or are doing some strange experiment):
+==3110==   /usr/lib/valgrind/../../bin/vgdb --pid=3110 ...command...
+==3110== 
+==3110== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==3110==   /path/to/gdb ./criv_quad
+==3110== and then give GDB the following command
+==3110==   target remote | /usr/lib/valgrind/../../bin/vgdb --pid=3110
+==3110== --pid is optional if only one valgrind process is running
+==3110== 
+--3110-- REDIR: 0x401f2f0 (ld-linux-x86-64.so.2:strlen) redirected to 0x58060901 (???)
+--3110-- REDIR: 0x401f0d0 (ld-linux-x86-64.so.2:index) redirected to 0x5806091b (???)
+--3110-- Reading syms from /usr/lib/valgrind/vgpreload_core-amd64-linux.so
+--3110--   Considering /usr/lib/valgrind/vgpreload_core-amd64-linux.so ..
+--3110--   .. CRC mismatch (computed 13d5e98a wanted 1786ecf1)
+--3110--    object doesn't have a symbol table
+--3110-- Reading syms from /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so
+--3110--   Considering /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so ..
+--3110--   .. CRC mismatch (computed 8f77ef36 wanted fcbde737)
+--3110--    object doesn't have a symbol table
+==3110== WARNING: new redirection conflicts with existing -- ignoring it
+--3110--     old: 0x0401f2f0 (strlen              ) R-> (0000.0) 0x58060901 ???
+--3110--     new: 0x0401f2f0 (strlen              ) R-> (2007.0) 0x04c32db0 strlen
+--3110-- REDIR: 0x401d360 (ld-linux-x86-64.so.2:strcmp) redirected to 0x4c33ee0 (strcmp)
+--3110-- REDIR: 0x401f830 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x4c374f0 (mempcpy)
+--3110-- Reading syms from /usr/local/lib/libmpfr.so.6.0.1
+--3110-- Reading syms from /lib/x86_64-linux-gnu/libm-2.27.so
+--3110--   Considering /lib/x86_64-linux-gnu/libm-2.27.so ..
+--3110--   .. CRC mismatch (computed 7feae033 wanted b29b2508)
+--3110--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/libm-2.27.so ..
+--3110--   .. CRC is valid
+--3110-- Reading syms from /usr/local/lib/libgmp.so.10.3.2
+--3110-- Reading syms from /lib/x86_64-linux-gnu/librt-2.27.so
+--3110--   Considering /lib/x86_64-linux-gnu/librt-2.27.so ..
+--3110--   .. CRC mismatch (computed 16979484 wanted f9e041e3)
+--3110--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/librt-2.27.so ..
+--3110--   .. CRC is valid
+--3110-- Reading syms from /lib/x86_64-linux-gnu/libpthread-2.27.so
+--3110--   Considering /usr/lib/debug/.build-id/28/c6aade70b2d40d1f0f3d0a1a0cad1ab816448f.debug ..
+--3110--   .. build-id is valid
+--3110-- Reading syms from /lib/x86_64-linux-gnu/libc-2.27.so
+--3110--   Considering /lib/x86_64-linux-gnu/libc-2.27.so ..
+--3110--   .. CRC mismatch (computed b1c74187 wanted 042cc048)
+--3110--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/libc-2.27.so ..
+--3110--   .. CRC is valid
+--3110-- REDIR: 0x5b90c70 (libc.so.6:memmove) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--3110-- REDIR: 0x5b8fd40 (libc.so.6:strncpy) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--3110-- REDIR: 0x5b90f50 (libc.so.6:strcasecmp) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--3110-- REDIR: 0x5b8f790 (libc.so.6:strcat) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--3110-- REDIR: 0x5b8fd70 (libc.so.6:rindex) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--3110-- REDIR: 0x5b927c0 (libc.so.6:rawmemchr) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--3110-- REDIR: 0x5b90de0 (libc.so.6:mempcpy) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--3110-- REDIR: 0x5b90c10 (libc.so.6:bcmp) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--3110-- REDIR: 0x5b8fd00 (libc.so.6:strncmp) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--3110-- REDIR: 0x5b8f800 (libc.so.6:strcmp) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--3110-- REDIR: 0x5b90d40 (libc.so.6:memset) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--3110-- REDIR: 0x5bae0f0 (libc.so.6:wcschr) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--3110-- REDIR: 0x5b8fca0 (libc.so.6:strnlen) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--3110-- REDIR: 0x5b8f870 (libc.so.6:strcspn) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--3110-- REDIR: 0x5b90fa0 (libc.so.6:strncasecmp) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--3110-- REDIR: 0x5b8f840 (libc.so.6:strcpy) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--3110-- REDIR: 0x5b910e0 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--3110-- REDIR: 0x5b8fda0 (libc.so.6:strpbrk) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--3110-- REDIR: 0x5b8f7c0 (libc.so.6:index) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--3110-- REDIR: 0x5b8fc70 (libc.so.6:strlen) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--3110-- REDIR: 0x5b9a6c0 (libc.so.6:memrchr) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--3110-- REDIR: 0x5b90ff0 (libc.so.6:strcasecmp_l) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--3110-- REDIR: 0x5b90be0 (libc.so.6:memchr) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--3110-- REDIR: 0x5baeeb0 (libc.so.6:wcslen) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--3110-- REDIR: 0x5b90050 (libc.so.6:strspn) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--3110-- REDIR: 0x5b90f20 (libc.so.6:stpncpy) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--3110-- REDIR: 0x5b90ef0 (libc.so.6:stpcpy) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--3110-- REDIR: 0x5b927f0 (libc.so.6:strchrnul) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--3110-- REDIR: 0x5b91040 (libc.so.6:strncasecmp_l) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
+--3110-- REDIR: 0x5c803c0 (libc.so.6:__strrchr_avx2) redirected to 0x4c32730 (rindex)
+--3110-- REDIR: 0x5b89070 (libc.so.6:malloc) redirected to 0x4c2faa0 (malloc)
+--3110-- REDIR: 0x5b90590 (libc.so.6:__GI_strstr) redirected to 0x4c37760 (__strstr_sse2)
+--3110-- REDIR: 0x5b8ac30 (libc.so.6:realloc) redirected to 0x4c31cb0 (realloc)
+--3110-- REDIR: 0x5b89950 (libc.so.6:free) redirected to 0x4c30cd0 (free)
+--3110-- REDIR: 0x5c80590 (libc.so.6:__strlen_avx2) redirected to 0x4c32cf0 (strlen)
+--3110-- REDIR: 0x5c80ad0 (libc.so.6:__memcpy_avx_unaligned_erms) redirected to 0x4c366e0 (memmove)
+--3110-- REDIR: 0x5c7ffa0 (libc.so.6:__strchr_avx2) redirected to 0x4c32950 (index)
+--3110-- REDIR: 0x5c801d0 (libc.so.6:__strchrnul_avx2) redirected to 0x4c37020 (strchrnul)
+--3110-- REDIR: 0x5c80ab0 (libc.so.6:__mempcpy_avx_unaligned_erms) redirected to 0x4c37130 (mempcpy)
+--3110-- REDIR: 0x5c80f50 (libc.so.6:__memset_avx2_unaligned_erms) redirected to 0x4c365d0 (memset)
+--3110-- REDIR: 0x5b8c030 (libc.so.6:calloc) redirected to 0x4c31a70 (calloc)
+==3110== 
+==3110== HEAP SUMMARY:
+==3110==     in use at exit: 14,008 bytes in 491 blocks
+==3110==   total heap usage: 35,213 allocs, 34,722 frees, 1,032,739 bytes allocated
+==3110== 
+==3110== Searching for pointers to 491 not-freed blocks
+==3110== Checked 115,800 bytes
+==3110== 
+==3110== 160 bytes in 5 blocks are indirectly lost in loss record 1 of 11
+==3110==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3110==    by 0x11E544: get_new_node_factor (list_factorization.c:135)
+==3110==    by 0x11E6B9: insert_ordered_factor (list_factorization.c:183)
+==3110==    by 0x10DF1F: factorize_num_v2 (math_function.c:223)
+==3110==    by 0x10EE55: find_list_square_relation (math_function.c:581)
+==3110==    by 0x11D59E: thread_job_criv_quad (main.c:731)
+==3110==    by 0x113768: thread_job_polynomial (basic.c:275)
+==3110==    by 0x58DA6DA: start_thread (pthread_create.c:463)
+==3110==    by 0x5C1388E: clone (clone.S:95)
+==3110== 
+==3110== 224 bytes in 7 blocks are indirectly lost in loss record 2 of 11
+==3110==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3110==    by 0x11E544: get_new_node_factor (list_factorization.c:135)
+==3110==    by 0x11E6B9: insert_ordered_factor (list_factorization.c:183)
+==3110==    by 0x10DBB3: factorize_num_v2 (math_function.c:146)
+==3110==    by 0x10EE55: find_list_square_relation (math_function.c:581)
+==3110==    by 0x11D59E: thread_job_criv_quad (main.c:731)
+==3110==    by 0x113768: thread_job_polynomial (basic.c:275)
+==3110==    by 0x58DA6DA: start_thread (pthread_create.c:463)
+==3110==    by 0x5C1388E: clone (clone.S:95)
+==3110== 
+==3110== 568 bytes in 71 blocks are indirectly lost in loss record 3 of 11
+==3110==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3110==    by 0x5461908: __gmp_default_allocate (in /usr/local/lib/libgmp.so.10.3.2)
+==3110==    by 0x546FC97: __gmpz_init (in /usr/local/lib/libgmp.so.10.3.2)
+==3110==    by 0x10F05D: find_list_square_relation (math_function.c:617)
+==3110==    by 0x11D59E: thread_job_criv_quad (main.c:731)
+==3110==    by 0x113768: thread_job_polynomial (basic.c:275)
+==3110==    by 0x58DA6DA: start_thread (pthread_create.c:463)
+==3110==    by 0x5C1388E: clone (clone.S:95)
+==3110== 
+==3110== 568 bytes in 71 blocks are indirectly lost in loss record 4 of 11
+==3110==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3110==    by 0x5461908: __gmp_default_allocate (in /usr/local/lib/libgmp.so.10.3.2)
+==3110==    by 0x546FC97: __gmpz_init (in /usr/local/lib/libgmp.so.10.3.2)
+==3110==    by 0x10F06D: find_list_square_relation (math_function.c:618)
+==3110==    by 0x11D59E: thread_job_criv_quad (main.c:731)
+==3110==    by 0x113768: thread_job_polynomial (basic.c:275)
+==3110==    by 0x58DA6DA: start_thread (pthread_create.c:463)
+==3110==    by 0x5C1388E: clone (clone.S:95)
+==3110== 
+==3110== 1,136 bytes in 71 blocks are indirectly lost in loss record 5 of 11
+==3110==    at 0x4C31D2F: realloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3110==    by 0x5461953: __gmp_default_reallocate (in /usr/local/lib/libgmp.so.10.3.2)
+==3110==    by 0x5475A79: __gmpz_realloc (in /usr/local/lib/libgmp.so.10.3.2)
+==3110==    by 0x54729BD: __gmpz_mul_si (in /usr/local/lib/libgmp.so.10.3.2)
+==3110==    by 0x10E4DD: calculate_square (math_function.c:374)
+==3110==    by 0x10F0D4: find_list_square_relation (math_function.c:621)
+==3110==    by 0x11D59E: thread_job_criv_quad (main.c:731)
+==3110==    by 0x113768: thread_job_polynomial (basic.c:275)
+==3110==    by 0x58DA6DA: start_thread (pthread_create.c:463)
+==3110==    by 0x5C1388E: clone (clone.S:95)
+==3110== 
+==3110== 1,152 bytes in 36 blocks are indirectly lost in loss record 6 of 11
+==3110==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3110==    by 0x11E544: get_new_node_factor (list_factorization.c:135)
+==3110==    by 0x11E6B9: insert_ordered_factor (list_factorization.c:183)
+==3110==    by 0x10DE17: factorize_num_v2 (math_function.c:198)
+==3110==    by 0x10EE55: find_list_square_relation (math_function.c:581)
+==3110==    by 0x11D59E: thread_job_criv_quad (main.c:731)
+==3110==    by 0x113768: thread_job_polynomial (basic.c:275)
+==3110==    by 0x58DA6DA: start_thread (pthread_create.c:463)
+==3110==    by 0x5C1388E: clone (clone.S:95)
+==3110== 
+==3110== 1,664 bytes in 52 blocks are indirectly lost in loss record 7 of 11
+==3110==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3110==    by 0x11E544: get_new_node_factor (list_factorization.c:135)
+==3110==    by 0x11E6B9: insert_ordered_factor (list_factorization.c:183)
+==3110==    by 0x10DF92: factorize_num_v2 (math_function.c:232)
+==3110==    by 0x10EE55: find_list_square_relation (math_function.c:581)
+==3110==    by 0x11D59E: thread_job_criv_quad (main.c:731)
+==3110==    by 0x113768: thread_job_polynomial (basic.c:275)
+==3110==    by 0x58DA6DA: start_thread (pthread_create.c:463)
+==3110==    by 0x5C1388E: clone (clone.S:95)
+==3110== 
+==3110== 1,696 bytes in 53 blocks are indirectly lost in loss record 8 of 11
+==3110==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3110==    by 0x11E544: get_new_node_factor (list_factorization.c:135)
+==3110==    by 0x11E6B9: insert_ordered_factor (list_factorization.c:183)
+==3110==    by 0x10DD95: factorize_num_v2 (math_function.c:185)
+==3110==    by 0x10EE55: find_list_square_relation (math_function.c:581)
+==3110==    by 0x11D59E: thread_job_criv_quad (main.c:731)
+==3110==    by 0x113768: thread_job_polynomial (basic.c:275)
+==3110==    by 0x58DA6DA: start_thread (pthread_create.c:463)
+==3110==    by 0x5C1388E: clone (clone.S:95)
+==3110== 
+==3110== 1,728 bytes in 54 blocks are indirectly lost in loss record 9 of 11
+==3110==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3110==    by 0x11E544: get_new_node_factor (list_factorization.c:135)
+==3110==    by 0x11E6B9: insert_ordered_factor (list_factorization.c:183)
+==3110==    by 0x10DB5A: factorize_num_v2 (math_function.c:140)
+==3110==    by 0x10EE55: find_list_square_relation (math_function.c:581)
+==3110==    by 0x11D59E: thread_job_criv_quad (main.c:731)
+==3110==    by 0x113768: thread_job_polynomial (basic.c:275)
+==3110==    by 0x58DA6DA: start_thread (pthread_create.c:463)
+==3110==    by 0x5C1388E: clone (clone.S:95)
+==3110== 
+==3110== 5,040 bytes in 70 blocks are indirectly lost in loss record 10 of 11
+==3110==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3110==    by 0x11F1BD: get_new_node_square_rel (list_square_relation.c:296)
+==3110==    by 0x11F281: insert_at_tail_square_relation (list_square_relation.c:312)
+==3110==    by 0x10F106: find_list_square_relation (math_function.c:622)
+==3110==    by 0x11D59E: thread_job_criv_quad (main.c:731)
+==3110==    by 0x113768: thread_job_polynomial (basic.c:275)
+==3110==    by 0x58DA6DA: start_thread (pthread_create.c:463)
+==3110==    by 0x5C1388E: clone (clone.S:95)
+==3110== 
+==3110== 14,008 (72 direct, 13,936 indirect) bytes in 1 blocks are definitely lost in loss record 11 of 11
+==3110==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3110==    by 0x11F1BD: get_new_node_square_rel (list_square_relation.c:296)
+==3110==    by 0x11F281: insert_at_tail_square_relation (list_square_relation.c:312)
+==3110==    by 0x10F106: find_list_square_relation (math_function.c:622)
+==3110==    by 0x11D59E: thread_job_criv_quad (main.c:731)
+==3110==    by 0x113768: thread_job_polynomial (basic.c:275)
+==3110==    by 0x58DA6DA: start_thread (pthread_create.c:463)
+==3110==    by 0x5C1388E: clone (clone.S:95)
+==3110== 
+==3110== LEAK SUMMARY:
+==3110==    definitely lost: 72 bytes in 1 blocks
+==3110==    indirectly lost: 13,936 bytes in 490 blocks
+==3110==      possibly lost: 0 bytes in 0 blocks
+==3110==    still reachable: 0 bytes in 0 blocks
+==3110==         suppressed: 0 bytes in 0 blocks
+==3110== 
+==3110== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+==3110== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)

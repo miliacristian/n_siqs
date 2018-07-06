@@ -19,7 +19,7 @@
 #define PERC_INCREMENT_B 5 //quanto aumenta in percentuale B se non si riesce a fattorizzare n
 #define TEST 1 //test=0 nessuna verifica test=1 molte verifiche
 
-#define NUM_OF_N_TO_FACTORIZE 1
+#define NUM_OF_N_TO_FACTORIZE 10
 #define THRESOLD_RELATION 0.5
 #define ENOUGH_RELATION 1.0 //numero maggiore o uguale a 1 indica quante relazioni
 //vanno trovate in più rispetto alla cardinalità della factor base num_b_smooth>cardinality*enough_relation

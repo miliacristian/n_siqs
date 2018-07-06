@@ -658,10 +658,12 @@ int main(int argc,char*argv[]){
 		if(head_sort_square!=NULL) {
 			free_memory_list_square_relation(head_sort_square);
 			head_sort_square = NULL;
+			head_square=NULL;
 		}
 		if(head_square!=NULL) {
 			free_memory_list_square_relation(head_square);
 			head_square = NULL;
+			head_sort_square=NULL;
 		}
 
 		//mpz_clear
