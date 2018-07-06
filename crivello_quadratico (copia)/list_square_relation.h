@@ -30,3 +30,8 @@ void union_list_residuos_v2(struct node_square_relation**head_residuos1,struct n
 void union_list_square_v2(struct node_square_relation**head_square1,struct node_square_relation**tail_square1,struct node_square_relation**head_square2,struct node_square_relation**tail_square2);
 char combine_relation_B_smooth_and_semi_B_smooth_v2(struct node_square_relation**head_sort_square,struct node_square_relation**tail_sort_square,
                                                     struct node_square_relation**head_sort_residuos,struct node_square_relation**tail_sort_residuos,mpz_t n,int*num_B_smooth,int*num_semi_B_smooth,int*combined_relations);
+void swap_square_relation(struct square_relation *pnode1,struct square_relation *pnode2);
+struct node_square_relation *lastNode(struct node_square_relation *root);
+struct node_square_relation* partition(struct node_square_relation *l,struct node_square_relation *h);
+void _quickSort(struct node_square_relation* l,struct node_square_relation *h);
+void quickSort(struct node_square_relation *head);

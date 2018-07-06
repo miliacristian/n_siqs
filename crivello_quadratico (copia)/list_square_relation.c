@@ -9,6 +9,69 @@
 #include "math_function.h"
 #include <gmp.h>
 #include <unistd.h>
+
+
+// A utility function to find last node of linked list
+void swap_square_relation(struct square_relation *pnode1,struct square_relation *pnode2){
+    struct square_relation temp = *pnode1;
+    *pnode1 = *pnode2;
+    *pnode2 = temp;
+    return;
+}
+
+/* Considers last element as pivot, places the pivot element at its
+   correct position in sorted array, and places all smaller (smaller than
+   pivot) to left of pivot and all greater elements to right of pivot */
+struct node_square_relation *lastNode(struct node_square_relation *root)
+{
+    while (root && root->next)
+        root = root->next;
+    return root;
+}
+
+struct node_square_relation* partition(struct node_square_relation *l,struct node_square_relation *h)
+{
+    // set pivot as h element
+    struct square_relation x  = h->square_relation;
+
+    // similar to i = l-1 for array implementation
+    struct node_square_relation *i = l->prev;
+
+    // Similar to "for (int j = l; j <= h- 1; j++)"
+    for (struct node_square_relation *j = l; j != h; j = j->next)
+    {
+        if (mpz_cmp(j->square_relation.residuos,x.residuos)<=0)
+        {
+            // Similar to i++ for array
+            i = (i == NULL)? l : i->next;
+            swap_square_relation(&(i->square_relation), &(j->square_relation));
+        }
+    }
+    i = (i == NULL)? l : i->next; // Similar to i++
+    swap_square_relation(&(i->square_relation), &(h->square_relation));
+    return i;
+}
+/* A recursive implementation of quicksort for linked list */
+void _quickSort(struct node_square_relation* l,struct node_square_relation *h)
+{
+    if (h != NULL && l != h && l != h->next)
+    {
+        struct node_square_relation *p = partition(l, h);
+        _quickSort(l, p->prev);
+        _quickSort(p->next, h);
+    }
+}
+
+// The main function to sort a linked list. It mainly calls _quickSort()
+void quickSort(struct node_square_relation *head)
+{
+    // Find last node
+    struct node_square_relation *h = lastNode(head);
+
+    // Call the recursive QuickSort
+    _quickSort(head, h);
+}
+
 char verify_sorted_num_square_rel_list(struct node_square_relation*head){
     if(head==NULL){
         return 1;
@@ -190,9 +253,9 @@ void insert_at_tail_square_rel(struct node_square_relation *new_node,struct node
 
 //alloca e inizializza un nodo della lista dinamica ordinata
 struct node_square_relation* get_new_node_square_rel(struct square_relation square_relation) {
-    if(square_relation.head_factorization==NULL){
-        handle_error_with_exit("error in parameter get_new_node\n");
-    }
+    //if(square_relation.head_factorization==NULL){
+      //  handle_error_with_exit("error in parameter get_new_node\n");
+    //}
     struct node_square_relation* new_node = (struct node_square_relation*)malloc(sizeof(struct node_square_relation));
     if(new_node==NULL){
         handle_error_with_exit("error in malloc get_new_node\n");
@@ -494,7 +557,6 @@ char combine_relation_B_smooth_and_semi_B_smooth_v2(struct node_square_relation*
     }
     struct node_square_relation*p=*head_sort_residuos;//p=nodo
     struct node_square_relation*q;
-    printf("combine relation v2\n");
     while(p!=NULL) {
         //ciclo sulla lista per trovare residui uguali e creare nuove relazioni B_smooth e ordinale per square
         while (p!=NULL && p->next!=NULL && mpz_cmp(p->square_relation.residuos, p->next->square_relation.residuos) == 0) {//residui uguali
@@ -505,7 +567,6 @@ char combine_relation_B_smooth_and_semi_B_smooth_v2(struct node_square_relation*
                                                                                          p->next->square_relation, n,
                                                                                          &factorization_founded);
                 if (factorization_founded == 1) {
-                    printf("trovata fattorizzazione\n");
                     free_memory_list_square_relation(p);
                     head_sort_residuos = NULL;
                     return factorization_founded;
