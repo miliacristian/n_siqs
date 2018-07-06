@@ -1519,13 +1519,16 @@ int calculate_dim_sol(int**matrix,int num_row,int num_col){//matrice deve essere
 	int num_col_not_null=count_cols_not_null(matrix,num_row,num_col);
 	return num_col_not_null-num_row_not_null;//numero incognite-rango matrice
 }
-int calculate_dim_sol_char(char*matrix,int num_row,int num_col){//matrice deve essere ridotta a scala
-    if(matrix==NULL || num_row<=0 || num_col<=0){
+int calculate_dim_solution(int num_row_not_null,int num_col_not_null){
+	return num_col_not_null-num_row_not_null;
+}
+int calculate_dim_sol_char(char*matrix,int num_row,int num_col,int*num_row_not_null,int*num_col_not_null){//matrice deve essere ridotta a scala
+    if(matrix==NULL || num_row<=0 || num_col<=0 || num_row_not_null==NULL || num_col_not_null==NULL){
         handle_error_with_exit("error in parameter get_col\n");
     }
-    int num_row_not_null=count_rows_not_null_char(matrix,num_row,num_col);
-    int num_col_not_null=count_cols_not_null_char(matrix,num_row,num_col);
-    return num_col_not_null-num_row_not_null;//numero incognite-rango matrice
+    *num_row_not_null=count_rows_not_null_char(matrix,num_row,num_col);
+    *num_col_not_null=count_cols_not_null_char(matrix,num_row,num_col);
+    return *num_col_not_null-*num_row_not_null;//numero incognite-rango matrice
 }
 int* sum_vector(int*vector1,int*vector2,int length1,int length2){//somma 2 vettori
 	if(vector1==NULL || vector2==NULL || length1<=0 || length2<=0 || length1!=length2){
@@ -1822,7 +1825,7 @@ void calculate_vector_base(int **matrix_linear_system,int num_row,int num_col,ch
 	}
 	return;
 }
-void calculate_vector_base_char(char*matrix_linear_system,int num_row,int num_col,char*array_var,int*v){//calcola un vettore di base soluzione del sistema lineare,matrix linear system è ridotta a scala e binaria,calcola vettori di base binari
+void calculate_vector_base_char(char*matrix_linear_system,int num_row,int num_col,char*array_var,int*v,int num_row_not_null){//calcola un vettore di base soluzione del sistema lineare,matrix linear system è ridotta a scala e binaria,calcola vettori di base binari
     //si concentra sulla sottomatrice con righe non nulle!
     //memorizza la soluzione in v
     //per ogni riga le variabili libere hanno valore 0 o 1 (già assegnato)->ogni riga ha esattamente un valore ricavabile da calcolare
@@ -1833,7 +1836,6 @@ void calculate_vector_base_char(char*matrix_linear_system,int num_row,int num_co
         handle_error_with_exit("error in parameter get_coli\n");
     }
     int index_to_calculate=-1;//variabile da calcolare nella riga
-    int num_row_not_null=count_rows_not_null_char(matrix_linear_system,num_row,num_col);
     int rows_null=num_row-num_row_not_null;
     int count=0;//conta in ogni riga il numero di variabili libere o assegnate che hanno valore 1
     for(int i=0;i<num_row-rows_null;i++){//ciclo per tutta la sottomatrice con righe non nulle
@@ -1974,7 +1976,7 @@ char* find_free_var(int**matrix_linear_system,int num_row,int num_col){//matrice
 	}
 	return array_var;
 }
-char* find_free_var_char(char*matrix_linear_system,int num_row,int num_col){//matrice ridotta a scala,ritorna array con elementi 1 e 2 (ricordiamo che 1=variabile libera 2=variabile ricavabile 3=variabile calcolata)
+char* find_free_var_char(char*matrix_linear_system,int num_row,int num_col,int num_row_not_null,int num_col_not_null){//matrice ridotta a scala,ritorna array con elementi 1 e 2 (ricordiamo che 1=variabile libera 2=variabile ricavabile 3=variabile calcolata)
 //es array_var=[1 2 1 1 2 1] ci dice che x1 è libera x2 ricavabile x3 libera x4 libera x5 ricavabile x6 libera
 //scansiona tutta la matrice
 
@@ -1986,9 +1988,8 @@ char* find_free_var_char(char*matrix_linear_system,int num_row,int num_col){//ma
 	if(matrix_linear_system==NULL || num_row<=0 || num_col<=0){
 		handle_error_with_exit("error in parameter get_col\n");
 	}
-	int num_row_not_null=count_rows_not_null_char(matrix_linear_system,num_row,num_col);
 	int rows_null=num_row-num_row_not_null;
-	int num_free_var_left=calculate_dim_sol_char(matrix_linear_system,num_row,num_col);//il numero delle variabili libere è lo stesso della dimensione della base
+	int num_free_var_left=calculate_dim_solution(num_row_not_null,num_col_not_null);//il numero delle variabili libere è lo stesso della dimensione della base
 	int num_var=num_col;//il numero delle variabili è lo stesso del numero delle colonne
 	char*array_var=alloc_array_char(num_var);
 	for(int i=0;i<num_row-rows_null;i++){//scansiona solo righe non nulle
@@ -2105,7 +2106,8 @@ int**calculate_base_linear_system_char(char*matrix_linear_system,int num_row,int
     if(check_if_matrix_char_is_echelon_reduce(matrix_linear_system,num_row,num_col)==0){
         handle_error_with_exit("error in calculate_base_linear_system\n");
     }
-    *dim_sol=calculate_dim_sol_char(matrix_linear_system,num_row,num_col);//calcola la dimensione della base del sistema lineare
+    int num_row_not_null,num_col_not_null;
+    *dim_sol=calculate_dim_sol_char(matrix_linear_system,num_row,num_col,&num_row_not_null,&num_col_not_null);//calcola la dimensione della base del sistema lineare
     print_time_elapsed("time to calculate_dim_sol");
     if(*dim_sol<0){
         return NULL;
@@ -2119,7 +2121,7 @@ int**calculate_base_linear_system_char(char*matrix_linear_system,int num_row,int
     }
     int**base_linear_system=alloc_matrix_int(num_col,*dim_sol);//la base del sistema lineare ha come righe il numero di colonne della matrice 		(numero delle variabili) e come colonne il numero di vettori linearmente indipendenti
     char*array_var=NULL;
-    array_var=find_free_var_char(matrix_linear_system,num_row,num_col);//calcola array delle variabili libere che specifica tutte le 				variabili che sono state impostate come libere per tutto il sistema,è lungo num_col,è necessario 				allocarlo ogni volta perchè viene sporcato
+    array_var=find_free_var_char(matrix_linear_system,num_row,num_col,num_row_not_null,num_col_not_null);//calcola array delle variabili libere che specifica tutte le 				variabili che sono state impostate come libere per tutto il sistema,è lungo num_col,è necessario 				allocarlo ogni volta perchè viene sporcato
     //dalla funzione calculate_vector_base
     /*if(check_if_array_var_is_correct(array_var,num_col,free_var)==0){
         handle_error_with_exit("error in calculate array_var\n");
@@ -2141,7 +2143,7 @@ int**calculate_base_linear_system_char(char*matrix_linear_system,int num_row,int
         if(array_var[s]==1){//per ogni variabile libera va calcolato un vettore di base
             int*v=alloc_vector_base(array_var_temp,num_col,s);//alloca e inizializza vettore di base
             //risolvi il sistema lineare per sostituzione sapendo che ogni vettore di base fornisce una soluzione parziale
-            calculate_vector_base_char(matrix_linear_system,num_row,num_col,array_var_temp,v);//memorizza in v la soluzione
+            calculate_vector_base_char(matrix_linear_system,num_row,num_col,array_var_temp,v,num_row_not_null);//memorizza in v la soluzione
             //errore in calculate vector base
             for(int j=0;j<num_col;j++){//copia l'array v nella colonna della matrice base_sistema_lineare
                 base_linear_system[j][i]=v[j];//ok
