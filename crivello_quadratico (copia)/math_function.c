@@ -435,7 +435,9 @@ char calculate_num_from_factorization(mpz_t num_temp,struct node_factorization*h
 	return 1;
 }
 char verify_square_relation(struct square_relation square_relation,const mpz_t n){
-	gmp_printf("inizio verifica square=%Zd\n",square_relation.square);
+    if(TEST==0){
+        return 1;
+    }
 	print_factorization(square_relation.num,square_relation.head_factorization);
 	struct node_factorization*head_factor=square_relation.head_factorization;
 	mpz_t temp,num_temp,square;
@@ -459,10 +461,12 @@ char verify_square_relation(struct square_relation square_relation,const mpz_t n
 }
 char verify_factorization(const mpz_t num,mpz_t residuos,struct node_factorization*head_factor,const mpz_t a){
 	//num*a deve essere uguale a fattorizzazione*residuo
-	gmp_printf("inizio verifica num=%Zd\n",num);
 	mpz_t temp,num_temp;
 	long exp_of_factor,factor;
 	mpz_t factor_raise_to_exp;
+    if(TEST==0){
+        return 1;
+    }
 	mpz_init(num_temp);
 	mpz_init(temp);
 	mpz_init(factor_raise_to_exp);

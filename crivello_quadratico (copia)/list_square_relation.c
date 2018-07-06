@@ -13,6 +13,9 @@ char verify_sorted_num_square_rel_list(struct node_square_relation*head){
     if(head==NULL){
         return 1;
     }
+    if(TEST==0){
+        return 1;
+    }
     struct node_square_relation*p=head;
     while(p!=NULL && p->next!=NULL) {
         if(mpz_cmp(p->square_relation.num,p->next->square_relation.num)>0){
@@ -26,6 +29,9 @@ char verify_cardinality_list_square_relation(struct node_square_relation*head,in
     if(length<0){
         printf("length minore di zero\n");
         return 0;
+    }
+    if(TEST==0){
+        return 1;
     }
     int counter=0;
     if(head==NULL && length==0){
@@ -46,6 +52,9 @@ char verify_sorted_residuos_square_rel_list(struct node_square_relation*head){
     if(head==NULL){
         return 1;
     }
+    if(TEST==0){
+        return 1;
+    }
     struct node_square_relation*p=head;
     while(p!=NULL && p->next!=NULL) {
         if(mpz_cmp(p->square_relation.residuos,p->next->square_relation.residuos)>0){
@@ -57,6 +66,9 @@ char verify_sorted_residuos_square_rel_list(struct node_square_relation*head){
 }
 char verify_sorted_square_rel_list(struct node_square_relation*head){
     if(head==NULL){
+        return 1;
+    }
+    if(TEST==0){
         return 1;
     }
     struct node_square_relation*p=head;
@@ -539,64 +551,6 @@ char combine_relation_B_smooth_and_semi_B_smooth_v2(struct node_square_relation*
     }
     return factorization_founded;
 }
-/*char combine_relation_B_smooth_and_semi_B_smooth(struct node_square_relation*head,struct node_square_relation**head_final_list_relation,struct node_square_relation**tail_final_list_relation,mpz_t n,int*num_B_smooth){
-    if(head_final_list_relation==NULL || tail_final_list_relation==NULL || num_B_smooth==NULL){
-        handle_error_with_exit("error in combine_relation_B_smooth and semi_B_smooth\n");
-    }
-    struct node_square_relation*head_sort_residuos=NULL;
-    struct node_square_relation*tail_sort_residuos=NULL;
-    char factorization_founded=0;
-    sort_relation_by_residuos(head,&head_sort_residuos,&tail_sort_residuos);
-    if(verify_sorted_residuos_square_rel_list(head_sort_residuos)==0){
-        handle_error_with_exit("error in sort square list by residuos\n");
-    }
-    //lista relazioni quadratiche ordinata per residui
-    char not_remove_residuos_one=1;
-    struct node_square_relation*p=head_sort_residuos;//p=nodo
-    struct node_square_relation*q;
-    while(p!=NULL) {
-        //i numeri B_smooth li metto in lista ordinati per square
-        while(p!=NULL && not_remove_residuos_one && mpz_cmp_si(p->square_relation.residuos,1)==0){//se il residuo è uguale a 1
-            //gmp_printf("residuo uguale a 1 con square=%Zd\n",p->square_relation.square);
-            insert_ordered_sort_square_rel(p->square_relation,head_final_list_relation,tail_final_list_relation);
-            q=p->next;
-            free(p);
-            p=q;
-        }
-        not_remove_residuos_one=0;
-        if(q==NULL){
-            return factorization_founded;
-        }
-        q=p->next;
-        //ciclo sulla lista per trovare residui uguali e creare nuove relazioni B_smooth e ordinale per square
-        while (p!=NULL && q!=NULL && mpz_cmp(p->square_relation.residuos, q->square_relation.residuos) == 0) {//residui uguali
-            //gmp_printf("residui uguali a %Zd\n", p->square_relation.residuos);
-            (*num_B_smooth)++;
-            struct square_relation new_square_relation=create_relation_large_prime(p->square_relation,q->square_relation,n,&factorization_founded);
-            if(factorization_founded==1){
-                free_memory_list_square_relation(p);
-                head_sort_residuos=NULL;
-                return factorization_founded;
-            }
-            else if(factorization_founded!=-1) {
-                insert_ordered_sort_square_rel(new_square_relation, head_final_list_relation, tail_final_list_relation);
-                q = q->next;
-            }
-        }
-        //una volta che ho creato tutte le relazioni quadratiche sfruttando un numero semi_B_smooth lo tolgo dalla lista
-        if(p!=NULL) {
-            q = p->next;
-            mpz_clear(p->square_relation.square);
-            mpz_clear(p->square_relation.num);
-            mpz_clear(p->square_relation.residuos);
-            free_list_factorization(p->square_relation.head_factorization);
-            free(p);
-            p = q;
-        }
-    }
-    return factorization_founded;
-}*/
-
 void remove_same_num(struct node_square_relation**head,struct node_square_relation**tail,int*num_B_smooth,int*num_semi_B_smooth){
     if(head==NULL || tail==NULL || num_B_smooth==NULL || num_semi_B_smooth==NULL){
         handle_error_with_exit("error in remove_same_num\n");

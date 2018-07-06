@@ -21,7 +21,6 @@
 #include <pthread.h>
 
 	//valori globali(presi da altri file)
-	//extern FILE*file_log;//file di log
 	extern struct timespec timer;//istante di tempo 
 	extern struct timespec time_start;//istante di tempo iniziale
 	extern struct timespec timer_test;
@@ -244,6 +243,7 @@ int main(int argc,char*argv[]){
             	handle_error_with_exit("invalid dimension list factor base\n");
             }
 			print_time_elapsed("time to verify factor base");
+
 			//a,per siqs e generare tutti gli altri b,prodotto di primi dispari distinti
 			calculate_a_f2(a_new,thresold_a,&s,head_f_base_f,cardinality_factor_base,&index_prime_a,&number_prime_a);
             if(s==0 && mpz_cmp_si(a_new,0)!=0){
@@ -388,7 +388,6 @@ int main(int argc,char*argv[]){
 				factor_matrix_f(n, M, (thread_polynomial_data[NUM_THREAD_POLYNOMIAL]), cardinality_factor_base,
 								a_default, array_a_struct, s);//fattorizza numeri
 				print_time_elapsed("time_to_factor matrix_factorization main thread");
-				//print_thread_data(thread_polynomial_data[NUM_THREAD_POLYNOMIAL],M,cardinality_factor_base);
 
 				//log_thresold main thread
 				thread_polynomial_data[NUM_THREAD_POLYNOMIAL].log_thresold = calculate_log_thresold(n, M);
@@ -400,8 +399,22 @@ int main(int argc,char*argv[]){
 										  &head_residuos, &tail_residuos, n, a_default, NULL, 0);
 				print_time_elapsed("time_to find_list_square_relation main thread");
 			}
+
 			//aspetta tutti i thread e libera memoria
 			if(num_thread_job!=1 && NUM_THREAD_POLYNOMIAL>0){
+
+                //unisici tutte le relazioni quadrate(solamente quelle B_smooth)alla lista delle relazioni quadratiche,
+                // la lista finale conterrà relazioni quadratiche ordinate per square
+                add_square_relation_to_list_sorted(&head_sort_square,&tail_sort_square,head_square);
+                print_time_elapsed("time to add square relation to list sorted");
+                head_square=NULL;
+                tail_square=NULL;
+                if(verify_sorted_square_rel_list(head_sort_square)==0){
+                    handle_error_with_exit("error in sort relation by square\n");
+                }
+                if(verify_cardinality_list_square_relation(head_sort_square,num_B_smooth)==0){
+                    handle_error_with_exit("error in cardinality square relation\n");
+                }
 				join_all_threads(array_tid,NUM_THREAD_POLYNOMIAL);//aspetta tutti i thread
 				
 				if(array_tid!=NULL){//libera memoria allocata
@@ -447,42 +460,22 @@ int main(int argc,char*argv[]){
 			}
             printf("num_potential_B_smooth=%d,num_B_smooth=%d,num_semi_B_smooth=%d\n",num_potential_B_smooth,num_B_smooth,num_semi_B_smooth);
 
-            //unisici tutte le relazioni quadrate(solamente quelle B_smooth)alla lista delle relazioni quadratiche,
-            // la lista finale conterrà relazioni quadratiche ordinate per square
-            add_square_relation_to_list_sorted(&head_sort_square,&tail_sort_square,head_square);
-            print_time_elapsed("time to add square relation to list sorted");
-            head_square=NULL;
-            tail_square=NULL;
-            if(verify_sorted_square_rel_list(head_sort_square)==0){
-                handle_error_with_exit("error in sort relation by square\n");
-            }
-			if(verify_cardinality_list_square_relation(head_sort_square,num_B_smooth)==0){
-            	handle_error_with_exit("error in cardinality square relation\n");
-            }
-            //unisici tutte le relazioni semi_B_smooth alla lista delle relazioni semi_B_smooth,
-            // la lista finale conterrà relazioni semi_B_smooth ordinate per residuo
-
-            /*add_relation_semi_B_smooth_to_list(&head_sort_residuos,&tail_sort_residuos,head_residuos);//commentare questa riga
-            print_time_elapsed("time to add relation semi_B_smooth");
-            if(verify_sorted_residuos_square_rel_list(head_sort_residuos)==0){
-                handle_error_with_exit("error in sort relation by square\n");
-            }
-            head_residuos=NULL;
-            tail_residuos=NULL;
-
-			factorizations_founded = combine_relation_B_smooth_and_semi_B_smooth(&head_sort_square,
-																				 &tail_sort_square, head_sort_residuos, n, &num_B_smooth, &num_semi_B_smooth,&combined_relations);
-			print_time_elapsed("time_to_combine relation_B_smooth");
-			//riassegna la lista delle relazioni quadratiche a head e tail
-			head_sort_residuos = NULL;
-			tail_sort_residuos = NULL;
-			if (factorizations_founded == 1) {
-				break;
-			}*///commentare questa riga
-
             //trova nuove relazioni quadratiche con un nuovo square,una nuova fattorizazzione e imposta num=0
             if((num_B_smooth>=cardinality_factor_base*THRESOLD_RELATION) && (combined==0)) {
             	combined=1;
+                //unisici tutte le relazioni quadrate(solamente quelle B_smooth)alla lista delle relazioni quadratiche,
+                // la lista finale conterrà relazioni quadratiche ordinate per square
+                add_square_relation_to_list_sorted(&head_sort_square,&tail_sort_square,head_square);
+                print_time_elapsed("time to add square relation to list sorted");
+                head_square=NULL;
+                tail_square=NULL;
+                if(verify_sorted_square_rel_list(head_sort_square)==0){
+                    handle_error_with_exit("error in sort relation by square\n");
+                }
+                if(verify_cardinality_list_square_relation(head_sort_square,num_B_smooth)==0){
+                    handle_error_with_exit("error in cardinality square relation\n");
+                }
+
 				add_relation_semi_B_smooth_to_list(&head_sort_residuos,&tail_sort_residuos,head_residuos);
 				print_time_elapsed("time to add relation semi_B_smooth");
 				head_residuos=NULL;
@@ -508,6 +501,18 @@ int main(int argc,char*argv[]){
             }
             printf("card_f_base=%d\n",cardinality_factor_base);
             if(num_B_smooth>=cardinality_factor_base*ENOUGH_RELATION){
+                //unisici tutte le relazioni quadrate(solamente quelle B_smooth)alla lista delle relazioni quadratiche,
+                // la lista finale conterrà relazioni quadratiche ordinate per square
+                add_square_relation_to_list_sorted(&head_sort_square,&tail_sort_square,head_square);
+                print_time_elapsed("time to add square relation to list sorted");
+                head_square=NULL;
+                tail_square=NULL;
+                if(verify_sorted_square_rel_list(head_sort_square)==0){
+                    handle_error_with_exit("error in sort relation by square\n");
+                }
+                if(verify_cardinality_list_square_relation(head_sort_square,num_B_smooth)==0){
+                    handle_error_with_exit("error in cardinality square relation\n");
+                }
                 remove_same_square(&head_sort_square,&tail_sort_square,&num_B_smooth,&num_semi_B_smooth);
                 print_time_elapsed("time to remove same square");
                 if(verify_sorted_square_rel_list(head_sort_square)==0){
@@ -552,7 +557,6 @@ int main(int argc,char*argv[]){
             print_time_elapsed("time_to_reduce echelon form linear_system");
             linear_system=from_matrix_binary_to_matrix_char(binary_linear_system,cardinality_factor_base,num_col_binary_matrix,&num_col_linear_system);
             print_time_elapsed("time_to_copy matrix binary into matrix char");
-			//print_linear_system(linear_system,cardinality_factor_base,num_col_linear_system);
             free_memory_matrix_unsigned_long(binary_linear_system,cardinality_factor_base,num_col_binary_matrix);
             binary_linear_system=NULL;
 
@@ -582,17 +586,17 @@ int main(int argc,char*argv[]){
 				number_cycle++;
 				continue;
 			}
-			/*if(check_if_matrix_is_reduce_mod_n(base_matrix,num_B_smooth,dim_sol,2)==0){
+			if(check_if_matrix_is_reduce_mod_n(base_matrix,num_B_smooth,dim_sol,2)==0){
 				handle_error_with_exit("error in main,calculate base_linear_system\n");
-			}*/
+			}
 			printf("dim_sol=%d\n",dim_sol);
 			print_time_elapsed("time to calculate base linear system");
 			printf("combined_relations=%d\n",combined_relations);
-			/*if(check_solution_base_matrix_char(linear_system,cardinality_factor_base,num_col_linear_system,
+			if(check_solution_base_matrix_char(linear_system,cardinality_factor_base,num_col_linear_system,
             base_matrix,num_B_smooth,dim_sol)==0){
 				handle_error_with_exit("error in main,invalid solution\n");
 			}
-			print_time_elapsed("time to check solution base linear system");*/
+			print_time_elapsed("time to check solution base linear system");
 
             //algebra step:calcolo di tutti gli a,b del crivello quadratico
 			factorizations_founded=find_factor_of_n_from_base_matrix_char(base_matrix,num_col_linear_system,&dim_sol,
@@ -713,13 +717,9 @@ int thread_job_criv_quad(int id_thread){//id inizia da 0,il lavoro di un thread 
 		factor_matrix_f(n,M,(thread_polynomial_data[id_thread]),cardinality_factor_base,a_old,array_a_struct,s);//fattorizza una nuova matrice
         print_time_elapsed_local("time to factor matrix_factorization",&timer_thread);
         //print_thread_data(thread_polynomial_data[id_thread],M);
-		//
+
 		//ricerca dei B_smooth potenziali,reali e fattorizzazione dei B_smooth reali
         find_list_square_relation(thread_polynomial_data[id_thread],&(thread_polynomial_data[id_thread].num_B_smooth),&(thread_polynomial_data[id_thread].num_semi_B_smooth),&(thread_polynomial_data[id_thread].num_potential_B_smooth),M,&head_squares,&tail_squares,&head_residuoss,&tail_residuoss,n,a_old,array_a_struct,s);
-		//printf("square\n");
-		//print_list_square_relation(head_square,thread_polynomial_data[id_thread].num_B_smooth);
-		//printf("residuos\n");
-		//print_list_square_relation(head_residuos,thread_polynomial_data[id_thread].num_B_smooth);
         printf("num_potential_B_smooth=%d,num_B_smooth=%d,num_semi_B_smooth=%d\n",thread_polynomial_data[id_thread].num_potential_B_smooth,thread_polynomial_data[id_thread].num_B_smooth,thread_polynomial_data[id_thread].num_semi_B_smooth);
 		print_time_elapsed_local("time to find_list_square_relation",&timer_thread);
 		//pulisci struttura dati del thread per ricominciare con un altro polinomio

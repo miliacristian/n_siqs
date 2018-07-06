@@ -28,6 +28,9 @@ char verify_factor_base(struct node_factor_base*head,int cardinality_factor_base
     if(head==NULL || cardinality_factor_base<=0 || last_prime_factor_base<=0){
       handle_error_with_exit("error in verify factor base");
     }
+    if(TEST==0){
+        return 1;
+    }
     int count_elem=0;
     struct node_factor_base*p=head;
     while(p!=NULL){
@@ -112,6 +115,9 @@ char verify_cardinality_list_factor_base(struct node_factor_base*head,int length
     if(length<0){
         printf("length minore di zero\n");
         return 0;
+    }
+    if(TEST==0){
+        return 1;
     }
     int counter=0;
     if(head==NULL && length==0){

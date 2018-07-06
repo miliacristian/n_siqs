@@ -87,6 +87,9 @@ void check_variable_in_defines(){
 	if(BIT_OF_UNSIGNED_LONG<8 || BIT_OF_UNSIGNED_LONG%8!=0){
 		handle_error_with_exit("error in value bit_of_unsigned_long\n");
 	}
+	if(TEST!=0 && TEST!=1){
+        handle_error_with_exit("error in value TEST\n");
+    }
 	return;
 }
 int calculate_start_factor_base(int id_thread){

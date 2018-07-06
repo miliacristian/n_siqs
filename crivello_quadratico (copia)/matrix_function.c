@@ -1594,6 +1594,9 @@ char check_if_matrix_char_is_echelon_reduce(char*matrix_linear_system,int num_ro
 	if(matrix_linear_system==NULL || num_row<=0 || num_col<=0){
 		handle_error_with_exit("error in check_if_matrix_is_echelon_reduce\n");
 	}
+	if(TEST==0){
+		return 1;
+	}
 	int i=0;
 	int j=0;
 	while(i<num_row && j<num_col){
@@ -1645,6 +1648,9 @@ char check_if_matrix_is_reduce_mod_n(int**matrix,int num_row,int num_col,int n){
 		printf("num_row=%d num_col=%d n=%d\n",num_row,num_col,n);
 		handle_error_with_exit("error in check if matrix is reduce mod n\n");
 	}
+	if(TEST==0){
+		return 1;
+	}
 	for(int i=0;i<num_row;i++){
 		for(int j=0;j<num_col;j++){
 			if(matrix[i][j]>=n || matrix[i][j]<0){
@@ -1660,6 +1666,9 @@ char check_if_matrix_char_is_reduce_mod_n(char*matrix,int num_row,int num_col,in
         printf("num_row=%d num_col=%d n=%d\n",num_row,num_col,n);
         handle_error_with_exit("error in check if matrix char is reduce mod n\n");
     }
+	if(TEST==0){
+		return 1;
+	}
     long index;
     for(int i=0;i<num_row;i++){
         for(int j=0;j<num_col;j++){
@@ -2069,12 +2078,12 @@ int**calculate_base_linear_system_char(char*matrix_linear_system,int num_row,int
     if(matrix_linear_system==NULL || num_row<=0 || num_col<=0 || dim_sol==NULL){
         handle_error_with_exit("error in parameter get_coli\n");
     }
-    /*if(check_if_matrix_char_is_reduce_mod_n(matrix_linear_system,num_row,num_col,2)==0){
+    if(check_if_matrix_char_is_reduce_mod_n(matrix_linear_system,num_row,num_col,2)==0){
         handle_error_with_exit("matrix is not reduce mod n");
     }
     if(check_if_matrix_char_is_echelon_reduce(matrix_linear_system,num_row,num_col)==0){
         handle_error_with_exit("error in calculate_base_linear_system\n");
-    }*/
+    }
     *dim_sol=calculate_dim_sol_char(matrix_linear_system,num_row,num_col);//calcola la dimensione della base del sistema lineare
     print_time_elapsed("time to calculate_dim_sol");
     if(*dim_sol<0){
@@ -2503,6 +2512,9 @@ char check_solution_base_matrix_char(char*linear_system,int num_row_system,int n
        num_row_base<=0 || num_col_base<=0){
         handle_error_with_exit("error in parameter reduce echelon form\n");
     }
+	if(TEST==0){
+		return 1;
+	}
     char test=0;
     for(int i=0;i<num_col_base;i++){
         int *column=get_coli(base_matrix,num_row_base,num_col_base,i);
