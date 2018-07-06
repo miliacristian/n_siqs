@@ -232,7 +232,7 @@ int main(int argc,char*argv[]){
 			}
 			printf("factor base=");
 			print_list_factor(head_f_base_f,cardinality_factor_base);
-			printf("cardinality factor_base %d\n",cardinality_factor_base);
+			printf("cardinality factor_base %d,B=%ld\n",cardinality_factor_base,B);
 			print_time_elapsed("time to calculate factor base");
 
 			//verifica che la factor base è corretta
@@ -379,10 +379,15 @@ int main(int argc,char*argv[]){
 				array_id=create_threads(array_tid,NUM_THREAD_POLYNOMIAL);//crea tutti i thread
 			}
 			print_time_elapsed("time to create thread");
-
+            printf("main thread_work=%d\n",main_thread_work);
 			//fattorizza numeri nell'array lungo 2m+1
+            if(s==0){//se non ci sono thread disponibili riattiva il main thread
+                main_thread_work=0;
+            }
 			if(main_thread_work==0) {
-				main_thread_work=1;
+				if(num_thread_job!=1) {//se il numero di job da fare è maggiore di 1
+					main_thread_work = 1;
+				}
 				printf("main thread\n");
 				mpz_set(thread_polynomial_data[NUM_THREAD_POLYNOMIAL].b, b_default);//imposta b
 				factor_matrix_f(n, M, (thread_polynomial_data[NUM_THREAD_POLYNOMIAL]), cardinality_factor_base,
@@ -402,19 +407,6 @@ int main(int argc,char*argv[]){
 
 			//aspetta tutti i thread e libera memoria
 			if(num_thread_job!=1 && NUM_THREAD_POLYNOMIAL>0){
-
-                /*//unisici tutte le relazioni quadrate(solamente quelle B_smooth)alla lista delle relazioni quadratiche,
-                // la lista finale conterrà relazioni quadratiche ordinate per square
-                add_square_relation_to_list_sorted(&head_sort_square,&tail_sort_square,head_square);
-                print_time_elapsed("time to add square relation to list sorted");
-                head_square=NULL;
-                tail_square=NULL;
-                if(verify_sorted_square_rel_list(head_sort_square)==0){
-                    handle_error_with_exit("error in sort relation by square\n");
-                }
-                if(verify_cardinality_list_square_relation(head_sort_square,num_B_smooth)==0){
-                    handle_error_with_exit("error in cardinality square relation\n");
-                }*/
 				join_all_threads(array_tid,NUM_THREAD_POLYNOMIAL);//aspetta tutti i thread
 				
 				if(array_tid!=NULL){//libera memoria allocata
@@ -467,18 +459,6 @@ int main(int argc,char*argv[]){
             //trova nuove relazioni quadratiche con un nuovo square,una nuova fattorizazzione e imposta num=0
             if((num_B_smooth>=cardinality_factor_base*THRESOLD_RELATION) && (combined==0)) {
             	combined=1;
-                /*//unisici tutte le relazioni quadrate(solamente quelle B_smooth)alla lista delle relazioni quadratiche,
-                // la lista finale conterrà relazioni quadratiche ordinate per square
-                add_square_relation_to_list_sorted(&head_sort_square,&tail_sort_square,head_square);
-                print_time_elapsed("time to add square relation to list sorted");
-                head_square=NULL;
-                tail_square=NULL;
-                if(verify_sorted_square_rel_list(head_sort_square)==0){
-                    handle_error_with_exit("error in sort relation by square\n");
-                }
-                if(verify_cardinality_list_square_relation(head_sort_square,num_B_smooth)==0){
-                    handle_error_with_exit("error in cardinality square relation\n");
-                }*/
                 quickSort_residuos(head_residuos);
                 head_sort_residuos=head_residuos;
                 tail_sort_residuos=lastNode(head_sort_residuos);
@@ -497,9 +477,6 @@ int main(int argc,char*argv[]){
                 if (factorizations_founded == 1) {
                     break;
                 }
-				//if(verify_cardinality_list_square_relation(head_sort_square,num_B_smooth)==0){
-				//	handle_error_with_exit("error in cardinality square relation\n");
-				//}
 			}
 			else if(combined==1 && head_residuos!=NULL){
 				free_memory_list_square_relation(head_residuos);
@@ -509,13 +486,6 @@ int main(int argc,char*argv[]){
 				tail_sort_residuos = NULL;
             }
             if(num_B_smooth>=cardinality_factor_base*ENOUGH_RELATION){
-
-                /*//unisici tutte le relazioni quadrate(solamente quelle B_smooth)alla lista delle relazioni quadratiche,
-                // la lista finale conterrà relazioni quadratiche ordinate per square
-                add_square_relation_to_list_sorted(&head_sort_square,&tail_sort_square,head_square);
-                print_time_elapsed("time to add square relation to list sorted");
-                head_square=NULL;
-                tail_square=NULL;*/
 				quickSort_square(head_square);
 				head_sort_square=head_square;
 				tail_sort_square=lastNode(head_sort_square);
@@ -736,7 +706,6 @@ int thread_job_criv_quad(int id_thread){//id inizia da 0,il lavoro di un thread 
         mpz_set(thread_polynomial_data[id_thread].b,array_bi[count]);//imposta ad ogni ciclo il valore di b
 		factor_matrix_f(n,M,(thread_polynomial_data[id_thread]),cardinality_factor_base,a_old,array_a_struct,s);//fattorizza una nuova matrice
         print_time_elapsed_local("time to factor matrix_factorization",&timer_thread);
-        //print_thread_data(thread_polynomial_data[id_thread],M);
 
 		//ricerca dei B_smooth potenziali,reali e fattorizzazione dei B_smooth reali
         find_list_square_relation(thread_polynomial_data[id_thread],&(thread_polynomial_data[id_thread].num_B_smooth),&(thread_polynomial_data[id_thread].num_semi_B_smooth),&(thread_polynomial_data[id_thread].num_potential_B_smooth),M,&head_squares,&tail_squares,&head_residuoss,&tail_residuoss,n,a_old,array_a_struct,s);
