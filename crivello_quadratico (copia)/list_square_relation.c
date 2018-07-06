@@ -290,9 +290,9 @@ void insert_at_tail_square_rel(struct node_square_relation *new_node,struct node
 
 //alloca e inizializza un nodo della lista dinamica ordinata
 struct node_square_relation* get_new_node_square_rel(struct square_relation square_relation) {
-    //if(square_relation.head_factorization==NULL){
-      //  handle_error_with_exit("error in parameter get_new_node\n");
-    //}
+    if(square_relation.head_factorization==NULL){
+        handle_error_with_exit("error in parameter get_new_node\n");
+    }
     struct node_square_relation* new_node = (struct node_square_relation*)malloc(sizeof(struct node_square_relation));
     if(new_node==NULL){
         handle_error_with_exit("error in malloc get_new_node\n");

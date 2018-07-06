@@ -451,8 +451,12 @@ int main(int argc,char*argv[]){
 				//le liste vengono unite in modo tale che quella finale è ordinata per numero
 			    union_list_square(&head_square,&tail_square,
 								  thread_polynomial_data[i].head_square,thread_polynomial_data[i].tail_square);
+				thread_polynomial_data[i].head_square=NULL;
+				thread_polynomial_data[i].tail_square=NULL;
                 union_list_residuos(&head_residuos,&tail_residuos,
                                   thread_polynomial_data[i].head_residuos,thread_polynomial_data[i].tail_residuos);
+				thread_polynomial_data[i].head_residuos=NULL;
+				thread_polynomial_data[i].tail_residuos=NULL;
 				num_B_smooth+=thread_polynomial_data[i].num_B_smooth;
 				num_potential_B_smooth+=thread_polynomial_data[i].num_potential_B_smooth;
 				num_semi_B_smooth+=thread_polynomial_data[i].num_semi_B_smooth;
@@ -497,6 +501,13 @@ int main(int argc,char*argv[]){
 				//	handle_error_with_exit("error in cardinality square relation\n");
 				//}
 			}
+			else if(combined==1 && head_residuos!=NULL){
+				free_memory_list_square_relation(head_residuos);
+				head_residuos=NULL;
+				tail_residuos=NULL;
+				head_sort_residuos = NULL;
+				tail_sort_residuos = NULL;
+            }
             if(num_B_smooth>=cardinality_factor_base*ENOUGH_RELATION){
 
                 /*//unisici tutte le relazioni quadrate(solamente quelle B_smooth)alla lista delle relazioni quadratiche,

@@ -556,7 +556,6 @@ void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth
 	char is_B_smooth=0;
 	char is_semi_B_smooth=0;
 	mpz_t residuos;
-	mpz_init(residuos);
 	if(num_B_smooth==NULL || num_semi_B_smooth==NULL || num_potential_B_smooth==NULL || M<=0 ||
 	   head_square==NULL || tail_square==NULL || head_residuos==NULL
 	   || tail_residuos==NULL || (array_a_struct==NULL && s>0)){
@@ -564,6 +563,7 @@ void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth
 	}
 	struct square_relation square_relation;
 	mpz_init(num);
+	mpz_init(residuos);
 	for(long i=0;i<2*M+1;i++){
         if(thread_data.numbers[i].sum_log>=thread_data.log_thresold){
             //possibile B_smooth trovato
@@ -576,7 +576,6 @@ void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth
 				is_semi_B_smooth=0;
                 continue;
             }
-            //head_factor=factorize_num_v1(num,thread_data.numbers[i].first_index_f_base,thread_data.numbers[i].last_index_f_base,&is_B_smooth,&is_semi_B_smooth,residuos,array_a_struct,s);
             else {
                 head_factor = factorize_num_v2(num, thread_data.numbers[i].j, thread_data.numbers[i].first_index_f_base,
                                                thread_data.numbers[i].last_index_f_base, &is_B_smooth,
