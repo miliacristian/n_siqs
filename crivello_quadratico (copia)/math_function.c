@@ -569,7 +569,6 @@ void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth
             //possibile B_smooth trovato
             (*num_potential_B_smooth)++;
             create_num(num,a,thread_data.b,n,thread_data.numbers[i].j);
-            gmp_printf("num=%Zd\n",num);
             if(mpz_cmp_si(num,0)==0){
                 head_factor=NULL;
                 mpz_set_si(residuos,0);
