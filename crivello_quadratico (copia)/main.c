@@ -52,6 +52,7 @@
 	int*number_prime_a=NULL;//numeri primi usati per ottenere a
     struct a_struct*array_a_struct=NULL;
     int combined_relations=0;
+    mpz_t thresold_large_prime;
 
 
 int main(int argc,char*argv[]){
@@ -97,6 +98,7 @@ int main(int argc,char*argv[]){
 		mpz_init(b_default);
 		mpz_init(b1);
 		mpz_init(a_default);
+		mpz_init(thresold_large_prime);
 		
 		mpz_set_si(b1,-1);//b1=-1
         mpz_set_si(a_old,0);
@@ -362,6 +364,10 @@ int main(int argc,char*argv[]){
 			print_array_int(r.inverse_a_mod_p,cardinality_factor_base);
 			print_time_elapsed("time to create row factorization");
 
+			//thresold_large_prime
+			calculate_thresold_large_prime(thresold_large_prime,r.prime[cardinality_factor_base-1]);
+			gmp_printf("thresold_large_prime=%Zd\n",thresold_large_prime);
+			print_time_elapsed("time to calculate thresold_large_prime");
 			//creazione e avvio thread per fase sieving
 			if(num_thread_job!=1){
 				array_tid=alloc_array_tid(NUM_THREAD_POLYNOMIAL);//alloca memoria per contenere tutti i tid
@@ -647,6 +653,7 @@ int main(int argc,char*argv[]){
 		mpz_clear(b_default);
 		mpz_clear(b1);
 		mpz_clear(a_default);
+		mpz_clear(thresold_large_prime);
 
 		//tempo totale,imposta il tempo iniziale alla struct,tempo totale=get_time-tempo iniziale
 		timer.tv_nsec=time_start.tv_nsec;//timer=time_start

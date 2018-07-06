@@ -61,6 +61,7 @@ struct node_factorization*factorize_num_v1(const mpz_t num,int first_index_f_bas
                                            char*is_B_smooth,char*is_semi_B_smooth,mpz_t residuos,struct a_struct*array_a_struct,int s);
 char calculate_num_from_factorization(mpz_t num_temp,struct node_factorization*head_factor);
 char verify_square_relation(struct square_relation square_relation,const mpz_t n);
+void calculate_thresold_large_prime(mpz_t thresold_large_prime,int max_prime);
 
 
 

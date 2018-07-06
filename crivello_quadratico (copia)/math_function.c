@@ -19,6 +19,19 @@ extern mpz_t a_old;
 extern struct a_struct*array_a_struct;
 extern int cardinality_factor_base;
 extern int s;
+extern mpz_t thresold_large_prime;
+void calculate_thresold_large_prime(mpz_t thresold_large_prime,int max_prime){
+	if(max_prime<=0){
+		handle_error_with_exit("error in calculate_thresold_prime\n");
+	}
+	mpz_t temp;
+	mpz_init(temp);
+	mpz_set_si(temp,max_prime);//temp=max_prime
+	mpz_mul(temp,temp,temp);//temp?max_prime^2
+	mpz_set(thresold_large_prime,temp);
+	mpz_clear(temp);
+	return;
+}
 struct a_struct*create_array_a_struct(int*number_prime_a,int*index_number_a,int length){
     if(number_prime_a==NULL || index_number_a==NULL || length<=0){
         handle_error_with_exit("error in create_array_a_struct\n");
@@ -230,6 +243,8 @@ struct node_factorization*factorize_num_v2(const mpz_t num,int j_of_num,int firs
 	if(head==NULL){
 		mpz_set(residuos, temp);//imposta il residuo
 		mpz_clear(temp);
+		*is_B_smooth=0;
+		*is_semi_B_smooth=0;
 		return NULL;
 	}
     if(mpz_cmp_si(temp,1)==0){//se il residuo della divisione è 1 allora è B-smooth
@@ -550,9 +565,13 @@ void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth
             //possibile B_smooth trovato
             (*num_potential_B_smooth)++;
             create_num(num,a,thread_data.b,n,thread_data.numbers[i].j);
+            gmp_printf("num=%Zd\n",num);
             if(mpz_cmp_si(num,0)==0){
                 head_factor=NULL;
                 mpz_set_si(residuos,0);
+				is_B_smooth=0;
+				is_semi_B_smooth=0;
+                continue;
             }
             //head_factor=factorize_num_v1(num,thread_data.numbers[i].first_index_f_base,thread_data.numbers[i].last_index_f_base,&is_B_smooth,&is_semi_B_smooth,residuos,array_a_struct,s);
             else {
@@ -586,17 +605,22 @@ void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth
                 }
             }
             else if(is_semi_B_smooth==1){
-				(*num_semi_B_smooth)++;
-				is_B_smooth=0;
-				is_semi_B_smooth=0;
-				square_relation.head_factorization=head_factor;
-				mpz_init(square_relation.square);
-				mpz_init(square_relation.num);
-				mpz_init(square_relation.residuos);
-				mpz_set(square_relation.num,num);
-				mpz_set(square_relation.residuos,residuos);
-				calculate_square(square_relation.square,a,i-M,thread_data.b,n);
-                insert_at_tail_square_relation(square_relation,head_residuos,tail_residuos);
+            	if(mpz_cmp(residuos,thresold_large_prime)<=0) {
+					(*num_semi_B_smooth)++;
+					is_B_smooth = 0;
+					is_semi_B_smooth = 0;
+					square_relation.head_factorization = head_factor;
+					mpz_init(square_relation.square);
+					mpz_init(square_relation.num);
+					mpz_init(square_relation.residuos);
+					mpz_set(square_relation.num, num);
+					mpz_set(square_relation.residuos, residuos);
+					calculate_square(square_relation.square, a, i - M, thread_data.b, n);
+					insert_at_tail_square_relation(square_relation, head_residuos, tail_residuos);
+				}
+				else{
+            		free_memory_list_factor(head_factor);
+            	}
             }
             else{
             	handle_error_with_exit("error in find list square relation\n");
@@ -776,7 +800,6 @@ int quadratic_residue(mpz_t x,const mpz_t q,const mpz_t n)
         mpz_set(x,r);
         mpz_clears(tmp,ofac,nr,t,r,c,b,NULL);
         }
-
     return 1;
 }
 
