@@ -47,11 +47,12 @@
 	struct thread_data*thread_polynomial_data=NULL;//struttura dati globale per far svolgere la computazione ai thread
 	struct factor_base_data*thread_factor_base_data=NULL;
 	int num_thread_job=-1;//lunghezza dell'array di matrici,ogni thread riceve una matrice per fare la computazione
-	int num_increment_M_and_B=0;
+	int num_increment_M_and_B;
 	int*index_prime_a=NULL;//indice dei primi usati per ottenere a,rispetto alla factor base
 	int*number_prime_a=NULL;//numeri primi usati per ottenere a
     struct a_struct*array_a_struct=NULL;
     int combined_relations=0;
+    char combined;
     mpz_t thresold_large_prime;
 
 
@@ -67,6 +68,8 @@ int main(int argc,char*argv[]){
 		//dichiarazione variabili
 		num_increment_M_and_B=0;
 		cardinality_factor_base=0;
+		char main_thread_work=0;
+		combined=0;
 		mpz_t a_default,b_default;//a,b sono i coefficienti del polinomio aj^2+2bj+c,thresold a serve per calcolare il valore di a
 		int*array_id=NULL;//array che contiene gli id dei nuovi thread creati a partire da 0
 		int num_B_smooth=0,num_semi_B_smooth=0,num_potential_B_smooth=0;//numero di numeri b-smooth potenziali e reali trovati nell'array
@@ -368,15 +371,17 @@ int main(int argc,char*argv[]){
 			calculate_thresold_large_prime(thresold_large_prime,r.prime[cardinality_factor_base-1]);
 			gmp_printf("thresold_large_prime=%Zd\n",thresold_large_prime);
 			print_time_elapsed("time to calculate thresold_large_prime");
+
 			//creazione e avvio thread per fase sieving
 			if(num_thread_job!=1){
 				array_tid=alloc_array_tid(NUM_THREAD_POLYNOMIAL);//alloca memoria per contenere tutti i tid
 				array_id=create_threads(array_tid,NUM_THREAD_POLYNOMIAL);//crea tutti i thread
 			}
 			print_time_elapsed("time to create thread");
-            mpz_set(thread_polynomial_data[NUM_THREAD_POLYNOMIAL].b,b_default);//imposta b
+
 			//fattorizza numeri nell'array lungo 2m+1
             printf("main thread\n");
+			mpz_set(thread_polynomial_data[NUM_THREAD_POLYNOMIAL].b,b_default);//imposta b
 			factor_matrix_f(n,M,(thread_polynomial_data[NUM_THREAD_POLYNOMIAL]),cardinality_factor_base,a_default,array_a_struct,s);//fattorizza numeri
 			print_time_elapsed("time_to_factor matrix_factorization main thread");
 			//print_thread_data(thread_polynomial_data[NUM_THREAD_POLYNOMIAL],M,cardinality_factor_base);
@@ -387,10 +392,6 @@ int main(int argc,char*argv[]){
 
 			//trova relazioni quadratiche o semi_B_smooth e ordinale per numero
 			find_list_square_relation(thread_polynomial_data[NUM_THREAD_POLYNOMIAL],&num_B_smooth,&num_semi_B_smooth,&num_potential_B_smooth,M,&head_square,&tail_square,&head_residuos,&tail_residuos,n,a_default,NULL,0);
-			//printf("square\n");
-			//print_list_square_relation(head_square,num_B_smooth);
-			//printf("residuos\n");
-			//print_list_square_relation(head_residuos,num_B_smooth);
 			print_time_elapsed("time_to find_list_square_relation main thread");
 
 			//aspetta tutti i thread e libera memoria
@@ -474,7 +475,8 @@ int main(int argc,char*argv[]){
 			}*///commentare questa riga
 
             //trova nuove relazioni quadratiche con un nuovo square,una nuova fattorizazzione e imposta num=0
-            if(num_B_smooth>=cardinality_factor_base*THRESOLD_RELATION) {
+            if(num_B_smooth>=cardinality_factor_base*THRESOLD_RELATION && combined==0) {
+                combined=1;
 				add_relation_semi_B_smooth_to_list(&head_sort_residuos,&tail_sort_residuos,head_residuos);
 				print_time_elapsed("time to add relation semi_B_smooth");
 				head_residuos=NULL;
