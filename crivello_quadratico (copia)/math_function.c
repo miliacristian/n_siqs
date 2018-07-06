@@ -550,8 +550,16 @@ void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth
             //possibile B_smooth trovato
             (*num_potential_B_smooth)++;
             create_num(num,a,thread_data.b,n,thread_data.numbers[i].j);
+            if(mpz_cmp_si(num,0)==0){
+                head_factor=NULL;
+                mpz_set_si(residuos,0);
+            }
             //head_factor=factorize_num_v1(num,thread_data.numbers[i].first_index_f_base,thread_data.numbers[i].last_index_f_base,&is_B_smooth,&is_semi_B_smooth,residuos,array_a_struct,s);
-			head_factor=factorize_num_v2(num,thread_data.numbers[i].j,thread_data.numbers[i].first_index_f_base,thread_data.numbers[i].last_index_f_base,&is_B_smooth,&is_semi_B_smooth,residuos,array_a_struct,s,thread_data);
+            else {
+                head_factor = factorize_num_v2(num, thread_data.numbers[i].j, thread_data.numbers[i].first_index_f_base,
+                                               thread_data.numbers[i].last_index_f_base, &is_B_smooth,
+                                               &is_semi_B_smooth, residuos, array_a_struct, s, thread_data);
+            }
             if(head_factor==NULL && (is_B_smooth==1 || is_semi_B_smooth==1)){
             	handle_error_with_exit("error invalid factorize_num\n");
             }

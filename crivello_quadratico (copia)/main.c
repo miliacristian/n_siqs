@@ -479,11 +479,11 @@ int main(int argc,char*argv[]){
 				//riassegna la lista delle relazioni quadratiche a head e tail
 				head_sort_residuos = NULL;
 				tail_sort_residuos = NULL;
+                if (factorizations_founded == 1) {
+                    break;
+                }
 				if(verify_cardinality_list_square_relation(head_sort_square,num_B_smooth)==0){
 					handle_error_with_exit("error in cardinality square relation\n");
-				}
-				if (factorizations_founded == 1) {
-					break;
 				}
 			}
             //print_list_square_relation(head,num_B_smooth);
