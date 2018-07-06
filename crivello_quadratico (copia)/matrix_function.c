@@ -1230,6 +1230,9 @@ char check_if_array_var_is_valid(int **matrix_linear_system,int num_row,int num_
 	if(matrix_linear_system==NULL || *matrix_linear_system==NULL || num_row<=0 || num_col<=0 || array_var==NULL){
 		handle_error_with_exit("invalid parameter check_if_array_var_is_valid\n");
 	}
+	if(TEST==0){
+		return 1;
+	}
 	int count=0;
 	char*array_var_temp=alloc_array_char(num_col);
 	memcpy(array_var_temp,array_var,sizeof(char)*num_col);
@@ -1259,6 +1262,9 @@ char check_if_array_var_is_valid_char(char*matrix_linear_system,int num_row,int 
 	//verifica che l'array delle varaibili è stato calcolato correttamente
 	if(matrix_linear_system==NULL || num_row<=0 || num_col<=0 || array_var==NULL){
 		handle_error_with_exit("invalid parameter check_if_array_var_is_valid\n");
+	}
+	if(TEST==0){
+		return 1;
 	}
 	int count=0;
 	char*array_var_temp=alloc_array_char(num_col);
@@ -1290,6 +1296,9 @@ char verify_solution(int **matrix_linear_system,int num_row,int num_col,int*solu
 	//verifica che la soluzione del sistema lineare è corretta
 	if(matrix_linear_system==NULL || *matrix_linear_system==NULL || num_row<=0 || num_col<=0 || solution==NULL){
 		handle_error_with_exit("invalid parameter verify_solution\n");
+	}
+	if(TEST==0){
+		return 1;
 	}
 	int count=0;
 	int num_row_not_null=count_rows_not_null(matrix_linear_system,num_row,num_col);
@@ -1324,6 +1333,9 @@ char verify_solution_char(char*matrix_linear_system,int num_row,int num_col,cons
     if(matrix_linear_system==NULL || num_row<=0 || num_col<=0 || solution==NULL){
         handle_error_with_exit("invalid parameter verify_solution\n");
     }
+	if(TEST==0){
+		return 1;
+	}
     int count=0;
     int num_row_not_null=count_rows_not_null_char(matrix_linear_system,num_row,num_col);
     for(int i=0;i<num_row_not_null;i++){
@@ -1566,6 +1578,9 @@ char check_if_matrix_is_echelon_reduce(int**matrix_linear_system,int num_row,int
 	if(matrix_linear_system==NULL || *matrix_linear_system==NULL || num_row<=0 || num_col<=0){
 		handle_error_with_exit("error in check_if_matrix_is_echelon_reduce\n");
 	}
+	if(TEST==0){
+		return 1;
+	}
 	int i=0;
 	int j=0;
 	while(i<num_row && j<num_col){
@@ -1628,6 +1643,9 @@ char check_if_array_var_is_correct(char*array_var,int length,int dim_sol){
 	if(array_var==NULL || length<=0 || dim_sol<=0){//la dimensione non può essere 0 altrimenti ho una sola soluzione
 		handle_error_with_exit("error in check if array_var is correct\n");
 	}
+	if(TEST==0){
+		return 1;
+	}
 	int count_free_var=0;//conta le variabili libere
 	for(int i=0;i<length;i++){
 		if(array_var[i]!=1 && array_var[i]!=2 && array_var[i]!=3){
@@ -1684,6 +1702,9 @@ char check_if_array_is_reduce_mod_n(int*array,int length,int n){
 //verifica che l'array è ridotto modulo n
 	if(array==NULL || length<=0 || n<=0){
 		handle_error_with_exit("error in check if array is reduce mod n\n");
+	}
+	if(TEST==0){
+		return 1;
 	}
 	for(int i=0;i<length;i++){
 		if(array[i]>=n || array[i]<0){
@@ -2493,6 +2514,9 @@ char check_solution_base_matrix(int**linear_system,int num_row_system,int num_co
 	if(linear_system==NULL || *linear_system==NULL || num_row_system<=0 || num_col_system<=0 || base_matrix==NULL || *base_matrix==NULL ||
 	num_row_base<=0 || num_col_base<=0){
 		handle_error_with_exit("error in parameter reduce echelon form\n");
+	}
+	if(TEST==0){
+		return 1;
 	}
 	char test=0;
 	for(int i=0;i<num_col_base;i++){

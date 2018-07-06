@@ -10,6 +10,9 @@ char verify_cardinality_list_factorization(struct node_factorization*head,int le
         printf("length minore di zero\n");
         return 0;
     }
+    if(TEST==0){
+        return 1;
+    }
     int counter=0;
     if(head==NULL && length==0){
         return 1;

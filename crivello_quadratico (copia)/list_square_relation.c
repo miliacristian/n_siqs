@@ -255,27 +255,7 @@ char first_is_smaller_residuos_square_rel(struct node_square_relation node1, str
     }
     return 1;//node1 è più piccolo di node 2
 }
-/*void union_list_square(struct node_square_relation**head,struct node_square_relation**tail,struct node_square_relation*head_square,struct node_square_relation*tail_square){
-    //concatena la prima lista e la seconda lista =L1 unito L2=L1,L2
-    if(head==NULL){
-        handle_error_with_exit("error in union_list_square\n");
-    }
-    if(tail==NULL){
-        handle_error_with_exit("error in union_list_square\n");
-    }
-    if(head_square==NULL){
-        return;
-    }
-    if(*tail==NULL){//lista vuota,prendi l'altra lista
-        *head=head_square;
-        *tail=tail_square;
-        return;
-    }
-    head_square->prev=(*tail);//il primo nodo della seconda lista punta al nodo ultimo della lista
-    (*tail)->next=head_square;//l'ultimo nodo punta al primo nodo dell'altra lista
-    *tail=tail_square;//la coda punta alla coda dell'altra lista
-    return;
-}*/
+
 void sort_relation_by_residuos(struct node_square_relation*head,struct node_square_relation**head_sort_residuos,struct node_square_relation**tail_sort_residuos){
     struct node_square_relation*p=head;
     struct node_square_relation*q;

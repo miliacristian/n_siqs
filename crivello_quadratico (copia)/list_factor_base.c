@@ -10,6 +10,9 @@ char verify_sorted_list(struct node_factor_base*head,int length){
     if(head==NULL || length<=0){
         handle_error_with_exit("error in verify sorted list\n");
     }
+    if(TEST==0){
+        return 1;
+    }
     int count_elem=0;
     struct node_factor_base*p=head;
     while(p!=NULL) {
