@@ -590,7 +590,6 @@ int main(int argc,char*argv[]){
 			if(check_if_matrix_is_reduce_mod_n(base_matrix,num_B_smooth,dim_sol,2)==0){
 				handle_error_with_exit("error in main,calculate base_linear_system\n");
 			}
-			printf("dim_sol=%d\n",dim_sol);
 			print_time_elapsed("time to calculate base linear system");
 			printf("combined_relations=%d\n",combined_relations);
 			if(check_solution_base_matrix_char(linear_system,cardinality_factor_base,num_col_linear_system,
