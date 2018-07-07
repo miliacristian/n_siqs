@@ -112,12 +112,7 @@ void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B){
         *B=250000;
         return;
     }
-	/*if(digit_n<75){//error log 35 trova più relazioni semi_B_smooth,35 minuti
-		*M=40000;
-		*B=300000;
-		return;
-	}*/
-    if(digit_n<75){//error log 35 12 minuti
+    if(digit_n<75){
         *M=45000;
         *B=300000;
         return;
