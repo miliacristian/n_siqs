@@ -15,9 +15,9 @@
 #define NUM_THREAD_POLYNOMIAL 10 //numero di thread supplementari per calcolare i polinomi di siqs
 #define S_MAX 11//corrisponde a 2^(S_MAX-1) polinomi diversi,limita il numero di polinomi possibili
 #define MAX_DIM_SOL 16 //dimensione soluzione massima del sistema lineare,si hanno a disposizione 2^(max_dim_sol)-1 soluzioni diverse
-#define PERC_INCREMENT_M 5 //quanto aumenta in percentuale M se non si riesce a fattorizzare n
-#define PERC_INCREMENT_B 5 //quanto aumenta in percentuale B se non si riesce a fattorizzare n
-#define TEST 0 //test=0 nessuna verifica test=1 molte verifiche
+#define PERC_INCREMENT_M 50 //quanto aumenta in percentuale M se non si riesce a fattorizzare n
+#define PERC_INCREMENT_B 20 //quanto aumenta in percentuale B se non si riesce a fattorizzare n
+#define TEST 1 //test=0 nessuna verifica test=1 molte verifiche
 
 #define NUM_OF_N_TO_FACTORIZE 1
 #define ENOUGH_RELATION 1.0 //numero maggiore o uguale a 1 indica quante relazioni

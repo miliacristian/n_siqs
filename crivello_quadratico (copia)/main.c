@@ -71,6 +71,7 @@ int main(int argc,char*argv[]){
 		char main_thread_work=0;
 		combined=0;
 		combined_relations=0;
+		int removed;
 		mpz_t a_default,b_default;//a,b sono i coefficienti del polinomio aj^2+2bj+c,thresold a serve per calcolare il valore di a
 		int*array_id=NULL;//array che contiene gli id dei nuovi thread creati a partire da 0
 		int num_B_smooth=0,num_semi_B_smooth=0,num_potential_B_smooth=0;//numero di numeri b-smooth potenziali e reali trovati nell'array
@@ -436,7 +437,10 @@ int main(int argc,char*argv[]){
 			//timer_test=print_time_elapsed("time to wait all threads");
 
 			//printf("num_potential_B_smooth_main_thread=%d,num_B_smooth_main_thread=%d,num_semi_B_smooth main thread=%d\n",
-                   //num_potential_B_smooth,num_B_smooth,num_semi_B_smooth);
+              //     num_potential_B_smooth,num_B_smooth,num_semi_B_smooth);
+			if(verify_cardinality_list_square_relation(head_square,num_B_smooth)==0){
+				handle_error_with_exit("error in cardinality head_square first of union\n");
+			}
 			for(int i=0;i<NUM_THREAD_POLYNOMIAL;i++){//metti tutte le relazioni in head e tail,somma tutti i numeri B_smooth e semi_B_smooth
 				//le liste vengono unite in modo tale che quella finale è ordinata per numero
 			    union_list_square(&head_square,&tail_square,
@@ -448,12 +452,18 @@ int main(int argc,char*argv[]){
 				thread_polynomial_data[i].head_residuos=NULL;
 				thread_polynomial_data[i].tail_residuos=NULL;
 				num_B_smooth+=thread_polynomial_data[i].num_B_smooth;
+				thread_polynomial_data[i].num_B_smooth=0;
 				num_potential_B_smooth+=thread_polynomial_data[i].num_potential_B_smooth;
+				thread_polynomial_data[i].num_potential_B_smooth=0;
 				num_semi_B_smooth+=thread_polynomial_data[i].num_semi_B_smooth;
-				//printf("num_potential_B_smooth=%d,num_B_smooth=%d,num_semi_B_smooth=%d\n",num_potential_B_smooth,num_B_smooth,num_semi_B_smooth);
+				thread_polynomial_data[i].num_semi_B_smooth=0;
+				//printf("ciclo for:num_potential_B_smooth=%d,num_B_smooth=%d,num_semi_B_smooth=%d\n",num_potential_B_smooth,num_B_smooth,num_semi_B_smooth);
 			}
             printf("num_potential_B_smooth=%d,num_B_smooth=%d,num_semi_B_smooth=%d\n",num_potential_B_smooth,num_B_smooth,num_semi_B_smooth);
             printf("card_f_base=%d,B=%ld\n",cardinality_factor_base,B);
+			if(verify_cardinality_list_square_relation(head_square,num_B_smooth)==0){
+				handle_error_with_exit("error in cardinality head_square after union\n");
+			}
             //print_estimated_time(cardinality_factor_base,num_B_smooth);
             //exit(0);
             //trova nuove relazioni quadratiche con un nuovo square,una nuova fattorizazzione e imposta num=0
@@ -487,6 +497,9 @@ int main(int argc,char*argv[]){
 				tail_sort_residuos = NULL;
             }
             if(num_B_smooth>=cardinality_factor_base*ENOUGH_RELATION){
+				if(verify_cardinality_list_square_relation(head_square,num_B_smooth)==0){
+					handle_error_with_exit("error in cardinality head_square\n");
+				}
 				quickSort_square(head_square);
 				head_sort_square=head_square;
 				tail_sort_square=lastNode(head_sort_square);
@@ -496,16 +509,19 @@ int main(int argc,char*argv[]){
                     handle_error_with_exit("error in sort relation by square\n");
                 }
                 if(verify_cardinality_list_square_relation(head_sort_square,num_B_smooth)==0){
-                    handle_error_with_exit("error in cardinality square relation\n");
+                    handle_error_with_exit("error in cardinality head_sort_square\n");
                 }
-                remove_same_square(&head_sort_square,&tail_sort_square,&num_B_smooth,&num_semi_B_smooth);
-                print_time_elapsed("time to remove same square");
+                removed=remove_same_square(&head_sort_square,&tail_sort_square,&num_B_smooth,&num_semi_B_smooth);
+                //print_time_elapsed("time to remove same square");
+                printf("num removed relations=%d,num_B_smooth=%d\n",removed,num_B_smooth);
                 if(verify_sorted_square_rel_list(head_sort_square)==0){
                     handle_error_with_exit("error in sort list by square\n");
                 }
 				if(verify_cardinality_list_square_relation(head_sort_square,num_B_smooth)==0){
 					handle_error_with_exit("error in cardinality square relation\n");
 				}
+				head_square=head_sort_square;
+                tail_square=tail_sort_square;
             }
             //verifica che il numero di relazioni trovate è ancora sufficiente dopo aver rimosso gli square uguali
             if(num_B_smooth<cardinality_factor_base*ENOUGH_RELATION){
@@ -532,7 +548,7 @@ int main(int argc,char*argv[]){
 				number_cycle++;
                 continue;
             }
-
+            print_time_elapsed("time to find enough square relations");
 			//algebra step:sistema lineare
             binary_linear_system=create_binary_linear_system(head_sort_square,cardinality_factor_base,num_B_smooth,&num_col_binary_matrix);
             //print_binary_matrix(binary_linear_system,cardinality_factor_base,num_col_binary_matrix);
@@ -661,10 +677,10 @@ int main(int argc,char*argv[]){
 		mpz_clear(thresold_large_prime);
 
 		//tempo totale,imposta il tempo iniziale alla struct,tempo totale=get_time-tempo iniziale
+		printf("combined_relations=%d,combined=%d\n",combined_relations,combined);
 		timer.tv_nsec=time_start.tv_nsec;//timer=time_start
 		timer.tv_sec=time_start.tv_sec;//timer=time_start
 		print_time_elapsed("time_total");
-		printf("combined_relations=%d,combined=%d\n",combined_relations,combined);
 	}
 	if(fclose(file_number)!=0){
 		handle_error_with_exit("error in close file_number\n");

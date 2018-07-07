@@ -143,6 +143,7 @@ char verify_cardinality_list_square_relation(struct node_square_relation*head,in
         p=p->next;
     }
     if(counter!=length){
+        printf("elementi contati=%d\n",counter);
         printf("lunghezza errata\n");
         return 0;
     }
@@ -696,28 +697,30 @@ void remove_same_num(struct node_square_relation**head,struct node_square_relati
     }
     return;
 }
-void remove_same_square(struct node_square_relation**head,struct node_square_relation**tail,int*num_B_smooth,int*num_semi_B_smooth){
+int remove_same_square(struct node_square_relation**head,struct node_square_relation**tail,int*num_B_smooth,int*num_semi_B_smooth){
     if(head==NULL || tail==NULL || num_B_smooth==NULL || num_semi_B_smooth==NULL){
         handle_error_with_exit("error in remove_same_num\n");
     }
+    int removed=0;
     struct node_square_relation*l=*head;
     while(l!=NULL){
         while(l->next!=NULL && (mpz_cmp(l->square_relation.square,(l->next)->square_relation.square)==0) ) {
-            printf("remove\n");
             if (mpz_cmp_si(l->square_relation.residuos, 1) == 0){//trovati due numeri uguali con residuo uguale a 1
                 (*num_B_smooth)--;
+                removed++;
             }
             else{//trovati due numeri uguali con residuo diverso da 1
+                handle_error_with_exit("error in remove same square\n");
                 (*num_semi_B_smooth)--;
             }
             remove_after_node_square_rel(&(l->next),tail);
         }
         if(l->next==NULL){
-            return;
+            return removed;
         }
         l=l->next;
     }
-    return;
+    return removed;
 }
 void union_list_square_v2(struct node_square_relation**head_square1,struct node_square_relation**tail_square1,struct node_square_relation**head_square2,struct node_square_relation**tail_square2){
     //concatena la prima lista e la seconda lista =L1 unito L2=L1,L2

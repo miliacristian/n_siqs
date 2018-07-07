@@ -13,6 +13,7 @@ extern struct timespec time_start;
 extern int num_increment_M_and_B;
 extern struct row_factorization r;
 extern double thresold_relation;
+extern char combined;
 void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B){
 	//calcola valori di M e B cercando di minimizzare il numero di volte che i numeri devono essere aumentati
 	if(n==NULL || digit_n<=0 || M==NULL || B==NULL){
@@ -21,102 +22,125 @@ void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B){
 	if(digit_n<7){
 		*M=25;
 		*B=20;
-        thresold_relation=0.60;
+        thresold_relation=0.0;
+        combined=1;
 		return;
 	}
 	if(digit_n<9){
 		*M=68;
 		*B=38;
-        thresold_relation=0.60;
+        thresold_relation=0.0;
+        combined=1;
 		return;
 	}
 	if(digit_n<11){
 		*M=125;
 		*B=59;
-        thresold_relation=0.60;
+        thresold_relation=0.0;
+        combined=1;
 		return;
 	}
 	if(digit_n<13){
 		*M=303;
 		*B=112;
-        thresold_relation=0.60;
+        thresold_relation=0.0;
+        combined=1;
 		return;
 	}
 	if(digit_n<15){
 		*M=492;
 		*B=156;
-        thresold_relation=0.60;
+        thresold_relation=0.0;
+        combined=1;
 		return;
 	}
 	if(digit_n<17){
 		*M=1177;
 		*B=277;
-        thresold_relation=0.60;
+        thresold_relation=0.0;
+        combined=1;
 		return;
 	}
 	if(digit_n<19){
 		*M=2835;
 		*B=502;
+        thresold_relation=0.0;
+        combined=1;
 		return;
 	}
 	if(digit_n<21){
 		*M=9922;
 		*B=1668;
-        thresold_relation=0.60;
+        thresold_relation=0.0;
+        combined=1;
 		return;
 	}
 	if(digit_n<23){
 		*M=14958;
 		*B=2577;
-        thresold_relation=0.60;
+        thresold_relation=0.0;
+        combined=1;
 		return;
 	}
 	if(digit_n<25){
 		*M=22512;
 		*B=3540;
-        thresold_relation=0.60;
+        thresold_relation=0.0;
+        combined=1;
 		return;
 	}
-	if(digit_n<40){//da 37 cifre a 39,4 secondi di media
+	if(digit_n<30){
 		*M=22512;
 		*B=3540;
-        thresold_relation=0.60;
+		thresold_relation=0.3;
 		return;
 	}
-	if(digit_n<45){//da 42 a 44 cifre 4 secondi di media
+	if(digit_n<35){
+		*M=22512;
+		*B=3540;
+		thresold_relation=0.3;
+		return;
+	}
+	if(digit_n<40){//fino a 40 cifre meno di 1 secondo
+		*M=22512;
+		*B=3540;
+        thresold_relation=0.3;
+		return;
+	}
+	if(digit_n<45){//1,5 sec
 		*M=20000;
 		*B=8000;
-        thresold_relation=0.60;
+        thresold_relation=0.4;
 		return;
 	}
-	if(digit_n<50){//da 47 a 49 cifre, 6,5 secondi di media
+	if(digit_n<50){//2-3-4 sec
 		*M=20000;
 		*B=19000;
-        thresold_relation=0.60;
+        thresold_relation=0.4;
 		return;
 	}
-	if(digit_n<55){//da 53 a 54 cifre,37 secondi
+	if(digit_n<55){//20 sec
 		*M=60000;
 		*B=97000;
-        thresold_relation=0.60;
+        thresold_relation=0.6;
 		return;
 	}
     if(digit_n<60){//50 secondi
         *M=40000;
         *B=130000;
-        thresold_relation=0.60;
+        thresold_relation=0.6;
         return;
     }
 	if(digit_n<65){//2 minuti 30 secondi
 		*M=35000;
 		*B=140000;
-		thresold_relation=0.60;
+		thresold_relation=0.6;
 		return;
 	}
     if(digit_n<70){//6,5 minuti
         *M=50000;
         *B=250000;
-        thresold_relation=0.55;
+        thresold_relation=0.6;
         return;
     }
     if(digit_n<75){//35 minuti
@@ -125,16 +149,6 @@ void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B){
         thresold_relation=0.4;
         return;
     }
-	/*if(digit_n<75){//26 minuti
-		*M=150000;
-		*B=1500000;
-		return;
-	}*/
-    /*if(digit_n<75){//26 minuti
-        *M=200000;
-        *B=2000000;
-        return;
-    }*/
 	if(digit_n<80){
 		handle_error_with_exit("error criv_quad <80\n");
 		*M=35000;
