@@ -12,44 +12,46 @@ extern struct timespec time_start;
 //extern FILE*file_log;
 extern int num_increment_M_and_B;
 extern struct row_factorization r;
+extern double thresold_relation;
 void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B){
 	//calcola valori di M e B cercando di minimizzare il numero di volte che i numeri devono essere aumentati
 	if(n==NULL || digit_n<=0 || M==NULL || B==NULL){
 		handle_error_with_exit("error in calculate best M and B\n");
 	}
-	//*B=100*1000*1000;
-	//*M=5000000
-	//*M=400000;
-	//*B=4000000;
-
 	if(digit_n<7){
 		*M=25;
 		*B=20;
+        thresold_relation=0.60;
 		return;
 	}
 	if(digit_n<9){
 		*M=68;
 		*B=38;
+        thresold_relation=0.60;
 		return;
 	}
 	if(digit_n<11){
 		*M=125;
 		*B=59;
+        thresold_relation=0.60;
 		return;
 	}
 	if(digit_n<13){
 		*M=303;
 		*B=112;
+        thresold_relation=0.60;
 		return;
 	}
 	if(digit_n<15){
 		*M=492;
 		*B=156;
+        thresold_relation=0.60;
 		return;
 	}
 	if(digit_n<17){
 		*M=1177;
 		*B=277;
+        thresold_relation=0.60;
 		return;
 	}
 	if(digit_n<19){
@@ -60,61 +62,67 @@ void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B){
 	if(digit_n<21){
 		*M=9922;
 		*B=1668;
+        thresold_relation=0.60;
 		return;
 	}
 	if(digit_n<23){
 		*M=14958;
 		*B=2577;
+        thresold_relation=0.60;
 		return;
 	}
 	if(digit_n<25){
 		*M=22512;
 		*B=3540;
+        thresold_relation=0.60;
 		return;
 	}
 	if(digit_n<40){//da 37 cifre a 39,4 secondi di media
 		*M=22512;
 		*B=3540;
+        thresold_relation=0.60;
 		return;
 	}
 	if(digit_n<45){//da 42 a 44 cifre 4 secondi di media
 		*M=20000;
 		*B=8000;
+        thresold_relation=0.60;
 		return;
 	}
 	if(digit_n<50){//da 47 a 49 cifre, 6,5 secondi di media
 		*M=20000;
 		*B=19000;
+        thresold_relation=0.60;
 		return;
 	}
 	if(digit_n<55){//da 53 a 54 cifre,37 secondi
 		*M=60000;
 		*B=97000;
+        thresold_relation=0.60;
 		return;
 	}
-    if(digit_n<60){//35 secondi
+    if(digit_n<60){//50 secondi
         *M=40000;
         *B=130000;
+        thresold_relation=0.60;
         return;
     }
-	if(digit_n<65){//2 minuti 25 secondi
+	if(digit_n<65){//2 minuti 30 secondi
 		*M=35000;
 		*B=140000;
+		thresold_relation=0.60;
 		return;
 	}
-    /*if(digit_n<70){//7,5 minuti
-        *M=50000;
-        *B=370000;
-        return;
-    }*/
-    if(digit_n<70){//5-6 minuti ha B più piccolo
+    if(digit_n<70){//6,5 minuti
         *M=50000;
         *B=250000;
+        thresold_relation=0.55;
         return;
     }
-    if(digit_n<75){
+    if(digit_n<75){//35 minuti
         *M=45000;
         *B=300000;
+        thresold_relation=0.4;
         return;
     }
 	/*if(digit_n<75){//26 minuti

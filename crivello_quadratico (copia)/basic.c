@@ -23,6 +23,7 @@ struct timespec timer_test;
 extern int M;
 extern int cardinality_factor_base;
 extern long B;
+extern double thresold_relation;
 void check_variable_in_defines(){
     if(NUM_TEST_MILLER_RABIN<=0){
 		handle_error_with_exit("error in value num_test_miller_rabin\n");
@@ -467,7 +468,7 @@ void print_estimated_time(int cardinality_factor_base,int num_B_smooth){
     hour=(min-temp)/60;
     min=temp;
 
-    long times=((double)cardinality_factor_base*THRESOLD_RELATION)/(double)num_B_smooth;
+    long times=((double)cardinality_factor_base*thresold_relation)/(double)num_B_smooth;
     ms=ms*times;
     long remainder=ms%1000;
     int plus_sec=(ms-remainder)/1000;//secondi in più

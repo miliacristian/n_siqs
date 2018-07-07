@@ -53,6 +53,7 @@
     int combined_relations;
     char combined;
     mpz_t thresold_large_prime;
+    double thresold_relation;
 
 
 int main(int argc,char*argv[]){
@@ -403,7 +404,6 @@ int main(int argc,char*argv[]){
 										  &head_residuos, &tail_residuos, n, a_default, NULL, 0);
 				//print_time_elapsed("time_to find_list_square_relation main thread");
 			}
-
 			//aspetta tutti i thread e libera memoria
 			if(num_thread_job!=1 && NUM_THREAD_POLYNOMIAL>0){
 				join_all_threads(array_tid,NUM_THREAD_POLYNOMIAL);//aspetta tutti i thread
@@ -437,7 +437,6 @@ int main(int argc,char*argv[]){
 
 			//printf("num_potential_B_smooth_main_thread=%d,num_B_smooth_main_thread=%d,num_semi_B_smooth main thread=%d\n",
                    //num_potential_B_smooth,num_B_smooth,num_semi_B_smooth);
-
 			for(int i=0;i<NUM_THREAD_POLYNOMIAL;i++){//metti tutte le relazioni in head e tail,somma tutti i numeri B_smooth e semi_B_smooth
 				//le liste vengono unite in modo tale che quella finale è ordinata per numero
 			    union_list_square(&head_square,&tail_square,
@@ -458,7 +457,7 @@ int main(int argc,char*argv[]){
             //print_estimated_time(cardinality_factor_base,num_B_smooth);
             //exit(0);
             //trova nuove relazioni quadratiche con un nuovo square,una nuova fattorizazzione e imposta num=0
-            if((num_B_smooth>=cardinality_factor_base*THRESOLD_RELATION) && (combined==0)) {
+            if((num_B_smooth>=cardinality_factor_base*thresold_relation) && (combined==0)) {
             	combined=1;
                 quickSort_residuos(head_residuos);
                 head_sort_residuos=head_residuos;
