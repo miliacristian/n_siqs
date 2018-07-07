@@ -92,12 +92,12 @@ void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B){
 		*B=97000;
 		return;
 	}
-    if(digit_n<60){//1 minuto e 20 secondi
+    if(digit_n<60){//35 secondi
         *M=40000;
         *B=130000;
         return;
     }
-	if(digit_n<65){//4 minuti
+	if(digit_n<65){//2 minuti 25 secondi
 		*M=35000;
 		*B=140000;
 		return;
@@ -112,16 +112,26 @@ void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B){
         *B=250000;
         return;
     }
+	/*if(digit_n<75){//error log 35 trova più relazioni semi_B_smooth,35 minuti
+		*M=40000;
+		*B=300000;
+		return;
+	}*/
+    if(digit_n<75){//error log 35 12 minuti
+        *M=45000;
+        *B=300000;
+        return;
+    }
 	/*if(digit_n<75){//26 minuti
 		*M=150000;
 		*B=1500000;
 		return;
 	}*/
-    if(digit_n<75){//26 minuti
+    /*if(digit_n<75){//26 minuti
         *M=200000;
         *B=2000000;
         return;
-    }
+    }*/
 	if(digit_n<80){
 		handle_error_with_exit("error criv_quad <80\n");
 		*M=35000;
@@ -1107,10 +1117,10 @@ void calculate_a_f2(mpz_t a,const mpfr_t target_a,int*s,struct node_factor_base*
 		mpfr_clear(ratio);//double
 		return;
 	}
-	printf("target_a1=");
-	mpfr_out_str(stdout,10,0,target_a1,MPFR_RNDN);
-	printf("\n");
-    print_time_elapsed("time to calculate target_a1");
+	//printf("target_a1=");
+	//mpfr_out_str(stdout,10,0,target_a1,MPFR_RNDN);
+	//printf("\n");
+    //print_time_elapsed("time to calculate target_a1");
 
 	int count=0;//conta quante volte while(mpz_cmp(a,target_a1)<0) è verificata
 	int*q=alloc_array_int(s_max);//array che contiene gli indici dei primi scelti

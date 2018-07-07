@@ -467,7 +467,7 @@ void print_estimated_time(int cardinality_factor_base,int num_B_smooth){
     hour=(min-temp)/60;
     min=temp;
 
-    long times=cardinality_factor_base/num_B_smooth;
+    long times=((double)cardinality_factor_base*THRESOLD_RELATION)/(double)num_B_smooth;
     ms=ms*times;
     long remainder=ms%1000;
     int plus_sec=(ms-remainder)/1000;//secondi in più

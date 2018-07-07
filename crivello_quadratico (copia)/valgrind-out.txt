@@ -1,125 +1,142 @@
-==13372== Memcheck, a memory error detector
-==13372== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==13372== Using Valgrind-3.13.0 and LibVEX; rerun with -h for copyright info
-==13372== Command: ./criv_quad biprime2.txt
-==13372== Parent PID: 13371
-==13372== 
---13372-- 
---13372-- Valgrind options:
---13372--    --leak-check=full
---13372--    --show-leak-kinds=all
---13372--    --track-origins=yes
---13372--    --verbose
---13372--    --log-file=valgrind-out.txt
---13372-- Contents of /proc/version:
---13372--   Linux version 4.15.0-24-generic (buildd@lgw01-amd64-056) (gcc version 7.3.0 (Ubuntu 7.3.0-16ubuntu3)) #26-Ubuntu SMP Wed Jun 13 08:44:47 UTC 2018
---13372-- 
---13372-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-avx-avx2-bmi
---13372-- Page sizes: currently 4096, max supported 4096
---13372-- Valgrind library directory: /usr/lib/valgrind
---13372-- Reading syms from /home/cristian/Scrivania/crivello_quadratico (copia)1/crivello_quadratico (copia)/criv_quad
---13372-- Reading syms from /lib/x86_64-linux-gnu/ld-2.27.so
---13372--   Considering /lib/x86_64-linux-gnu/ld-2.27.so ..
---13372--   .. CRC mismatch (computed 1b7c895e wanted 2943108a)
---13372--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/ld-2.27.so ..
---13372--   .. CRC is valid
---13372-- Reading syms from /usr/lib/valgrind/memcheck-amd64-linux
---13372--   Considering /usr/lib/valgrind/memcheck-amd64-linux ..
---13372--   .. CRC mismatch (computed 62965bbf wanted eeb84137)
---13372--    object doesn't have a symbol table
---13372--    object doesn't have a dynamic symbol table
---13372-- Scheduler: using generic scheduler lock implementation.
---13372-- Reading suppressions file: /usr/lib/valgrind/default.supp
-==13372== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-13372-by-cristian-on-???
-==13372== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-13372-by-cristian-on-???
-==13372== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-13372-by-cristian-on-???
-==13372== 
-==13372== TO CONTROL THIS PROCESS USING vgdb (which you probably
-==13372== don't want to do, unless you know exactly what you're doing,
-==13372== or are doing some strange experiment):
-==13372==   /usr/lib/valgrind/../../bin/vgdb --pid=13372 ...command...
-==13372== 
-==13372== TO DEBUG THIS PROCESS USING GDB: start GDB like this
-==13372==   /path/to/gdb ./criv_quad
-==13372== and then give GDB the following command
-==13372==   target remote | /usr/lib/valgrind/../../bin/vgdb --pid=13372
-==13372== --pid is optional if only one valgrind process is running
-==13372== 
---13372-- REDIR: 0x401f2f0 (ld-linux-x86-64.so.2:strlen) redirected to 0x58060901 (???)
---13372-- REDIR: 0x401f0d0 (ld-linux-x86-64.so.2:index) redirected to 0x5806091b (???)
---13372-- Reading syms from /usr/lib/valgrind/vgpreload_core-amd64-linux.so
---13372--   Considering /usr/lib/valgrind/vgpreload_core-amd64-linux.so ..
---13372--   .. CRC mismatch (computed 13d5e98a wanted 1786ecf1)
---13372--    object doesn't have a symbol table
---13372-- Reading syms from /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so
---13372--   Considering /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so ..
---13372--   .. CRC mismatch (computed 8f77ef36 wanted fcbde737)
---13372--    object doesn't have a symbol table
-==13372== WARNING: new redirection conflicts with existing -- ignoring it
---13372--     old: 0x0401f2f0 (strlen              ) R-> (0000.0) 0x58060901 ???
---13372--     new: 0x0401f2f0 (strlen              ) R-> (2007.0) 0x04c32db0 strlen
---13372-- REDIR: 0x401d360 (ld-linux-x86-64.so.2:strcmp) redirected to 0x4c33ee0 (strcmp)
---13372-- REDIR: 0x401f830 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x4c374f0 (mempcpy)
---13372-- Reading syms from /usr/local/lib/libmpfr.so.6.0.1
---13372-- Reading syms from /lib/x86_64-linux-gnu/libm-2.27.so
---13372--   Considering /lib/x86_64-linux-gnu/libm-2.27.so ..
---13372--   .. CRC mismatch (computed 7feae033 wanted b29b2508)
---13372--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/libm-2.27.so ..
---13372--   .. CRC is valid
---13372-- Reading syms from /usr/local/lib/libgmp.so.10.3.2
---13372-- Reading syms from /lib/x86_64-linux-gnu/librt-2.27.so
---13372--   Considering /lib/x86_64-linux-gnu/librt-2.27.so ..
---13372--   .. CRC mismatch (computed 16979484 wanted f9e041e3)
---13372--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/librt-2.27.so ..
---13372--   .. CRC is valid
---13372-- Reading syms from /lib/x86_64-linux-gnu/libpthread-2.27.so
---13372--   Considering /usr/lib/debug/.build-id/28/c6aade70b2d40d1f0f3d0a1a0cad1ab816448f.debug ..
---13372--   .. build-id is valid
---13372-- Reading syms from /lib/x86_64-linux-gnu/libc-2.27.so
---13372--   Considering /lib/x86_64-linux-gnu/libc-2.27.so ..
---13372--   .. CRC mismatch (computed b1c74187 wanted 042cc048)
---13372--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/libc-2.27.so ..
---13372--   .. CRC is valid
---13372-- REDIR: 0x5b90c70 (libc.so.6:memmove) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---13372-- REDIR: 0x5b8fd40 (libc.so.6:strncpy) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---13372-- REDIR: 0x5b90f50 (libc.so.6:strcasecmp) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---13372-- REDIR: 0x5b8f790 (libc.so.6:strcat) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---13372-- REDIR: 0x5b8fd70 (libc.so.6:rindex) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---13372-- REDIR: 0x5b927c0 (libc.so.6:rawmemchr) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---13372-- REDIR: 0x5b90de0 (libc.so.6:mempcpy) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---13372-- REDIR: 0x5b90c10 (libc.so.6:bcmp) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---13372-- REDIR: 0x5b8fd00 (libc.so.6:strncmp) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---13372-- REDIR: 0x5b8f800 (libc.so.6:strcmp) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---13372-- REDIR: 0x5b90d40 (libc.so.6:memset) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---13372-- REDIR: 0x5bae0f0 (libc.so.6:wcschr) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---13372-- REDIR: 0x5b8fca0 (libc.so.6:strnlen) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---13372-- REDIR: 0x5b8f870 (libc.so.6:strcspn) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---13372-- REDIR: 0x5b90fa0 (libc.so.6:strncasecmp) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---13372-- REDIR: 0x5b8f840 (libc.so.6:strcpy) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---13372-- REDIR: 0x5b910e0 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---13372-- REDIR: 0x5b8fda0 (libc.so.6:strpbrk) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---13372-- REDIR: 0x5b8f7c0 (libc.so.6:index) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---13372-- REDIR: 0x5b8fc70 (libc.so.6:strlen) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---13372-- REDIR: 0x5b9a6c0 (libc.so.6:memrchr) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---13372-- REDIR: 0x5b90ff0 (libc.so.6:strcasecmp_l) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---13372-- REDIR: 0x5b90be0 (libc.so.6:memchr) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---13372-- REDIR: 0x5baeeb0 (libc.so.6:wcslen) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---13372-- REDIR: 0x5b90050 (libc.so.6:strspn) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---13372-- REDIR: 0x5b90f20 (libc.so.6:stpncpy) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---13372-- REDIR: 0x5b90ef0 (libc.so.6:stpcpy) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---13372-- REDIR: 0x5b927f0 (libc.so.6:strchrnul) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
---13372-- REDIR: 0x5b91040 (libc.so.6:strncasecmp_l) redirected to 0x4a2a6e0 (_vgnU_ifunc_wrapper)
-==13372== 
-==13372== Process terminating with default action of signal 2 (SIGINT)
-==13372==    at 0x58D8FF3: __pthread_initialize_minimal (nptl-init.c:405)
-==13372==    by 0x58D8680: ??? (in /lib/x86_64-linux-gnu/libpthread-2.27.so)
---13372-- REDIR: 0x5b89950 (libc.so.6:free) redirected to 0x4c30cd0 (free)
-==13372== 
-==13372== HEAP SUMMARY:
-==13372==     in use at exit: 0 bytes in 0 blocks
-==13372==   total heap usage: 0 allocs, 0 frees, 0 bytes allocated
-==13372== 
-==13372== All heap blocks were freed -- no leaks are possible
-==13372== 
-==13372== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
-==13372== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==27846== Memcheck, a memory error detector
+==27846== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==27846== Using Valgrind-3.13.0 and LibVEX; rerun with -h for copyright info
+==27846== Command: ./criv_quad biprime2.txt
+==27846== Parent PID: 27845
+==27846== 
+--27846-- 
+--27846-- Valgrind options:
+--27846--    --leak-check=full
+--27846--    --show-leak-kinds=all
+--27846--    --track-origins=yes
+--27846--    --verbose
+--27846--    --log-file=valgrind-out.txt
+--27846-- Contents of /proc/version:
+--27846--   Linux version 4.15.0-24-generic (buildd@lgw01-amd64-056) (gcc version 7.3.0 (Ubuntu 7.3.0-16ubuntu3)) #26-Ubuntu SMP Wed Jun 13 08:44:47 UTC 2018
+--27846-- 
+--27846-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-avx-avx2-bmi
+--27846-- Page sizes: currently 4096, max supported 4096
+--27846-- Valgrind library directory: /usr/lib/valgrind
+--27846-- Reading syms from /home/cristian/Scrivania/crivello_quadratico (copia)1/crivello_quadratico (copia)/criv_quad
+--27846-- Reading syms from /lib/x86_64-linux-gnu/ld-2.27.so
+--27846--   Considering /lib/x86_64-linux-gnu/ld-2.27.so ..
+--27846--   .. CRC mismatch (computed 1b7c895e wanted 2943108a)
+--27846--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/ld-2.27.so ..
+--27846--   .. CRC is valid
+--27846-- Reading syms from /usr/lib/valgrind/memcheck-amd64-linux
+--27846--   Considering /usr/lib/valgrind/memcheck-amd64-linux ..
+--27846--   .. CRC mismatch (computed 62965bbf wanted eeb84137)
+--27846--    object doesn't have a symbol table
+--27846--    object doesn't have a dynamic symbol table
+--27846-- Scheduler: using generic scheduler lock implementation.
+--27846-- Reading suppressions file: /usr/lib/valgrind/default.supp
+==27846== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-27846-by-cristian-on-???
+==27846== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-27846-by-cristian-on-???
+==27846== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-27846-by-cristian-on-???
+==27846== 
+==27846== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==27846== don't want to do, unless you know exactly what you're doing,
+==27846== or are doing some strange experiment):
+==27846==   /usr/lib/valgrind/../../bin/vgdb --pid=27846 ...command...
+==27846== 
+==27846== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==27846==   /path/to/gdb ./criv_quad
+==27846== and then give GDB the following command
+==27846==   target remote | /usr/lib/valgrind/../../bin/vgdb --pid=27846
+==27846== --pid is optional if only one valgrind process is running
+==27846== 
+--27846-- REDIR: 0x401f2f0 (ld-linux-x86-64.so.2:strlen) redirected to 0x58060901 (???)
+--27846-- REDIR: 0x401f0d0 (ld-linux-x86-64.so.2:index) redirected to 0x5806091b (???)
+--27846-- Reading syms from /usr/lib/valgrind/vgpreload_core-amd64-linux.so
+--27846--   Considering /usr/lib/valgrind/vgpreload_core-amd64-linux.so ..
+--27846--   .. CRC mismatch (computed 13d5e98a wanted 1786ecf1)
+--27846--    object doesn't have a symbol table
+--27846-- Reading syms from /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so
+--27846--   Considering /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so ..
+--27846--   .. CRC mismatch (computed 8f77ef36 wanted fcbde737)
+--27846--    object doesn't have a symbol table
+==27846== WARNING: new redirection conflicts with existing -- ignoring it
+--27846--     old: 0x0401f2f0 (strlen              ) R-> (0000.0) 0x58060901 ???
+--27846--     new: 0x0401f2f0 (strlen              ) R-> (2007.0) 0x04c32db0 strlen
+--27846-- REDIR: 0x401d360 (ld-linux-x86-64.so.2:strcmp) redirected to 0x4c33ee0 (strcmp)
+--27846-- REDIR: 0x401f830 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x4c374f0 (mempcpy)
+--27846-- Reading syms from /usr/local/lib/libmpfr.so.6.0.1
+--27846-- Reading syms from /lib/x86_64-linux-gnu/libm-2.27.so
+--27846--   Considering /lib/x86_64-linux-gnu/libm-2.27.so ..
+--27846--   .. CRC mismatch (computed 7feae033 wanted b29b2508)
+--27846--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/libm-2.27.so ..
+--27846--   .. CRC is valid
+==27846== 
+==27846== Process terminating with default action of signal 2 (SIGINT)
+==27846==    at 0x401CCDB: open (open64.c:47)
+==27846==    by 0x4005C06: open_verify.constprop.7 (dl-load.c:1668)
+==27846==    by 0x4006357: open_path (dl-load.c:1980)
+==27846==    by 0x4009188: _dl_map_object (dl-load.c:2220)
+==27846==    by 0x400E311: openaux (dl-deps.c:63)
+==27846==    by 0x401BC6A: _dl_catch_exception (dl-error-skeleton.c:196)
+==27846==    by 0x400E617: _dl_map_object_deps (dl-deps.c:249)
+==27846==    by 0x4003EA5: dl_main (rtld.c:1726)
+==27846==    by 0x401ADCF: _dl_sysdep_start (dl-sysdep.c:253)
+==27846==    by 0x4002127: _dl_start_final (rtld.c:414)
+==27846==    by 0x4002127: _dl_start (rtld.c:521)
+==27846==    by 0x4001097: ??? (in /lib/x86_64-linux-gnu/ld-2.27.so)
+==27846==    by 0x1: ???
+==27846== Jump to the invalid address stated on the next line
+==27846==    at 0x556: ???
+==27846==    by 0x4005C06: open_verify.constprop.7 (dl-load.c:1668)
+==27846==    by 0x4006357: open_path (dl-load.c:1980)
+==27846==    by 0x4009188: _dl_map_object (dl-load.c:2220)
+==27846==    by 0x400E311: openaux (dl-deps.c:63)
+==27846==    by 0x401BC6A: _dl_catch_exception (dl-error-skeleton.c:196)
+==27846==    by 0x400E617: _dl_map_object_deps (dl-deps.c:249)
+==27846==    by 0x4003EA5: dl_main (rtld.c:1726)
+==27846==    by 0x401ADCF: _dl_sysdep_start (dl-sysdep.c:253)
+==27846==    by 0x4002127: _dl_start_final (rtld.c:414)
+==27846==    by 0x4002127: _dl_start (rtld.c:521)
+==27846==    by 0x4001097: ??? (in /lib/x86_64-linux-gnu/ld-2.27.so)
+==27846==    by 0x1: ???
+==27846==  Address 0x556 is not stack'd, malloc'd or (recently) free'd
+==27846== 
+==27846== 
+==27846== Process terminating with default action of signal 11 (SIGSEGV)
+==27846==  Bad permissions for mapped region at address 0x556
+==27846==    at 0x556: ???
+==27846==    by 0x4005C06: open_verify.constprop.7 (dl-load.c:1668)
+==27846==    by 0x4006357: open_path (dl-load.c:1980)
+==27846==    by 0x4009188: _dl_map_object (dl-load.c:2220)
+==27846==    by 0x400E311: openaux (dl-deps.c:63)
+==27846==    by 0x401BC6A: _dl_catch_exception (dl-error-skeleton.c:196)
+==27846==    by 0x400E617: _dl_map_object_deps (dl-deps.c:249)
+==27846==    by 0x4003EA5: dl_main (rtld.c:1726)
+==27846==    by 0x401ADCF: _dl_sysdep_start (dl-sysdep.c:253)
+==27846==    by 0x4002127: _dl_start_final (rtld.c:414)
+==27846==    by 0x4002127: _dl_start (rtld.c:521)
+==27846==    by 0x4001097: ??? (in /lib/x86_64-linux-gnu/ld-2.27.so)
+==27846==    by 0x1: ???
+==27846== 
+==27846== HEAP SUMMARY:
+==27846==     in use at exit: 0 bytes in 0 blocks
+==27846==   total heap usage: 0 allocs, 0 frees, 0 bytes allocated
+==27846== 
+==27846== All heap blocks were freed -- no leaks are possible
+==27846== 
+==27846== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+==27846== 
+==27846== 1 errors in context 1 of 1:
+==27846== Jump to the invalid address stated on the next line
+==27846==    at 0x556: ???
+==27846==    by 0x4005C06: open_verify.constprop.7 (dl-load.c:1668)
+==27846==    by 0x4006357: open_path (dl-load.c:1980)
+==27846==    by 0x4009188: _dl_map_object (dl-load.c:2220)
+==27846==    by 0x400E311: openaux (dl-deps.c:63)
+==27846==    by 0x401BC6A: _dl_catch_exception (dl-error-skeleton.c:196)
+==27846==    by 0x400E617: _dl_map_object_deps (dl-deps.c:249)
+==27846==    by 0x4003EA5: dl_main (rtld.c:1726)
+==27846==    by 0x401ADCF: _dl_sysdep_start (dl-sysdep.c:253)
+==27846==    by 0x4002127: _dl_start_final (rtld.c:414)
+==27846==    by 0x4002127: _dl_start (rtld.c:521)
+==27846==    by 0x4001097: ??? (in /lib/x86_64-linux-gnu/ld-2.27.so)
+==27846==    by 0x1: ???
+==27846==  Address 0x556 is not stack'd, malloc'd or (recently) free'd
+==27846== 
+==27846== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
