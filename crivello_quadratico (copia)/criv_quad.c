@@ -150,9 +150,9 @@ void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B){
         return;
     }
 	if(digit_n<80){
-		handle_error_with_exit("error criv_quad <80\n");
-		*M=35000;
-		*B=15000;
+		*M=60000;
+		*B=750000;
+		thresold_relation=0.4;
 		return;
 	}
 	if(digit_n>=80){
