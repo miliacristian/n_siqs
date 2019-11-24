@@ -1,11 +1,36 @@
-#include "list_factor_base.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
-#include "basic.h"
-#include "math_function.h"
-#include <gmp.h>
+#include "factor_base_functions.h"
+
+//print factor base
+void print_list_factor_base(struct node_factor_base*head,int length){
+	if (head==NULL || length<0){
+		printf("impossible print list head is NULL\n");
+		return;
+	}
+	if(length==0){
+		printf("list is empty\n");
+	}
+	if(not_print_list(length)==1){
+		return;
+	}
+	struct node_factor_base *p=head;
+	while(p!=NULL){
+		printf("%d sq=%d,",p->prime,p->root_n_mod_prime);
+		p=p->next;
+	}
+	printf("\n");
+	return;
+}
+
+void print_factor_base(struct node*head_f_base){
+	if(head_f_base==NULL){
+		printf("factor_base is empty\n");
+		return;
+	}
+	printf("factor_base=");
+	print_list_mpz(head_f_base);
+	return;
+}
+
 char verify_sorted_list(struct node_factor_base*head,int length){
     if(head==NULL || length<=0){
         handle_error_with_exit("error in verify sorted list\n");

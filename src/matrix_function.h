@@ -1,8 +1,9 @@
-#include "math_function.h"
-//#include "list_factor_base.h"
 #ifndef O_H
 #define O_H
 
+#include "math_function.h"
+
+#include "factor_base_functions.h"
 int* sum_vector(int*vector1,int*vector2,int lenght1,int lenght2);
 long* sum_elem_multiple_of_2(long*vector1,long*vector2,int length1,int length2);
 void sum_elem_multiple_of_2_mpz(mpz_t*vector1,mpz_t*vector2,int length1,int length2);

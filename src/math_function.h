@@ -1,8 +1,11 @@
+#ifndef MATH_H
+#define MATH_H
+
 #include "dynamic_list.h"
 #include "print.h"
 #include <gmp.h>
-#include "list_factor_base.h"
 #include "basic.h"
+//#include "factorization_functions.h"
 void square_root_mod_p_to_k(mpz_t rootpk,const mpz_t x,long p,const mpz_t n,int k);
 void reduce_mod_n(long *a,long n);//reduce a mod n
 void reduce_mod_n_int(int *a,int n);//reduce a mod n
@@ -62,6 +65,7 @@ struct node_factorization*factorize_num_v1(const mpz_t num,int first_index_f_bas
 char calculate_num_from_factorization(mpz_t num_temp,struct node_factorization*head_factor);
 char verify_square_relation(struct square_relation square_relation,const mpz_t n);
 void calculate_thresold_large_prime(mpz_t thresold_large_prime,int max_prime);
+#endif
 
 
 

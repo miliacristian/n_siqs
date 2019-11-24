@@ -1,7 +1,17 @@
-#include "dynamic_list.h"
-//#include "list_factor_base.h"
-#include "basic.h"
+#ifndef PRINT_H
+#define PRINT_H
+
+#include "math_function.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+#include "list_square_relation.h"
 #include <gmp.h>
+char not_print_list(int length);
+char not_print_array(long length);
+char not_print_matrix(long num_row,long num_col);
+
 void print_array_char(char*array,int lenght);
 void print_array_long(long*array,int lenght);
 void print_array_int(int*array,int lenght);
@@ -32,8 +42,8 @@ void print_matrix_mpz(mpz_t**matrix,int num_row,int num_col);
 void print_array_matrix_same_dimension(mpz_t***array_matrix_mpz,int length_array,int num_row,int num_col);
 //void print_matrix_factorization_f(struct matrix_factorization m);
 void print_array_float(float*array,int length);
-void print_list_factor(struct node_factor_base*head,int length);
-void print_factorization(const mpz_t num,struct node_factorization*head_factor);
+//void print_list_factor(struct node_factor_base*head,int length);
+//void print_factorization(const mpz_t num,struct node_factorization*head_factor);
 void print_list_square_relation(struct node_square_relation*head,int length);
 void print_array_a_struct(struct a_struct*array_a_struct,int length);
 void print_linear_system(char*linear_system,int cardinality_factor_base,int num_of_B_smooth);
@@ -41,3 +51,4 @@ void print_matrix_char(char**matrix,int num_row,int num_col);
 void print_binary_matrix(unsigned long**binary_matrix,int num_row,int num_col);
 void print_struct_square_relation(struct square_relation square_relation);
 void print_thread_data(struct thread_data thread_data,long M,int cardinality_factor_base);
+#endif

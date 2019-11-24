@@ -1,7 +1,8 @@
-#include "properties.h"
-#include <gmp.h>
 #ifndef DIN_H
 #define DIN_H
+#include "properties.h"
+#include <gmp.h>
+
 struct node  {//struttura di un nodo della lista dinamica ordianta,la lista tiene traccia delle trasmissioni e delle ritrasmissioni
     mpz_t prime;
     struct node* next;//puntatore al prossimo

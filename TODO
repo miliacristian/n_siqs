@@ -1,0 +1,20 @@
+pin thread sui core
+numero thread pari al numero di core
+alloc/free meno possibile gestione della memoria manuale con wrapper,riutilizzo della memoria liberata o con madvise,posix_memalign mallopt,madvise ecc
+allineare le strutture dati condivise e non condivise (alla linea di cache o altro)
+parallelizzare le parti sequenziali
+inserire define per far assumere al programma diversi comportamenti in base alla compilazione
+rimuovere false cache sharing
+evitare di ricreare ogni volta i thread
+inserire variabili per thread
+minimizzare il numero di system call
+in ogni istante tutti i thread devono essere running(in esecuzione o meno)
+speculare dove possibile se è conveniente
+meccanismo dei segnali per thread se serve a qualcosa
+parallelizzare la riduzione della matrice a scala
+scrivere il codice in modo tale che sfrutti a pieno la cache
+pulizia codice
+scrivere codice a parte per la fase di training per scegliere m e B
+vedere se conviene inserire la parte di training per un numero specifico da fattorizzare all'interno del programma(da considerare nel tempo di esecuzione del programma)
+scrivere grafo delle inclusioni e sistemare header file in modo tale che ogni file includa il numero minore di altri files
+cache profilers

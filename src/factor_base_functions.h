@@ -1,14 +1,23 @@
+
+#ifndef FAC_BASE_FUNC_H
+#define FAC_BASE_FUNC_H
+#include "mpz_functions.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+#include "basic.h"
+#include "math_function.h"
 #include <gmp.h>
-#ifndef DIN_F_H
-#define DIN_F_H
 struct node_factor_base  {//struttura di un nodo della lista dinamica ordianta,la lista tiene traccia delle trasmissioni e delle ritrasmissioni
     int prime;
     struct node_factor_base* next;//puntatore al prossimo
     struct node_factor_base* prev;//puntatore al precedente
     int root_n_mod_prime;
 };
+void print_list_factor_base(struct node_factor_base*head,int length);
+void print_factor_base(struct node*head_f_base);
 
-#endif
 int count_element_linked_list_f(struct node_factor_base*head);
 void get_element_linked_list_f(int *elem,struct node_factor_base*head,int index);
 void remove_after_node_f(struct node_factor_base**ppos,struct node_factor_base**tail);
@@ -31,3 +40,5 @@ void free_memory_list_f(struct node_factor_base*head);
 void union_list_factor_base(struct node_factor_base**head1,struct node_factor_base**tail1,int*cardinality_factor_base1,int*last_prime_factor_base1,
                             struct node_factor_base*head2,struct node_factor_base*tail2,int cardinality_factor_base2,int last_prime_factor_base2);
 char verify_cardinality_list_factor_base(struct node_factor_base*head,int length);
+
+#endif
