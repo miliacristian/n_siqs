@@ -1,16 +1,21 @@
-#ifndef O_H
-#define O_H
+#ifndef MAT
+#define MAT
+#include "properties.h"
+#include <mpfr.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+#include "print.h"
+unsigned long**alloc_matrix_unsigned_long(int num_row,int num_col);
 
-#include "math_function.h"
-
-#include "factor_base_functions.h"
-#include "matrix_function_v2.h"
 int* sum_vector(int*vector1,int*vector2,int lenght1,int lenght2);
 long* sum_elem_multiple_of_2(long*vector1,long*vector2,int length1,int length2);
 void sum_elem_multiple_of_2_mpz(mpz_t*vector1,mpz_t*vector2,int length1,int length2);
 void prod_vector_and_scalar(int*vector,int scalar,int lenght);
 int* prod_vector_and_scalar_v2(int*vector,int scalar,int lenght);
-int*get_col(int matrix[7][3],int num_row,int num_col,int index_col);
+int*get_col(int matrix[7][3],int num_row,int num_col,int index_col);//modificare
 void reduce_matrix_mod_n(int**linear_system,int cardinality_factor_base,int num_of_B_smooth,int n);
 mpz_t*create_array_temp_factorization(int card_f_base,mpz_t*row_matrix_b_smooth);
 char is_in_array_long(long*array,long length,long p_i);
