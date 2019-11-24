@@ -2,14 +2,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include "basic.h"
-#include "math_function.h"
-#include "dynamic_list.h"
+//#include "basic.h"
+//#include "math_function.h"
+//#include "dynamic_list.h"
 #include "matrix_function.h"
-#include "print.h"
+//#include "print.h"
 #include <gmp.h>
 #include <mpfr.h>
-#include "list_factor_base.h"
+//#include "list_factor_base.h"
 void calculate_a_and_b(int*solution,mpz_t**matrix_B_smooth,int num_B_smooth,int card_f_base,mpz_t a,mpz_t b,const mpz_t n);
 int try_to_factor(const mpz_t a,const mpz_t b,const mpz_t n,mpz_t factor1,mpz_t factor2);
 int factor_n(int **matrix_solution,int dim_sol,int num_B_smooth,mpz_t**matrix_B_smooth,int card_f_base,const mpz_t n);

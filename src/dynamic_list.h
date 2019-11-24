@@ -1,3 +1,4 @@
+#include "properties.h"
 #include <gmp.h>
 #ifndef DIN_H
 #define DIN_H

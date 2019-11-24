@@ -1,5 +1,5 @@
 #include "dynamic_list.h"
-#include "list_factor_base.h"
+//#include "list_factor_base.h"
 #include "basic.h"
 #include <gmp.h>
 void print_array_char(char*array,int lenght);

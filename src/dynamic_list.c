@@ -1,10 +1,4 @@
 #include "dynamic_list.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
-#include "basic.h"
-#include <gmp.h>
 
 int count_element_linked_list(struct node*head){
 	int count=0;

@@ -1,19 +1,21 @@
+
+#include "basic.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include "basic.h"
 #include <time.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
 #include "miller_rabin.h"
-#include "dynamic_list.h"
+//#include "dynamic_list.h"
 #include <pthread.h>
 #include "matrix_function.h"
 #include "main.h"
 #include "list_square_relation.h"
 #include "list_factorization.h"
+#include "properties.h"
 
 struct timespec;
 struct timespec timer;
@@ -646,14 +648,3 @@ char array_is_fill_of_value(char*combination,int length,char value){//verifica c
 	return 1;
 }
 
-void handle_error_with_exit(char*error_string){//uccide il processo dopo essersi accorto di un errore
-    if(error_string==NULL){
-	printf("error string is NULL\n");
-	perror("");
-        exit(EXIT_FAILURE);
-    }
-    printf("%s",error_string);
-    //verifica che la stringa contenga il carattere newline
-    //fprintf(file_log,"%s",error_string);
-    exit(EXIT_FAILURE);
-}

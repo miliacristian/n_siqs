@@ -1,5 +1,5 @@
 #include "math_function.h"
-#include "list_factor_base.h"
+//#include "list_factor_base.h"
 #ifndef O_H
 #define O_H
 

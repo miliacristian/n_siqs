@@ -31,6 +31,7 @@
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
+
 #ifndef LINE_H
 #define LINE_H
 

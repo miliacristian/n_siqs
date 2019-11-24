@@ -3,8 +3,8 @@
 #include <string.h>
 #include <math.h>
 #include "matrix_function.h"
-#include "basic.h"
-#include "list_factor_base.h"
+//#include "basic.h"
+//#include "list_factor_base.h"
 #include "list_square_relation.h"
 #include "list_factorization.h"
 #include <mpfr.h>

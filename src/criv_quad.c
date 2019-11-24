@@ -1,8 +1,8 @@
 #include "criv_quad.h"
-#include "math_function.h"
+//#include "math_function.h"
 #include <gmp.h>
 #include <mpfr.h>
-#include "list_factor_base.h"
+//#include "list_factor_base.h"
 #include "list_square_relation.h"
 #include "list_factorization.h"
 
@@ -138,8 +138,8 @@ void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B){
 		return;
 	}
     if(digit_n<70){//6,5 minuti
-        *M=50000;
-        *B=250000;
+        *M=40000;
+        *B=180000;
         thresold_relation=0.6;
         return;
     }
