@@ -8,6 +8,7 @@
 #include <math.h>
 #include "list_square_relation.h"
 #include <gmp.h>
+#include "printv2.h"
 char not_print_list(int length);
 char not_print_array(long length);
 char not_print_matrix(long num_row,long num_col);
