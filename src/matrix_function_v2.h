@@ -7,7 +7,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include "print.h"
+#include "printv2.h"
+#include "math_functionv2.h"
+#include "basicv2.h"
+#include "timing.h"
 unsigned long**alloc_matrix_unsigned_long(int num_row,int num_col);
 
 int* sum_vector(int*vector1,int*vector2,int lenght1,int lenght2);
@@ -19,7 +22,7 @@ int*get_col(int matrix[7][3],int num_row,int num_col,int index_col);//modificare
 void reduce_matrix_mod_n(int**linear_system,int cardinality_factor_base,int num_of_B_smooth,int n);
 mpz_t*create_array_temp_factorization(int card_f_base,mpz_t*row_matrix_b_smooth);
 char is_in_array_long(long*array,long length,long p_i);
-mpz_t**create_matrix_factorization(long M,int cardinality_factor_base,struct node*head_f_base,long*array_of_prime_chosen_for_a,const mpz_t a,const mpz_t b);
+
 int**alloc_linear_system(int cardinality_f_base,int num_B_smooth);//alloca matrice con la fattorizzazione dei numeri b_smmoth
 int**create_linear_system(int cardinality_f_base,mpz_t** matrix_B_smooth,int num_B_smooth);
 long*alloc_array_long(int lenght);
@@ -65,7 +68,6 @@ char check_if_array_is_reduce_mod_n(int*array,int length,int n);
 void reduce_array_mod_n(int*array,int length,int n);
 struct matrix_factorization*create_matrix_factorization_f(int M,int card_f_base,const mpz_t a,
 const mpz_t b,const mpz_t n);
-void create_row_factorization(struct node_factor_base*head_f_base_f,int card_f_base,const mpz_t a,struct a_struct*array_a_struct,int s);
 struct matrix_factorization**alloc_array_matrix_factorization(int length_array_matrix);
 void concatenate_all_matrix_factorization_same_dimension(struct matrix_factorization**array_matrix_factorization,int length_array_matrix,int *row_result,int num_row_matrix);
 int count_number_B_smooth_matrix_unsorted_f(struct matrix_factorization *single_matrix_factorization,int num_row);
@@ -86,11 +88,8 @@ void divide_vector_multiple_of_2_by_2(int*vector,int length);
 char**alloc_matrix_char(int num_row,int num_col);
 void copy_matrix_with_array(char**linear_system2,char*linear_system,int num_row,int num_col);
 void reduce_echelon_form_matrix_char(char**matrix,int num_row,int num_col);
-char value_is_in_sorted_array(int index_of_prime,struct a_struct*array_a_struct,int length);
-char*create_linear_system_f(struct node_square_relation*head,int cardinality_factor_base,int num_B_smooth);
 void swap_row_unsigned_long(unsigned long**matrix,int num_row,int ind_row1,int ind_row2);
 void reduce_echelon_form_binary_matrix(unsigned long**binary_matrix,int num_row,int num_col);
-unsigned long**create_binary_linear_system(struct node_square_relation*head,int cardinality_factor_base,int num_B_smooth,int*num_col_binary_matrix);
 char*from_matrix_binary_to_matrix_char(unsigned long**binary_linear_system,int num_row,int num_col_binary_matrix,int*num_col_linear_system);
 int calculate_dim_solution(int num_row_not_null,int num_col_not_null);
 #endif
