@@ -185,17 +185,6 @@ void divide_elem_multiple_of_2_by_x(mpz_t*vector,int length,double x){//vector =
 	}
 	return;
 }
-
-void free_memory_matrix_mpz(mpz_t**matrix,int num_row,int num_col){
-	if(matrix==NULL || *matrix==NULL || num_row<=0 || num_col<=0){
-		handle_error_with_exit("error in free memory matrix mpz\n");
-	}
-	for(int i=0;i<num_row;i++){
-		free_memory_array_mpz(matrix[i],num_col);
-	}
-	free(matrix);
-	return;
-}
 void free_memory_array_mpz(mpz_t*array,long length){
 	if(length<0){
 		handle_error_with_exit("error in free memory array mpz\n");
@@ -212,5 +201,16 @@ void free_memory_array_mpz(mpz_t*array,long length){
 		mpz_clear(array[i]);
 	}
 	free(array);
+}
+
+void free_memory_matrix_mpz(mpz_t**matrix,int num_row,int num_col){
+	if(matrix==NULL || *matrix==NULL || num_row<=0 || num_col<=0){
+		handle_error_with_exit("error in free memory matrix mpz\n");
+	}
+	for(int i=0;i<num_row;i++){
+		free_memory_array_mpz(matrix[i],num_col);
+	}
+	free(matrix);
+	return;
 }
 

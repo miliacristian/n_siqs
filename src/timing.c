@@ -1,5 +1,6 @@
 #include "timing.h"
 struct timespec timer;
+struct timespec time_start;
 void gettime(struct timespec*timer){
 	if(timer==NULL){
 		handle_error_with_exit("error in gettime\n");

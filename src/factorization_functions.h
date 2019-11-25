@@ -3,6 +3,7 @@
 
 #include "properties.h"
 #include "mpz_functions.h"
+#include "list_square_relation.h"
 struct node_factorization {
     int number;
     int exp_of_number;

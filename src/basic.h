@@ -76,7 +76,6 @@ void handle_error_with_exit(char*error_string);
 char array_is_fill_of_value(char*combination,int length,char value);
 void free_memory_matrix_int(int **matrix,int num_row,int num_col);
 void free_memory_matrix_long(long **matrix,int num_row,int num_col);
-void free_memory_array_mpz(mpz_t*array_number,long length);
 void gettime(struct timespec*timer);
 char get_and_check_n(mpz_t n,FILE*file_number);
 void free_memory_matrix_mpz(mpz_t**matrix,int num_row,int num_col);

@@ -1,4 +1,9 @@
 #include "properties.h"
+long k;
+double thresold_relation;
+int num_increment_M_and_B;
+char combined;
+
 void handle_error_with_exit(char*error_string){//uccide il processo dopo essersi accorto di un errore
     if(error_string==NULL){
 	printf("error string is NULL\n");

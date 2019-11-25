@@ -35,3 +35,30 @@ void unlock_mtx(pthread_mutex_t *mtx){//unlock mutex
 	}
 	return;
 }
+FILE*open_file_log(){
+	FILE*file=fopen("file_log.txt","a");//modalità append
+	if(file==NULL){
+		handle_error_with_exit("error in fopen,impossible open file\n");
+	}
+	return file;
+}
+long get_file_size(char*path){//ritorna la dimensione di un file dato un path
+    if(path==NULL){
+        handle_error_with_exit("error in get_file_size\n");
+    }
+    struct stat st;
+    if(stat(path,&st)==-1){
+        handle_error_with_exit("error get file_status\n");
+    }
+    return st.st_size;
+}
+FILE*open_file(char*path){
+	if(path==NULL){
+		handle_error_with_exit("error in open_file path is NULL\n");
+	}
+	FILE*file=fopen(path,"r");
+	if(file==NULL){
+		handle_error_with_exit("error in opne_file,fopen function\n");
+	}
+	return file;
+}

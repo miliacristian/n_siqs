@@ -20,6 +20,7 @@
 #include "list_square_relation.h"
 #include <pthread.h>
 #include "parameters.h"
+#include "mpz_functions.h"
 int thread_job_criv_quad(int i);
 int thread_job_to_create_factor_base(int id_thread);
 #endif
