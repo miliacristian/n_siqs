@@ -1,5 +1,5 @@
 #include "factor_base_functions.h"
-
+extern long B;
 //print factor base
 void print_list_factor_base(struct node_factor_base*head,int length){
 	if (head==NULL || length<0){
@@ -340,4 +340,11 @@ void free_memory_list_f(struct node_factor_base*head){
 		p=q;
 	}
 	return;
+}
+
+int calculate_start_factor_base(int id_thread){
+    long remainder=reduce_int_mod_n_v2(B,NUM_THREAD_FACTOR_BASE+1);
+    long length=(B-remainder)/(NUM_THREAD_FACTOR_BASE+1);
+    int start=id_thread*length+1;
+    return start;
 }

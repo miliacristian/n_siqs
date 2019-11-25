@@ -1366,6 +1366,62 @@ long get_index(int index_row,int index_col,int num_col){
 	return index;
 }
 
+void free_memory_matrix_long(long **matrix,int num_row,int num_col){
+	if(matrix==NULL || *matrix==NULL || num_row<=0 || num_col<=0){
+		handle_error_with_exit("error in free memory matrix int\n");
+	}
+	for(int i=0;i<num_row;i++){
+		free(matrix[i]);
+	}
+	free(matrix);
+	matrix=NULL;
+	return;
+}
+void free_memory_matrix_int(int **matrix,int num_row,int num_col){
+	if(matrix==NULL || *matrix==NULL || num_row<=0 || num_col<=0){
+		handle_error_with_exit("error in free memory matrix int\n");
+	}
+	for(int i=0;i<num_row;i++){
+		free(matrix[i]);
+	}
+	free(matrix);
+	matrix=NULL;
+	return;
+}
+void free_memory_matrix_unsigned_long(unsigned long **matrix,int num_row,int num_col){
+	if(matrix==NULL || *matrix==NULL || num_row<=0 || num_col<=0){
+		handle_error_with_exit("error in free memory matrix int\n");
+	}
+	for(int i=0;i<num_row;i++){
+		free(matrix[i]);
+	}
+	free(matrix);
+	matrix=NULL;
+	return;
+}
+void free_memory_matrix_char(char **matrix,int num_row,int num_col){
+	if(matrix==NULL || *matrix==NULL || num_row<=0 || num_col<=0){
+		handle_error_with_exit("error in free memory matrix int\n");
+	}
+	for(int i=0;i<num_row;i++){
+		free(matrix[i]);
+	}
+	free(matrix);
+	matrix=NULL;
+	return;
+}
+char array_is_fill_of_value(char*combination,int length,char value){//verifica che ogni elemento dell'array è uguale a value
+	if(length<=0 || combination==NULL){
+		handle_error_with_exit("error in parameter\n");
+	}
+	for(int i=0;i<length;i++){
+		if(combination[i]!=value){
+			return 0;
+		}
+	}
+	return 1;
+}
+
 
 
 

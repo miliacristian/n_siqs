@@ -9,6 +9,8 @@
 #include "basic.h"
 #include "math_function.h"
 #include <gmp.h>
+#include "parameters.h"
+#include "math_functionv2.h"
 struct node_factor_base  {//struttura di un nodo della lista dinamica ordianta,la lista tiene traccia delle trasmissioni e delle ritrasmissioni
     int prime;
     struct node_factor_base* next;//puntatore al prossimo

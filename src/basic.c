@@ -15,127 +15,20 @@
 #include "list_factorization.h"
 #include "properties.h"
 #include "timing.h"
+#include "parameters.h"
 struct timespec;
 extern struct timespec timer;
 struct timespec time_start;
 struct timespec timer_test;
 
-extern int M;
+extern long M;
 extern int cardinality_factor_base;
 extern long B;
 extern double thresold_relation;
-void check_variable_in_defines(){
-    if(NUM_TEST_MILLER_RABIN<=0){
-		handle_error_with_exit("error in value num_test_miller_rabin\n");
-    }
-    if(RAD2<=0){
-		handle_error_with_exit("error in value rad2\n");
-    }
-    if(THRESOLD_PRINT_ARRAY<=0){
-		handle_error_with_exit("error in value thresold_print_array");
-    }
-	if(THRESOLD_PRINT_MATRIX<=0){
-		handle_error_with_exit("error in value thresold_print_matrix\n");
-	}
-	if(THRESOLD_PRINT_LIST<=0){
-		handle_error_with_exit("error in value thresold print_list\n");
-	}
-	if(SIQS_MIN_PRIME_POLYNOMIAL<=0){
-		handle_error_with_exit("error in value siqs_min_prime_polynomial\n");
-	}
-	if(SIQS_MAX_PRIME_POLYNOMIAL<=0){
-		handle_error_with_exit("error in value siqs_max_prime_polynomial\n");
-	}
-	if(NUM_ITER_FOR_CALCULATE_A<=0){
-		handle_error_with_exit("error in value num_iter_for_calculate_a\n");
-    }
-    if(MAX_ITER<=0){
-		handle_error_with_exit("error in value max_iter\n");
-    }
-	if(MAX_ITER2<=0){
-		handle_error_with_exit("error in value max_iter2\n");
-	}
-	if(RATIO_A<=0){
-		handle_error_with_exit("error in value ratio_a\n");
-	}
-	if(NUM_THREAD_FACTOR_BASE<0){
-		handle_error_with_exit("error in value num_thread_factor_base\n");
-	}
-	if(NUM_THREAD_POLYNOMIAL<0){
-		handle_error_with_exit("error in value num_thread_polynomial\n");
-	}
-	if(S_MAX<=0){
-		handle_error_with_exit("error in value s_max\n");
-	}
-	if(MAX_DIM_SOL<=0){
-		handle_error_with_exit("error in value max_dim_sol\n");
-	}
-	if(PERC_INCREMENT_M<=0){
-		handle_error_with_exit("error in value perc_increment_m\n");
-	}
-	if(PERC_INCREMENT_B<=0){
-		handle_error_with_exit("error in value perc_increment b\n");
-	}
-	if(NUM_OF_N_TO_FACTORIZE<1){
-		handle_error_with_exit("error in value num_of_n_to_factorize\n");
-	}
-	if(ENOUGH_RELATION<0){
-		handle_error_with_exit("error in value enough relation\n");
-	}
-	if(THRESOLD_B<=0){
-		handle_error_with_exit("error in value thresold_b\n");
-	}
-	if(BIT_OF_UNSIGNED_LONG<8 || BIT_OF_UNSIGNED_LONG%8!=0){
-		handle_error_with_exit("error in value bit_of_unsigned_long\n");
-	}
-	if(TEST!=0 && TEST!=1){
-        handle_error_with_exit("error in value TEST\n");
-    }
-	return;
-}
-int calculate_start_factor_base(int id_thread){
-    long remainder=reduce_int_mod_n_v2(B,NUM_THREAD_FACTOR_BASE+1);
-    long length=(B-remainder)/(NUM_THREAD_FACTOR_BASE+1);
-    int start=id_thread*length+1;
-    return start;
-}
 
-void destroy_mtx(pthread_mutex_t *mtx){
-	if(mtx==NULL){
-		handle_error_with_exit("error in destroy_mtx mtx is NULL\n");
-	}
-	if(pthread_mutex_destroy(mtx)!=0){
-		handle_error_with_exit("error in pthread_mutex_destroy\n");
-	}
-	return;
-}
-void initialize_mtx(pthread_mutex_t *mtx){//inizializza mutex
-	if(mtx==NULL){
-		handle_error_with_exit("error in initialize_mtx mtx is NULL\n");
-	}
-	if(pthread_mutex_init(mtx,NULL)!=0){
-		handle_error_with_exit("error in initialize mtx\n");
-	}
-	return;
-}
-void lock_mtx(pthread_mutex_t *mtx){//lock mutex
-	if(mtx==NULL){
-		handle_error_with_exit("error in lock_mtx mtx is NULL\n");
-	}
-	if(pthread_mutex_lock(mtx)!=0){
-		handle_error_with_exit("error in pthread_mutex_lock\n");
-	}
-	return;
-}
-void unlock_mtx(pthread_mutex_t *mtx){//unlock mutex
-	if(mtx==NULL){
-		handle_error_with_exit("error in unlock_mtx mtx is NULL\n");
-	}
-	if(pthread_mutex_unlock(mtx)!=0){
-		handle_error_with_exit("error in pthread_mutex_unlock\n");
-	}
-	return;
-}
+
+
+
 int compare_a_struct( const void* a, const void* b)
 {
 	struct a_struct s_a = * ( (struct a_struct*) a );
@@ -259,13 +152,6 @@ struct thread_data*alloc_array_polynomial_thread_data(int length_array_thread_da
 	return t_data;
 }
 
-FILE*open_file_log(){
-	FILE*file=fopen("file_log.txt","a");//modalità append
-	if(file==NULL){
-		handle_error_with_exit("error in fopen,impossible open file\n");
-	}
-	return file;
-}
 void test(){
 	//operazioni da fare in fase di test
 	handle_error_with_exit("\n");
@@ -372,22 +258,15 @@ void join_all_threads(pthread_t*array_tid,int length_array){
 	return;
 }
 
-pthread_t *alloc_array_tid(int num_thread){
-	if(num_thread<0){
-		handle_error_with_exit("error in create_thread\n");
+
+
+FILE*open_file_log(){
+	FILE*file=fopen("file_log.txt","a");//modalità append
+	if(file==NULL){
+		handle_error_with_exit("error in fopen,impossible open file\n");
 	}
-	if(num_thread==0){
-		return NULL;
-	}
-	pthread_t*array_tid=malloc(sizeof(pthread_t)*num_thread);
-	if(array_tid==NULL){
-		handle_error_with_exit("error in malloc alloc array tid\n");
-	}
-	memset(array_tid,0,sizeof(pthread_t)*num_thread);
-	return array_tid;
+	return file;
 }
-
-
 long get_file_size(char*path){//ritorna la dimensione di un file dato un path
     if(path==NULL){
         handle_error_with_exit("error in get_file_size\n");
@@ -451,87 +330,5 @@ void print_estimated_time(int cardinality_factor_base,int num_B_smooth){
 
 
 
-void free_memory_matrix_mpz(mpz_t**matrix,int num_row,int num_col){
-	if(matrix==NULL || *matrix==NULL || num_row<=0 || num_col<=0){
-		handle_error_with_exit("error in free memory matrix mpz\n");
-	}
-	for(int i=0;i<num_row;i++){
-		free_memory_array_mpz(matrix[i],num_col);
-	}
-	free(matrix);
-	return;
-}
-void free_memory_array_mpz(mpz_t*array,long length){
-	if(length<0){
-		handle_error_with_exit("error in free memory array mpz\n");
-	}
-	if(length==0){
- 		if(array==NULL){
-			return;
-		}
-		else{
-			handle_error_with_exit("error in parameter array free memory array mpz\n");
-		}
-	}
-	for(long i=0;i<length;i++){
-		mpz_clear(array[i]);
-	}
-	free(array);
-}
 
-void free_memory_matrix_long(long **matrix,int num_row,int num_col){
-	if(matrix==NULL || *matrix==NULL || num_row<=0 || num_col<=0){
-		handle_error_with_exit("error in free memory matrix int\n");
-	}
-	for(int i=0;i<num_row;i++){
-		free(matrix[i]);
-	}
-	free(matrix);
-	matrix=NULL;
-	return;
-}
-void free_memory_matrix_int(int **matrix,int num_row,int num_col){
-	if(matrix==NULL || *matrix==NULL || num_row<=0 || num_col<=0){
-		handle_error_with_exit("error in free memory matrix int\n");
-	}
-	for(int i=0;i<num_row;i++){
-		free(matrix[i]);
-	}
-	free(matrix);
-	matrix=NULL;
-	return;
-}
-void free_memory_matrix_unsigned_long(unsigned long **matrix,int num_row,int num_col){
-	if(matrix==NULL || *matrix==NULL || num_row<=0 || num_col<=0){
-		handle_error_with_exit("error in free memory matrix int\n");
-	}
-	for(int i=0;i<num_row;i++){
-		free(matrix[i]);
-	}
-	free(matrix);
-	matrix=NULL;
-	return;
-}
-void free_memory_matrix_char(char **matrix,int num_row,int num_col){
-	if(matrix==NULL || *matrix==NULL || num_row<=0 || num_col<=0){
-		handle_error_with_exit("error in free memory matrix int\n");
-	}
-	for(int i=0;i<num_row;i++){
-		free(matrix[i]);
-	}
-	free(matrix);
-	matrix=NULL;
-	return;
-}
-char array_is_fill_of_value(char*combination,int length,char value){//verifica che ogni elemento dell'array è uguale a value
-	if(length<=0 || combination==NULL){
-		handle_error_with_exit("error in parameter\n");
-	}
-	for(int i=0;i<length;i++){
-		if(combination[i]!=value){
-			return 0;
-		}
-	}
-	return 1;
-}
 

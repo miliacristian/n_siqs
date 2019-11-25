@@ -18,6 +18,7 @@
 #include "list_factorization.h"
 #include "list_square_relation.h"
 #include <pthread.h>
+#include "parameters.h"
 
 	//valori globali(presi da altri file)
 	extern struct timespec timer;//istante di tempo 
@@ -35,8 +36,8 @@
 	mpfr_t thresold_a;//soglia per il calcolo di a
 	mpz_t temp;//mpz temporaneo
 	int s=-1;//numero di primi della factor base distinti che compongono a
-	long B=-1;//smoothness_bound
-	long M=-1;//metà dimensione array
+	extern long B;//smoothness_bound
+	extern long M;//metà dimensione array
 	mpz_t b1;//valore del primo b=somma di tutti i Bk presi dall'array Bk
 	mpz_t *array_bi=NULL;//array dei coefficienti bi
 	mpz_t *array_Bk=NULL;//array che serve per calcolare array_bi
@@ -48,11 +49,11 @@
 	int num_increment_M_and_B;
 	int*index_prime_a=NULL;//indice dei primi usati per ottenere a,rispetto alla factor base
 	int*number_prime_a=NULL;//numeri primi usati per ottenere a
-    struct a_struct*array_a_struct=NULL;
-    int combined_relations;
-    char combined;
-    mpz_t thresold_large_prime;
-    double thresold_relation;
+    	struct a_struct*array_a_struct=NULL;
+    	int combined_relations;
+    	char combined;
+    	mpz_t thresold_large_prime;
+    	double thresold_relation;
 
 
 int main(int argc,char*argv[]){
@@ -61,6 +62,8 @@ int main(int argc,char*argv[]){
 		handle_error_with_exit("usage<path>\n");
 	}
 	check_variable_in_defines();
+	//long B=-1;
+	//long M=-1;
 	FILE*file_number=open_file(argv[1]);//apri file in cui risiede il numero n da fattorizzare
 	for(int i=0;i<NUM_OF_N_TO_FACTORIZE;i++){
 
