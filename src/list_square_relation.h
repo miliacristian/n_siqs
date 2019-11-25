@@ -11,12 +11,8 @@
 #include "math_function.h"
 #include <gmp.h>
 #include <unistd.h>
+#include "square_relations_functions.h"
 
-struct node_square_relation {
-    struct square_relation square_relation;
-    struct node_square_relation*next;
-    struct node_square_relation*prev;
-};
 void insert_ordered_square_rel(struct square_relation square_relation, struct node_square_relation** head, struct node_square_relation** tail);
 void union_list_square(struct node_square_relation**head,struct node_square_relation**tail,struct node_square_relation*head_square,struct node_square_relation*tail_square);
 void remove_same_num(struct node_square_relation**head,struct node_square_relation**tail,int*num_B_smooth,int*num_semi_B_smooth);

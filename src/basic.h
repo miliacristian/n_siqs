@@ -1,6 +1,13 @@
 #ifndef LINE_H
 #define LINE_H
-
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+#include <time.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <pthread.h>
 #include <gmp.h>
 #include <time.h>
 #include <stdio.h>
@@ -8,17 +15,11 @@
 #include "properties.h"
 #include "timing.h"
 #include "parameters.h"
+#include "square_relations_functions.h"
 struct timespec;
 
 //strutture dati
-struct row_factorization{
-    int length;
-	int*prime;//contiene primo factor base e
-	int*log_prime;//valore del suo logaritmo
-    int*root_n_mod_p;//prima radice di n mod p
-    int*root2_n_mod_p;//seconda radice di n mod p
-    int*inverse_a_mod_p;//a^-1 mod p
-};
+
 
 struct thread_data {
 	float log_thresold;//valore della soglia
@@ -49,12 +50,7 @@ struct number {
 	int last_index_f_base;//ultimo indice del primo della factor base che divide number,-1 non è considerato
 	//number=a^2j^2+2*a*b*j+b^2-n,b^2-n=a*c
 };
-struct square_relation {
-    mpz_t square;
-    struct node_factorization*head_factorization;
-    mpz_t num;
-    mpz_t residuos;
-};
+
 struct factor_base_data {
 	struct node_factor_base*head;
 	struct node_factor_base*tail;

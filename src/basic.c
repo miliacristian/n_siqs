@@ -1,16 +1,6 @@
 
 #include "basic.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
-#include <time.h>
-#include <sys/types.h>
-#include <unistd.h>
-#include <pthread.h>
-
 #include "main.h"
-
 #include "matrix_function.h"
 #include "list_square_relation.h"
 #include "list_factorization.h"
