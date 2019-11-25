@@ -3,7 +3,7 @@
 #include "main.h"
 #include "matrix_function.h"
 #include "list_square_relation.h"
-#include "list_factorization.h"
+
 
 extern struct timespec timer;
 struct timespec time_start;

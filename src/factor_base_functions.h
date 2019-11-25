@@ -6,16 +6,22 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include "basic.h"
-#include "math_function.h"
+#include "mpz_functions.h"
 #include <gmp.h>
 #include "parameters.h"
 #include "math_functionv2.h"
+
 struct node_factor_base  {//struttura di un nodo della lista dinamica ordianta,la lista tiene traccia delle trasmissioni e delle ritrasmissioni
     int prime;
     struct node_factor_base* next;//puntatore al prossimo
     struct node_factor_base* prev;//puntatore al precedente
     int root_n_mod_prime;
+};
+struct factor_base_data {
+    struct node_factor_base*head;
+    struct node_factor_base*tail;
+    int cardinality_factor_base;
+    int last_prime_factor_base;
 };
 void print_list_factor_base(struct node_factor_base*head,int length);
 void print_factor_base(struct node*head_f_base);

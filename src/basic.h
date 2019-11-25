@@ -16,74 +16,16 @@
 #include "timing.h"
 #include "parameters.h"
 #include "square_relations_functions.h"
-struct timespec;
+#include "list_factorization.h"
+#include "array_numbers.h"
+#include "a_b_c_functions.h"
+#include "thread_jobs.h"
 
-//strutture dati
-
-
-struct thread_data {
-	float log_thresold;//valore della soglia
-	mpz_t b;//coefficiente b
-    int num_potential_B_smooth;
-    int num_B_smooth;
-    int num_semi_B_smooth;
-	struct number*numbers;//array di struct di numberi
-	struct node_square_relation*head_square;//ogni thread dopo il suo compito ha una lista di relazioni quadratiche
-	struct node_square_relation*tail_square;//ogni thread dopo il suo compito ha una lista di relazioni quadratiche
-	struct node_square_relation*head_residuos;
-    struct node_square_relation*tail_residuos;
-    long*j1_mod_p;//j1=-b+r)*a^-1 mod p
-    long*j2_mod_p;//j2=(-b+r2)*a^-1 mod p
-
-	//ogni volta che un thread analizza un dato appende la lista delle relazioni quadratiche a quella
-	// precedentemente calcolata
-};
-struct a_struct {
-    int number_prime_a;
-    int index_prime_a;
-};
-
-struct number {
-	int j;//indice j va da -M a M
-	int sum_log;//somma del logaritmo
-	int first_index_f_base;//primo indice del primo della factor base che divide number,-1 non è considerato
-	int last_index_f_base;//ultimo indice del primo della factor base che divide number,-1 non è considerato
-	//number=a^2j^2+2*a*b*j+b^2-n,b^2-n=a*c
-};
-
-struct factor_base_data {
-	struct node_factor_base*head;
-	struct node_factor_base*tail;
-	int cardinality_factor_base;
-	int last_prime_factor_base;
-};
-struct factorization_thread_data{
-    int id_thread;
-    int start;
-    int end;
-    char is_a_default;
-    pthread_mutex_t *mtx;
-    void*pointer;
-    struct thread_data thread_data;
-};
-
-struct timespec print_time_elapsed(char*string);
-void handle_error_with_exit(char*error_string);
-char array_is_fill_of_value(char*combination,int length,char value);
-void free_memory_matrix_int(int **matrix,int num_row,int num_col);
-void free_memory_matrix_long(long **matrix,int num_row,int num_col);
-void gettime(struct timespec*timer);
 char get_and_check_n(mpz_t n,FILE*file_number);
-void free_memory_matrix_mpz(mpz_t**matrix,int num_row,int num_col);
 int* create_threads(pthread_t*array_tid,int num_thread);
-pthread_t *alloc_array_tid(int num_thread);
 void join_all_threads(pthread_t*array_tid,int length_array);
 void test();
-FILE*open_file_log();
-void print_time_elapsed_on_file_log(char*string);
-FILE*open_file(char*path);
 struct thread_data*alloc_array_polynomial_thread_data(int length_array_thread_data,long M);
-void print_time_elapsed_local(char*string,struct timespec*timer_thread);
 void clear_struct_thread_data(struct thread_data t_data,int M);
 void free_array_thread_data(struct thread_data*thread_data,int length_array_thread_data);
 void free_memory_list_square_relation(struct node_square_relation*head);
