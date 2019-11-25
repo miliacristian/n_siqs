@@ -1,15 +1,5 @@
 #include "list_square_relation.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
-//#include "basic.h"
 
-#include "list_factorization.h"
-//#include "print.h"
-#include "math_function.h"
-#include <gmp.h>
-#include <unistd.h>
 
 
 // A utility function to find last node of linked list

@@ -1,10 +1,4 @@
 #include "list_factorization.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
-#include "basic.h"
-#include <gmp.h>
 char verify_cardinality_list_factorization(struct node_factorization*head,int length){
     if(length<0){
         printf("length minore di zero\n");

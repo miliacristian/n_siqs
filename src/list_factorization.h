@@ -1,6 +1,12 @@
 #include <gmp.h>
 #include "properties.h"
 #include "factorization_functions.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+#include "basic.h"
+#include <gmp.h>
 int count_element_linked_list_factor(struct node_factorization*head);
 void remove_after_node_factor(struct node_factorization**ppos,struct node_factorization**tail);
 

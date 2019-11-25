@@ -5,6 +5,19 @@
 #include "print.h"
 #include <gmp.h>
 #include "basic.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+#include "basic.h"
+#include "gmp.h"
+#include "matrix_function.h"
+#include "print.h"
+#include "list_factorization.h"
+#include "list_square_relation.h"
+#include <unistd.h>
+#include <mpfr.h>
+#include "parameters.h"
 void square_root_mod_p_to_k(mpz_t rootpk,const mpz_t x,long p,const mpz_t n,int k);
 long power_mod_n(long base,long exponent,long n);// base^exponent mod n
 

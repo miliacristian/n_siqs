@@ -2,6 +2,15 @@
 #define LIST_SQUARE_RELATION_H
 
 #include "basic.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+
+#include "list_factorization.h"
+#include "math_function.h"
+#include <gmp.h>
+#include <unistd.h>
 
 struct node_square_relation {
     struct square_relation square_relation;

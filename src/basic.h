@@ -5,6 +5,10 @@
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "properties.h"
+#include "timing.h"
+#include "parameters.h"
+struct timespec;
 
 //strutture dati
 struct row_factorization{

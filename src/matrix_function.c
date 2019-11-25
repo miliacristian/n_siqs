@@ -1,13 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
 #include "matrix_function.h"
-#include "list_square_relation.h"
-#include "list_factorization.h"
-#include <mpfr.h>
-#include <unistd.h>
-
 
 extern struct row_factorization r;
 extern struct timespec timer;

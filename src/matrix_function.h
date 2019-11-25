@@ -2,6 +2,14 @@
 #define O_H
 
 #include "math_function.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+#include "list_square_relation.h"
+#include "list_factorization.h"
+#include <mpfr.h>
+#include <unistd.h>
 
 #include "factor_base_functions.h"
 #include "matrix_function_v2.h"

@@ -1,10 +1,4 @@
 #include "criv_quad.h"
-//#include "math_function.h"
-#include <gmp.h>
-#include <mpfr.h>
-//#include "list_factor_base.h"
-#include "list_square_relation.h"
-#include "list_factorization.h"
 
 extern long k;
 extern struct timespec timer;

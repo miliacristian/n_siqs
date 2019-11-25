@@ -1,17 +1,5 @@
 #include "math_function.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
-#include "basic.h"
-#include "gmp.h"
-#include "matrix_function.h"
-#include "print.h"
-#include "list_factorization.h"
-#include "list_square_relation.h"
-#include <unistd.h>
-#include <mpfr.h>
-#include "parameters.h"
+
 
 extern struct row_factorization r;
 extern long M;

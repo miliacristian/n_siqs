@@ -8,6 +8,10 @@
 #include <gmp.h>
 #include <mpfr.h>
 #include "factor_base_functions.h"
+#include <gmp.h>
+#include <mpfr.h>
+#include "list_square_relation.h"
+#include "list_factorization.h"
 void calculate_a_and_b(int*solution,mpz_t**matrix_B_smooth,int num_B_smooth,int card_f_base,mpz_t a,mpz_t b,const mpz_t n);
 int try_to_factor(const mpz_t a,const mpz_t b,const mpz_t n,mpz_t factor1,mpz_t factor2);
 int factor_n(int **matrix_solution,int dim_sol,int num_B_smooth,mpz_t**matrix_B_smooth,int card_f_base,const mpz_t n);

@@ -9,14 +9,13 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <pthread.h>
-#include "matrix_function.h"
+
 #include "main.h"
+
+#include "matrix_function.h"
 #include "list_square_relation.h"
 #include "list_factorization.h"
-#include "properties.h"
-#include "timing.h"
-#include "parameters.h"
-struct timespec;
+
 extern struct timespec timer;
 struct timespec time_start;
 struct timespec timer_test;
