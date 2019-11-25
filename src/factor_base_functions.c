@@ -1,5 +1,6 @@
 #include "factor_base_functions.h"
 extern long B;
+int cardinality_factor_base;
 //print factor base
 void print_list_factor_base(struct node_factor_base*head,int length){
 	if (head==NULL || length<0){

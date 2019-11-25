@@ -1,5 +1,11 @@
 #include "square_relations_functions.h"
 #include <pthread.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include "array_numbers.h"
+#include "basicv2.h"
+#include <string.h>
+#include "matrix_function_v2.h"
 #ifndef CRIVELLO_QUADRATICO__COPIA_1_THREAD_JOBS_H
 #define CRIVELLO_QUADRATICO__COPIA_1_THREAD_JOBS_H
 struct thread_data {

@@ -11,7 +11,9 @@
 #include "math_functionv2.h"
 #include "basicv2.h"
 #include "timing.h"
+long*alloc_array_long(int length);
 char array_is_fill_of_value(char*combination,int length,char value);
+void free_memory_matrix_unsigned_long(unsigned long **matrix,int num_row,int num_col);
 unsigned long**alloc_matrix_unsigned_long(int num_row,int num_col);
 void free_memory_matrix_int(int **matrix,int num_row,int num_col);
 int* sum_vector(int*vector1,int*vector2,int lenght1,int lenght2);

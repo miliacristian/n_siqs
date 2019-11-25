@@ -62,3 +62,7 @@ FILE*open_file(char*path){
 	}
 	return file;
 }
+void test(){
+    //operazioni da fare in fase di test
+    handle_error_with_exit("\n");
+}
