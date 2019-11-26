@@ -3,7 +3,8 @@ long k;
 double thresold_relation;
 int num_increment_M_and_B;
 char combined;
-
+mpz_t n,x0;//dichiarazione di n,n da fattorizzare,deve essere inizializzato a zero,e deve essere sovrascritto con il numero preso da riga 		di comando o da file
+struct factor_base_data*thread_factor_base_data=NULL;
 void handle_error_with_exit(char*error_string){//uccide il processo dopo essersi accorto di un errore
     if(error_string==NULL){
 	printf("error string is NULL\n");

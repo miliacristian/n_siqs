@@ -1,6 +1,7 @@
 #include "thread_jobs.h"
 extern int cardinality_factor_base;
 extern long B;
+extern mpz_t n,x0;//dichiarazione di n,n da fattorizzare,deve essere inizializzato a zero,e deve essere sovrascritto con il numero preso da riga 		di comando o da file
 void free_array_thread_data(struct thread_data*thread_data,int length_array_thread_data){
     if(thread_data==NULL || length_array_thread_data<=0){
         handle_error_with_exit("error in free_array_thread_data\n");
@@ -87,4 +88,14 @@ int calculate_start_factor_base(int id_thread){
     long length=(B-remainder)/(NUM_THREAD_FACTOR_BASE+1);
     int start=id_thread*length+1;
     return start;
+}
+int thread_job_to_create_factor_base(int id_thread){
+    long remainder=reduce_int_mod_n_v2(B,NUM_THREAD_FACTOR_BASE+1);//rem=b mod num_thread
+    long length=(B-remainder)/(NUM_THREAD_FACTOR_BASE+1);
+    int start=id_thread*length+1;//se id=o start=1
+    int end=start+length-1;
+    //es remainder=0 thread=5 B=500.000 -> len=100.000 start=0*100000+1,end=1+100000-1=100000,start2=100001,end2=200000
+    thread_factor_base_data[id_thread].last_prime_factor_base=start;
+    create_factor_base_f(&(thread_factor_base_data[id_thread].cardinality_factor_base),end,&thread_factor_base_data[id_thread].head,&thread_factor_base_data[id_thread].tail,n,&(thread_factor_base_data[id_thread].last_prime_factor_base));
+    return 0;
 }

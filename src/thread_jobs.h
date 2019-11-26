@@ -7,8 +7,11 @@
 #include <string.h>
 #include "matrix_function_v2.h"
 #include "properties.h"
+#include "factor_base_functions.h"
 #ifndef CRIVELLO_QUADRATICO__COPIA_1_THREAD_JOBS_H
 #define CRIVELLO_QUADRATICO__COPIA_1_THREAD_JOBS_H
+
+extern struct factor_base_data*thread_factor_base_data;
 struct thread_data {
     float log_thresold;//valore della soglia
     mpz_t b;//coefficiente b

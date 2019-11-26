@@ -13,7 +13,7 @@
 	//argv[1]=path del file da leggere per ottenere n da fattorizzare
 	struct node_factor_base*head_f_base_f=NULL;//testa della lista dinamica factor base
 	struct node_factor_base*tail_f_base_f=NULL;//coda della lista dinamica factor base
-	mpz_t n,x0;//dichiarazione di n,n da fattorizzare,deve essere inizializzato a zero,e deve essere sovrascritto con il numero preso da riga 		di comando o da file
+    extern mpz_t n,x0;//dichiarazione di n,n da fattorizzare,deve essere inizializzato a zero,e deve essere sovrascritto con il numero preso da riga 		di comando o da file
 	mpz_t a_old,a_new;//valore del coefficiente a del polinomio
 	mpfr_t thresold_a;//soglia per il calcolo di a
 	mpz_t temp;//mpz temporaneo
@@ -26,7 +26,7 @@
 	int dim_sol=-1;//numero di vettori linearmente indpendenti ottenuti dalla risoluzione del sistema lineare,combinandoli opportunamente 		calcolano tutte le possibili combinazioni/soluzioni del sistema
 	int cardinality_factor_base=-1;//cardinalità factor base
 	struct thread_data*thread_polynomial_data=NULL;//struttura dati globale per far svolgere la computazione ai thread
-	struct factor_base_data*thread_factor_base_data=NULL;
+	extern struct factor_base_data*thread_factor_base_data;
 	int num_thread_job=-1;//lunghezza dell'array di matrici,ogni thread riceve una matrice per fare la computazione
 	int num_increment_M_and_B;
 	int*index_prime_a=NULL;//indice dei primi usati per ottenere a,rispetto alla factor base
@@ -601,16 +601,7 @@ int main(int argc,char*argv[]){
 	return 0;
 }
 
-int thread_job_to_create_factor_base(int id_thread){
-    long remainder=reduce_int_mod_n_v2(B,NUM_THREAD_FACTOR_BASE+1);//rem=b mod num_thread
-	long length=(B-remainder)/(NUM_THREAD_FACTOR_BASE+1);
-	int start=id_thread*length+1;//se id=o start=1
-	int end=start+length-1;
-	//es remainder=0 thread=5 B=500.000 -> len=100.000 start=0*100000+1,end=1+100000-1=100000,start2=100001,end2=200000
-	thread_factor_base_data[id_thread].last_prime_factor_base=start;
-    create_factor_base_f(&(thread_factor_base_data[id_thread].cardinality_factor_base),end,&thread_factor_base_data[id_thread].head,&thread_factor_base_data[id_thread].tail,n,&(thread_factor_base_data[id_thread].last_prime_factor_base));
-	return 0;
-}
+
 int thread_job_criv_quad(int id_thread){//id inizia da 0,il lavoro di un thread rimane uguale anche se non si riesce a fattorizzare n
 	if(id_thread+1>num_thread_job-1){//l'indice del thread eccede il numero di job da fare
 		return 0;

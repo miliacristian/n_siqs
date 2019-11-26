@@ -108,73 +108,8 @@ void calculate_x0(mpz_t x0,const mpz_t n,int k,char *factorized){
 	return;
 }
 
-struct node_factor_base*initialize_factor_base(int*cardinality_factor_base,long B,struct node_factor_base**tail,const mpz_t n,int *last_prime_factor_base){
-	if(B<2 || tail==NULL || cardinality_factor_base==NULL || n==NULL || last_prime_factor_base==NULL){
-		handle_error_with_exit("error in parameter\n");
-	}
-	struct node_factor_base *head=NULL;
-	mpz_t p;
-	mpz_init(p);
-	mpz_set_si(p,-1);//temp=-1
-	insert_ordered_f(-1,n,&head,tail);//inserisci -1 nella factor base
-	(*cardinality_factor_base)++;
-	mpz_set_si(p,2);//p=2
-	(*cardinality_factor_base)++;
-	insert_ordered_f(2,n,&head,tail);//inserisce 2 nella factor base
-	*last_prime_factor_base=2;
-	mpz_clear(p);
-	return head;
-}
-
-void create_factor_base_f(int*cardinality_factor_base,long B,struct node_factor_base**head,struct node_factor_base**tail,const mpz_t n,int *last_prime_factor_base){//crea la factor base aggiungendo i numeri primi minori o uguali a B
-    if(B<2 || tail==NULL || head==NULL || cardinality_factor_base==NULL || n==NULL || last_prime_factor_base==NULL ){
-        handle_error_with_exit("error in parameter\n");
-    }
-    struct node_factor_base*node;
-    long v,v_temp,m;
-    mpz_t p,pp,value;
 
 
-    mpz_init(p);
-    mpz_init(pp);
-    mpz_init(value);
-	long start;
-	if(*last_prime_factor_base==1) {
-		*head=initialize_factor_base(cardinality_factor_base, B,tail, n,last_prime_factor_base);
-		//initialize factor base pone last_prime_factor_base a 1
-	}
-	if((*last_prime_factor_base & 1)==0){//start=last_prime_factor_base è pari==2
-		start=*last_prime_factor_base;
-	}
-	else{//last_prime_factor_base è dispari
-		start=*last_prime_factor_base+1;//start è pari
-	}
-    for(long i=start;i<=B;){
-        mpz_set_si(p,i);//p=i,inizialmente p=2,ad ogni inizio ciclo deve essere pari
-        mpz_nextprime(p,p);//p=next_prime,ritorna il prossimo primo maggiore strettamente di p,è bene che p sia pari
-        if(mpz_cmp_si(p,B)<=0){//primo<=B
-            v=mpz_get_si(p);
-            v_temp=v;
-            v=(v-1)>>1;//shift a destra divide per 2,v=(v-1/2)
-            mpz_powm_ui(value,n,(unsigned long int)v,p);//value=n^v mod p
-            m=mpz_get_si(value);//m=n^((p-1)/2) mod p
-            if(m==1){//n è quadrato modulo p
-                node=get_new_node_f(mpz_get_si(p),n);
-                insert_at_tail_f(node,head,tail);
-                (*cardinality_factor_base)++;
-                *last_prime_factor_base=v_temp;
-            }
-            i=mpz_get_si(p)+1;//il numero diventa pari e il prossimo numero primo sarà dispari
-        }
-        else{//B è stato superato
-            break;
-        }
-    }
-    mpz_clear(p);
-    mpz_clear(pp);
-    mpz_clear(value);
-    return;
-}
 
 void calculate_p_min_p_max_i_f(long*p_min_i,long*p_max_i,struct node_factor_base*head_f_base_f,long cardinality_factor_base){
 	if(p_min_i==NULL || p_max_i==NULL || head_f_base_f==NULL || cardinality_factor_base<=0){
