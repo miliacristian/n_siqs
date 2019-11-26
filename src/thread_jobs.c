@@ -1,5 +1,6 @@
 #include "thread_jobs.h"
 extern int cardinality_factor_base;
+extern long B;
 void free_array_thread_data(struct thread_data*thread_data,int length_array_thread_data){
     if(thread_data==NULL || length_array_thread_data<=0){
         handle_error_with_exit("error in free_array_thread_data\n");
@@ -66,4 +67,24 @@ struct thread_data*alloc_array_polynomial_thread_data(int length_array_thread_da
         memcpy(t_data[i].numbers,t_data[0].numbers,sizeof(struct number)*(2*M+1));
     }
     return t_data;
+}
+void join_all_threads(pthread_t*array_tid,int length_array){
+    if(array_tid==NULL){
+        return;//no thread to wait
+    }
+    if(length_array<=0){
+        handle_error_with_exit("error in join all_thread\n");
+    }
+    for(int i=0;i<length_array;i++){
+        if(pthread_join(array_tid[i],NULL)!=0){
+            handle_error_with_exit("error in pthread_join join all_thread\n");
+        }
+    }
+    return;
+}
+int calculate_start_factor_base(int id_thread){
+    long remainder=reduce_int_mod_n_v2(B,NUM_THREAD_FACTOR_BASE+1);
+    long length=(B-remainder)/(NUM_THREAD_FACTOR_BASE+1);
+    int start=id_thread*length+1;
+    return start;
 }

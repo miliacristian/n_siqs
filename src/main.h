@@ -23,6 +23,8 @@
 #include "mpz_functions.h"
 #include "matrix_function_v2.h"
 #include "basicv2.h"
+#include "thread_jobs.h"
+#include "factor_base_functions.h"
 int thread_job_criv_quad(int i);
 int thread_job_to_create_factor_base(int id_thread);
 #endif

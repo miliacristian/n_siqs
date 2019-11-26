@@ -16,4 +16,5 @@ struct row_factorization{
     int*root2_n_mod_p;//seconda radice di n mod p
     int*inverse_a_mod_p;//a^-1 mod p
 };
+void free_list_factorization(struct node_factorization*head_factorization);
 #endif

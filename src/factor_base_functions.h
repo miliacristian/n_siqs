@@ -48,5 +48,5 @@ void free_memory_list_f(struct node_factor_base*head);
 void union_list_factor_base(struct node_factor_base**head1,struct node_factor_base**tail1,int*cardinality_factor_base1,int*last_prime_factor_base1,
                             struct node_factor_base*head2,struct node_factor_base*tail2,int cardinality_factor_base2,int last_prime_factor_base2);
 char verify_cardinality_list_factor_base(struct node_factor_base*head,int length);
-
+struct factor_base_data*alloc_array_factor_base_data(int length);
 #endif

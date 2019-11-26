@@ -2,6 +2,8 @@
 #define Y_H
 #include "factorization_functionsv2.h"
 #include <gmp.h>
+#include <stdlib.h>
+#include <stdio.h>
 struct square_relation {
     mpz_t square;
     struct node_factorization*head_factorization;
@@ -13,4 +15,5 @@ struct node_square_relation {
     struct node_square_relation*next;
     struct node_square_relation*prev;
 };
+void free_memory_list_square_relation(struct node_square_relation*head);
 #endif

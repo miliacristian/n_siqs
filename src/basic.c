@@ -14,35 +14,9 @@ extern int cardinality_factor_base;
 extern long B;
 extern double thresold_relation;
 
-void free_memory_list_square_relation(struct node_square_relation*head){
-    if(head==NULL){
-    	return;
-    }
-    struct node_square_relation*p=head;
-    struct node_square_relation*q;
-    while(p!=NULL){
-        q=p->next;
-        mpz_clear(p->square_relation.square);
-        mpz_clear(p->square_relation.num);
-        mpz_clear(p->square_relation.residuos);
-        free_list_factorization(p->square_relation.head_factorization);
-        free(p);
-        p=q;
-    }
-    return;
-}
 
-struct factor_base_data*alloc_array_factor_base_data(int length){
-	if(length<=0){
-		handle_error_with_exit("error in alloc_array_factor_base_data\n");
-	}
-	struct factor_base_data*array_factor_base=malloc(sizeof(struct factor_base_data)*length);
-	if(array_factor_base==NULL){
-		handle_error_with_exit("error in malloc array_factor_base\n");
-	}
-	memset(array_factor_base,0, sizeof(struct factor_base_data)*length);
-	return array_factor_base;
-}
+
+
 
 void*thread_job_polynomial(void*arg){
 	int*id=arg;
@@ -129,60 +103,6 @@ int* create_factor_base_threads(pthread_t*array_tid,int num_thread){//ritorna il
 		}
 	}
 	return array_id;
-}
-void join_all_threads(pthread_t*array_tid,int length_array){
-	if(array_tid==NULL){
-		return;//no thread to wait
-	}
-	if(length_array<=0){
-		handle_error_with_exit("error in join all_thread\n");
-	}
-	for(int i=0;i<length_array;i++){
-		if(pthread_join(array_tid[i],NULL)!=0){
-			handle_error_with_exit("error in pthread_join join all_thread\n");
-		}
-	}
-	return;
-}
-
-
-
-
-void print_estimated_time(int cardinality_factor_base,int num_B_smooth){
-    if(cardinality_factor_base<=0 || num_B_smooth<0){
-        handle_error_with_exit("error in print_estimated_time");
-    }
-    long ns,ms,sec,min,hour,temp;
-    struct timespec empty_struct,time_sub;
-    empty_struct.tv_nsec=0;
-    empty_struct.tv_sec=0;
-    time_sub=diff_timespec(timer_test,empty_struct);
-    ns=time_sub.tv_nsec%1000000;
-    time_sub.tv_nsec-=ns;
-    ms=time_sub.tv_nsec/1000000;
-    sec=time_sub.tv_sec%60;//i secondi sono modulo 60
-    min=(time_sub.tv_sec-sec)/60;
-    temp=min%60;//temp min
-    hour=(min-temp)/60;
-    min=temp;
-
-    long times=((double)cardinality_factor_base*thresold_relation)/(double)num_B_smooth;
-    ms=ms*times;
-    long remainder=ms%1000;
-    int plus_sec=(ms-remainder)/1000;//secondi in più
-    ms=remainder;
-    sec=sec*times;
-    remainder=sec%60;
-    int plus_min=(sec-remainder)/60;
-    sec=remainder;
-    min+=plus_min;
-    sec+=plus_sec;
-	remainder=sec%60;
-	plus_min=(sec-remainder)/60;
-	sec=remainder;
-	min+=plus_min;
-    printf("hour=%ld min=%ld sec:%ld ms=%ld ns:%ld\n",hour,min,sec,ms,ns);
-    return;
 }
 
 

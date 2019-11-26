@@ -6,6 +6,7 @@
 #include "basicv2.h"
 #include <string.h>
 #include "matrix_function_v2.h"
+#include "properties.h"
 #ifndef CRIVELLO_QUADRATICO__COPIA_1_THREAD_JOBS_H
 #define CRIVELLO_QUADRATICO__COPIA_1_THREAD_JOBS_H
 struct thread_data {
@@ -35,4 +36,8 @@ struct factorization_thread_data{
     void*pointer;
     struct thread_data thread_data;
 };
+void clear_struct_thread_data(struct thread_data t_data,int M);
+void free_array_thread_data(struct thread_data*thread_data,int length_array_thread_data);
+void join_all_threads(pthread_t*array_tid,int length_array);
+int calculate_start_factor_base(int id_thread);
 #endif //CRIVELLO_QUADRATICO__COPIA_1_THREAD_JOBS_H

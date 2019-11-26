@@ -1,7 +1,10 @@
 #include "factor_base_functions.h"
+#include "timing.h"
 extern long B;
 int cardinality_factor_base;
-//print factor base
+extern struct timespec timer_test;
+extern double thresold_relation;
+
 void print_list_factor_base(struct node_factor_base*head,int length){
 	if (head==NULL || length<0){
 		printf("impossible print list head is NULL\n");
@@ -343,9 +346,51 @@ void free_memory_list_f(struct node_factor_base*head){
 	return;
 }
 
-int calculate_start_factor_base(int id_thread){
-    long remainder=reduce_int_mod_n_v2(B,NUM_THREAD_FACTOR_BASE+1);
-    long length=(B-remainder)/(NUM_THREAD_FACTOR_BASE+1);
-    int start=id_thread*length+1;
-    return start;
+void print_estimated_time(int cardinality_factor_base,int num_B_smooth){
+    if(cardinality_factor_base<=0 || num_B_smooth<0){
+        handle_error_with_exit("error in print_estimated_time");
+    }
+    long ns,ms,sec,min,hour,temp;
+    struct timespec empty_struct,time_sub;
+    empty_struct.tv_nsec=0;
+    empty_struct.tv_sec=0;
+    time_sub=diff_timespec(timer_test,empty_struct);
+    ns=time_sub.tv_nsec%1000000;
+    time_sub.tv_nsec-=ns;
+    ms=time_sub.tv_nsec/1000000;
+    sec=time_sub.tv_sec%60;//i secondi sono modulo 60
+    min=(time_sub.tv_sec-sec)/60;
+    temp=min%60;//temp min
+    hour=(min-temp)/60;
+    min=temp;
+
+    long times=((double)cardinality_factor_base*thresold_relation)/(double)num_B_smooth;
+    ms=ms*times;
+    long remainder=ms%1000;
+    int plus_sec=(ms-remainder)/1000;//secondi in più
+    ms=remainder;
+    sec=sec*times;
+    remainder=sec%60;
+    int plus_min=(sec-remainder)/60;
+    sec=remainder;
+    min+=plus_min;
+    sec+=plus_sec;
+    remainder=sec%60;
+    plus_min=(sec-remainder)/60;
+    sec=remainder;
+    min+=plus_min;
+    printf("hour=%ld min=%ld sec:%ld ms=%ld ns:%ld\n",hour,min,sec,ms,ns);
+    return;
+}
+
+struct factor_base_data*alloc_array_factor_base_data(int length){
+    if(length<=0){
+        handle_error_with_exit("error in alloc_array_factor_base_data\n");
+    }
+    struct factor_base_data*array_factor_base=malloc(sizeof(struct factor_base_data)*length);
+    if(array_factor_base==NULL){
+        handle_error_with_exit("error in malloc array_factor_base\n");
+    }
+    memset(array_factor_base,0, sizeof(struct factor_base_data)*length);
+    return array_factor_base;
 }
