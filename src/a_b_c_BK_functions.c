@@ -52,6 +52,39 @@ void print_array_chosen_for_a(long*array_of_prime_chosen_for_a,int card_factor_b
     print_array_long(array_of_prime_chosen_for_a,card_factor_base*2);
     return;
 }
+void create_num(mpz_t num,const mpz_t a,const mpz_t b,const mpz_t n,long j){
+    //num=a*j^2+2*bj+c mod n
+    mpz_t c,double_b_mul_j,a_mul_square_j;
+
+    mpz_init(c);
+    mpz_init(double_b_mul_j);
+    mpz_init(a_mul_square_j);
+
+    //a_mul_square_j=a
+    mpz_set(a_mul_square_j,a);//a_mul_suqare_j=a
+    mpz_mul_si(a_mul_square_j,a_mul_square_j,j);//a_mul_suqare_j=a*j
+    mpz_mul_si(a_mul_square_j,a_mul_square_j,j);//a_mul_suqare_j=a*j^2
+
+    //double_b_mul_j
+    mpz_set(double_b_mul_j,b);//double_b_mul_j=b
+    mpz_mul_2exp(double_b_mul_j,double_b_mul_j,1);//double_b_mul_j=2*b
+    mpz_mul_si(double_b_mul_j,double_b_mul_j,j);//double_b_mul_j=2*b*j
+
+    //c
+    mpz_mul(c,b,b);//c=b^2
+    mpz_sub(c,c,n);//c=b^2-n
+    if(mpz_divisible_p(c,a)==0){
+        handle_error_with_exit("error in create_num\n");
+    }
+    mpz_divexact(c,c,a);//c=b^2-n/a
+
+    mpz_add(num,a_mul_square_j,double_b_mul_j);
+    mpz_add(num,num,c);//num=a*j^2+2*bj+c
+
+    mpz_clear(c);
+    mpz_clear(double_b_mul_j);
+    mpz_clear(a_mul_square_j);
+}
 void square_root_mod_p_to_k(mpz_t rootpk,const mpz_t x1,long p1,const mpz_t n,int k){//root r1,root r2=p^k-r1,calcola radici quadrate di n modulo p alla k
     //parametri:p1 è il primo,k è la potenza a cui elevare p, x1 è la radice quadrata di n mod p
     // calcola rootpk^2===n mod p^k,sapendo x1: x1^2==n mod p
@@ -196,4 +229,11 @@ int compare_a_struct( const void* a, const void* b)
         return 1;
     }
     return -1;
+}
+void calculate_square(mpz_t square,const mpz_t a,int index,const mpz_t b,const mpz_t n){
+    // -M<index<M
+    mpz_mul_si(square,a,index);//a*j
+    mpz_add(square,square,b);//a*j+b
+    mpz_mod(square,square,n);// a*j+b mod n
+    return;
 }

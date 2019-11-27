@@ -21,20 +21,20 @@
 	extern long B;//smoothness_bound
 	extern long M;//metà dimensione array
 	mpz_t b1;//valore del primo b=somma di tutti i Bk presi dall'array Bk
-	mpz_t *array_bi=NULL;//array dei coefficienti bi
+	extern mpz_t *array_bi;//array dei coefficienti bi
 	mpz_t *array_Bk=NULL;//array che serve per calcolare array_bi
 	int dim_sol=-1;//numero di vettori linearmente indpendenti ottenuti dalla risoluzione del sistema lineare,combinandoli opportunamente 		calcolano tutte le possibili combinazioni/soluzioni del sistema
 	int cardinality_factor_base=-1;//cardinalità factor base
-	struct thread_data*thread_polynomial_data=NULL;//struttura dati globale per far svolgere la computazione ai thread
+	extern struct thread_data*thread_polynomial_data;//struttura dati globale per far svolgere la computazione ai thread
 	extern struct factor_base_data*thread_factor_base_data;
-	int num_thread_job=-1;//lunghezza dell'array di matrici,ogni thread riceve una matrice per fare la computazione
-	int num_increment_M_and_B;
+	extern int num_thread_job;//lunghezza dell'array di matrici,ogni thread riceve una matrice per fare la computazione
+	extern int num_increment_M_and_B;
 	int*index_prime_a=NULL;//indice dei primi usati per ottenere a,rispetto alla factor base
 	int*number_prime_a=NULL;//numeri primi usati per ottenere a
 	extern struct a_struct*array_a_struct;
     	int combined_relations;
     	char combined;
-    	mpz_t thresold_large_prime;
+    	extern mpz_t thresold_large_prime;
     	double thresold_relation;
 
 
@@ -597,45 +597,6 @@ int main(int argc,char*argv[]){
 	}
 	if(fclose(file_number)!=0){
 		handle_error_with_exit("error in close file_number\n");
-	}
-	return 0;
-}
-
-
-int thread_job_criv_quad(int id_thread){//id inizia da 0,il lavoro di un thread rimane uguale anche se non si riesce a fattorizzare n
-	if(id_thread+1>num_thread_job-1){//l'indice del thread eccede il numero di job da fare
-		return 0;
-	}
-    struct timespec timer_thread;//istante di tempo
-	int count=id_thread;//indica quale polinomio deve usare per fare il crivello quadratico
-    struct node_square_relation*head_squares=NULL,*tail_squares=NULL;
-    struct node_square_relation*head_residuoss=NULL,*tail_residuoss=NULL;
-
-    //gettime
-    gettime(&timer_thread);
-    thread_polynomial_data[id_thread].log_thresold=calculate_log_thresold(n,M);
-
-    //log_thresold
-	while(count<=num_thread_job-2){//ogni thread prende un sottoinsieme di compiti,il thread con id 0 farà i compiti 0,NUM_THREAD,2*NUM_THREAD,il thread 1 farà 1,NUM_THREAD+1,2*NUM_THREAD+1 ecc
-		//fattorizzazione,alla fine ogni thread ha una lista di relazioni quadratiche
-
-		//fattorizza array di 2m+1 elementi e memorizza la somma dei logaritmi per ogni posizione e
-        // indici last e first che ci dicono il primo elemento divisibile per num e l'ultimo(questo facilita la trial division)
-        mpz_set(thread_polynomial_data[id_thread].b,array_bi[count]);//imposta ad ogni ciclo il valore di b
-		factor_matrix_f(n,M,(thread_polynomial_data[id_thread]),cardinality_factor_base,a_old,array_a_struct,s);//fattorizza una nuova matrice
-
-		//ricerca dei B_smooth potenziali,reali e fattorizzazione dei B_smooth reali
-        find_list_square_relation(thread_polynomial_data[id_thread],&(thread_polynomial_data[id_thread].num_B_smooth),&(thread_polynomial_data[id_thread].num_semi_B_smooth),&(thread_polynomial_data[id_thread].num_potential_B_smooth),M,&head_squares,&tail_squares,&head_residuoss,&tail_residuoss,n,a_old,array_a_struct,s);
-		//pulisci struttura dati del thread per ricominciare con un altro polinomio
-		clear_struct_thread_data(thread_polynomial_data[id_thread],M);
-		//unisci la lista dei quadrati trovata con il polinomio con la lista dei quadrati del thread,alla fine ogni thread ha un unica lista dei quadrati
-        union_list_square(&(thread_polynomial_data[id_thread].head_square),&(thread_polynomial_data[id_thread].tail_square),head_squares,tail_squares);
-        union_list_residuos(&(thread_polynomial_data[id_thread].head_residuos),&(thread_polynomial_data[id_thread].tail_residuos),head_residuoss,tail_residuoss);
-		head_squares=NULL;//resetta la lista locale delle relazioni quadratiche
-		tail_squares=NULL;//resetta la lista locale delle relazioni quadratiche
-        head_residuoss=NULL;
-        tail_residuoss=NULL;
-		count+=NUM_THREAD_POLYNOMIAL;//modulo numero dei thread
 	}
 	return 0;
 }

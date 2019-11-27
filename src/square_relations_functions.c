@@ -127,3 +127,27 @@ void print_list_square_relation(struct node_square_relation*head,int length){
     printf("\n");
     return;
 }
+char verify_square_relation(struct square_relation square_relation,const mpz_t n){
+    if(TEST==0){
+        return 1;
+    }
+    struct node_factorization*head_factor=square_relation.head_factorization;
+    mpz_t temp,num_temp,square;
+    mpz_init(num_temp);
+    mpz_init(temp);
+    mpz_init(square);
+
+    if(calculate_num_from_factorization(num_temp,head_factor)==0){
+        handle_error_with_exit("error in calculate_num_from_factorization\n");
+    }
+    mpz_mod(num_temp,num_temp,n);//num modulo n
+    mpz_mul(square,square_relation.square,square_relation.square);//square=x^2
+    mpz_mod(square,square,n);
+    if(mpz_cmp(num_temp,square)!=0){//non sono congrui modulo n
+        handle_error_with_exit("error in verify square relation\n");
+    }
+    mpz_clear(temp);
+    mpz_clear(num_temp);
+    mpz_clear(square);
+    return 1;
+}

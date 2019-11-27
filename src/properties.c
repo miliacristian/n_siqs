@@ -8,6 +8,7 @@ struct factor_base_data*thread_factor_base_data=NULL;
 mpz_t a_old,a_new;//valore del coefficiente a del polinomio
 struct a_struct*array_a_struct=NULL;
 int s=-1;//numero di primi della factor base distinti che compongono a
+
 void handle_error_with_exit(char*error_string){//uccide il processo dopo essersi accorto di un errore
     if(error_string==NULL){
 	printf("error string is NULL\n");

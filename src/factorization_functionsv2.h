@@ -21,4 +21,8 @@ struct row_factorization{
 void free_list_factorization(struct node_factorization*head_factorization);
 void print_factorization(const mpz_t num,struct node_factorization*head_factor);
 void create_row_factorization(struct node_factor_base*head_f_base_f,int card_f_base,const mpz_t a,struct a_struct*array_a_struct,int s);
+char verify_factorization(const mpz_t num,mpz_t residuos,struct node_factorization*head_factor,const mpz_t a);
+char calculate_num_from_factorization(mpz_t num_temp,struct node_factorization*head_factor);
+
+
 #endif

@@ -19,4 +19,5 @@ struct node_square_relation {
 };
 void free_memory_list_square_relation(struct node_square_relation*head);
 unsigned long**create_binary_linear_system(struct node_square_relation*head,int cardinality_factor_base,int num_B_smooth,int*num_col_binary_matrix);
+char verify_square_relation(struct square_relation square_relation,const mpz_t n);
 #endif

@@ -2,6 +2,23 @@
 extern double thresold_relation;
 extern int num_increment_M_and_B;
 extern char combined;
+float calculate_log_thresold(const mpz_t n,long M){
+    //log_thresold=log(M*rad(n))-error=log(M)+log(rad(n)-error=log(M)+1/2*log(n)-error
+    float log_thresold=-1.0;
+    mpfr_t log_n;
+    mpfr_init(log_n);
+    mpfr_set_z(log_n,n,MPFR_RNDN);//log_rad_n=n
+
+    //mpfr_sqrt(log_rad_n,log_rad_n,MPFR_RNDN);//log_rad_n=radice di n
+    mpfr_log2(log_n,log_n,MPFR_RNDN);//rad_n=log2(n)
+    log_thresold=mpfr_get_flt(log_n,MPFR_RNDN);
+    log_thresold=log_thresold*0.5;//log_thresold=log2(n)
+    log_thresold=log_thresold+log2f((float)M);
+    log_thresold=log_thresold-ERROR_LOG;
+    mpfr_free_cache();
+    mpfr_clear(log_n);
+    return log_thresold;
+}
 void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B){
 	//calcola valori di M e B cercando di minimizzare il numero di volte che i numeri devono essere aumentati
 	if(n==NULL || digit_n<=0 || M==NULL || B==NULL){
