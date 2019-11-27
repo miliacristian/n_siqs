@@ -2,16 +2,11 @@
 #define MATH_H
 
 #include "dynamic_list.h"
-#include <gmp.h>
-#include "basic.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include "basic.h"
-#include "gmp.h"
-#include "matrix_function.h"
-#include "list_factorization.h"
+#include <gmp.h>
 #include "list_square_relation.h"
 #include <unistd.h>
 #include <mpfr.h>

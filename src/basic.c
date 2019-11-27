@@ -9,10 +9,6 @@ extern int cardinality_factor_base;
 extern long B;
 extern double thresold_relation;
 
-
-
-
-
 void*thread_job_polynomial(void*arg){
 	int*id=arg;
 	thread_job_criv_quad(*id);

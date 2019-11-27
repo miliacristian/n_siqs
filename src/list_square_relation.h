@@ -1,17 +1,14 @@
 #ifndef LIST_SQUARE_RELATION_H
 #define LIST_SQUARE_RELATION_H
 
-#include "basic.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
 
 #include "list_factorization.h"
-#include "math_function.h"
 #include <gmp.h>
 #include <unistd.h>
-#include "square_relations_functions.h"
 
 void insert_ordered_square_rel(struct square_relation square_relation, struct node_square_relation** head, struct node_square_relation** tail);
 void union_list_square(struct node_square_relation**head,struct node_square_relation**tail,struct node_square_relation*head_square,struct node_square_relation*tail_square);

@@ -1,6 +1,8 @@
 #ifndef X_H
 #define X_H
 
+#include "factor_base_functions.h"
+#include "a_b_c_BK_functions.h"
 struct node_factorization {
     int number;
     int exp_of_number;
@@ -17,4 +19,6 @@ struct row_factorization{
     int*inverse_a_mod_p;//a^-1 mod p
 };
 void free_list_factorization(struct node_factorization*head_factorization);
+void print_factorization(const mpz_t num,struct node_factorization*head_factor);
+void create_row_factorization(struct node_factor_base*head_f_base_f,int card_f_base,const mpz_t a,struct a_struct*array_a_struct,int s);
 #endif

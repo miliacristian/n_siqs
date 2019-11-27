@@ -8,7 +8,6 @@
 #include "basic.h"
 #include "math_function.h"
 #include "dynamic_list.h"
-#include "matrix_function.h"
 #include "miller_rabin.h"
 #include "criv_quad.h"
 #include <gmp.h>
