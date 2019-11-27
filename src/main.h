@@ -5,7 +5,6 @@
 #include <string.h>
 #include <unistd.h>
 #include <math.h>
-#include "basic.h"
 #include "math_function.h"
 #include "dynamic_list.h"
 #include "miller_rabin.h"
