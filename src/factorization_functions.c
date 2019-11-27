@@ -1,5 +1,5 @@
 #include "factorization_functions.h"
-struct row_factorization r;
+
 void print_factorization(const mpz_t num,struct node_factorization*head_factor){
     if(head_factor==NULL){
         printf("no simple factorization found\n");

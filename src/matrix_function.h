@@ -10,10 +10,10 @@
 #include "list_factorization.h"
 #include <mpfr.h>
 #include <unistd.h>
-
+#include "a_b_c_BK_functions.h"
 #include "factor_base_functions.h"
-#include "matrix_function_v2.h"
-int* sum_vector(int*vector1,int*vector2,int lenght1,int lenght2);
+#include "factorization_functionsv2.h"
+/*int* sum_vector(int*vector1,int*vector2,int lenght1,int lenght2);
 long* sum_elem_multiple_of_2(long*vector1,long*vector2,int length1,int length2);
 void sum_elem_multiple_of_2_mpz(mpz_t*vector1,mpz_t*vector2,int length1,int length2);
 void prod_vector_and_scalar(int*vector,int scalar,int lenght);
@@ -95,7 +95,7 @@ void swap_row_unsigned_long(unsigned long**matrix,int num_row,int ind_row1,int i
 void reduce_echelon_form_binary_matrix(unsigned long**binary_matrix,int num_row,int num_col);
 unsigned long**create_binary_linear_system(struct node_square_relation*head,int cardinality_factor_base,int num_B_smooth,int*num_col_binary_matrix);
 char*from_matrix_binary_to_matrix_char(unsigned long**binary_linear_system,int num_row,int num_col_binary_matrix,int*num_col_linear_system);
-int calculate_dim_solution(int num_row_not_null,int num_col_not_null);
+int calculate_dim_solution(int num_row_not_null,int num_col_not_null);*/
 #endif
 
 
