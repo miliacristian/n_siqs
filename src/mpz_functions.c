@@ -303,4 +303,14 @@ int quadratic_residue(mpz_t x,const mpz_t q,const mpz_t n)
     }
     return 1;
 }
+void print_array_matrix_same_dimension(mpz_t***array_matrix_mpz,int length_array,int num_row,int num_col){
+    if(array_matrix_mpz==NULL || *array_matrix_mpz==NULL || **array_matrix_mpz==NULL || length_array<=0
+       || num_row<=0 ||  num_col<=0){
+        handle_error_with_exit("error in print_array_mpz_same_dimension\n");
+    }
+    for(int i=0;i<length_array;i++){
+        print_matrix_mpz(array_matrix_mpz[i],num_row,num_col);
+    }
+    return;
+}
 

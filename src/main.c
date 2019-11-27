@@ -8,16 +8,16 @@
 	extern struct timespec timer_test;
 
 	//valori globali del file main
-	struct row_factorization r;//contiene tutti i primi della factor base e i relativi log
+	extern struct row_factorization r;//contiene tutti i primi della factor base e i relativi log
 	int k=-1;//moltiplicatore di n,se n dispari k=1,3,5 o 7,se n pari so fattorizzarlo
 	//argv[1]=path del file da leggere per ottenere n da fattorizzare
 	struct node_factor_base*head_f_base_f=NULL;//testa della lista dinamica factor base
 	struct node_factor_base*tail_f_base_f=NULL;//coda della lista dinamica factor base
     extern mpz_t n,x0;//dichiarazione di n,n da fattorizzare,deve essere inizializzato a zero,e deve essere sovrascritto con il numero preso da riga 		di comando o da file
-	mpz_t a_old,a_new;//valore del coefficiente a del polinomio
+	extern mpz_t a_old,a_new;//valore del coefficiente a del polinomio
 	mpfr_t thresold_a;//soglia per il calcolo di a
 	mpz_t temp;//mpz temporaneo
-	int s=-1;//numero di primi della factor base distinti che compongono a
+	extern int s;//numero di primi della factor base distinti che compongono a
 	extern long B;//smoothness_bound
 	extern long M;//metà dimensione array
 	mpz_t b1;//valore del primo b=somma di tutti i Bk presi dall'array Bk
@@ -31,7 +31,7 @@
 	int num_increment_M_and_B;
 	int*index_prime_a=NULL;//indice dei primi usati per ottenere a,rispetto alla factor base
 	int*number_prime_a=NULL;//numeri primi usati per ottenere a
-    	struct a_struct*array_a_struct=NULL;
+	extern struct a_struct*array_a_struct;
     	int combined_relations;
     	char combined;
     	mpz_t thresold_large_prime;

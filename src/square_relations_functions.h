@@ -4,6 +4,8 @@
 #include <gmp.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include "properties.h"
+#include "matrix_function_v2.h"
 struct square_relation {
     mpz_t square;
     struct node_factorization*head_factorization;

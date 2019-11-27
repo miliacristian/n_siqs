@@ -1,9 +1,10 @@
-//
-// Created by cristian on 25/11/19.
-//
 
 #ifndef CRIVELLO_QUADRATICO__COPIA_1_ARRAY_NUMBERS_H
 #define CRIVELLO_QUADRATICO__COPIA_1_ARRAY_NUMBERS_H
+
+#include "properties.h"
+#include "printv2.h"
+#include "mpz_functions.h"
 struct number {
     int j;//indice j va da -M a M
     int sum_log;//somma del logaritmo

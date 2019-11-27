@@ -2,7 +2,6 @@
 #define MATH_H
 
 #include "dynamic_list.h"
-#include "print.h"
 #include <gmp.h>
 #include "basic.h"
 #include <stdio.h>
@@ -12,7 +11,6 @@
 #include "basic.h"
 #include "gmp.h"
 #include "matrix_function.h"
-#include "print.h"
 #include "list_factorization.h"
 #include "list_square_relation.h"
 #include <unistd.h>
@@ -56,6 +54,7 @@ struct node_factorization*factorize_num_v1(const mpz_t num,int first_index_f_bas
 char calculate_num_from_factorization(mpz_t num_temp,struct node_factorization*head_factor);
 char verify_square_relation(struct square_relation square_relation,const mpz_t n);
 void calculate_thresold_large_prime(mpz_t thresold_large_prime,int max_prime);
+char divide_all_by_2_log(long M,struct thread_data thread_data);
 #endif
 
 
