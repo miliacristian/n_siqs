@@ -1,5 +1,5 @@
 
-#include "matrix_function_v2.h"
+#include "matrix_functions.h"
 
 extern struct row_factorization r;
 extern struct timespec timer;

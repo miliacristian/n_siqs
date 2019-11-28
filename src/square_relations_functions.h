@@ -1,11 +1,11 @@
 #ifndef Y_H
 #define Y_H
-#include "factorization_functionsv2.h"
+#include "factorization_functions.h"
 #include <gmp.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include "properties.h"
-#include "matrix_function_v2.h"
+#include "matrix_functions.h"
 
 struct square_relation {
     mpz_t square;

@@ -6,8 +6,7 @@
 #include "properties.h"
 #include <mpfr.h>
 #include "factor_base_functions.h"
-#include "matrix_function_v2.h"
-//#include "square_relations_functions.h"
+#include "matrix_functions.h"
 
 struct a_struct {
     int number_prime_a;

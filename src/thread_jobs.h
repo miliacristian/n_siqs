@@ -3,16 +3,16 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "array_numbers.h"
-#include "basicv2.h"
+#include "basic.h"
 #include <string.h>
-#include "matrix_function_v2.h"
+#include "matrix_functions.h"
 #include "properties.h"
 #include "factor_base_functions.h"
 #include "a_b_c_BK_functions.h"
 #include "parameters.h"
 #include "M_and_B_functions.h"
 #include "list_factorization.h"
-#include "list_square_relation.h"
+#include "list_square_relations.h"
 #ifndef CRIVELLO_QUADRATICO__COPIA_1_THREAD_JOBS_H
 #define CRIVELLO_QUADRATICO__COPIA_1_THREAD_JOBS_H
 

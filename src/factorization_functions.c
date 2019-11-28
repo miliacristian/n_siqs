@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "factorization_functionsv2.h"
+#include "factorization_functions.h"
 #include <math.h>
 #include <gmp.h>
 #include "a_b_c_BK_functions.h"

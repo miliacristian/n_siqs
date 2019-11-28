@@ -1,6 +1,6 @@
 #include <gmp.h>
 #include "properties.h"
-#include "factorization_functionsv2.h"
+#include "factorization_functions.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

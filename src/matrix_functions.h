@@ -7,9 +7,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include "printv2.h"
-#include "math_functionv2.h"
-#include "basicv2.h"
+#include "print.h"
+#include "math_functions.h"
+#include "basic.h"
 #include "timing.h"
 long*alloc_array_long(int length);
 char array_is_fill_of_value(char*combination,int length,char value);

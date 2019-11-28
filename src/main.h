@@ -12,12 +12,12 @@
 #include <assert.h>
 #include <mpfr.h>
 #include "list_factorization.h"
-#include "list_square_relation.h"
+#include "list_square_relations.h"
 #include <pthread.h>
 #include "parameters.h"
 #include "mpz_functions.h"
-#include "matrix_function_v2.h"
-#include "basicv2.h"
+#include "matrix_functions.h"
+#include "basic.h"
 #include "thread_jobs.h"
 #include "factor_base_functions.h"
 #include "M_and_B_functions.h"

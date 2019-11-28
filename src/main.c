@@ -1,7 +1,6 @@
 
 #include "main.h"
 
-
 	//valori globali(presi da altri file)
 	extern struct timespec timer;//istante di tempo 
 	extern struct timespec time_start;//istante di tempo iniziale
@@ -9,7 +8,7 @@
 
 	//valori globali del file main
 	extern struct row_factorization r;//contiene tutti i primi della factor base e i relativi log
-	int k=-1;//moltiplicatore di n,se n dispari k=1,3,5 o 7,se n pari so fattorizzarlo
+	extern int k;//moltiplicatore di n,se n dispari k=1,3,5 o 7,se n pari so fattorizzarlo
 	//argv[1]=path del file da leggere per ottenere n da fattorizzare
 	struct node_factor_base*head_f_base_f=NULL;//testa della lista dinamica factor base
 	struct node_factor_base*tail_f_base_f=NULL;//coda della lista dinamica factor base

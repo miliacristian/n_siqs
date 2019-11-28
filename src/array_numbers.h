@@ -3,7 +3,7 @@
 #define CRIVELLO_QUADRATICO__COPIA_1_ARRAY_NUMBERS_H
 
 #include "properties.h"
-#include "printv2.h"
+#include "print.h"
 #include "mpz_functions.h"
 struct number {
     int j;//indice j va da -M a M

@@ -1,6 +1,6 @@
 #ifndef MPZ_H
 #define MPZ_H
-#include "printv2.h"
+#include "print.h"
 #include "dynamic_list.h"
 
 void print_array_mpz(mpz_t*array,int length);

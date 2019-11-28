@@ -1,4 +1,4 @@
-#include "math_functionv2.h"
+#include "math_functions.h"
 long calculate_mod_n(long a,long n){//reduce a mod n,rendendo a positivo maggiore o uguale a zero e minore di n,n è positivo
 	if(n<=0){
 		handle_error_with_exit("error in parameter calculate mod n\n");

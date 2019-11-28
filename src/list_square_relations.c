@@ -1,6 +1,4 @@
-#include "list_square_relation.h"
-
-
+#include "list_square_relations.h"
 
 // A utility function to find last node of linked list
 void swap_square_relation(struct square_relation *pnode1,struct square_relation *pnode2){

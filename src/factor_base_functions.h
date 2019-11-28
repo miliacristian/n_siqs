@@ -8,7 +8,7 @@
 #include "mpz_functions.h"
 #include <gmp.h>
 #include "parameters.h"
-#include "math_functionv2.h"
+#include "math_functions.h"
 
 struct node_factor_base  {//struttura di un nodo della lista dinamica ordianta,la lista tiene traccia delle trasmissioni e delle ritrasmissioni
     int prime;
