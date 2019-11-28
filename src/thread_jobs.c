@@ -1066,3 +1066,18 @@ int* create_threads(pthread_t*array_tid,int num_thread){//ritorna il numero di t
     }
     return array_id;
 }
+char divide_all_by_2_to_k_f(long M,struct thread_data thread_data,const mpz_t n,long k,const mpz_t a,const mpz_t b,const mpz_t y){
+    //k esponente di 2 a,b coefficienti di a(j)=aj^2+2bj+c y coincide con y(k-2),se si sa y(k-2) allora a=2*y(k-2)+1
+
+    //se n è congruo a 1 mod 8 allora n è congruo a 1 mod 4 e congruo a 1 mod 2
+    char count=0;//0 se non ci sono state divisioni 1 se ci sono state divisioni
+
+    if(n==NULL || a==NULL || b==NULL || y==NULL || M<=0 || mpz_sgn(n)<=0 || k<=0){
+        handle_error_with_exit("invalid parameter_divide_all_by_2_to_k\n");
+    }
+    if(k==1){//radici quadrate di n modulo 2
+        count=divide_all_by_2_log(M,thread_data);//k=1 -> dividi per 2
+        return count;
+    }
+    return 0;//ritorna 0 se non ci sono state divisioni nell'array
+}

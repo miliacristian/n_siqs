@@ -56,4 +56,9 @@ int thread_job_criv_quad(int id_thread);
 struct node_factorization*factorize_num_v2(const mpz_t num,int j_of_num,int first_index_f_base,int last_index_f_base,
                                            char*is_B_smooth,char*is_semi_B_smooth,mpz_t residuos,struct a_struct*array_a_struct,int s,struct thread_data thread_data);
 int* create_threads(pthread_t*array_tid,int num_thread);
+void factor_matrix_f(const mpz_t n,long M,struct thread_data thread_data,int cardinality_factor_base,const mpz_t a,
+                     struct a_struct*array_a_struct,int s);
+void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth,int*num_semi_B_smooth, int *num_potential_B_smooth, long M,
+                               struct node_square_relation **head_square, struct node_square_relation **tail_square,struct node_square_relation **head_residuos, struct node_square_relation **tail_residuos,
+                               const mpz_t n,const mpz_t a,struct a_struct*array_a_struct,int s);
 #endif //CRIVELLO_QUADRATICO__COPIA_1_THREAD_JOBS_H

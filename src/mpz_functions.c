@@ -314,3 +314,31 @@ void print_array_matrix_same_dimension(mpz_t***array_matrix_mpz,int length_array
     return;
 }
 
+void reduce_array_mpz_mod_n(mpz_t*array,int length,const mpz_t a){
+    if(array==NULL){
+        return;
+    }
+    if(length<=0 || a==NULL){
+        handle_error_with_exit("error in reduce array mpz mod n\n");
+    }
+
+    for(int i=0;i<length;i++){
+        mpz_mod(array[i],array[i],a);
+    }
+    return;
+}
+void set_to_odd_array_mpz_mod_n(mpz_t *array,int length,const mpz_t a){
+    if(array==NULL){
+        return;
+    }
+    if(length<=0 || a==NULL){
+        handle_error_with_exit("error in reduce array mpz mod n\n");
+    }
+
+    for(int i=0;i<length;i++){
+        if(mpz_divisible_ui_p(array[i],2)!=0){//se bi è pari
+            mpz_sub(array[i],a,array[i]);//bi=a-bi
+        }
+    }
+    return;
+}

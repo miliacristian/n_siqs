@@ -5,7 +5,6 @@
 #include <string.h>
 #include <unistd.h>
 #include <math.h>
-#include "math_function.h"
 #include "dynamic_list.h"
 #include "miller_rabin.h"
 #include <gmp.h>
@@ -24,6 +23,7 @@
 #include "M_and_B_functions.h"
 #include "a_b_c_BK_functions.h"
 #include "square_relations_functions.h"
+#include "n.h"
 int thread_job_criv_quad(int i);
 int thread_job_to_create_factor_base(int id_thread);
 #endif
