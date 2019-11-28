@@ -183,22 +183,7 @@ int count_element_linked_list_square_rel(struct node_square_relation*head){
     }
     return count;
 }
-/*void get_element_linked_list_square_rel(mpz_t elem,struct node_square_relation*head,int index){//index start at 0
-    if(index<0 || head==NULL || elem==NULL){
-        handle_error_with_exit("index must be zero or positive\n");
-    }
-    struct node_square_relation*p=head;
-    int count=0;
-    while(p!=NULL){
-        if(count==index){
-            mpz_set(elem,p->prime);
-            return;
-        }
-        count++;
-        p=p->next;
-    }
-    return;
-}*/
+
 void remove_after_node_square_rel(struct node_square_relation**ppos,struct node_square_relation**tail){
     if(ppos==NULL || tail==NULL ){
         handle_error_with_exit("error in parameter remove_after_node\n");

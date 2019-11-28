@@ -1,5 +1,6 @@
 #ifndef MAT
 #define MAT
+
 #include "properties.h"
 #include <mpfr.h>
 #include <unistd.h>
@@ -11,6 +12,7 @@
 #include "math_functions.h"
 #include "basic.h"
 #include "timing.h"
+
 long*alloc_array_long(int length);
 char array_is_fill_of_value(char*combination,int length,char value);
 void free_memory_matrix_unsigned_long(unsigned long **matrix,int num_row,int num_col);

@@ -52,7 +52,6 @@ char*alloc_array_char(long length){
 	return array;
 }
 
-
 long*alloc_array_long(int length){
 	if(length<=0){
 		handle_error_with_exit("error in parameter alloc aray_long\n");

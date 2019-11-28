@@ -5,6 +5,7 @@
 #include "properties.h"
 #include "print.h"
 #include "mpz_functions.h"
+
 struct number {
     int j;//indice j va da -M a M
     int sum_log;//somma del logaritmo

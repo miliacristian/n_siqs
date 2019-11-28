@@ -2,6 +2,7 @@
 struct timespec timer;
 struct timespec time_start;
 struct timespec timer_test;
+
 void gettime(struct timespec*timer){
 	if(timer==NULL){
 		handle_error_with_exit("error in gettime\n");
@@ -54,29 +55,7 @@ void print_time_elapsed_local(char*string,struct timespec*timer_thread){
 	printf("%s:hour=%ld min=%ld sec:%ld ms=%ld ns:%ld\n",string,hour,min,sec,ms,ns);
 	return;
 }
-/*void print_time_elapsed_on_file_log(char*string){
-	//ns=1000000000=1 sec
-	//ns=1000000 1 ms
-	long ns,ms,sec,min,hour,temp;
-	if(string==NULL){
-		handle_error_with_exit("error in print time\n");
-	}
-	struct timespec time_current,time_sub;
-	if(clock_gettime(CLOCK_MONOTONIC,&time_current)!=0){
-        	handle_error_with_exit("error in print_time\n");
-    	}
-	time_sub=diff_timespec(time_current,timer);
-	ns=time_sub.tv_nsec%1000000;
-	time_sub.tv_nsec-=ns;
-	ms=time_sub.tv_nsec/1000000;
-	sec=time_sub.tv_sec%60;//i secondi sono modulo 60
-	min=(time_sub.tv_sec-sec)/60;
-	temp=min%60;//temp min
-	hour=(min-temp)/60;
-	min=temp;
-	//fprintf(file_log,"%s:hour=%ld min=%ld sec:%ld ms=%ld ns:%ld",string,hour,min,sec,ms,ns);
-	return;
-}*/
+
 struct timespec print_time_elapsed(char*string){
 	//ns=1000000000=1 sec
 	//ns=1000000 1 ms

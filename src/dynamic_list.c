@@ -12,6 +12,7 @@ int count_element_linked_list(struct node*head){
 	}
 	return count;
 }
+
 void get_element_linked_list(mpz_t elem,struct node*head,int index){//index start at 0
 	if(index<0 || head==NULL || elem==NULL){
 		handle_error_with_exit("index must be zero or positive\n");
@@ -28,6 +29,7 @@ void get_element_linked_list(mpz_t elem,struct node*head,int index){//index star
 	}
 	return;
 }
+
 void remove_after_node(struct node**ppos,struct node**tail){
 	if(ppos==NULL || tail==NULL ){
 		handle_error_with_exit("error in parameter remove_after_node\n");

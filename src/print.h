@@ -5,8 +5,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include "properties.h"
+#include "parameters.h"
 #include <gmp.h>
+#include "basic.h"
+
 char not_print_list(int length);
 char not_print_array(long length);
 char not_print_matrix(long num_row,long num_col);

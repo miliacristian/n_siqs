@@ -1,5 +1,7 @@
 #include "square_relations_functions.h"
+
 extern struct row_factorization r;
+
 void free_memory_list_square_relation(struct node_square_relation*head){
     if(head==NULL){
         return;

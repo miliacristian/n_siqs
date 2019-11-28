@@ -18,3 +18,4 @@ scrivere codice a parte per la fase di training per scegliere m e B
 vedere se conviene inserire la parte di training per un numero specifico da fattorizzare all'interno del programma(da considerare nel tempo di esecuzione del programma)
 scrivere grafo delle inclusioni e sistemare header file in modo tale che ogni file includa il numero minore di altri files
 cache profilers
+training su M e B parallelo

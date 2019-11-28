@@ -1,4 +1,5 @@
 #include "basic.h"
+
 void destroy_mtx(pthread_mutex_t *mtx){
 	if(mtx==NULL){
 		handle_error_with_exit("error in destroy_mtx mtx is NULL\n");
@@ -8,6 +9,7 @@ void destroy_mtx(pthread_mutex_t *mtx){
 	}
 	return;
 }
+
 void initialize_mtx(pthread_mutex_t *mtx){//inizializza mutex
 	if(mtx==NULL){
 		handle_error_with_exit("error in initialize_mtx mtx is NULL\n");
@@ -17,6 +19,7 @@ void initialize_mtx(pthread_mutex_t *mtx){//inizializza mutex
 	}
 	return;
 }
+
 void lock_mtx(pthread_mutex_t *mtx){//lock mutex
 	if(mtx==NULL){
 		handle_error_with_exit("error in lock_mtx mtx is NULL\n");
@@ -26,6 +29,7 @@ void lock_mtx(pthread_mutex_t *mtx){//lock mutex
 	}
 	return;
 }
+
 void unlock_mtx(pthread_mutex_t *mtx){//unlock mutex
 	if(mtx==NULL){
 		handle_error_with_exit("error in unlock_mtx mtx is NULL\n");
@@ -35,6 +39,7 @@ void unlock_mtx(pthread_mutex_t *mtx){//unlock mutex
 	}
 	return;
 }
+
 FILE*open_file_log(){
 	FILE*file=fopen("file_log.txt","a");//modalità append
 	if(file==NULL){
@@ -42,6 +47,7 @@ FILE*open_file_log(){
 	}
 	return file;
 }
+
 long get_file_size(char*path){//ritorna la dimensione di un file dato un path
     if(path==NULL){
         handle_error_with_exit("error in get_file_size\n");
@@ -52,6 +58,7 @@ long get_file_size(char*path){//ritorna la dimensione di un file dato un path
     }
     return st.st_size;
 }
+
 FILE*open_file(char*path){
 	if(path==NULL){
 		handle_error_with_exit("error in open_file path is NULL\n");
@@ -61,6 +68,15 @@ FILE*open_file(char*path){
 		handle_error_with_exit("error in opne_file,fopen function\n");
 	}
 	return file;
+}
+void handle_error_with_exit(char*error_string){//uccide il processo dopo essersi accorto di un errore
+    if(error_string==NULL){
+        printf("error string is NULL\n");
+        perror("");
+        exit(EXIT_FAILURE);
+    }
+    printf("%s",error_string);
+    exit(EXIT_FAILURE);
 }
 void test(){
     //operazioni da fare in fase di test

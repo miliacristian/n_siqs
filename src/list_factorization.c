@@ -34,8 +34,7 @@ int count_element_linked_list_factor(struct node_factorization*head){
     }
     return count;
 }
-/* da scrivere
-  void get_element_linked_list_factor(mpz_t elem,struct node*head,int index){//index start at 0
+void get_element_linked_list_factor(mpz_t elem,struct node*head,int index){//index start at 0
     if(index<0 || head==NULL || elem==NULL){
         handle_error_with_exit("index must be zero or positive\n");
     }
@@ -50,7 +49,7 @@ int count_element_linked_list_factor(struct node_factorization*head){
         p=p->next;
     }
     return;
-}*/
+}
 void remove_after_node_factor(struct node_factorization**ppos,struct node_factorization**tail){
     if(ppos==NULL || tail==NULL ){
         handle_error_with_exit("error in parameter remove_after_node\n");

@@ -15,6 +15,7 @@ void print_array_number(mpz_t*array,int M){
     print_array_mpz(array,2*M+1);
     return;
 }
+
 char divide_all_by_min1(mpz_t*array_of_number,long M,mpz_t**matrix_factorization){//r=square root mod p^k,ritorna zero se c'è stata almeno 1 divisione
     if(array_of_number==NULL || matrix_factorization==NULL || *matrix_factorization==NULL || M<=0){
         handle_error_with_exit("invalid parameter divide all by min1\n");

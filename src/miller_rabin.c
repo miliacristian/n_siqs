@@ -1,4 +1,5 @@
 #include "miller_rabin.h"
+
 void test_n(const mpz_t n,int num_test){
 	if(n==NULL || num_test<=0){
 		handle_error_with_exit("error in test_n\n");

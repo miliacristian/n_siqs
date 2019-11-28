@@ -1,4 +1,5 @@
 #include "Bsmooth_functions.h"
+
 void print_index_B_smooth(struct node*head){
 	printf("list index_of number B_smooth:\n");
 	print_list_mpz(head);

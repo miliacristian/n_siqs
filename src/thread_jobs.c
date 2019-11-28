@@ -1,4 +1,5 @@
 #include "thread_jobs.h"
+
 extern int cardinality_factor_base;
 extern long B;
 extern long M;
@@ -9,6 +10,7 @@ extern int num_thread_job;
 extern mpz_t *array_bi;
 extern mpz_t thresold_large_prime;
 extern struct thread_data*thread_polynomial_data;
+
 void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth,int*num_semi_B_smooth, int *num_potential_B_smooth, long M,
                                struct node_square_relation **head_square, struct node_square_relation **tail_square,struct node_square_relation **head_residuos, struct node_square_relation **tail_residuos,
                                const mpz_t n,const mpz_t a,struct a_struct*array_a_struct,int s) {

@@ -38,13 +38,11 @@
 
 
 int main(int argc,char*argv[]){
+    if(argc!=2){//se non c'è esattamente un parametro,termina,serve il path in cui c'è scritto il numero all'interno
+        handle_error_with_exit("usage<path>\n");
+    }
 	srand((unsigned int)time(NULL));//imposta seme casuale
-	if(argc!=2){//se non c'è esattamente un parametro,termina,serve il path in cui c'è scritto il numero all'interno
-		handle_error_with_exit("usage<path>\n");
-	}
 	check_variable_in_defines();
-	//long B=-1;
-	//long M=-1;
 	FILE*file_number=open_file(argv[1]);//apri file in cui risiede il numero n da fattorizzare
 	for(int i=0;i<NUM_OF_N_TO_FACTORIZE;i++){
 
@@ -154,6 +152,7 @@ int main(int argc,char*argv[]){
 
 			//thresold_a per applicare siqs
 			calculate_thresold_a(thresold_a,n,M);//a è circa rad(2*n)/M
+
 			//factor base
 			if(factor_base_already_exist==0 && B>THRESOLD_B && NUM_THREAD_FACTOR_BASE>0) {//se la factor base non è mai stata creata
 				// e se B è maggiore del valore soglia e numero thread per creare factor base>0
@@ -205,6 +204,7 @@ int main(int argc,char*argv[]){
 			else{
 				handle_error_with_exit("caso factor base non gestito\n");
 			}
+
 			//verifica che la factor base è corretta
             if(verify_factor_base(head_f_base_f,cardinality_factor_base,last_prime_factor_base)==0){
                 handle_error_with_exit("error in main verify factor base\n");
@@ -359,9 +359,11 @@ int main(int argc,char*argv[]){
 			free(array_a_struct);
 			array_a_struct=NULL;
 
+			//verifica
 			if(verify_cardinality_list_square_relation(head_square,num_B_smooth)==0){
 				handle_error_with_exit("error in cardinality head_square first of union\n");
 			}
+
 			for(int i=0;i<NUM_THREAD_POLYNOMIAL;i++){//metti tutte le relazioni in head e tail,somma tutti i numeri B_smooth e semi_B_smooth
 				//le liste vengono unite in modo tale che quella finale è ordinata per numero
 			    union_list_square(&head_square,&tail_square,
@@ -464,6 +466,17 @@ int main(int argc,char*argv[]){
                 continue;
             }
             print_time_elapsed("time to find enough square relations");
+
+
+
+
+
+
+
+
+
+
+
 			//algebra step:sistema lineare
             binary_linear_system=create_binary_linear_system(head_sort_square,cardinality_factor_base,num_B_smooth,&num_col_binary_matrix);
             print_time_elapsed("time_to_create_binary linear_system");
@@ -541,7 +554,11 @@ int main(int argc,char*argv[]){
 				number_cycle++;
                 continue;
 			}
-		}
+		}//fine while factorization_founded>=0
+
+
+
+
 		clean_memory://pulire memoria rimanente
 		if(head_f_base_f!=NULL) {
 			free_memory_list_f(head_f_base_f);
@@ -593,9 +610,9 @@ int main(int argc,char*argv[]){
 		timer.tv_nsec=time_start.tv_nsec;//timer=time_start
 		timer.tv_sec=time_start.tv_sec;//timer=time_start
 		print_time_elapsed("time_total");
-	}
-	if(fclose(file_number)!=0){
-		handle_error_with_exit("error in close file_number\n");
+        if(fclose(file_number)!=0){
+            handle_error_with_exit("error in close file_number\n");
+        }
 	}
 	return 0;
 }

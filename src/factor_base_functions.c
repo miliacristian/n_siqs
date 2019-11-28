@@ -1,5 +1,6 @@
 #include "factor_base_functions.h"
 #include "timing.h"
+
 extern long B;
 extern int cardinality_factor_base;
 extern struct timespec timer_test;

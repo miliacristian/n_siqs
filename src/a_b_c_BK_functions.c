@@ -1,4 +1,3 @@
-
 #include "a_b_c_BK_functions.h"
 
 void print_array_Bk(mpz_t*array_Bk,long s){
@@ -294,12 +293,6 @@ void calculate_x0(mpz_t x0,const mpz_t n,int k,char *factorized){
     mpz_mul(s,x0,x0);//s=x0^2
     if(mpz_cmp(s,n_temp)==0){//se s=x0^2=n_temp
         gmp_printf("factorization of n=%Zd*%Zd\n",x0,x0);
-        /*fprintf(file_log,"p=");
-        mpz_out_str(file_log,10,x0);
-        fprintf(file_log," ");
-        fprintf(file_log,"q=");
-        mpz_out_str(file_log,10,x0);
-        fprintf(file_log," ");*/
         *factorized=1;
         mpz_clear(s);
         mpz_clear(n_temp);
@@ -315,13 +308,6 @@ void calculate_x0(mpz_t x0,const mpz_t n,int k,char *factorized){
         mpz_divexact_ui(s,n,k*k);//s=/k
         mpz_sqrt(s,s);
         gmp_printf("factorization of n=%Zd*%Zd*%d\n",s,s,k);
-        /*fprintf(file_log,"p=");
-        mpz_out_str(file_log,10,s);
-        fprintf(file_log," ");
-        fprintf(file_log,"q=");
-        mpz_out_str(file_log,10,s);
-        fprintf(file_log," ");
-        fprintf(file_log,"z=%d ",k);*/
         *factorized=1;
         mpz_clear(s);
         mpz_clear(n_temp);
@@ -448,7 +434,6 @@ void calculate_a_f2(mpz_t a,const mpfr_t target_a,int*s,struct node_factor_base*
         get_element_linked_list_f(&value,head_f_base_f,2);//a=valore del 3 primo della factor base
         mpz_set_si(a,value);
         *s=1;
-        //fprintf(file_log,"p_min=p_max=2 ");
         *best_q_number=alloc_array_int(1);//array che contiene i dei primi scelti
         *best_q=alloc_array_int(1);
         (*best_q_number)[0]=value;
@@ -500,10 +485,6 @@ void calculate_a_f2(mpz_t a,const mpfr_t target_a,int*s,struct node_factor_base*
         mpfr_clear(ratio);//double
         return;
     }
-    //printf("target_a1=");
-    //mpfr_out_str(stdout,10,0,target_a1,MPFR_RNDN);
-    //printf("\n");
-    //print_time_elapsed("time to calculate target_a1");
 
     int count=0;//conta quante volte while(mpz_cmp(a,target_a1)<0) è verificata
     int*q=alloc_array_int(s_max);//array che contiene gli indici dei primi scelti
@@ -677,21 +658,10 @@ void multiply_n_for_k(mpz_t n,int *k,char*factorized){//n=n*k in modo tale che n
     if(mpz_divisible_2exp_p(n,1)){
         mpz_divexact_ui(n,n,2);
         gmp_printf("factorization of n=2*%Zd\n",n);
-        /*fprintf(file_log,"p=2 ");
-        fprintf(file_log,"q=");
-        mpz_out_str(file_log,10,n);
-        fprintf(file_log," ");*/
         *factorized=1;
         return;
     }
     return;
-    /*mpz_t v;//valore temporaneo
-    mpz_init_set_si(v,8);
-    mpz_mod(v,n,v);
-    *k=mpz_get_si(v);//k congruo a n mod 8,se n congruo a 1 mod 8 allora k=1
-    mpz_mul(n,n,v);//n=n*k
-    mpz_clear(v);
-    return;*/
 }
 
 int calculate_v(int i){
