@@ -22,6 +22,9 @@
 #include "basicv2.h"
 #include "thread_jobs.h"
 #include "factor_base_functions.h"
+#include "M_and_B_functions.h"
+#include "a_b_c_BK_functions.h"
+#include "square_relations_functions.h"
 int thread_job_criv_quad(int i);
 int thread_job_to_create_factor_base(int id_thread);
 #endif

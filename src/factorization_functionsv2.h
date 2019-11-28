@@ -3,6 +3,7 @@
 
 #include "factor_base_functions.h"
 #include "a_b_c_BK_functions.h"
+#include "square_relations_functions.h"
 struct node_factorization {
     int number;
     int exp_of_number;
@@ -23,6 +24,6 @@ void print_factorization(const mpz_t num,struct node_factorization*head_factor);
 void create_row_factorization(struct node_factor_base*head_f_base_f,int card_f_base,const mpz_t a,struct a_struct*array_a_struct,int s);
 char verify_factorization(const mpz_t num,mpz_t residuos,struct node_factorization*head_factor,const mpz_t a);
 char calculate_num_from_factorization(mpz_t num_temp,struct node_factorization*head_factor);
-
-
+//int find_factor_of_n_from_base_matrix_char(int **base_matrix,int num_row,int* num_column,char*matrix_linear_system,int num_row_matrix,int num_col_matrix,mpz_t n,struct node_square_relation*head,int num_B_smooth,int card_f_base);
+int try_to_factor(const mpz_t a,const mpz_t b,const mpz_t n,mpz_t factor1,mpz_t factor2);
 #endif

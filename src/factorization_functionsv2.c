@@ -250,3 +250,73 @@ char calculate_num_from_factorization(mpz_t num_temp,struct node_factorization*h
     mpz_clear(factor_raise_to_exp);
     return 1;
 }
+
+int try_to_factor(const mpz_t a,const mpz_t b,const mpz_t n,mpz_t factor1,mpz_t factor2){//dati a,b ed n in input prova a fattorizzare n con il crivello quadratico
+    //ritorna il numero di fattorizzazioni trovate usando a e b(0,1,2)
+    //se c'è almeno una fattorizzazione non banale imposta factor1 e factor2 come fattori
+    if(a==NULL || b==NULL || n==NULL || mpz_sgn(a)<0 || mpz_sgn(b)<0 || mpz_sgn(n)<=0 || factor1==NULL || factor2==NULL){
+        handle_error_with_exit("error in parameter try to factor\n");
+    }
+    mpz_t n_temp;
+    char not_trivial_factor=0;
+    mpz_t sum;//a+b;
+    mpz_t diff;//a-b
+    mpz_t gcd_diff;
+    mpz_t gcd_sum;
+
+    mpz_init(sum);
+    mpz_init(diff);
+    mpz_init(gcd_diff);
+    mpz_init(gcd_sum);
+    mpz_init(n_temp);
+
+    mpz_add(sum,a,b);//sum=a+b;
+    mpz_sub(diff,a,b);//diff=a-b;
+    mpz_set_si(gcd_sum,1);
+    mpz_set_si(gcd_diff,1);
+    mpz_mod(sum,sum,n);
+    mpz_mod(diff,diff,n);
+    if(mpz_cmp(sum,n)!=0){//sum!=n
+        mpz_gcd(gcd_sum,sum,n);
+    }
+    if(mpz_cmp_si(diff,0)!=0){//diff!=0
+        mpz_gcd(gcd_diff,diff,n);
+    }
+    if(mpz_cmp_si(gcd_diff,1)!=0 && mpz_cmp(gcd_diff,n)!=0){//gcd_diff !=1 && gcd_diff!=n
+        mpz_set(n_temp,n);//n_temp==n
+        not_trivial_factor++;
+        if(mpz_divisible_p(n_temp,gcd_diff)==0){
+            handle_error_with_exit("error in mpz_divisible try to factor\n");
+        }
+        mpz_divexact(n_temp,n_temp,gcd_diff);//n=n/gcd_diff
+        gmp_printf("factorization of n=%Zd*%Zd\n",gcd_diff,n_temp);
+        mpz_set(factor1,gcd_diff);
+        mpz_set(factor2,n_temp);
+        mpz_mul(n_temp,factor1,factor2);
+        if(mpz_cmp(n_temp,n)!=0){
+            handle_error_with_exit("invalid factorization of n gcd diff\n");
+        }
+    }
+    if(mpz_cmp_si(gcd_sum,1)!=0 && mpz_cmp(gcd_sum,n)!=0){//gcd_sum !=1 && gcd_sum!=n
+        mpz_set(n_temp,n);//n_temp==n
+        not_trivial_factor++;
+        if(mpz_divisible_p(n_temp,gcd_sum)==0){
+            handle_error_with_exit("error in mpz_divisible try to factor\n");
+        }
+        mpz_divexact(n_temp,n_temp,gcd_sum);//n=n/gcd_sum
+        gmp_printf("factorization of n=%Zd*%Zd\n",gcd_sum,n_temp);
+        mpz_set(factor1,gcd_sum);
+        mpz_set(factor2,n_temp);
+        mpz_mul(n_temp,factor1,factor2);
+        if(mpz_cmp(n_temp,n)!=0){
+            handle_error_with_exit("invalid factorization of n gcd sum\n");
+        }
+    }
+    mpz_clear(sum);
+    mpz_clear(diff);
+    mpz_clear(gcd_diff);
+    mpz_clear(gcd_sum);
+    mpz_clear(n_temp);
+    return not_trivial_factor;
+}
+
