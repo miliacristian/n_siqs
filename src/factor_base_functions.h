@@ -1,7 +1,6 @@
 
 #ifndef FAC_BASE_FUNC_H
 #define FAC_BASE_FUNC_H
-#include "mpz_functions.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
