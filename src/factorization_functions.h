@@ -1,5 +1,5 @@
-#ifndef X_H
-#define X_H
+#ifndef FACTORIZATION_H
+#define FACTORIZATION_H
 
 #include "factor_base_functions.h"
 #include "a_b_c_BK_functions.h"

@@ -1,3 +1,6 @@
+#ifndef THREAD_JOBS_H
+#define THREAD_JOBS_H
+
 #include "square_relations_functions.h"
 #include <pthread.h>
 #include <stdlib.h>
@@ -6,15 +9,13 @@
 #include "basic.h"
 #include <string.h>
 #include "matrix_functions.h"
-#include "properties.h"
 #include "factor_base_functions.h"
 #include "a_b_c_BK_functions.h"
 #include "parameters.h"
 #include "M_and_B_functions.h"
 #include "list_factorization.h"
 #include "list_square_relations.h"
-#ifndef CRIVELLO_QUADRATICO__COPIA_1_THREAD_JOBS_H
-#define CRIVELLO_QUADRATICO__COPIA_1_THREAD_JOBS_H
+
 
 extern int s;//numero di primi della factor base distinti che compongono a
 extern struct factor_base_data*thread_factor_base_data;

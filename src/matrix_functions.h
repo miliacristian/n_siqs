@@ -1,7 +1,6 @@
-#ifndef MAT
-#define MAT
+#ifndef MATRIX_H
+#define MATRIX_H
 
-#include "properties.h"
 #include <mpfr.h>
 #include <unistd.h>
 #include <stdio.h>

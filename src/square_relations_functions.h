@@ -1,11 +1,10 @@
-#ifndef Y_H
-#define Y_H
+#ifndef SQUARE_REL_FUNC_H
+#define SQUARE_REL_FUNC_H
 
 #include "factorization_functions.h"
 #include <gmp.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "properties.h"
 #include "matrix_functions.h"
 
 struct square_relation {

@@ -1,3 +1,5 @@
+#ifndef MATH_H
+#define MATH_H
 #include <stdio.h>
 #include <stdlib.h>
 #include "parameters.h"
@@ -19,3 +21,4 @@ long gcd(long a,long b);
 int rand_int(int a,int b);
 int rand_long(long a,long b);
 long floor_sqrt(long x);
+#endif

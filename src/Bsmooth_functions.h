@@ -1,7 +1,6 @@
 #ifndef BSMOOTH_H
 #define BSMOOTH_H
 
-#include "properties.h"
 #include "mpz_functions.h"
 
 void print_index_B_smooth(struct node*head);

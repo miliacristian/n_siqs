@@ -1,5 +1,5 @@
-#ifndef PRINTv2_H
-#define PRINTv2_H
+#ifndef PRINT_H
+#define PRINT_H
 
 #include <stdio.h>
 #include <stdlib.h>

@@ -785,38 +785,45 @@ int thread_job_criv_quad(int id_thread){//id inizia da 0,il lavoro di un thread 
         return 0;
     }
     struct timespec timer_thread;//istante di tempo
+    struct timespec timer_thread_start;
     int count=id_thread;//indica quale polinomio deve usare per fare il crivello quadratico
     struct node_square_relation*head_squares=NULL,*tail_squares=NULL;
     struct node_square_relation*head_residuoss=NULL,*tail_residuoss=NULL;
 
     //gettime
     gettime(&timer_thread);
+    gettime(&timer_thread_start);
     thread_polynomial_data[id_thread].log_thresold=calculate_log_thresold(n,M);
-
+    int local_num_thread_job=num_thread_job;
     //log_thresold
-    while(count<=num_thread_job-2){//ogni thread prende un sottoinsieme di compiti,il thread con id 0 farà i compiti 0,NUM_THREAD,2*NUM_THREAD,il thread 1 farà 1,NUM_THREAD+1,2*NUM_THREAD+1 ecc
+    while(count<=local_num_thread_job-2){//ogni thread prende un sottoinsieme di compiti,il thread con id 0 farà i compiti 0,NUM_THREAD,2*NUM_THREAD,il thread 1 farà 1,NUM_THREAD+1,2*NUM_THREAD+1 ecc
         //fattorizzazione,alla fine ogni thread ha una lista di relazioni quadratiche
 
         //fattorizza array di 2m+1 elementi e memorizza la somma dei logaritmi per ogni posizione e
         // indici last e first che ci dicono il primo elemento divisibile per num e l'ultimo(questo facilita la trial division)
         mpz_set(thread_polynomial_data[id_thread].b,array_bi[count]);//imposta ad ogni ciclo il valore di b
-        factor_matrix_f(n,M,(thread_polynomial_data[id_thread]),cardinality_factor_base,a_old,array_a_struct,s);//fattorizza una nuova matrice
 
+        factor_matrix_f(n,M,(thread_polynomial_data[id_thread]),cardinality_factor_base,a_old,array_a_struct,s);//fattorizza una nuova matrice
+        print_time_elapsed_local("time to factor_matrix_f",&timer_thread);
         //ricerca dei B_smooth potenziali,reali e fattorizzazione dei B_smooth reali
         find_list_square_relation(thread_polynomial_data[id_thread],&(thread_polynomial_data[id_thread].num_B_smooth),&(thread_polynomial_data[id_thread].num_semi_B_smooth),&(thread_polynomial_data[id_thread].num_potential_B_smooth),M,&head_squares,&tail_squares,&head_residuoss,&tail_residuoss,n,a_old,array_a_struct,s);
         //pulisci struttura dati del thread per ricominciare con un altro polinomio
         clear_struct_thread_data(thread_polynomial_data[id_thread],M);
+        print_time_elapsed_local("time to find_list_square_relation",&timer_thread);
         //unisci la lista dei quadrati trovata con il polinomio con la lista dei quadrati del thread,alla fine ogni thread ha un unica lista dei quadrati
         union_list_square(&(thread_polynomial_data[id_thread].head_square),&(thread_polynomial_data[id_thread].tail_square),head_squares,tail_squares);
         union_list_residuos(&(thread_polynomial_data[id_thread].head_residuos),&(thread_polynomial_data[id_thread].tail_residuos),head_residuoss,tail_residuoss);
+        print_time_elapsed_local("time to union list",&timer_thread);
         head_squares=NULL;//resetta la lista locale delle relazioni quadratiche
         tail_squares=NULL;//resetta la lista locale delle relazioni quadratiche
         head_residuoss=NULL;
         tail_residuoss=NULL;
         count+=NUM_THREAD_POLYNOMIAL;//modulo numero dei thread
     }
+    print_time_elapsed_local("time to finish thread job",&timer_thread_start);
     return 0;
 }
+
 struct node_factorization*factorize_num_v2(const mpz_t num,int j_of_num,int first_index_f_base,int last_index_f_base,
                                            char*is_B_smooth,char*is_semi_B_smooth,mpz_t residuos,struct a_struct*array_a_struct,int s,struct thread_data thread_data){
     if((first_index_f_base<0 && first_index_f_base!=-1)|| (last_index_f_base<0 && last_index_f_base!=-1)

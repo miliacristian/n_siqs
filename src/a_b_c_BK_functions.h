@@ -1,9 +1,8 @@
 
-#ifndef CRIVELLO_QUADRATICO__COPIA_1_A_B_C_FUNCTIONS_H
-#define CRIVELLO_QUADRATICO__COPIA_1_A_B_C_FUNCTIONS_H
+#ifndef A_B_C_FUNCTIONS_H
+#define A_B_C_FUNCTIONS_H
 
 #include "mpz_functions.h"
-#include "properties.h"
 #include <mpfr.h>
 #include "factor_base_functions.h"
 #include "matrix_functions.h"

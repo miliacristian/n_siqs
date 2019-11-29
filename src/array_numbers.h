@@ -1,8 +1,7 @@
 
-#ifndef CRIVELLO_QUADRATICO__COPIA_1_ARRAY_NUMBERS_H
-#define CRIVELLO_QUADRATICO__COPIA_1_ARRAY_NUMBERS_H
+#ifndef ARRAY_NUMBERS_H
+#define ARRAY_NUMBERS_H
 
-#include "properties.h"
 #include "print.h"
 #include "mpz_functions.h"
 
