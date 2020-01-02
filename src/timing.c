@@ -29,7 +29,7 @@ struct timespec diff_timespec(struct timespec time_current,struct timespec timer
 	}
 	return time_sub;
 }
-void print_time_elapsed_local(char*string,struct timespec*timer_thread){
+void print_time_elapsed_local(char*string,struct timespec*timer_thread,unsigned int tid){
 	//ns=1000000000=1 sec
 	//ns=1000000 1 ms
 	long ns,ms,sec,min,hour,temp;
@@ -52,7 +52,7 @@ void print_time_elapsed_local(char*string,struct timespec*timer_thread){
 	temp=min%60;//temp min
 	hour=(min-temp)/60;
 	min=temp;
-	printf("%s:hour=%ld min=%ld sec:%ld ms=%ld ns:%ld\n",string,hour,min,sec,ms,ns);
+	printf("%s tid %u:hour=%ld min=%ld sec:%ld ms=%ld ns:%ld\n",string,tid,hour,min,sec,ms,ns);
 	return;
 }
 

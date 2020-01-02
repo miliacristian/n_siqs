@@ -8,5 +8,5 @@ void gettime(struct timespec*timer);
 
 struct timespec diff_timespec(struct timespec time_current,struct timespec timer);
 struct timespec print_time_elapsed(char*string);
-void print_time_elapsed_local(char*string,struct timespec*timer_thread);
+void print_time_elapsed_local(char*string,struct timespec*timer_thread,unsigned int tid);
 #endif

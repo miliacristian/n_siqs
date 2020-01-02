@@ -8,6 +8,7 @@
 #include "array_numbers.h"
 #include "basic.h"
 #include <string.h>
+#include <errno.h>
 #include "matrix_functions.h"
 #include "factor_base_functions.h"
 #include "a_b_c_BK_functions.h"

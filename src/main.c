@@ -382,7 +382,7 @@ int main(int argc,char*argv[]){
 				thread_polynomial_data[i].num_semi_B_smooth=0;
 			}
             printf("num_potential_B_smooth=%d,num_B_smooth=%d,num_semi_B_smooth=%d\n",num_potential_B_smooth,num_B_smooth,num_semi_B_smooth);
-            printf("card_f_base=%d,B=%ld\n",cardinality_factor_base,B);
+            printf("card_f_base=%d,B=%ld,M=%ld\n",cardinality_factor_base,B,M);
 			if(verify_cardinality_list_square_relation(head_square,num_B_smooth)==0){
 				handle_error_with_exit("error in cardinality head_square after union\n");
 			}

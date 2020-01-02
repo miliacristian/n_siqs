@@ -1,4 +1,4 @@
-pin thread sui core
+pin thread sui core e fare in modo che i thread non vengano mai ricreati tramite barriere di sincronizzazione(la funzione di pinning è già presente e inserita nel thread_job_criv_quad)
 numero thread pari al numero di core
 alloc/free meno possibile gestione della memoria manuale con wrapper,riutilizzo della memoria liberata o con madvise,posix_memalign mallopt,madvise ecc
 allineare le strutture dati condivise e non condivise (alla linea di cache o altro)
@@ -12,10 +12,19 @@ in ogni istante tutti i thread devono essere running(in esecuzione o meno)
 speculare dove possibile se è conveniente
 meccanismo dei segnali per thread se serve a qualcosa
 parallelizzare la riduzione della matrice a scala
-scrivere il codice in modo tale che sfrutti a pieno la cache
+scrivere il codice in modo tale che sfrutti a pieno la cache e la sua località(scaricare cpu-z per vedere architettura della cache)
 pulizia codice
 scrivere codice a parte per la fase di training per scegliere m e B
 vedere se conviene inserire la parte di training per un numero specifico da fattorizzare all'interno del programma(da considerare nel tempo di esecuzione del programma)
 scrivere grafo delle inclusioni e sistemare header file in modo tale che ogni file includa il numero minore di altri files
 cache profilers
 training su M e B parallelo
+accorpare mpz_init e mpz_clear
+inserire volatile e inline dove possibile
+individuare i colli di bottiglia e migliorarli,non migliorare cose poco migliorabili
+il modo in cui vengono calcolati M e B deve dipendere dalla velocità dell'algoritmo(magari l'algoritmo è strutturato per trattare M molto alti e B molto bassi), lo stesso discorso vale per tutti gli altri parametri
+implementare un buon algoritmo di training che ottiene dei buoni parametri per velocizzare al massimo la fase di sieving(potrebbe rallentare la fase di algebra step)
+ristrutturare l'intero algoritmo in modo tale che sia completamente non bloccante e incrementale(se qualche informazione non basta l'aggiunta di informazioni avviene in modo "append")
+se invece del logaritmo memorizziamo il numero di volte che un numero viene diviso per primi diversi possiamo stabilire teoricamente un log_thresold tale che il numero è sicuramente B_smooth? se viene diviso per n fattori primi diversi la parte restante deve essere minore della radice n-esima del numero stesso?la parte restante potrebbe non essere divisibile completamente rispetto alla factor base, ma sicuramente è un potenziale B_smooth che vale la pena dividerlo per vedere se è semi_B_smooth o B_smooth
+implementare algoritmi di training su tutti i possibili parametri(sia offline sia online(a runtime ) ).tutti i parametri si intende M,B,a,log_thresold ecc. L'algoritmo offline deve utilizzare lo stesso identico meccanismo usato nell'algoritmo online,perché dei buoni parametri dipendono strettamente dall'implementazione del setaccio o dell'algoritmo in sé
+inserire variabili per_thread in modo tale che aumenta la leggibilità,diminuisce la confusione e aumentano le performance per ridurre false cache sharing

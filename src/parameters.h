@@ -26,7 +26,7 @@
 #define ENOUGH_RELATION 1.0 //numero maggiore o uguale a 1 indica quante relazioni
 //vanno trovate in più rispetto alla cardinalità della factor base num_b_smooth>cardinality*enough_relation
 #define ERROR_LOG 25//errore del logaritmo,aumentare per trovare più numeri B_smooth potenziali ma maggior computazione,
-//diminuire per trovare meno numeri B_smooth potenziali ma minor computazione,valore default=25
+//diminuire per trovare meno numeri B_smooth potenziali ma minor computazione,valore default=25,non è il contrario? più è grande e più è difficile avere numeri B-smooth di quel tipo,ma i numeri che passano la soglia sono più probabilmente B_smooth
 #define THRESOLD_B 20000 //se B è minore di thresold b non dividere il processo di creazione factor base in più thread
 #define BIT_OF_UNSIGNED_LONG (8*sizeof(unsigned long))//numero di bit di una variabile unsigned long
 
