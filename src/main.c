@@ -1,6 +1,8 @@
 
 #include "main.h"
 
+	extern unsigned long num_times_malloc_called;
+	extern unsigned long num_times_free_called;
 	//valori globali(presi da altri file)
 	extern struct timespec timer;//istante di tempo 
 	extern struct timespec time_start;//istante di tempo iniziale
@@ -49,7 +51,7 @@ int main(int argc,char*argv[]){
 		//dichiarazione variabili
 		num_increment_M_and_B=0;
 		cardinality_factor_base=0;
-		char main_thread_work=0;
+		char main_thread_work=1;
 		combined=0;
 		combined_relations=0;
 		int removed;
@@ -329,9 +331,8 @@ int main(int argc,char*argv[]){
                 main_thread_work=1;
             }
 			if(main_thread_work==1) {
-				//FIX per numeri grandi dove non viene utilizzato il main_thread funziona,per numeri piccoli dove potrebbe venir utilizzato è da testare
 				if(num_thread_job!=1) {//se il numero di job da fare è maggiore di 1
-					main_thread_work = 1;
+					main_thread_work = 0;
 				}
 				mpz_set(thread_polynomial_data[NUM_THREAD_POLYNOMIAL].b, b_default);//imposta b
 				factor_matrix_f(n, M, (thread_polynomial_data[NUM_THREAD_POLYNOMIAL]), cardinality_factor_base,
@@ -488,9 +489,9 @@ int main(int argc,char*argv[]){
             }
 			print_total_time_elapsed("time total to finish math steps",time_start);
 			printf("num spawned threads=%u\n",num_spawned_threads);
-			handle_error_with_exit("finish math steps\n");
-
-
+			printf("num malloc called=%ld\n",num_times_malloc_called);
+			printf("num free called=%ld\n",num_times_free_called);
+			//handle_error_with_exit("finish math steps\n");
 
 
 
@@ -640,5 +641,7 @@ int main(int argc,char*argv[]){
             handle_error_with_exit("error in close file_number\n");
         }
 	}
+	printf("num malloc called=%ld\n",num_times_malloc_called);
+	printf("num free called=%ld\n",num_times_free_called);
 	return 0;
 }

@@ -16,12 +16,12 @@
 #include "M_and_B_functions.h"
 #include "list_factorization.h"
 #include "list_square_relations.h"
-
+//#include "memory_manager.h"
 
 extern int s;//numero di primi della factor base distinti che compongono a
 extern struct factor_base_data*thread_factor_base_data;
 extern struct a_struct*array_a_struct;
-struct thread_data {
+struct thread_data  {
     float log_thresold;//valore della soglia
     mpz_t b;//coefficiente b
     int num_potential_B_smooth;
@@ -34,10 +34,10 @@ struct thread_data {
     struct node_square_relation*tail_residuos;
     long*j1_mod_p;//j1=-b+r)*a^-1 mod p
     long*j2_mod_p;//j2=(-b+r2)*a^-1 mod p
-
+    //__attribute__ ((aligned (64))) char messages[64];//make struct multiple of 64 byte
     //ogni volta che un thread analizza un dato appende la lista delle relazioni quadratiche a quella
     // precedentemente calcolata
-};
+}; 
 
 struct factorization_thread_data{
     int id_thread;

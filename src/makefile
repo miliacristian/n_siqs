@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS =-Wall -Wextra -o3
+CFLAGS =-Wall -Wextra -o3 -Xlinker --wrap=malloc -Xlinker --wrap=free
 CFILES=$(shell ls *.c)
 PROGS=$(CFILES:%.c=%)
 
@@ -13,7 +13,7 @@ install:criv_quad
 	
 #factorize one number,print initialize,print time total,no check,print factorization,check factorization
 criv_quad:$(CFILES)
-		$(CC) $(CFLAGS) -o  $@ $^  -lmpfr -lm -lgmp -lrt -pthread
+		$(CC) $(CFLAGS) -o  $@ $^  -lmpfr -lm -lgmp -lrt -pthread 
 
 #factorize one number,print initialize,print all timing,no check,print factorization,check_factorization
 criv_quad_with_timimg:$(CFILES)
