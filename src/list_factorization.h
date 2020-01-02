@@ -15,7 +15,7 @@ int delete_head_factor(struct node_factorization** head);
 
 void insert_first_factor(struct node_factorization *new_node, struct node_factorization **head, struct node_factorization **tail);
 void insert_at_tail_factor(struct node_factorization *new_node,struct node_factorization**head,struct node_factorization** tail);
-
+void alloc_and_insert_at_tail(int number,int exp_of_number,int index, struct node_factorization** head, struct node_factorization** tail);
 //alloca e inizializza un nodo della lista dinamica ordinata
 struct node_factorization* get_new_node_factor(int number,int exp_of_number,int index);
 

@@ -1,11 +1,9 @@
 #include "list_factorization.h"
+#if DEBUG==1
 char verify_cardinality_list_factorization(struct node_factorization*head,int length){
     if(length<0){
         printf("length minore di zero\n");
         return 0;
-    }
-    if(TEST==0){
-        return 1;
     }
     int counter=0;
     if(head==NULL && length==0){
@@ -22,6 +20,7 @@ char verify_cardinality_list_factorization(struct node_factorization*head,int le
     }
     return 1;
 }
+#endif
 int count_element_linked_list_factor(struct node_factorization*head){
     int count=0;
     if (head==NULL){
@@ -162,7 +161,16 @@ char first_is_smaller_factor(struct node_factorization node1, struct node_factor
     }
     return 1;//node1 è più piccolo di node 2
 }
-
+void alloc_and_insert_at_tail(int number,int exp_of_number,int index, struct node_factorization** head, struct node_factorization** tail){
+    if( (number<=0 && number!=-1) || exp_of_number<0 || index<0){
+        handle_error_with_exit("error in parameter get_new_node\n");
+    }
+    if(head==NULL || tail==NULL){
+        handle_error_with_exit("error in insert_ordered,head or tail are NULL\n");
+    }
+    struct node_factorization* new_node = get_new_node_factor(number,exp_of_number,index);
+    insert_at_tail_factor(new_node,head, tail);
+}
 void insert_ordered_factor(int number,int exp_of_number,int index, struct node_factorization** head, struct node_factorization** tail){
     //inserisce ordinatamente un nodo nella lista ordinata per istanti temporali
     if( (number<=0 && number!=-1) || exp_of_number<0 || index<0){

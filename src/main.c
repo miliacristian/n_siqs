@@ -73,7 +73,7 @@ int main(int argc,char*argv[]){
         char factor_base_already_exist=0;//indica se la factor base è già esistente oppure no
         int start=0,number_cycle=0;
 		k=1;//moltiplicatore di n
-
+		unsigned int num_spawned_threads=0;
 		//mpz_init
 		mpz_init(n);
 		mpz_init(a_old);
@@ -114,10 +114,11 @@ int main(int argc,char*argv[]){
 		}
 		printf("B=%ld\n",B);
 		print_time_elapsed("time to calculate B");
+        #if DEBUG==1
         if(B<=0 || M<=0){
             handle_error_with_exit("error in B or M\n");
         }
-
+        #endif
 		//k,moltiplicatore di n per renderlo un quadrato modulo 8
 		multiply_n_for_k(n,&k,&factorized);
 		if(factorized==1){//se n viene fattorizzato pulire la memoria e terminare il programma
@@ -144,7 +145,9 @@ int main(int argc,char*argv[]){
 		gmp_printf("b_default=%Zd\n",b_default);
 		factor_base_already_exist=0;
 
+		print_total_time_elapsed("time to init main variables",time_start);
 		while(factorizations_founded<=0){//finquando non sono stati trovati fattori:
+		    gettime(&timer);
 		    // calcola a=p1*p2*...ps,unisci le relazioni quadratiche vedi se puoi calcolare il sistema lineare,
             // trova souzioni sistema lineare e trova tutti gli a,b del crivello quadratico
 			adjust_n(n,&k);//aggiusta n per calcolare i suoi fattori(divide n per k)
@@ -152,7 +155,7 @@ int main(int argc,char*argv[]){
 
 			//thresold_a per applicare siqs
 			calculate_thresold_a(thresold_a,n,M);//a è circa rad(2*n)/M
-
+			print_time_elapsed("time to calculate thresold_a");
 			//factor base
 			if(factor_base_already_exist==0 && B>THRESOLD_B && NUM_THREAD_FACTOR_BASE>0) {//se la factor base non è mai stata creata
 				// e se B è maggiore del valore soglia e numero thread per creare factor base>0
@@ -206,21 +209,25 @@ int main(int argc,char*argv[]){
 			}
 
 			//verifica che la factor base è corretta
+			#if DEBUG==1
             if(verify_factor_base(head_f_base_f,cardinality_factor_base,last_prime_factor_base)==0){
                 handle_error_with_exit("error in main verify factor base\n");
             }
             if(verify_cardinality_list_factor_base(head_f_base_f,cardinality_factor_base)==0){
             	handle_error_with_exit("invalid dimension list factor base\n");
             }
-
+            #endif
+            print_time_elapsed("time to calculate factor base");
 			//a,per siqs e generare tutti gli altri b,prodotto di primi dispari distinti
 			calculate_a_f2(a_new,thresold_a,&s,head_f_base_f,cardinality_factor_base,&index_prime_a,&number_prime_a);
+            #if DEBUG==1
             if(s==0 && mpz_cmp_si(a_new,0)!=0){
                 handle_error_with_exit("error in main calculate a 1\n");
             }
             if(s>0 && mpz_cmp_si(a_new,0)==0){
                 handle_error_with_exit("error in main calculate a 2\n");
             }
+            #endif
 			while(s>0 && (mpz_cmp(a_old,a_new)==0 && mpz_cmp_si(a_new,0)!=0)){//continua fino a quando non trovi un a diverso
 				increment_M_and_B(&M,&B);//aumenta M e B
 				create_factor_base_f(&cardinality_factor_base,B,&head_f_base_f,&tail_f_base_f,n,&last_prime_factor_base);
@@ -234,23 +241,27 @@ int main(int argc,char*argv[]){
                 }
 				calculate_thresold_a(thresold_a,n,M);
 				calculate_a_f2(a_new,thresold_a,&s,head_f_base_f,cardinality_factor_base,&index_prime_a,&number_prime_a);
+                #if DEBUG==1
                 if(s==0 && mpz_cmp_si(a_new,0)!=0){
                     handle_error_with_exit("error in main calculate a 1\n");
                 }
                 if(s>0 && mpz_cmp_si(a_new,0)==0){
                     handle_error_with_exit("error in main calculate a 2\n");
                 }
+                #endif
             }
             mpz_set(a_old,a_new);//imposta a_old=a_new
 			if(s==0 && mpz_cmp_si(a_new,0)==0){
 				increment_M_and_B(&M,&B);//aumenta M e B
 				create_factor_base_f(&cardinality_factor_base,B,&head_f_base_f,&tail_f_base_f,n,&last_prime_factor_base);
+				#if DEBUG==1
 				if(verify_factor_base(head_f_base_f,cardinality_factor_base,last_prime_factor_base)==0){
 					handle_error_with_exit("error in main verify factor base\n");
 				}
 				if(verify_cardinality_list_factor_base(head_f_base_f,cardinality_factor_base)==0){
 					handle_error_with_exit("invalid dimension list factor base\n");
 				}
+				#endif
 				if(index_prime_a!=NULL){
 					free(index_prime_a);
 					index_prime_a=NULL;
@@ -265,7 +276,7 @@ int main(int argc,char*argv[]){
                 array_a_struct = create_array_a_struct(number_prime_a, index_prime_a, s);
                 qsort(array_a_struct, (size_t)s, sizeof(struct a_struct), compare_a_struct);
             }
-
+            print_time_elapsed("time to calculate a");
 			//array Bk,può essere ridotto modulo a
 			array_Bk=calculate_array_Bk_f(number_prime_a,cardinality_factor_base,n,s,a_old,b1);
 
@@ -290,41 +301,41 @@ int main(int argc,char*argv[]){
 			if(NUM_THREAD_POLYNOMIAL==0){//se non ci sono thread la lunghezza della matrice è 1
 				num_thread_job=1;
 			}
-
+			print_time_elapsed("time to calculate array_bi and array_Bk");
 			//alloca struttura dati dei thread per fare il sieving
             thread_polynomial_data=alloc_array_polynomial_thread_data(NUM_THREAD_POLYNOMIAL+1,M);
-
+			print_time_elapsed("time to alloc polynomial data");
 			//creazione della struttura row_factorization
 			// row_factorization contiene primi factor base,log per ogni primo radice 1 e radice 2 di n mod p e a^-1 mod p)
+			//TODO invece di allocare e deallocare e ricalcolare row_factorization è possibile farlo ogni volta anche non in modo parallelo ma in modo append
 			r.prime=alloc_array_int(cardinality_factor_base);
 			r.log_prime=alloc_array_int(cardinality_factor_base);
 			r.root_n_mod_p=alloc_array_int(cardinality_factor_base);
 			r.root2_n_mod_p=alloc_array_int(cardinality_factor_base);
 			r.inverse_a_mod_p=alloc_array_int(cardinality_factor_base);
 			create_row_factorization(head_f_base_f,cardinality_factor_base,a_old,array_a_struct,s);
-
-			//thresold_large_prime
+			print_time_elapsed("time to create_row_factorization");
+			//thresold_large_prime,non è costoso e va ricalcolato ogni volta
 			calculate_thresold_large_prime(thresold_large_prime,r.prime[cardinality_factor_base-1]);
 
 			//creazione e avvio thread per fase sieving
 			if(num_thread_job!=1){
 				array_tid=alloc_array_tid(NUM_THREAD_POLYNOMIAL);//alloca memoria per contenere tutti i tid
 				array_id=create_threads(array_tid,NUM_THREAD_POLYNOMIAL);//crea tutti i thread
+				num_spawned_threads+=NUM_THREAD_POLYNOMIAL;
 			}
 			//fattorizza numeri nell'array lungo 2m+1
             if(s==0){//se non ci sono thread disponibili riattiva il main thread
-                main_thread_work=0;
+                main_thread_work=1;
             }
-			if(main_thread_work==0) {
+			if(main_thread_work==1) {
+				//FIX per numeri grandi dove non viene utilizzato il main_thread funziona,per numeri piccoli dove potrebbe venir utilizzato è da testare
 				if(num_thread_job!=1) {//se il numero di job da fare è maggiore di 1
 					main_thread_work = 1;
 				}
 				mpz_set(thread_polynomial_data[NUM_THREAD_POLYNOMIAL].b, b_default);//imposta b
 				factor_matrix_f(n, M, (thread_polynomial_data[NUM_THREAD_POLYNOMIAL]), cardinality_factor_base,
 								a_default, array_a_struct, s);//fattorizza numeri
-
-				//log_thresold main thread
-				thread_polynomial_data[NUM_THREAD_POLYNOMIAL].log_thresold = calculate_log_thresold(n, M);
 
 				//trova relazioni quadratiche o semi_B_smooth e ordinale per numero
 				find_list_square_relation(thread_polynomial_data[NUM_THREAD_POLYNOMIAL], &num_B_smooth,
@@ -360,10 +371,11 @@ int main(int argc,char*argv[]){
 			array_a_struct=NULL;
 
 			//verifica
+			#if DEBUG==1
 			if(verify_cardinality_list_square_relation(head_square,num_B_smooth)==0){
 				handle_error_with_exit("error in cardinality head_square first of union\n");
 			}
-
+			#endif
 			for(int i=0;i<NUM_THREAD_POLYNOMIAL;i++){//metti tutte le relazioni in head e tail,somma tutti i numeri B_smooth e semi_B_smooth
 				//le liste vengono unite in modo tale che quella finale è ordinata per numero
 			    union_list_square(&head_square,&tail_square,
@@ -383,9 +395,11 @@ int main(int argc,char*argv[]){
 			}
             printf("num_potential_B_smooth=%d,num_B_smooth=%d,num_semi_B_smooth=%d\n",num_potential_B_smooth,num_B_smooth,num_semi_B_smooth);
             printf("card_f_base=%d,B=%ld,M=%ld\n",cardinality_factor_base,B,M);
+			#if DEBUG==1
 			if(verify_cardinality_list_square_relation(head_square,num_B_smooth)==0){
 				handle_error_with_exit("error in cardinality head_square after union\n");
 			}
+			#endif
             //trova nuove relazioni quadratiche con un nuovo square,una nuova fattorizazzione e imposta num=0
             if((num_B_smooth>=cardinality_factor_base*thresold_relation) && (combined==0)) {
             	combined=1;
@@ -394,13 +408,14 @@ int main(int argc,char*argv[]){
                 tail_sort_residuos=lastNode(head_sort_residuos);
                 head_residuos=NULL;
                 tail_residuos=NULL;
+                #if DEBUG==1
                 if(verify_sorted_residuos_square_rel_list(head_sort_residuos)==0){
                     handle_error_with_exit("error in sort relation by square\n");
                 }
+                #endif
 				factorizations_founded = combine_relation_B_smooth_and_semi_B_smooth_v3(&head_square,
 																						&tail_square, &head_sort_residuos,&tail_sort_residuos, n, &num_B_smooth, &num_semi_B_smooth,&combined_relations);
                 printf("combined_relations=%d\n",combined_relations);
-				print_time_elapsed("time_to_combine relation_B_smooth");
 				head_sort_residuos = NULL;
 				tail_sort_residuos = NULL;
                 if (factorizations_founded == 1) {
@@ -415,28 +430,34 @@ int main(int argc,char*argv[]){
 				tail_sort_residuos = NULL;
             }
             if(num_B_smooth>=cardinality_factor_base*ENOUGH_RELATION){
+				#if DEBUG==1
 				if(verify_cardinality_list_square_relation(head_square,num_B_smooth)==0){
 					handle_error_with_exit("error in cardinality head_square\n");
 				}
+				#endif
 				quickSort_square(head_square);
 				head_sort_square=head_square;
 				tail_sort_square=lastNode(head_sort_square);
 
 				//head_square e tail_square rimangono !=null fino alla fine
+                #if DEBUG==1
                 if(verify_sorted_square_rel_list(head_sort_square)==0){
                     handle_error_with_exit("error in sort relation by square\n");
                 }
                 if(verify_cardinality_list_square_relation(head_sort_square,num_B_smooth)==0){
                     handle_error_with_exit("error in cardinality head_sort_square\n");
                 }
+                #endif
                 removed=remove_same_square(&head_sort_square,&tail_sort_square,&num_B_smooth,&num_semi_B_smooth);
                 printf("num removed relations=%d,num_B_smooth=%d\n",removed,num_B_smooth);
+                #if DEBUG==1
                 if(verify_sorted_square_rel_list(head_sort_square)==0){
                     handle_error_with_exit("error in sort list by square\n");
                 }
 				if(verify_cardinality_list_square_relation(head_sort_square,num_B_smooth)==0){
 					handle_error_with_exit("error in cardinality square relation\n");
 				}
+				#endif
 				head_square=head_sort_square;
                 tail_square=tail_sort_square;
             }
@@ -465,9 +486,9 @@ int main(int argc,char*argv[]){
 				number_cycle++;
                 continue;
             }
-            print_time_elapsed("time to find enough square relations");
-
-
+			print_total_time_elapsed("time total to finish math steps",time_start);
+			printf("num spawned threads=%u\n",num_spawned_threads);
+			handle_error_with_exit("finish math steps\n");
 
 
 
@@ -478,6 +499,7 @@ int main(int argc,char*argv[]){
 
 
 			//algebra step:sistema lineare
+			gettime(&timer);//init timer
             binary_linear_system=create_binary_linear_system(head_sort_square,cardinality_factor_base,num_B_smooth,&num_col_binary_matrix);
             print_time_elapsed("time_to_create_binary linear_system");
             reduce_echelon_form_binary_matrix(binary_linear_system,cardinality_factor_base,num_col_binary_matrix);
@@ -513,15 +535,19 @@ int main(int argc,char*argv[]){
 				number_cycle++;
 				continue;
 			}
+			#if DEBUG==1
 			if(check_if_matrix_is_reduce_mod_n(base_matrix,num_B_smooth,dim_sol,2)==0){
 				handle_error_with_exit("error in main,calculate base_linear_system\n");
 			}
+			#endif
 			print_time_elapsed("time to calculate base linear system");
 			printf("combined_relations=%d\n",combined_relations);
+			#if DEBUG==1
 			if(check_solution_base_matrix_char(linear_system,cardinality_factor_base,num_col_linear_system,
             base_matrix,num_B_smooth,dim_sol)==0){
 				handle_error_with_exit("error in main,invalid solution\n");
 			}
+			#endif
 			print_time_elapsed("time to check solution base linear system");
 
             //algebra step:calcolo di tutti gli a,b del crivello quadratico

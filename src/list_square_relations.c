@@ -98,11 +98,9 @@ void quickSort_residuos(struct node_square_relation *head)
     // Call the recursive QuickSort
     _quickSort_residuos(head, h);
 }
+#if DEBUG==1
 char verify_sorted_num_square_rel_list(struct node_square_relation*head){
     if(head==NULL){
-        return 1;
-    }
-    if(TEST==0){
         return 1;
     }
     struct node_square_relation*p=head;
@@ -118,9 +116,6 @@ char verify_cardinality_list_square_relation(struct node_square_relation*head,in
     if(length<0){
         printf("length minore di zero\n");
         return 0;
-    }
-    if(TEST==0){
-        return 1;
     }
     int counter=0;
     if(head==NULL && length==0){
@@ -142,9 +137,6 @@ char verify_sorted_residuos_square_rel_list(struct node_square_relation*head){
     if(head==NULL){
         return 1;
     }
-    if(TEST==0){
-        return 1;
-    }
     struct node_square_relation*p=head;
     while(p!=NULL && p->next!=NULL) {
         if(mpz_cmp(p->square_relation.residuos,p->next->square_relation.residuos)>0){
@@ -158,9 +150,6 @@ char verify_sorted_square_rel_list(struct node_square_relation*head){
     if(head==NULL){
         return 1;
     }
-    if(TEST==0){
-        return 1;
-    }
     struct node_square_relation*p=head;
     while(p!=NULL && p->next!=NULL) {
         if(mpz_cmp(p->square_relation.square,p->next->square_relation.square)>0){
@@ -170,7 +159,7 @@ char verify_sorted_square_rel_list(struct node_square_relation*head){
     }
     return 1;
 }
-
+#endif
 int count_element_linked_list_square_rel(struct node_square_relation*head){
     int count=0;
     if (head==NULL){
@@ -278,12 +267,14 @@ struct node_square_relation* get_new_node_square_rel(struct square_relation squa
     return new_node;
 }
 void insert_at_tail_square_relation(struct square_relation relation,struct node_square_relation**head,struct node_square_relation** tail){//inserisce un nodo in coda
+    #if DEBUG==1
     if(head==NULL){
         handle_error_with_exit("error in insert_at_head **head is NULL\n");
     }
     if(tail==NULL){
         handle_error_with_exit("error in insert_at_head **tail is NULL\n");
     }
+    #endif
     struct node_square_relation*new_node=get_new_node_square_rel(relation);
     if(*head == NULL) {
         insert_first_square_rel(new_node, head, tail);
@@ -739,9 +730,11 @@ void union_list_residuos_v2(struct node_square_relation**head_residuos1,struct n
 
 void union_list_square(struct node_square_relation**head_square,struct node_square_relation**tail_square,struct node_square_relation*phead_square,struct node_square_relation*ptail_square){
     //concatena la prima lista e la seconda lista =L1 unito L2=L1,L2
+    #if DEBUG==1
     if(head_square==NULL || tail_square==NULL){
         handle_error_with_exit("error in union_list_square\n");
     }
+    #endif
     if(phead_square==NULL){//nulla da fare
         return;
     }
@@ -757,9 +750,11 @@ void union_list_square(struct node_square_relation**head_square,struct node_squa
 }
 void union_list_residuos(struct node_square_relation**head_residuos,struct node_square_relation**tail_residuos,struct node_square_relation*phead_residuos,struct node_square_relation*ptail_residuos){
     //concatena la prima lista e la seconda lista =L1 unito L2=L1,L2
+    #if DEBUG==1
     if(head_residuos==NULL || tail_residuos==NULL){
         handle_error_with_exit("error in union_list_square\n");
     }
+    #endif
     if(phead_residuos==NULL){
         return;
     }

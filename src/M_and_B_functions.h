@@ -7,4 +7,5 @@
 #include <mpfr.h>
 
 float calculate_log_thresold(const mpz_t n,long M);
+void calculate_news_M_and_B(long*M,long*B);
 #endif

@@ -18,7 +18,6 @@ void calculate_root_poly_second_degree_mod_p_to_k(mpz_t j1t,const mpz_t p_to_k,l
 void create_num(mpz_t num,const mpz_t a,const mpz_t b,const mpz_t n,long j);
 void calculate_square(mpz_t square,const mpz_t a,int index,const mpz_t b,const mpz_t n);
 int find_factor_of_n_from_base_matrix(int **base_matrix,int num_row,int* num_column,int **matrix_linear_system,int num_row_matrix,int num_col_matrix,mpz_t n,mpz_t**matrix_B_smooth,int num_B_smooth,int card_f_base);
-void calculate_news_M_and_B(long*M,long*B);
 void adjust_array_bi(mpz_t *array_Bk,int s,const mpz_t a);
 mpz_t*calculate_array_Bk_f(int*number_prime_a,int card_factor_base,const mpz_t n,long s,const mpz_t a,mpz_t b1);
 void increment_M_and_B(long*M,long*B);

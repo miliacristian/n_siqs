@@ -6,42 +6,10 @@ extern int cardinality_factor_base;
 extern struct timespec timer_test;
 extern double thresold_relation;
 
-void print_list_factor_base(struct node_factor_base*head,int length){
-	if (head==NULL || length<0){
-		printf("impossible print list head is NULL\n");
-		return;
-	}
-	if(length==0){
-		printf("list is empty\n");
-	}
-	if(not_print_list(length)==1){
-		return;
-	}
-	struct node_factor_base *p=head;
-	while(p!=NULL){
-		printf("%d sq=%d,",p->prime,p->root_n_mod_prime);
-		p=p->next;
-	}
-	printf("\n");
-	return;
-}
-
-void print_factor_base(struct node*head_f_base){
-	if(head_f_base==NULL){
-		printf("factor_base is empty\n");
-		return;
-	}
-	printf("factor_base=");
-	print_list_mpz(head_f_base);
-	return;
-}
-
+#if DEBUG==1
 char verify_sorted_list(struct node_factor_base*head,int length){
     if(head==NULL || length<=0){
         handle_error_with_exit("error in verify sorted list\n");
-    }
-    if(TEST==0){
-        return 1;
     }
     int count_elem=0;
     struct node_factor_base*p=head;
@@ -60,9 +28,6 @@ char verify_sorted_list(struct node_factor_base*head,int length){
 char verify_factor_base(struct node_factor_base*head,int cardinality_factor_base,int last_prime_factor_base){
     if(head==NULL || cardinality_factor_base<=0 || last_prime_factor_base<=0){
       handle_error_with_exit("error in verify factor base");
-    }
-    if(TEST==0){
-        return 1;
     }
     int count_elem=0;
     struct node_factor_base*p=head;
@@ -91,6 +56,57 @@ char verify_factor_base(struct node_factor_base*head,int cardinality_factor_base
         return 0;
     }
     return 1;
+}
+char verify_cardinality_list_factor_base(struct node_factor_base*head,int length){
+    if(length<0){
+        printf("length minore di zero\n");
+        return 0;
+    }
+    int counter=0;
+    if(head==NULL && length==0){
+        return 1;
+    }
+    struct node_factor_base*p=head;
+    while(p!=NULL){
+        counter++;
+        p=p->next;
+    }
+    if(counter!=length){
+        printf("lunghezza errata\n");
+        return 0;
+    }
+    return 1;
+}
+#endif
+
+void print_list_factor_base(struct node_factor_base*head,int length){
+	if (head==NULL || length<0){
+		printf("impossible print list head is NULL\n");
+		return;
+	}
+	if(length==0){
+		printf("list is empty\n");
+	}
+	if(not_print_list(length)==1){
+		return;
+	}
+	struct node_factor_base *p=head;
+	while(p!=NULL){
+		printf("%d sq=%d,",p->prime,p->root_n_mod_prime);
+		p=p->next;
+	}
+	printf("\n");
+	return;
+}
+
+void print_factor_base(struct node*head_f_base){
+	if(head_f_base==NULL){
+		printf("factor_base is empty\n");
+		return;
+	}
+	printf("factor_base=");
+	print_list_mpz(head_f_base);
+	return;
 }
 
 int count_element_linked_list_f(struct node_factor_base*head){
@@ -144,29 +160,7 @@ void remove_after_node_f(struct node_factor_base**ppos,struct node_factor_base**
     }
     return;
 }
-char verify_cardinality_list_factor_base(struct node_factor_base*head,int length){
-    if(length<0){
-        printf("length minore di zero\n");
-        return 0;
-    }
-    if(TEST==0){
-        return 1;
-    }
-    int counter=0;
-    if(head==NULL && length==0){
-        return 1;
-    }
-    struct node_factor_base*p=head;
-    while(p!=NULL){
-        counter++;
-        p=p->next;
-    }
-    if(counter!=length){
-        printf("lunghezza errata\n");
-        return 0;
-    }
-    return 1;
-}
+
 int delete_head_f(struct node_factor_base** head){//non è importante il valore iniziale di oldhead
     //initializza oldhead con il primo nodo della lista e distrugge il primo nodo della lista
     if(head==NULL){
@@ -384,7 +378,7 @@ void print_estimated_time(int cardinality_factor_base,int num_B_smooth){
     return;
 }
 
-struct factor_base_data*alloc_array_factor_base_data(int length){
+struct factor_base_data* alloc_array_factor_base_data(int length){
     if(length<=0){
         handle_error_with_exit("error in alloc_array_factor_base_data\n");
     }
@@ -395,7 +389,7 @@ struct factor_base_data*alloc_array_factor_base_data(int length){
     memset(array_factor_base,0, sizeof(struct factor_base_data)*length);
     return array_factor_base;
 }
-struct node_factor_base*initialize_factor_base(int*cardinality_factor_base,long B,struct node_factor_base**tail,const mpz_t n,int *last_prime_factor_base){
+struct node_factor_base* initialize_factor_base(int*cardinality_factor_base,long B,struct node_factor_base**tail,const mpz_t n,int *last_prime_factor_base){
     if(B<2 || tail==NULL || cardinality_factor_base==NULL || n==NULL || last_prime_factor_base==NULL){
         handle_error_with_exit("error in parameter\n");
     }

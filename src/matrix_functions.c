@@ -5,7 +5,7 @@ extern struct row_factorization r;
 extern struct timespec timer;
 extern struct timespec time_start;
 
-char*from_matrix_binary_to_matrix_char(unsigned long**binary_linear_system,int num_row,int num_col_binary_matrix,int*num_col_linear_system){
+char* from_matrix_binary_to_matrix_char(unsigned long**binary_linear_system,int num_row,int num_col_binary_matrix,int*num_col_linear_system){
 	if(binary_linear_system==NULL || *binary_linear_system==NULL || num_row<=0 || num_col_binary_matrix<=0 || num_col_linear_system==NULL){
 		handle_error_with_exit("error in from_matrix_binary_to_matrix_char\n");
 	}
@@ -40,7 +40,7 @@ void copy_matrix_with_array(char**linear_system2,char*linear_system,int num_row,
     }
     return;
 }
-char*alloc_array_char(long length){
+char* alloc_array_char(long length){
 	if(length<=0){
 		handle_error_with_exit("error in parameter alloc_array_char\n");
 	}
@@ -52,7 +52,7 @@ char*alloc_array_char(long length){
 	return array;
 }
 
-long*alloc_array_long(int length){
+long* alloc_array_long(int length){
 	if(length<=0){
 		handle_error_with_exit("error in parameter alloc aray_long\n");
 	}
@@ -63,7 +63,7 @@ long*alloc_array_long(int length){
 	memset(array,0,sizeof(long)*length);
 	return array;
 }
-unsigned long*alloc_array_unsigned_long(int length){
+unsigned long* alloc_array_unsigned_long(int length){
 	if(length<=0){
 		handle_error_with_exit("error in parameter alloc aray_long\n");
 	}
@@ -74,7 +74,7 @@ unsigned long*alloc_array_unsigned_long(int length){
 	memset(array,0,sizeof(unsigned long)*length);
 	return array;
 }
-int*alloc_array_int(int length){
+int* alloc_array_int(int length){
 	if(length<=0){
 		handle_error_with_exit("error in parameter alloc array int\n");
 	}
@@ -85,7 +85,7 @@ int*alloc_array_int(int length){
 	memset(array,0,sizeof(int)*length);
 	return array;
 }
-double*alloc_array_double(int length){
+double* alloc_array_double(int length){
 	if(length<=0){
 		handle_error_with_exit("error in parameter alloc array double\n");
 	}
@@ -96,7 +96,7 @@ double*alloc_array_double(int length){
 	memset(array,0,sizeof(double)*length);
 	return array;
 }
-float*alloc_array_float(int length){
+float* alloc_array_float(int length){
 	if(length<=0){
 		handle_error_with_exit("error in parameter alloc array double\n");
 	}
@@ -107,7 +107,7 @@ float*alloc_array_float(int length){
 	memset(array,0,sizeof(float)*length);
 	return array;
 }
-long**alloc_array_pointer_to_long(int length){
+long** alloc_array_pointer_to_long(int length){
 	if(length<=0){
 		handle_error_with_exit("error in parameteralloc array pointer to long\n");
 	}
@@ -118,7 +118,7 @@ long**alloc_array_pointer_to_long(int length){
 	memset(array,0,sizeof(long*)*(length));
 	return array;
 }
-unsigned long**alloc_array_pointer_to_unsigned_long(int length){
+unsigned long** alloc_array_pointer_to_unsigned_long(int length){
 	if(length<=0){
 		handle_error_with_exit("error in parameteralloc array pointer to unsigned long\n");
 	}
@@ -129,7 +129,7 @@ unsigned long**alloc_array_pointer_to_unsigned_long(int length){
 	memset(array,0,sizeof(unsigned long*)*(length));
 	return array;
 }
-int**alloc_array_pointer_to_int(int length){
+int** alloc_array_pointer_to_int(int length){
 	if(length<=0){
 		handle_error_with_exit("error in parameter alloc pointer to int\n");
 	}
@@ -142,7 +142,7 @@ int**alloc_array_pointer_to_int(int length){
 }
 
 
-double**alloc_array_pointer_to_double(int length){
+double** alloc_array_pointer_to_double(int length){
 	if(length<=0){
 		handle_error_with_exit("error in parameter alloc_array_pointer_to_double\n");
 	}
@@ -153,7 +153,7 @@ double**alloc_array_pointer_to_double(int length){
 	memset(array,0,sizeof(double*)*(length));
 	return array;
 }
-char**alloc_array_pointer_to_char(int length){
+char** alloc_array_pointer_to_char(int length){
     if(length<=0){
         handle_error_with_exit("error in parameter alloc_array_pointer_to_char\n");
     }
@@ -164,7 +164,7 @@ char**alloc_array_pointer_to_char(int length){
     memset(array,0,sizeof(char*)*(length));
     return array;
 }
-double**alloc_matrix_double(int num_row,int num_col){
+double** alloc_matrix_double(int num_row,int num_col){
 	if(num_row<=0 || num_col <=0){
 		handle_error_with_exit("error in alloc_matrix_double\n");
 	}
@@ -175,7 +175,7 @@ double**alloc_matrix_double(int num_row,int num_col){
 	}
 	return matrix;
 }
-char**alloc_matrix_char(int num_row,int num_col){
+char** alloc_matrix_char(int num_row,int num_col){
     if(num_row<=0 || num_col <=0){
         handle_error_with_exit("error in alloc_matrix_char\n");
     }
@@ -186,7 +186,7 @@ char**alloc_matrix_char(int num_row,int num_col){
     }
     return matrix;
 }
-int**alloc_matrix_int(int num_row,int num_col){
+int** alloc_matrix_int(int num_row,int num_col){
 	if(num_row<=0 || num_col <=0){
 		handle_error_with_exit("error in alloc_matrix_int\n");
 	}
@@ -197,7 +197,7 @@ int**alloc_matrix_int(int num_row,int num_col){
 	}
 	return matrix;
 }
-long**alloc_matrix_long(int num_row,int num_col){
+long** alloc_matrix_long(int num_row,int num_col){
 	if(num_row<=0 || num_col <=0){
 		handle_error_with_exit("error in alloc_matrix_long\n");
 	}
@@ -208,7 +208,7 @@ long**alloc_matrix_long(int num_row,int num_col){
 	}
 	return matrix;
 }
-unsigned long**alloc_matrix_unsigned_long(int num_row,int num_col){
+unsigned long** alloc_matrix_unsigned_long(int num_row,int num_col){
 	if(num_row<=0 || num_col <=0){
 		handle_error_with_exit("error in alloc_matrix_unsigned_long\n");
 	}
@@ -260,7 +260,7 @@ void divide_vector_multiple_of_2_by_2(int*vector,int length){
     }
     return;
 }
-int**alloc_linear_system(int cardinality_f_base,int num_B_smooth){//alloca sistema lineare
+int** alloc_linear_system(int cardinality_f_base,int num_B_smooth){//alloca sistema lineare
 	if(cardinality_f_base<=0 || num_B_smooth<=0 || num_B_smooth<cardinality_f_base){
 		handle_error_with_exit("invalid parameter alloc linear system\n");
 	}
@@ -268,13 +268,25 @@ int**alloc_linear_system(int cardinality_f_base,int num_B_smooth){//alloca siste
 	linear_system=alloc_matrix_int(cardinality_f_base,num_B_smooth);
 	return linear_system;
 }
+int* get_coli(int **matrix,int num_row,int num_col,int index_col){//indice parte da 0,ottiene la colonna iesima della matrice
+	if(matrix==NULL || *matrix==NULL || num_row<=0 || num_col<=0 || index_col<0){
+		handle_error_with_exit("error in parameter get_coli\n");
+	}
+	if(index_col>=num_col){
+		handle_error_with_exit("error in parameter get_coli\n");
+	}
+	int*col=alloc_array_int(num_row);
+	for(int i=0;i<num_row;i++){
+		col[i]=matrix[i][index_col];//index_col è fissato perché la colonna rimane la stessa durante il ciclo
+	}
+	return col;
+}
+
+#if DEBUG==1
 char check_if_array_var_is_valid(int **matrix_linear_system,int num_row,int num_col,char*array_var){
 	//verifica che l'array delle varaibili è stato calcolato correttamente
 	if(matrix_linear_system==NULL || *matrix_linear_system==NULL || num_row<=0 || num_col<=0 || array_var==NULL){
 		handle_error_with_exit("invalid parameter check_if_array_var_is_valid\n");
-	}
-	if(TEST==0){
-		return 1;
 	}
 	int count=0;
 	char*array_var_temp=alloc_array_char(num_col);
@@ -306,9 +318,6 @@ char check_if_array_var_is_valid_char(char*matrix_linear_system,int num_row,int 
 	if(matrix_linear_system==NULL || num_row<=0 || num_col<=0 || array_var==NULL){
 		handle_error_with_exit("invalid parameter check_if_array_var_is_valid\n");
 	}
-	if(TEST==0){
-		return 1;
-	}
 	int count=0;
 	char*array_var_temp=alloc_array_char(num_col);
 	memcpy(array_var_temp,array_var,sizeof(char)*num_col);
@@ -339,9 +348,6 @@ char verify_solution(int **matrix_linear_system,int num_row,int num_col,int*solu
 	//verifica che la soluzione del sistema lineare è corretta
 	if(matrix_linear_system==NULL || *matrix_linear_system==NULL || num_row<=0 || num_col<=0 || solution==NULL){
 		handle_error_with_exit("invalid parameter verify_solution\n");
-	}
-	if(TEST==0){
-		return 1;
 	}
 	int count=0;
 	int num_row_not_null=count_rows_not_null(matrix_linear_system,num_row,num_col);
@@ -376,9 +382,6 @@ char verify_solution_char(char*matrix_linear_system,int num_row,int num_col,cons
     if(matrix_linear_system==NULL || num_row<=0 || num_col<=0 || solution==NULL){
         handle_error_with_exit("invalid parameter verify_solution\n");
     }
-	if(TEST==0){
-		return 1;
-	}
     int count=0;
     int num_row_not_null=count_rows_not_null_char(matrix_linear_system,num_row,num_col);
     for(int i=0;i<num_row_not_null;i++){
@@ -408,6 +411,201 @@ char verify_solution_char(char*matrix_linear_system,int num_row,int num_col,cons
     }
     return 1;
 }
+char check_solution_base_matrix(int**linear_system,int num_row_system,int num_col_system,int **base_matrix,int num_row_base,int num_col_base){
+	//verifica che le soluzioni provenienti dai vettori di base sono soluzioni ammissibili
+	if(linear_system==NULL || *linear_system==NULL || num_row_system<=0 || num_col_system<=0 || base_matrix==NULL || *base_matrix==NULL ||
+	num_row_base<=0 || num_col_base<=0){
+		handle_error_with_exit("error in parameter reduce echelon form\n");
+	}
+	char test=0;
+	for(int i=0;i<num_col_base;i++){
+		int *column=get_coli(base_matrix,num_row_base,num_col_base,i);
+		test=verify_solution(linear_system,num_row_system,num_col_system,column);
+		if(test==0){
+			return 0;
+		}
+		free(column);
+		column=NULL;
+	}
+	return 1;
+}
+char check_solution_base_matrix_char(char*linear_system,int num_row_system,int num_col_system,int **base_matrix,int num_row_base,int num_col_base){
+    //verifica che le soluzioni provenienti dai vettori di base sono soluzioni ammissibili
+    if(linear_system==NULL || num_row_system<=0 || num_col_system<=0 || base_matrix==NULL || *base_matrix==NULL ||
+       num_row_base<=0 || num_col_base<=0){
+        handle_error_with_exit("error in parameter reduce echelon form\n");
+    }
+    char test=0;
+    for(int i=0;i<num_col_base;i++){
+        int *column=get_coli(base_matrix,num_row_base,num_col_base,i);
+        test=verify_solution_char(linear_system,num_row_system,num_col_system,column);
+        if(test==0){
+            return 0;
+        }
+        free(column);
+        column=NULL;
+    }
+    return 1;
+}
+char check_if_matrix_is_echelon_reduce(int**matrix_linear_system,int num_row,int num_col){
+	//verifica che la matrice è ridotta a scala,non verifica che la matrice è rref
+	if(matrix_linear_system==NULL || *matrix_linear_system==NULL || num_row<=0 || num_col<=0){
+		handle_error_with_exit("error in check_if_matrix_is_echelon_reduce\n");
+	}
+	int i=0;
+	int j=0;
+	while(i<num_row && j<num_col){
+		if(matrix_linear_system[i][j]!=0){//un pivot è stato trovato verifica che tutta la colonna ha elementi nulli
+			for(int temp=i+1;temp<num_row;temp++){//scansiona tutta la colonna partendo dall'elemento successivo
+				if(matrix_linear_system[temp][j]!=0){//se l'elemento è diverso da 0 non è ridotta a scala
+					return 0;
+				}
+			}
+			i+=1;
+			j+=1;
+		}
+		else{//matrix[i][j]==0,verifica che tutta la colonna è zero poi aumenta di uno solo j
+			for(int temp=i+1;temp<num_row;temp++){//scansiona tutta la colonna partendo dall'elemento successivo
+				if(matrix_linear_system[temp][j]!=0){//se l'elemento è diverso da 0 non è ridotta a scala
+					return 0;
+				}
+			}
+			j+=1;
+		}
+	}
+	return 1;
+}
+char check_if_matrix_char_is_echelon_reduce(char*matrix_linear_system,int num_row,int num_col){
+	//verifica che la matrice è ridotta a scala,non verifica che la matrice è rref
+	if(matrix_linear_system==NULL || num_row<=0 || num_col<=0){
+		handle_error_with_exit("error in check_if_matrix_is_echelon_reduce\n");
+	}
+	int i=0;
+	int j=0;
+	while(i<num_row && j<num_col){
+		long index=get_index(i,j,num_col);
+		if(matrix_linear_system[index]!=0){//un pivot è stato trovato verifica che tutta la colonna ha elementi nulli
+			for(int temp=i+1;temp<num_row;temp++){//scansiona tutta la colonna partendo dall'elemento successivo
+				long index=get_index(temp,j,num_col);
+				if(matrix_linear_system[index]!=0){//se l'elemento è diverso da 0 non è ridotta a scala
+					return 0;
+				}
+			}
+			i+=1;
+			j+=1;
+		}
+		else{//matrix[i][j]==0,verifica che tutta la colonna è zero poi aumenta di uno solo j
+			for(int temp=i+1;temp<num_row;temp++){//scansiona tutta la colonna partendo dall'elemento successivo
+				long index=get_index(temp,j,num_col);
+				if(matrix_linear_system[index]!=0){//se l'elemento è diverso da 0 non è ridotta a scala
+					return 0;
+				}
+			}
+			j+=1;
+		}
+	}
+	return 1;
+}
+char check_if_array_var_is_correct(char*array_var,int length,int dim_sol){
+	//il numero delle variabili libre deve essere uguale alla dimensione della soluzione
+	if(array_var==NULL || length<=0 || dim_sol<=0){//la dimensione non può essere 0 altrimenti ho una sola soluzione
+		handle_error_with_exit("error in check if array_var is correct\n");
+	}
+	int count_free_var=0;//conta le variabili libere
+	for(int i=0;i<length;i++){
+		if(array_var[i]!=1 && array_var[i]!=2 && array_var[i]!=3){
+			handle_error_with_exit("error in check if array_var is correct cycle\n");
+		}
+		if(array_var[i]==1){
+			count_free_var++;//variabile libera trovata
+		}
+	}
+	if(count_free_var!=dim_sol){
+		return 0;//se sono diversi ritorna 0
+	}
+	return 1;//tutto ok
+}
+char check_if_matrix_is_reduce_mod_n(int**matrix,int num_row,int num_col,int n){
+//verifica che la matrice è ridotta modulo n
+	if(matrix==NULL || *matrix==NULL || num_row<=0 || num_col<=0 || n<=0){
+		printf("num_row=%d num_col=%d n=%d\n",num_row,num_col,n);
+		handle_error_with_exit("error in check if matrix is reduce mod n\n");
+	}
+	for(int i=0;i<num_row;i++){
+		for(int j=0;j<num_col;j++){
+			if(matrix[i][j]>=n || matrix[i][j]<0){
+				return 0;
+			}
+		}
+	}
+	return 1;
+}
+char check_if_matrix_char_is_reduce_mod_n(char*matrix,int num_row,int num_col,int n){
+//verifica che la matrice è ridotta modulo n
+    if(matrix==NULL || num_row<=0 || num_col<=0 || n<=0){
+        printf("num_row=%d num_col=%d n=%d\n",num_row,num_col,n);
+        handle_error_with_exit("error in check if matrix char is reduce mod n\n");
+    }
+    long index;
+    for(int i=0;i<num_row;i++){
+        for(int j=0;j<num_col;j++){
+            index=get_index(i,j,num_col);
+            if(matrix[index]>=n || matrix[index]<0){
+                return 0;
+            }
+        }
+    }
+    return 1;
+}
+char check_if_array_is_reduce_mod_n(int*array,int length,int n){
+//verifica che l'array è ridotto modulo n
+	if(array==NULL || length<=0 || n<=0){
+		handle_error_with_exit("error in check if array is reduce mod n\n");
+	}
+	for(int i=0;i<length;i++){
+		if(array[i]>=n || array[i]<0){
+			return 0;
+		}
+	}
+	return 1;
+}
+#endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 void swap_row(int**matrix,int num_row,int num_col,int ind_row1,int ind_row2){//ind_row1,int ind_row2 start at 0
 	if(matrix==NULL || *matrix==NULL || num_row<=0 || num_col<=0 || ind_row1==ind_row2 || ind_row1>=num_row || ind_row2>=num_row || ind_row1<0 || ind_row2<0){
@@ -601,146 +799,7 @@ int* prod_vector_and_scalar_v2(int*vector,int scalar,int length){//prodotto vett
 	return result;
 }
 
-char check_if_matrix_is_echelon_reduce(int**matrix_linear_system,int num_row,int num_col){
-	//verifica che la matrice è ridotta a scala,non verifica che la matrice è rref
-	if(matrix_linear_system==NULL || *matrix_linear_system==NULL || num_row<=0 || num_col<=0){
-		handle_error_with_exit("error in check_if_matrix_is_echelon_reduce\n");
-	}
-	if(TEST==0){
-		return 1;
-	}
-	int i=0;
-	int j=0;
-	while(i<num_row && j<num_col){
-		if(matrix_linear_system[i][j]!=0){//un pivot è stato trovato verifica che tutta la colonna ha elementi nulli
-			for(int temp=i+1;temp<num_row;temp++){//scansiona tutta la colonna partendo dall'elemento successivo
-				if(matrix_linear_system[temp][j]!=0){//se l'elemento è diverso da 0 non è ridotta a scala
-					return 0;
-				}
-			}
-			i+=1;
-			j+=1;
-		}
-		else{//matrix[i][j]==0,verifica che tutta la colonna è zero poi aumenta di uno solo j
-			for(int temp=i+1;temp<num_row;temp++){//scansiona tutta la colonna partendo dall'elemento successivo
-				if(matrix_linear_system[temp][j]!=0){//se l'elemento è diverso da 0 non è ridotta a scala
-					return 0;
-				}
-			}
-			j+=1;
-		}
-	}
-	return 1;
-}
-char check_if_matrix_char_is_echelon_reduce(char*matrix_linear_system,int num_row,int num_col){
-	//verifica che la matrice è ridotta a scala,non verifica che la matrice è rref
-	if(matrix_linear_system==NULL || num_row<=0 || num_col<=0){
-		handle_error_with_exit("error in check_if_matrix_is_echelon_reduce\n");
-	}
-	if(TEST==0){
-		return 1;
-	}
-	int i=0;
-	int j=0;
-	while(i<num_row && j<num_col){
-		long index=get_index(i,j,num_col);
-		if(matrix_linear_system[index]!=0){//un pivot è stato trovato verifica che tutta la colonna ha elementi nulli
-			for(int temp=i+1;temp<num_row;temp++){//scansiona tutta la colonna partendo dall'elemento successivo
-				long index=get_index(temp,j,num_col);
-				if(matrix_linear_system[index]!=0){//se l'elemento è diverso da 0 non è ridotta a scala
-					return 0;
-				}
-			}
-			i+=1;
-			j+=1;
-		}
-		else{//matrix[i][j]==0,verifica che tutta la colonna è zero poi aumenta di uno solo j
-			for(int temp=i+1;temp<num_row;temp++){//scansiona tutta la colonna partendo dall'elemento successivo
-				long index=get_index(temp,j,num_col);
-				if(matrix_linear_system[index]!=0){//se l'elemento è diverso da 0 non è ridotta a scala
-					return 0;
-				}
-			}
-			j+=1;
-		}
-	}
-	return 1;
-}
-char check_if_array_var_is_correct(char*array_var,int length,int dim_sol){
-	//il numero delle variabili libre deve essere uguale alla dimensione della soluzione
-	if(array_var==NULL || length<=0 || dim_sol<=0){//la dimensione non può essere 0 altrimenti ho una sola soluzione
-		handle_error_with_exit("error in check if array_var is correct\n");
-	}
-	if(TEST==0){
-		return 1;
-	}
-	int count_free_var=0;//conta le variabili libere
-	for(int i=0;i<length;i++){
-		if(array_var[i]!=1 && array_var[i]!=2 && array_var[i]!=3){
-			handle_error_with_exit("error in check if array_var is correct cycle\n");
-		}
-		if(array_var[i]==1){
-			count_free_var++;//variabile libera trovata
-		}
-	}
-	if(count_free_var!=dim_sol){
-		return 0;//se sono diversi ritorna 0
-	}
-	return 1;//tutto ok
-}
-char check_if_matrix_is_reduce_mod_n(int**matrix,int num_row,int num_col,int n){
-//verifica che la matrice è ridotta modulo n
-	if(matrix==NULL || *matrix==NULL || num_row<=0 || num_col<=0 || n<=0){
-		printf("num_row=%d num_col=%d n=%d\n",num_row,num_col,n);
-		handle_error_with_exit("error in check if matrix is reduce mod n\n");
-	}
-	if(TEST==0){
-		return 1;
-	}
-	for(int i=0;i<num_row;i++){
-		for(int j=0;j<num_col;j++){
-			if(matrix[i][j]>=n || matrix[i][j]<0){
-				return 0;
-			}
-		}
-	}
-	return 1;
-}
-char check_if_matrix_char_is_reduce_mod_n(char*matrix,int num_row,int num_col,int n){
-//verifica che la matrice è ridotta modulo n
-    if(matrix==NULL || num_row<=0 || num_col<=0 || n<=0){
-        printf("num_row=%d num_col=%d n=%d\n",num_row,num_col,n);
-        handle_error_with_exit("error in check if matrix char is reduce mod n\n");
-    }
-	if(TEST==0){
-		return 1;
-	}
-    long index;
-    for(int i=0;i<num_row;i++){
-        for(int j=0;j<num_col;j++){
-            index=get_index(i,j,num_col);
-            if(matrix[index]>=n || matrix[index]<0){
-                return 0;
-            }
-        }
-    }
-    return 1;
-}
-char check_if_array_is_reduce_mod_n(int*array,int length,int n){
-//verifica che l'array è ridotto modulo n
-	if(array==NULL || length<=0 || n<=0){
-		handle_error_with_exit("error in check if array is reduce mod n\n");
-	}
-	if(TEST==0){
-		return 1;
-	}
-	for(int i=0;i<length;i++){
-		if(array[i]>=n || array[i]<0){
-			return 0;
-		}
-	}
-	return 1;
-}
+
 
 
 void calculate_vector_base(int **matrix_linear_system,int num_row,int num_col,char*array_var,int*v){//calcola un vettore di base soluzione del sistema lineare,matrix linear system è ridotta a scala e binaria,calcola vettori di base binari
@@ -1007,7 +1066,8 @@ char* find_free_var_char(char*matrix_linear_system,int num_row,int num_col,int n
 	return array_var;
 }
 
-int**calculate_base_linear_system_char(char*matrix_linear_system,int num_row,int num_col,int*dim_sol){//matrice ridotta modulo n,calcola una base del sistema lineare
+int** calculate_base_linear_system_char(char*matrix_linear_system,int num_row,int num_col,int*dim_sol){//matrice ridotta modulo n,calcola una base del sistema lineare
+    #if DEBUG==1
     if(matrix_linear_system==NULL || num_row<=0 || num_col<=0 || dim_sol==NULL){
         handle_error_with_exit("error in parameter get_coli\n");
     }
@@ -1017,6 +1077,7 @@ int**calculate_base_linear_system_char(char*matrix_linear_system,int num_row,int
     if(check_if_matrix_char_is_echelon_reduce(matrix_linear_system,num_row,num_col)==0){
         handle_error_with_exit("error in calculate_base_linear_system\n");
     }
+    #endif
     int num_row_not_null,num_col_not_null;
     *dim_sol=calculate_dim_sol_char(matrix_linear_system,num_row,num_col,&num_row_not_null,&num_col_not_null);//calcola la dimensione della base del sistema lineare
     print_time_elapsed("time to calculate_dim_sol");
@@ -1088,30 +1149,20 @@ int scan_array_to_find_element_not_null(int*array,int start,int lenght_array){//
 	return -1;//occorrenza non trovata
 }
 
-int*get_coli(int **matrix,int num_row,int num_col,int index_col){//indice parte da 0,ottiene la colonna iesima della matrice
-	if(matrix==NULL || *matrix==NULL || num_row<=0 || num_col<=0 || index_col<0){
-		handle_error_with_exit("error in parameter get_coli\n");
-	}
-	if(index_col>=num_col){
-		handle_error_with_exit("error in parameter get_coli\n");
-	}
-	int*col=alloc_array_int(num_row);
-	for(int i=0;i<num_row;i++){
-		col[i]=matrix[i][index_col];//index_col è fissato perché la colonna rimane la stessa durante il ciclo
-	}
-	return col;
-}
+
 
 void reduce_echelon_form(int**matrix,int num_row,int num_col){//versione rref,fare il test per verificare
 		// che è effettivamente ridotta in modo rref
 	int lead=0;
 	int i;
+	#if DEBUG==1
 	if(matrix==NULL || *matrix==NULL || num_row<=0 || num_col<=0){
 		handle_error_with_exit("error in parameter reduce echelon form\n");
 	}
 	if(check_if_matrix_is_reduce_mod_n(matrix,num_row,num_col,2)==0){
 		handle_error_with_exit("matrix is not reduce mod n");
 	}
+	#endif
 	for(int r=0;r<num_row;r++){
 		if(num_col<=lead){
 			return;
@@ -1261,12 +1312,14 @@ void reduce_echelon_form_char(char*matrix,int num_row,int num_col){//versione rr
     int lead=0;
     int i;
     long index,index1;
+    #if DEBUG==1
     if(matrix==NULL || num_row<=0 || num_col<=0){
         handle_error_with_exit("error in parameter reduce echelon form\n");
     }
     if(check_if_matrix_char_is_reduce_mod_n(matrix,num_row,num_col,2)==0){
         handle_error_with_exit("matrix is not reduce mod n");
     }
+    #endif
     printf("inizio echelon form\n");
     for(int r=0;r<num_row;r++){
         printf("r=%d,num_row=%d\n",r,num_row);
@@ -1312,48 +1365,8 @@ void reduce_echelon_form_char(char*matrix,int num_row,int num_col){//versione rr
     return;
 }
 
-char check_solution_base_matrix(int**linear_system,int num_row_system,int num_col_system,int **base_matrix,int num_row_base,int num_col_base){
-	//verifica che le soluzioni provenienti dai vettori di base sono soluzioni ammissibili
-	if(linear_system==NULL || *linear_system==NULL || num_row_system<=0 || num_col_system<=0 || base_matrix==NULL || *base_matrix==NULL ||
-	num_row_base<=0 || num_col_base<=0){
-		handle_error_with_exit("error in parameter reduce echelon form\n");
-	}
-	if(TEST==0){
-		return 1;
-	}
-	char test=0;
-	for(int i=0;i<num_col_base;i++){
-		int *column=get_coli(base_matrix,num_row_base,num_col_base,i);
-		test=verify_solution(linear_system,num_row_system,num_col_system,column);
-		if(test==0){
-			return 0;
-		}
-		free(column);
-		column=NULL;
-	}
-	return 1;
-}
-char check_solution_base_matrix_char(char*linear_system,int num_row_system,int num_col_system,int **base_matrix,int num_row_base,int num_col_base){
-    //verifica che le soluzioni provenienti dai vettori di base sono soluzioni ammissibili
-    if(linear_system==NULL || num_row_system<=0 || num_col_system<=0 || base_matrix==NULL || *base_matrix==NULL ||
-       num_row_base<=0 || num_col_base<=0){
-        handle_error_with_exit("error in parameter reduce echelon form\n");
-    }
-	if(TEST==0){
-		return 1;
-	}
-    char test=0;
-    for(int i=0;i<num_col_base;i++){
-        int *column=get_coli(base_matrix,num_row_base,num_col_base,i);
-        test=verify_solution_char(linear_system,num_row_system,num_col_system,column);
-        if(test==0){
-            return 0;
-        }
-        free(column);
-        column=NULL;
-    }
-    return 1;
-}
+
+
 long get_index(int index_row,int index_col,int num_col){
 	//ritorna l'indice della posizione numerica associata all'elemento index_row,index_col
 	long index;

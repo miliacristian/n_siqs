@@ -10,7 +10,95 @@
 //scriverla in modo parallelizzato
 struct row_factorization r;
 
-mpz_t*create_array_temp_factorization(int card_f_base,mpz_t*row_matrix_b_smooth){// crea array -1 0 2 0 30...primo factor base 0...di 2*cardinalità 		della factor base elementi
+#if DEBUG==1
+char verify_factorization(const mpz_t num,mpz_t residuos,struct node_factorization*head_factor,const mpz_t a){
+    //num*a deve essere uguale a fattorizzazione*residuo
+    mpz_t temp,num_temp;
+    long exp_of_factor,factor;
+    mpz_t factor_raise_to_exp;
+    mpz_init(num_temp);
+    mpz_init(temp);
+    mpz_init(factor_raise_to_exp);
+    mpz_set(num_temp,num);
+    if(mpz_cmp_si(num_temp,0)<0){
+        mpz_neg(num_temp,num_temp);
+    }
+    mpz_set_si(temp,1);//temp=1
+    if(head_factor==NULL){
+        if(mpz_cmp(num,residuos)!=0){
+            mpz_clear(temp);
+            mpz_clear(factor_raise_to_exp);
+            mpz_clear(num_temp);
+            printf("residuo !=num\n");
+            return 0;
+        }
+        mpz_clear(temp);
+        mpz_clear(factor_raise_to_exp);
+        mpz_clear(num_temp);
+        return 1;
+    }
+    struct node_factorization*p=head_factor;
+    while(p!=NULL){
+        mpz_set_si(factor_raise_to_exp,1);
+        factor=p->number;
+        //factor
+        if(factor<0 && factor!=-1){
+            mpz_clear(temp);
+            mpz_clear(factor_raise_to_exp);
+            mpz_clear(num_temp);
+            printf("fattore minore di 0\n");
+            return 0;
+        }
+        if(factor==0){
+            printf("fattore 0\n");
+            mpz_clear(temp);
+            mpz_clear(factor_raise_to_exp);
+            mpz_clear(num_temp);
+            return 0;
+        }
+        if(factor==-1){
+            factor=1;
+        }
+        //exp of factor
+        exp_of_factor=p->exp_of_number;
+        if(exp_of_factor<=0){
+            mpz_clear(temp);
+            mpz_clear(factor_raise_to_exp);
+            mpz_clear(num_temp);
+            printf("esponente minore o uguale a 0\n");
+            return 0;
+        }
+        mpz_ui_pow_ui (factor_raise_to_exp,factor,exp_of_factor);
+        mpz_mul(temp,temp,factor_raise_to_exp);
+        p=p->next;
+    }
+    if(mpz_cmp_si(residuos,0)<=0){
+        printf("residuo minore o uguale a 0\n");
+        mpz_clear(temp);
+        mpz_clear(factor_raise_to_exp);
+        mpz_clear(num_temp);
+        return 0;
+    }
+    mpz_mul(temp,temp,residuos);//moltiplica temp per il residuo alla fine
+    mpz_mul(num_temp,num_temp,a);//num*a
+    if(mpz_cmp_si(temp,0)<=0){
+        handle_error_with_exit("error in function verify factorization\n");
+    }
+    if(mpz_cmp(temp,num_temp)!=0){//se non sono uguali nega temp
+        gmp_printf("temp e num diversi,residuos=%Zd,num=%Zd,temp=%Zd,a=%Zd\n",residuos,num,temp,a);
+        mpz_clear(temp);
+        mpz_clear(factor_raise_to_exp);
+        mpz_clear(num_temp);
+        print_factorization(num,head_factor);
+        return 0;
+    }
+    mpz_clear(temp);
+    mpz_clear(factor_raise_to_exp);
+    mpz_clear(num_temp);
+    return 1;
+}
+#endif
+mpz_t* create_array_temp_factorization(int card_f_base,mpz_t*row_matrix_b_smooth){// crea array -1 0 2 0 30...primo factor base 0...di 2*cardinalità 		della factor base elementi
     if(card_f_base<=0 || row_matrix_b_smooth==NULL){
         handle_error_with_exit("error in parameter create_array_temp_factorization\n");
     }
@@ -103,95 +191,29 @@ void print_matrix_factorization(mpz_t**matrix_factorization,int M,int cardinalit
     print_matrix_mpz(matrix_factorization,2*M+1,cardinality_factor_base*2+2);
     return;
 }
-char verify_factorization(const mpz_t num,mpz_t residuos,struct node_factorization*head_factor,const mpz_t a){
-    //num*a deve essere uguale a fattorizzazione*residuo
-    mpz_t temp,num_temp;
-    long exp_of_factor,factor;
-    mpz_t factor_raise_to_exp;
-    if(TEST==0){
-        return 1;
-    }
-    mpz_init(num_temp);
-    mpz_init(temp);
-    mpz_init(factor_raise_to_exp);
-    mpz_set(num_temp,num);
-    if(mpz_cmp_si(num_temp,0)<0){
-        mpz_neg(num_temp,num_temp);
-    }
-    mpz_set_si(temp,1);//temp=1
-    if(head_factor==NULL){
-        if(mpz_cmp(num,residuos)!=0){
-            mpz_clear(temp);
-            mpz_clear(factor_raise_to_exp);
-            mpz_clear(num_temp);
-            printf("residuo !=num\n");
-            return 0;
-        }
-        mpz_clear(temp);
-        mpz_clear(factor_raise_to_exp);
-        mpz_clear(num_temp);
-        return 1;
-    }
-    struct node_factorization*p=head_factor;
-    while(p!=NULL){
-        mpz_set_si(factor_raise_to_exp,1);
-        factor=p->number;
-        //factor
-        if(factor<0 && factor!=-1){
-            mpz_clear(temp);
-            mpz_clear(factor_raise_to_exp);
-            mpz_clear(num_temp);
-            printf("fattore minore di 0\n");
-            return 0;
-        }
-        if(factor==0){
-            printf("fattore 0\n");
-            mpz_clear(temp);
-            mpz_clear(factor_raise_to_exp);
-            mpz_clear(num_temp);
-            return 0;
-        }
-        if(factor==-1){
-            factor=1;
-        }
-        //exp of factor
-        exp_of_factor=p->exp_of_number;
-        if(exp_of_factor<=0){
-            mpz_clear(temp);
-            mpz_clear(factor_raise_to_exp);
-            mpz_clear(num_temp);
-            printf("esponente minore o uguale a 0\n");
-            return 0;
-        }
-        mpz_ui_pow_ui (factor_raise_to_exp,factor,exp_of_factor);
-        mpz_mul(temp,temp,factor_raise_to_exp);
-        p=p->next;
-    }
-    if(mpz_cmp_si(residuos,0)<=0){
-        printf("residuo minore o uguale a 0\n");
-        mpz_clear(temp);
-        mpz_clear(factor_raise_to_exp);
-        mpz_clear(num_temp);
-        return 0;
-    }
-    mpz_mul(temp,temp,residuos);//moltiplica temp per il residuo alla fine
-    mpz_mul(num_temp,num_temp,a);//num*a
-    if(mpz_cmp_si(temp,0)<=0){
-        handle_error_with_exit("error in function verify factorization\n");
-    }
-    if(mpz_cmp(temp,num_temp)!=0){//se non sono uguali nega temp
-        gmp_printf("temp e num diversi,residuos=%Zd,num=%Zd,temp=%Zd,a=%Zd\n",residuos,num,temp,a);
-        mpz_clear(temp);
-        mpz_clear(factor_raise_to_exp);
-        mpz_clear(num_temp);
-        print_factorization(num,head_factor);
-        return 0;
-    }
-    mpz_clear(temp);
-    mpz_clear(factor_raise_to_exp);
-    mpz_clear(num_temp);
-    return 1;
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 char calculate_num_from_factorization(mpz_t num_temp,struct node_factorization*head_factor){
     long exp_of_factor,factor;
     mpz_t factor_raise_to_exp;

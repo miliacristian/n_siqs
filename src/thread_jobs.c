@@ -39,17 +39,19 @@ static inline int pin_thread_to_core(int core)
 }
 void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth,int*num_semi_B_smooth, int *num_potential_B_smooth, long M,
                                struct node_square_relation **head_square, struct node_square_relation **tail_square,struct node_square_relation **head_residuos, struct node_square_relation **tail_residuos,
-                               const mpz_t n,const mpz_t a,struct a_struct*array_a_struct,int s) {
+                               const mpz_t n,const mpz_t a,const struct a_struct*array_a_struct,int s) {
     mpz_t num;
     struct node_factorization*head_factor=NULL;
     char is_B_smooth=0;
     char is_semi_B_smooth=0;
     mpz_t residuos;
+    #if DEBUG==1
     if(num_B_smooth==NULL || num_semi_B_smooth==NULL || num_potential_B_smooth==NULL || M<=0 ||
        head_square==NULL || tail_square==NULL || head_residuos==NULL
        || tail_residuos==NULL || (array_a_struct==NULL && s>0)){
         handle_error_with_exit("error in find_list_square_relation");
     }
+    #endif
     struct square_relation square_relation;
     mpz_init(num);
     mpz_init(residuos);
@@ -63,21 +65,24 @@ void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth
                 mpz_set_si(residuos,0);
                 is_B_smooth=0;
                 is_semi_B_smooth=0;
+                (*num_potential_B_smooth)--;
                 continue;
             }
             else {
-                thread_data.numbers[i].first_index_f_base=1;
+                thread_data.numbers[i].first_index_f_base=1;//dummy first and last index, search factor on all factor base
                 thread_data.numbers[i].last_index_f_base=cardinality_factor_base-1;
-                head_factor = factorize_num_v2(num, thread_data.numbers[i].j, thread_data.numbers[i].first_index_f_base,
+                head_factor = factorize_num(num, thread_data.numbers[i].j, thread_data.numbers[i].first_index_f_base,
                                                thread_data.numbers[i].last_index_f_base, &is_B_smooth,
                                                &is_semi_B_smooth, residuos, array_a_struct, s, thread_data);
             }
+            #if DEBUG==1
             if(head_factor==NULL && (is_B_smooth==1 || is_semi_B_smooth==1)){
                 handle_error_with_exit("error invalid factorize_num\n");
             }
             if(verify_factorization(num,residuos,head_factor,a)==0){
                 handle_error_with_exit("error in factorization\n");
             }
+            #endif
             if(head_factor==NULL){
                 continue;
             }
@@ -93,9 +98,11 @@ void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth
                 mpz_set(square_relation.residuos,residuos);
                 calculate_square(square_relation.square,a,i-M,thread_data.b,n);
                 insert_at_tail_square_relation(square_relation,head_square,tail_square);
+                #if DEBUG==1
                 if(verify_square_relation(square_relation,n)==0){
                     handle_error_with_exit("error in create square relation\n");
                 }
+                #endif
             }
             else if(is_semi_B_smooth==1){
                 if(mpz_cmp(residuos,thresold_large_prime)<=0) {
@@ -124,7 +131,7 @@ void find_list_square_relation(struct thread_data thread_data, int *num_B_smooth
     mpz_clear(residuos);
     return;
 }
-char divide_all_by_p_to_k_f(int rad,long p,int index_of_prime,long k,long M,struct thread_data thread_data,const mpz_t n,const mpz_t a,const mpz_t b,struct a_struct*array_a_struct,int*index_array_a_struct,int s){//r=square root di n mod p^k,ritorna >zero se c'è stata almeno 1 divisione
+char divide_all_by_p_to_k_f(int rad,long p,int index_of_prime,long k,long M,struct thread_data thread_data,const mpz_t n,const mpz_t a,const mpz_t b,const struct a_struct*array_a_struct,int*index_array_a_struct,int s){//r=square root di n mod p^k,ritorna >zero se c'è stata almeno 1 divisione
 //a(j)=aj^2+2bj+c,se polinomio forma semplice a=1 e b=x0
 //(x0+j)^2==n mod p^k r:r^2==n mod p^k -> r=x0+j ->j=r-x0
 //una volta trovate le soluzioni r1 e r2 e una volta trovati j e t le altre soluzioni sono della forma j+l*p^k t+h*p^k,cioè a salti di p^k rispetto a t e j,dove l ed h sono interi
@@ -132,9 +139,11 @@ char divide_all_by_p_to_k_f(int rad,long p,int index_of_prime,long k,long M,stru
 
     //j1=r-x0;
     //j2=-r-x0;
+    #if DEBUG==1
     if((p<=1 && p!=-1 ) || n==NULL || a==NULL || b==NULL || k<=0 || M<=0 || (array_a_struct==NULL && s>0) || index_array_a_struct==NULL || s<0){
         handle_error_with_exit("invalid parameter divide all by p to k\n");
     }
+    #endif
     struct timespec timer_factor;
     gettime(&timer_factor);
     long indexv,j1,j2,j_temp2;
@@ -164,10 +173,12 @@ char divide_all_by_p_to_k_f(int rad,long p,int index_of_prime,long k,long M,stru
     }
 
     else if((*index_array_a_struct<s && array_a_struct[*index_array_a_struct].index_prime_a!=index_of_prime) || *index_array_a_struct>=s){//p non divide a
+        #if DEBUG==1
         if(r.inverse_a_mod_p[index_of_prime]==-1){
             printf("p=%ld,index_of_prime=%d,index_array_a_struct=%d\n",p,index_of_prime,array_a_struct[*index_array_a_struct].index_prime_a);
             handle_error_with_exit("error in factorize_matrix,inverse not found\n");
         }
+        #endif
         mpz_set_si(inverse_a,r.inverse_a_mod_p[index_of_prime]);////inverse_a=a^-1 mod p^k
         mpz_neg(j1t,b);//j1=-b
         mpz_neg(j2t,b);//j2=-b
@@ -178,15 +189,19 @@ char divide_all_by_p_to_k_f(int rad,long p,int index_of_prime,long k,long M,stru
     }
     else if(array_a_struct[*index_array_a_struct].index_prime_a==index_of_prime){//p divide a,esiste solo una soluzione,si usa solo j1,succede solamente poche volte(circa 10)
         //calcolo di c
+        #if DEBUG==1
         if(mpz_divisible_ui_p(a,p)==0){
             handle_error_with_exit("errore p non divide a\n");
         }
+        #endif
         (*index_array_a_struct)++;
         mpz_mul(v,b,b);//v=b^2
         mpz_sub(v,v,n);//v=b^2-n
+        #if DEBUG==1
         if(mpz_divisible_p(v,a)==0){//v non è divisibile per a
             handle_error_with_exit("error in mpz_divisible divide all by p_to_k\n");
         }
+        #endif
         mpz_divexact(c,v,a);//c=(b^2-n)/a
 
         if(k==1){//p_to_k=p,esiste solo una soluzione mod p
@@ -283,9 +298,11 @@ char divide_all_by_p_to_k_f(int rad,long p,int index_of_prime,long k,long M,stru
 
 
 char divide_all_by_2_log(long M,struct thread_data thread_data){//divide gli elementi dell'array di numeri per 2
+    #if DEBUG==1
     if(M<=0){
         handle_error_with_exit("invalid parameter divide_all_by_2_f\n");
     }
+    #endif
     long i=-1;
     long count=0;
     count=M & 1;//se M dispari count =1 altrimenti count=0
@@ -305,19 +322,19 @@ char divide_all_by_2_log(long M,struct thread_data thread_data){//divide gli ele
     }
     const int log_p=r.log_prime[1];
     for(;i<2*M+1;i=i+2){
-        //thread_data.numbers[i].last_index_f_base=1;//riga comm
-        //thread_data.numbers[i].first_index_f_base=1;//riga comm
         thread_data.numbers[i].sum_log=log_p;
     }
     thread_data.j1_mod_p[1]=-1;
     thread_data.j2_mod_p[1]=-1;
     return 1;
 }
-void factor_matrix_f(const mpz_t n,long M,struct thread_data thread_data,int cardinality_factor_base,const mpz_t a,
-                     struct a_struct*array_a_struct,int s){
+void factor_matrix_f(const mpz_t n,long M,struct thread_data thread_data,const int cardinality_factor_base,const mpz_t a,
+                     const struct a_struct*array_a_struct,int s){
+    #if DEBUG==1
     if(n==NULL || a==NULL || mpz_sgn(n)<=0 || M<=0 || cardinality_factor_base<=0 || (array_a_struct==NULL && s>0) || s<0){
         handle_error_with_exit("error in factor matrix_f\n");
     }
+    #endif
     long p;
     int index_array_a_struct=0;
     for (int i=0;i<cardinality_factor_base;i++){//per ogni elemento della factor base
@@ -371,23 +388,24 @@ void print_thread_data(struct thread_data thread_data,long M,int cardinality_fac
 }
 void clear_struct_thread_data(struct thread_data t_data,int M) {
     for (int i = 0; i < 2 * M + 1; i++) {
-        t_data.numbers[i].first_index_f_base = -1;
         t_data.numbers[i].sum_log = 0;
-        t_data.numbers[i].last_index_f_base = -1;
     }
     return;
 }
-struct thread_data*alloc_array_polynomial_thread_data(int length_array_thread_data,long M){
+struct thread_data* alloc_array_polynomial_thread_data(int length_array_thread_data,long M){
+    #if DEBUG==1
     if(length_array_thread_data<=0 || M<=0){
         handle_error_with_exit("error in alloc_array_thread_data\n");
     }
+    #endif
     struct thread_data*t_data=malloc(sizeof(struct thread_data)*length_array_thread_data);
     if(t_data==NULL){
         handle_error_with_exit("error in malloc alloc array thread_data\n");
     }
-    for(int i=0;i<length_array_thread_data;i++){
+    float log_thresold=calculate_log_thresold(n,M);
+    for(int i=0;i<length_array_thread_data;i++){//for each thread
         mpz_init(t_data[i].b);
-        t_data[i].log_thresold=0;
+        t_data[i].log_thresold=log_thresold;
         t_data[i].num_potential_B_smooth=0;
         t_data[i].num_B_smooth=0;
         t_data[i].num_semi_B_smooth=0;
@@ -395,7 +413,7 @@ struct thread_data*alloc_array_polynomial_thread_data(int length_array_thread_da
         t_data[i].tail_square=NULL;
         t_data[i].head_residuos=NULL;
         t_data[i].tail_residuos=NULL;
-        t_data[i].numbers=malloc(sizeof(struct number)*(2*M+1));
+        t_data[i].numbers=malloc(sizeof(struct number)*(2*M+1));//array dei 2M+1 numeri
         if(t_data[i].numbers==NULL){
             handle_error_with_exit("error in malloc alloc numbers");
         }
@@ -404,12 +422,9 @@ struct thread_data*alloc_array_polynomial_thread_data(int length_array_thread_da
     }
     for(int i=0;i<2*M+1;i++){
         t_data[0].numbers[i].j=i-M;
-        t_data[0].numbers[i].first_index_f_base=-1;
         t_data[0].numbers[i].sum_log=0;
-        t_data[0].numbers[i].last_index_f_base=-1;
     }
-    for(int i=0;i<length_array_thread_data;i++){
-        t_data[i].log_thresold=0;
+    for(int i=0;i<length_array_thread_data;i++){//for each thread
         memcpy(t_data[i].numbers,t_data[0].numbers,sizeof(struct number)*(2*M+1));
     }
     return t_data;
@@ -444,7 +459,7 @@ int thread_job_to_create_factor_base(int id_thread){
     create_factor_base_f(&(thread_factor_base_data[id_thread].cardinality_factor_base),end,&thread_factor_base_data[id_thread].head,&thread_factor_base_data[id_thread].tail,n,&(thread_factor_base_data[id_thread].last_prime_factor_base));
     return 0;
 }
-void*thread_job_factor_base(void*arg){
+void* thread_job_factor_base(void*arg){
     int*id=arg;
     thread_job_to_create_factor_base(*id);
     pthread_exit(NULL);
@@ -474,7 +489,8 @@ int thread_job_criv_quad(int id_thread){//id inizia da 0,il lavoro di un thread 
     {
         handle_error_with_exit("impossible pinning thread to core\n");
     }
-    if(id_thread+1>num_thread_job-1){//l'indice del thread eccede il numero di job da fare
+    int local_num_thread_job=num_thread_job;
+    if(id_thread+1>local_num_thread_job-1){//l'indice del thread eccede il numero di job da fare
         return 0;
     }
     struct timespec timer_thread;//istante di tempo
@@ -486,17 +502,14 @@ int thread_job_criv_quad(int id_thread){//id inizia da 0,il lavoro di un thread 
     //gettime
     gettime(&timer_thread);
     gettime(&timer_thread_start);
-    thread_polynomial_data[id_thread].log_thresold=calculate_log_thresold(n,M);
-    int local_num_thread_job=num_thread_job;
-    //log_thresold
     while(count<=local_num_thread_job-2){//ogni thread prende un sottoinsieme di compiti,il thread con id 0 farà i compiti 0,NUM_THREAD,2*NUM_THREAD,il thread 1 farà 1,NUM_THREAD+1,2*NUM_THREAD+1 ecc
         //fattorizzazione,alla fine ogni thread ha una lista di relazioni quadratiche
 
         //fattorizza array di 2m+1 elementi e memorizza la somma dei logaritmi per ogni posizione e
         // indici last e first che ci dicono il primo elemento divisibile per num e l'ultimo(questo facilita la trial division)
-        mpz_set(thread_polynomial_data[id_thread].b,array_bi[count]);//imposta ad ogni ciclo il valore di b
+        mpz_set(thread_polynomial_data[id_thread].b,array_bi[count]);//imposta ad ogni ciclo il valore di b,array_bi è globale ma non viene più acceduto,thread_polynomial_data[id_thread].b=array_bi[count] è globale ma viene acceduto solo in lettura
 
-        factor_matrix_f(n,M,(thread_polynomial_data[id_thread]),cardinality_factor_base,a_old,array_a_struct,s);//fattorizza una nuova matrice
+        factor_matrix_f(n,M,(thread_polynomial_data[id_thread]),cardinality_factor_base,a_old,array_a_struct,s);//fattorizza una nuova matrice,tutte variabili locali o globali (ma accedute in sola lettura)
         //print_time_elapsed_local("time to factor_matrix_f",&timer_thread,tid);
         //ricerca dei B_smooth potenziali,reali e fattorizzazione dei B_smooth reali
         find_list_square_relation(thread_polynomial_data[id_thread],&(thread_polynomial_data[id_thread].num_B_smooth),&(thread_polynomial_data[id_thread].num_semi_B_smooth),&(thread_polynomial_data[id_thread].num_potential_B_smooth),M,&head_squares,&tail_squares,&head_residuoss,&tail_residuoss,n,a_old,array_a_struct,s);
@@ -517,13 +530,15 @@ int thread_job_criv_quad(int id_thread){//id inizia da 0,il lavoro di un thread 
     return 0;
 }
 
-struct node_factorization*factorize_num_v2(const mpz_t num,int j_of_num,int first_index_f_base,int last_index_f_base,
-                                           char*is_B_smooth,char*is_semi_B_smooth,mpz_t residuos,struct a_struct*array_a_struct,int s,struct thread_data thread_data){
+struct node_factorization* factorize_num(const mpz_t num,int j_of_num,int first_index_f_base,int last_index_f_base,
+                                           char*is_B_smooth,char*is_semi_B_smooth,mpz_t residuos,const struct a_struct*array_a_struct,int s,struct thread_data thread_data){
+    #if DEBUG==1
     if((first_index_f_base<0 && first_index_f_base!=-1)|| (last_index_f_base<0 && last_index_f_base!=-1)
        || is_B_smooth==NULL || is_semi_B_smooth==NULL
        || first_index_f_base>last_index_f_base || (array_a_struct==NULL && s>0)){
         handle_error_with_exit("error in factorize_num\n");
     }
+    #endif
     //j_of_num va da -M a +M
     int prime=0;
     int exp=0;
@@ -538,25 +553,29 @@ struct node_factorization*factorize_num_v2(const mpz_t num,int j_of_num,int firs
 
     if(mpz_cmp_si(num,0)<0){//valore negativo->divisibile per 1
         mpz_neg(temp,temp);//rendilo positivo
-        insert_ordered_factor(-1,1,0,&head,&tail);//inserisci nodo -1
+        alloc_and_insert_at_tail(-1,1,0,&head,&tail);//inserisci nodo -1
     }
     if(s!=0) {
         //se i numeri di a sono ad un indice più piccolo del first_index_f_base allora aggiungili prima
         //questi fattori di a non dividono il polinomio a*j^2+2bj+c ->avranno sempre esponente 1
         while (index!=s && array_a_struct[index].index_prime_a < first_index_f_base) {
-            insert_ordered_factor(array_a_struct[index].number_prime_a, 1, array_a_struct[index].index_prime_a, &head,
+            alloc_and_insert_at_tail(array_a_struct[index].number_prime_a, 1, array_a_struct[index].index_prime_a, &head,
                                   &tail);//inserisci nodo con esponente 1
+            #if DEBUG==1
             if(thread_data.j2_mod_p[array_a_struct[index].index_prime_a]!=-1){
                 handle_error_with_exit("error in factorize num\n");
             }
+            #endif
             index++;
         }
     }
     exp=0;
     for(int i=first_index_f_base;i<=last_index_f_base;i++){//scorri i primi da fist index a last index compresi
+        #if DEBUG==1
         if(exp!=0){
             handle_error_with_exit("error in factorize num v2,invalid exponent\n");
         }
+        #endif
         if(first_index_f_base==-1 || last_index_f_base==-1){//nessun fattore trovato,
             break;//aggiungi solamente i fattori di a
         }
@@ -566,15 +585,17 @@ struct node_factorization*factorize_num_v2(const mpz_t num,int j_of_num,int firs
         if(s!=0 && index!=s && array_a_struct[index].index_prime_a==i){//se un fattore di a ha un indice compreso
             // tra first e last index metti ad uno l'esponente anche se non è divisibile per quel numero
             // (sappiamo che il polinomio è divisibile per quel numero)
+            #if DEBUG==1
             if(thread_data.j2_mod_p[array_a_struct[index].index_prime_a]!=-1){
                 handle_error_with_exit("error in factorize num\n");
             }
+            #endif
             exp+=1;//poni esponente a 1
             index++;//aumenta l'indice
             //n.b. i fattori di a possono comparire nella fattorizzazione con un esponente maggiore di 1
         }
         prime=r.prime[i];
-        if(i==1){//divisibile per 2
+        if(i==1 && (mpz_divisible_2exp_p(temp,1)!=0) ){//divisibile per 2
                 mpz_divexact_ui(temp, temp,prime);//dividilo la prima volta per prime
                 exp+=1;
                 while(mpz_divisible_2exp_p(temp,1)!=0){//finquando è divisibie per 2
@@ -582,14 +603,22 @@ struct node_factorization*factorize_num_v2(const mpz_t num,int j_of_num,int firs
                     exp+=1;//aumenta esponente
                 }
                 if(exp>0) {//è stato diviso almeno 1 volta
-                    insert_ordered_factor(prime, exp, i, &head, &tail);
+                    alloc_and_insert_at_tail(prime, exp, i, &head, &tail);
                 }
                 exp=0;//resetta esponente
+                if(mpz_cmp_si(temp,1)==0){//se il residuo della divisione è 1 allora è B-smooth
+                    last_index_f_base=i;//goto add exponent of a and exit
+                    break;
+                }
                 continue;
         }
         j1=thread_data.j1_mod_p[i];
         j2=thread_data.j2_mod_p[i];
         j_of_num_mod_p=reduce_int_mod_n_v2(j_of_num,prime);
+        //TODO invece di calcolare il modulo rispetto all'indice attuale è 
+        //possibile calcolarlo rispetto al modulo dell'indice precedente con l'operazione mod(mod(indice precedente)+(indice attuale-indice precedente)) )
+        //esempio se indice precendente è 9 e modulo 5 veniva 4 e ora indice è 15 modulo 5 viene 0 ==mod5(4+(15-9)) In questo modo i numeri sono tutti più trattabili
+        //per implementarlo bisogna avere un array tampone che memorizza il modulo precedente per ogni prime della factor base(o per entrambe le radici di un primo della factor base,vedere come è più comodo)
         //j_of_num ridotto modulo prime se è uguale a j1 o j2 allora è divisibile per p
         if(j_of_num_mod_p==j1 || j_of_num_mod_p==j2){
             mpz_divexact_ui(temp, temp,prime);//dividilo la prima volta per prime
@@ -600,13 +629,17 @@ struct node_factorization*factorize_num_v2(const mpz_t num,int j_of_num,int firs
                 exp+=1;//aumenta esponente
             }
             if(exp>0) {//è stato diviso almeno 1 volta
-                insert_ordered_factor(prime, exp, i, &head, &tail);
+                alloc_and_insert_at_tail(prime, exp, i, &head, &tail);
             }
             exp=0;//resetta esponente
+            if(mpz_cmp_si(temp,1)==0){//se il residuo della divisione è 1 allora è B-smooth
+                last_index_f_base=i;//goto add exponent of a and exit
+                break;
+            }
             continue;
         }
-        if(exp>0) {//è stato diviso almeno 1 volta
-            insert_ordered_factor(prime, exp, i, &head, &tail);
+        if(exp>0) {//è un fattore di a
+            alloc_and_insert_at_tail(prime, exp, i, &head, &tail);
         }
         exp=0;//resetta esponente
         continue;
@@ -615,17 +648,21 @@ struct node_factorization*factorize_num_v2(const mpz_t num,int j_of_num,int firs
         //se i numeri di a sono ad un indice più grande del last_index_f_base allora aggiungili dopo
         //questi fattori di a non dividono il polinomio a*j^2+2bj+c ->avranno sempre esponente 1
         while (index!=s && array_a_struct[index].index_prime_a > last_index_f_base && index < s) {
-            insert_ordered_factor(array_a_struct[index].number_prime_a, 1, array_a_struct[index].index_prime_a, &head,
+            alloc_and_insert_at_tail(array_a_struct[index].number_prime_a, 1, array_a_struct[index].index_prime_a, &head,
                                   &tail);//inserisci nodo
+            #if DEBUG==1
             if(thread_data.j2_mod_p[array_a_struct[index].index_prime_a]!=-1){
                 handle_error_with_exit("error in factorize num\n");
             }
+            #endif
             index++;
         }
     }
+    #if DEBUG==1
     if(s!=0 && index!=s){
         handle_error_with_exit("error in factorize num invalid s\n");
     }
+    #endif
     if(head==NULL){
         mpz_set(residuos, temp);//imposta il residuo
         mpz_clear(temp);
@@ -646,93 +683,8 @@ struct node_factorization*factorize_num_v2(const mpz_t num,int j_of_num,int firs
     mpz_clear(temp);
     return head;
 }
-struct node_factorization*factorize_num_v1(const mpz_t num,int first_index_f_base,int last_index_f_base,
-                                           char*is_B_smooth,char*is_semi_B_smooth,mpz_t residuos,struct a_struct*array_a_struct,int s) {
-    if ((first_index_f_base < 0 && first_index_f_base != -1) || (last_index_f_base < 0 && last_index_f_base != -1)
-        || is_B_smooth == NULL || is_semi_B_smooth == NULL
-        || first_index_f_base > last_index_f_base || (array_a_struct == NULL && s > 0)) {
-        handle_error_with_exit("error in factorize_num\n");
-    }
-    //j_of_num va da -M a +M
-    int prime = 0;
-    int exp = 0;
-    int index = 0;
-    mpz_t temp;
-    mpz_init(temp);
-    mpz_set(temp, num);
-    struct node_factorization *head = NULL;
-    struct node_factorization *tail = NULL;
-    //bisogna aggiungere i fattori di a alla fattorizzazione
 
-    if (mpz_cmp_si(num, 0) < 0) {//valore negativo->divisibile per 1
-        mpz_neg(temp, temp);//rendilo positivo
-        insert_ordered_factor(-1, 1, 0, &head, &tail);//inserisci nodo -1
-    }
-    if (s != 0) {
-        //se i numeri di a sono ad un indice più piccolo del first_index_f_base allora aggiungili prima
-        //questi fattori di a non dividono il polinomio a*j^2+2bj+c ->avranno sempre esponente 1
-        while (index != s && array_a_struct[index].index_prime_a < first_index_f_base) {
-            insert_ordered_factor(array_a_struct[index].number_prime_a, 1, array_a_struct[index].index_prime_a, &head,
-                                  &tail);//inserisci nodo con esponente 1
-            index++;
-        }
-    }
-    for (int i = first_index_f_base; i <= last_index_f_base; i++) {//scorri i primi da fist index a last index compresi
-        if (first_index_f_base == -1 || last_index_f_base == -1) {//nessun fattore trovato,aggiungi solo i fattori di a
-            break;
-        }
-        if (r.prime[i] == -1) {//salta il -1,l'abbiamo già considerato
-            continue;
-        }
-        if (s != 0 && index != s &&
-            array_a_struct[index].index_prime_a == i) {//se un fattore di a ha un indice compreso
-            // tra first e last index metti ad uno l'esponente anche se non è divisibile per quel numero
-            // (sappiamo che il polinomio è divisibile per quel numero)
-            exp = 1;//poni esponente a 1
-            index++;//aumneta l'indice
-            //n.b. i fattori di a possono comparire nella fattorizzazione con un esponente maggiore di 1
-        }
-        prime = r.prime[i];
-        while (mpz_divisible_ui_p(temp, prime) != 0) {//se il numero è divisibile per un primo della fattor base
-            mpz_divexact_ui(temp, temp, prime);//dividilo
-            exp += 1;//aumenta esponente
-        }
-        if (exp > 0) {//è stato diviso almeno 1 volta
-            insert_ordered_factor(prime, exp, i, &head, &tail);
-        }
-        exp = 0;//resetta esponente
-        continue;
-    }
-    if (s != 0) {
-        //se i numeri di a sono ad un indice più grande del last_index_f_base allora aggiungili dopo
-        //questi fattori di a non dividono il polinomio a*j^2+2bj+c ->avranno sempre esponente 1
-        while (index != s && array_a_struct[index].index_prime_a > last_index_f_base && index < s) {
-            insert_ordered_factor(array_a_struct[index].number_prime_a, 1, array_a_struct[index].index_prime_a, &head,
-                                  &tail);//inserisci nodo
-            index++;
-        }
-    }
-    if (s != 0 && index != s) {
-        handle_error_with_exit("error in factorize num invalid s\n");
-    }
-    if(head==NULL){
-        mpz_set(residuos, temp);//imposta il residuo
-        mpz_clear(temp);
-        return NULL;
-    }
-    if (mpz_cmp_si(temp, 1) == 0) {//se il residuo della divisione è 1 allora è B-smooth
-        *is_B_smooth = 1;
-        *is_semi_B_smooth = 0;
-        mpz_set(residuos, temp);//imposta il residuo
-    } else {//non è B-smooth è semi_B_smooth
-        *is_B_smooth = 0;
-        *is_semi_B_smooth = 1;
-        mpz_set(residuos, temp);//imposta il residuo
-    }
-    mpz_clear(temp);
-    return head;
-}
-void*thread_job_polynomial(void*arg){
+void* thread_job_polynomial(void*arg){
     int*id=arg;
     thread_job_criv_quad(*id);
     return NULL;
@@ -752,19 +704,4 @@ int* create_threads(pthread_t*array_tid,int num_thread){//ritorna il numero di t
         }
     }
     return array_id;
-}
-char divide_all_by_2_to_k_f(long M,struct thread_data thread_data,const mpz_t n,long k,const mpz_t a,const mpz_t b,const mpz_t y){
-    //k esponente di 2 a,b coefficienti di a(j)=aj^2+2bj+c y coincide con y(k-2),se si sa y(k-2) allora a=2*y(k-2)+1
-
-    //se n è congruo a 1 mod 8 allora n è congruo a 1 mod 4 e congruo a 1 mod 2
-    char count=0;//0 se non ci sono state divisioni 1 se ci sono state divisioni
-
-    if(n==NULL || a==NULL || b==NULL || y==NULL || M<=0 || mpz_sgn(n)<=0 || k<=0){
-        handle_error_with_exit("invalid parameter_divide_all_by_2_to_k\n");
-    }
-    if(k==1){//radici quadrate di n modulo 2
-        count=divide_all_by_2_log(M,thread_data);//k=1 -> dividi per 2
-        return count;
-    }
-    return 0;//ritorna 0 se non ci sono state divisioni nell'array
 }

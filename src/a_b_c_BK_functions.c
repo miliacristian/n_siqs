@@ -69,9 +69,11 @@ void create_num(mpz_t num,const mpz_t a,const mpz_t b,const mpz_t n,long j){
     //c
     mpz_mul(c,b,b);//c=b^2
     mpz_sub(c,c,n);//c=b^2-n
+    #if DEBUG==1
     if(mpz_divisible_p(c,a)==0){
         handle_error_with_exit("error in create_num\n");
     }
+    #endif
     mpz_divexact(c,c,a);//c=b^2-n/a
 
     mpz_add(num,a_mul_square_j,double_b_mul_j);
@@ -784,7 +786,7 @@ void calculate_thresold_large_prime(mpz_t thresold_large_prime,int max_prime){
     mpz_t temp;
     mpz_init(temp);
     mpz_set_si(temp,max_prime);//temp=max_prime
-    mpz_mul(temp,temp,temp);//temp?max_prime^2
+    mpz_mul(temp,temp,temp);//temp=max_prime^2
     mpz_set(thresold_large_prime,temp);
     mpz_clear(temp);
     return;

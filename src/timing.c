@@ -55,6 +55,27 @@ void print_time_elapsed_local(char*string,struct timespec*timer_thread,unsigned 
 	printf("%s tid %u:hour=%ld min=%ld sec:%ld ms=%ld ns:%ld\n",string,tid,hour,min,sec,ms,ns);
 	return;
 }
+void print_total_time_elapsed(char*string,struct timespec timer_start){
+	long ns,ms,sec,min,hour,temp;
+	if(string==NULL){
+		handle_error_with_exit("error in print time\n");
+	}
+	struct timespec time_temp,time_sub;
+	if(clock_gettime(CLOCK_MONOTONIC,&time_temp)!=0){
+        	handle_error_with_exit("error in print_time\n");
+    	}
+	time_sub=diff_timespec(time_temp,timer_start);
+	ns=time_sub.tv_nsec%1000000;
+	time_sub.tv_nsec-=ns;
+	ms=time_sub.tv_nsec/1000000;
+	sec=time_sub.tv_sec%60;//i secondi sono modulo 60
+	min=(time_sub.tv_sec-sec)/60;
+	temp=min%60;//temp min
+	hour=(min-temp)/60;
+	min=temp;
+	printf("%s:hour=%ld min=%ld sec:%ld ms=%ld ns:%ld\n",string,hour,min,sec,ms,ns);
+	return;
+}
 
 struct timespec print_time_elapsed(char*string){
 	//ns=1000000000=1 sec
@@ -68,9 +89,11 @@ struct timespec print_time_elapsed(char*string){
         	handle_error_with_exit("error in print_time\n");
     	}
 	time_sub=diff_timespec(time_current,timer);
-	if(clock_gettime(CLOCK_MONOTONIC,&timer)!=0){
+	//re init timer
+	timer=time_current;
+	/*if(clock_gettime(CLOCK_MONOTONIC,&timer)!=0){
         	handle_error_with_exit("error in clockgettime\n");
-    	}
+    }*/
 	ns=time_sub.tv_nsec%1000000;
 	time_sub.tv_nsec-=ns;
 	ms=time_sub.tv_nsec/1000000;

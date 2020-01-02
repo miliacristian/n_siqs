@@ -3,6 +3,12 @@ CFLAGS =-Wall -Wextra -o3
 CFILES=$(shell ls *.c)
 PROGS=$(CFILES:%.c=%)
 
+ifdef DEBUG
+CFLAGS:= $(CFLAGS) -DDEBUG=$(DEBUG)
+else
+CFLAGS:= $(CFLAGS) -DDEBUG=0
+endif
+
 install:criv_quad
 	
 #factorize one number,print initialize,print time total,no check,print factorization,check factorization

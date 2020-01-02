@@ -130,9 +130,6 @@ void print_list_square_relation(struct node_square_relation*head,int length){
     return;
 }
 char verify_square_relation(struct square_relation square_relation,const mpz_t n){
-    if(TEST==0){
-        return 1;
-    }
     struct node_factorization*head_factor=square_relation.head_factorization;
     mpz_t temp,num_temp,square;
     mpz_init(num_temp);
@@ -252,12 +249,14 @@ int find_factor_of_n_from_base_matrix_char(int **base_matrix,int num_row,int* nu
         }
         count_combination++;
         reduce_array_mod_n(solution,num_row,2);//riduce la matrice soluzione mod 2
-        /*if(check_if_array_is_reduce_mod_n(solution,num_row,2)==0){
+        #if DEBUG==1
+        if(check_if_array_is_reduce_mod_n(solution,num_row,2)==0){
             handle_error_with_exit("error in calculate solution\n");
         }
         if(verify_solution_char(matrix_linear_system,num_row_matrix,num_col_matrix,solution)==0){
             handle_error_with_exit("invalid solution in find_factor_of_n_from_base_matrix\n");
-        }*/
+        }
+        #endif
         calculate_a_and_b_siqs(solution,head,num_B_smooth,card_f_base,a,b,n_copy);//calcola un a e un b
         factor_founded_from_a_and_b=try_to_factor(a,b,n_copy,factor1,factor2);
         if(factor_founded_from_a_and_b>0){

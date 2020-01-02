@@ -12,9 +12,9 @@ float calculate_log_thresold(const mpz_t n,long M){
     //mpfr_sqrt(log_rad_n,log_rad_n,MPFR_RNDN);//log_rad_n=radice di n
     mpfr_log2(log_n,log_n,MPFR_RNDN);//rad_n=log2(n)
     log_thresold=mpfr_get_flt(log_n,MPFR_RNDN);
-    log_thresold=log_thresold*0.5;//log_thresold=log2(n)
-    log_thresold=log_thresold+log2f((float)M);
-    log_thresold=log_thresold-ERROR_LOG;
+    log_thresold=log_thresold*0.5;//log_thresold=1/2*log2(n)
+    log_thresold=log_thresold+log2f((float)M);//log_thresold=log(M)+1/2*log(n)
+    log_thresold=log_thresold-ERROR_LOG;//log_thresold=log(M)+1/2*log(n)-error
     mpfr_free_cache();
     mpfr_clear(log_n);
     return log_thresold;
@@ -195,9 +195,11 @@ void calculate_news_M_and_B(long*M,long*B){
 	//new_m=(m+perc_m)+(m+perc_m)*perc_m/100
 	//new_b=(b+perc_b)+(b+perc_b)*perc_b/100
 	return;
+	#if DEBUG==1
 	if(M==NULL || B==NULL || *M<=0 || *B<=0){
 		handle_error_with_exit("error in calculate_news_M_and_B\n");
 	}
+	#endif
 	double temp;
 	//calculate new M
 	temp=*M+PERC_INCREMENT_M;
