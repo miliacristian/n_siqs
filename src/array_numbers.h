@@ -6,10 +6,10 @@
 #include "mpz_functions.h"
 
 struct number {
+	int sum_log;//somma del logaritmo
     int j;//indice j va da -M a M
-    int sum_log;//somma del logaritmo
-    int first_index_f_base;//primo indice del primo della factor base che divide number,-1 non è considerato
-    int last_index_f_base;//ultimo indice del primo della factor base che divide number,-1 non è considerato
     //number=a^2j^2+2*a*b*j+b^2-n,b^2-n=a*c
 };
+#define OFFSET_FROM_STRUCT_NUMBER_TO_SUM_LOG offsetof(struct number,sum_log)
+#define NUM_INT_IN_STRUCT_NUMBER sizeof(struct number)/sizeof(int)
 #endif //CRIVELLO_QUADRATICO__COPIA_1_ARRAY_NUMBERS_H

@@ -24,7 +24,7 @@ void increment_M_and_B(long*M,long*B);
 void calculate_thresold_a(mpfr_t thresold_a,const mpz_t radn,long M);
 void calculate_x0(mpz_t x0,const mpz_t n,int k,char*factorized);
 void multiply_n_for_k(mpz_t n,int*k,char*factorized);
-void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B);
+//void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B);
 mpz_t*calculate_bi(mpz_t *array_Bk,const mpz_t b1,int s);
 void calculate_a_f2(mpz_t a,const mpfr_t target_a,int*s,struct node_factor_base*head_f_base_f,long cardinality_factor_base,int**best_q,int**best_q_number);
 void calculate_thresold_large_prime(mpz_t thresold_large_prime,int max_prime);

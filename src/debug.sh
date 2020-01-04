@@ -1,4 +1,4 @@
 #!/bin/bash
-make criv_quad_debug
-valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=./../logs/valgrind-out.txt ./criv_quad_debug ./../numbers/number_biprime_test.txt
-make criv_quad_debug_clean
+make criv_quad DEBUG=1
+./criv_quad ./../numbers/number_biprime.txt
+make criv_quad_clean

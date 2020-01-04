@@ -19,7 +19,7 @@ float calculate_log_thresold(const mpz_t n,long M){
     mpfr_clear(log_n);
     return log_thresold;
 }
-void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B){
+void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B,long*num_elem_array_number){
 	//calcola valori di M e B cercando di minimizzare il numero di volte che i numeri devono essere aumentati
 	if(n==NULL || digit_n<=0 || M==NULL || B==NULL){
 		handle_error_with_exit("error in calculate best M and B\n");
@@ -29,6 +29,7 @@ void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B){
 		*B=20;
         thresold_relation=0.0;
         combined=1;
+        *num_elem_array_number=*(M)*2+1;
 		return;
 	}
 	if(digit_n<9){
@@ -36,6 +37,7 @@ void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B){
 		*B=38;
         thresold_relation=0.0;
         combined=1;
+        *num_elem_array_number=*(M)*2+1;
 		return;
 	}
 	if(digit_n<11){
@@ -43,6 +45,7 @@ void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B){
 		*B=59;
         thresold_relation=0.0;
         combined=1;
+        *num_elem_array_number=*(M)*2+1;
 		return;
 	}
 	if(digit_n<13){
@@ -50,6 +53,7 @@ void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B){
 		*B=112;
         thresold_relation=0.0;
         combined=1;
+        *num_elem_array_number=*(M)*2+1;
 		return;
 	}
 	if(digit_n<15){
@@ -57,6 +61,7 @@ void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B){
 		*B=156;
         thresold_relation=0.0;
         combined=1;
+        *num_elem_array_number=*(M)*2+1;
 		return;
 	}
 	if(digit_n<17){
@@ -64,6 +69,7 @@ void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B){
 		*B=277;
         thresold_relation=0.0;
         combined=1;
+        *num_elem_array_number=*(M)*2+1;
 		return;
 	}
 	if(digit_n<19){
@@ -71,6 +77,7 @@ void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B){
 		*B=502;
         thresold_relation=0.0;
         combined=1;
+        *num_elem_array_number=*(M)*2+1;
 		return;
 	}
 	if(digit_n<21){
@@ -78,6 +85,7 @@ void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B){
 		*B=1668;
         thresold_relation=0.0;
         combined=1;
+        *num_elem_array_number=*(M)*2+1;
 		return;
 	}
 	if(digit_n<23){
@@ -85,6 +93,7 @@ void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B){
 		*B=2577;
         thresold_relation=0.0;
         combined=1;
+        *num_elem_array_number=*(M)*2+1;
 		return;
 	}
 	if(digit_n<25){
@@ -92,78 +101,91 @@ void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B){
 		*B=3540;
         thresold_relation=0.0;
         combined=1;
+        *num_elem_array_number=*(M)*2+1;
 		return;
 	}
 	if(digit_n<30){
 		*M=22512;
 		*B=3540;
 		thresold_relation=0.3;
+		*num_elem_array_number=*(M)*2+1;
 		return;
 	}
 	if(digit_n<35){
 		*M=22512;
 		*B=3540;
 		thresold_relation=0.3;
+		*num_elem_array_number=*(M)*2+1;
 		return;
 	}
 	if(digit_n<40){//fino a 40 cifre meno di 1 secondo
 		*M=22512;
 		*B=3540;
         thresold_relation=0.3;
+        *num_elem_array_number=*(M)*2+1;
 		return;
 	}
 	if(digit_n<45){//1,5 sec
 		*M=20000;
 		*B=8000;
         thresold_relation=0.4;
+        *num_elem_array_number=*(M)*2+1;
 		return;
 	}
 	if(digit_n<50){//2-3-4 sec
 		*M=20000;
 		*B=19000;
         thresold_relation=0.4;
+        *num_elem_array_number=*(M)*2+1;
 		return;
 	}
 	if(digit_n<55){//20 sec
 		*M=60000;
 		*B=97000;
         thresold_relation=0.6;
+        *num_elem_array_number=*(M)*2+1;
 		return;
 	}
     if(digit_n<60){//50 secondi
         *M=40000;
         *B=130000;
         thresold_relation=0.6;
+        *num_elem_array_number=*(M)*2+1;
         return;
     }
 	if(digit_n<65){//2 minuti 30 secondi
 		*M=35000;
 		*B=140000;
 		thresold_relation=0.6;
+		*num_elem_array_number=*(M)*2+1;
 		return;
 	}
     if(digit_n<70){//6,5 minuti
         *M=40000;
         *B=180000;
         thresold_relation=0.6;
+        *num_elem_array_number=*(M)*2+1;
         return;
     }
     if(digit_n<75){//35 minuti
         *M=45000;
         *B=300000;
         thresold_relation=0.4;
+        *num_elem_array_number=*(M)*2+1;
         return;
     }
 	if(digit_n<80){
 		*M=60000;
 		*B=750000;
 		thresold_relation=0.4;
+		*num_elem_array_number=*(M)*2+1;
 		return;
 	}
 	if(digit_n>=80){
 		handle_error_with_exit("error criv_quad >=80\n");
 		*M=35000;
 		*B=15000;
+		*num_elem_array_number=*(M)*2+1;
 		return;
 	}
 	handle_error_with_exit("num not handle\n");

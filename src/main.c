@@ -21,6 +21,7 @@
 	extern int s;//numero di primi della factor base distinti che compongono a
 	extern long B;//smoothness_bound
 	extern long M;//metà dimensione array
+	extern long num_elem_array_number;
 	mpz_t b1;//valore del primo b=somma di tutti i Bk presi dall'array Bk
 	extern mpz_t *array_bi;//array dei coefficienti bi
 	mpz_t *array_Bk=NULL;//array che serve per calcolare array_bi
@@ -108,8 +109,8 @@ int main(int argc,char*argv[]){
 		//M e B
 		M=-1;
 		B=-1;
-		calculate_best_M_and_B(n,digit,&M,&B);
-		printf("M=%ld\n",M);
+		calculate_best_M_and_B(n,digit,&M,&B,&num_elem_array_number);
+		printf("M=%ld,num_elem_array_number=%ld\n",M,num_elem_array_number);
 		print_time_elapsed("time to calculate M");
 		if(mpz_cmp_si(n,B)<=0){// se n è minore o uguale a B imposta B=n-3
 			B=mpz_get_si(n)-2;//b non deve essere maggiore di n-2
@@ -335,11 +336,11 @@ int main(int argc,char*argv[]){
 					main_thread_work = 0;
 				}
 				mpz_set(thread_polynomial_data[NUM_THREAD_POLYNOMIAL].b, b_default);//imposta b
-				factor_matrix_f(n, M, (thread_polynomial_data[NUM_THREAD_POLYNOMIAL]), cardinality_factor_base,
+				factor_matrix_f(n, M, (&(thread_polynomial_data[NUM_THREAD_POLYNOMIAL])), cardinality_factor_base,
 								a_default, array_a_struct, s);//fattorizza numeri
 
 				//trova relazioni quadratiche o semi_B_smooth e ordinale per numero
-				find_list_square_relation(thread_polynomial_data[NUM_THREAD_POLYNOMIAL], &num_B_smooth,
+				find_list_square_relation(&(thread_polynomial_data[NUM_THREAD_POLYNOMIAL]), &num_B_smooth,
 										  &num_semi_B_smooth, &num_potential_B_smooth, M, &head_square, &tail_square,
 										  &head_residuos, &tail_residuos, n, a_default, NULL, 0);
 			}

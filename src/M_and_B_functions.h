@@ -8,4 +8,5 @@
 
 float calculate_log_thresold(const mpz_t n,long M);
 void calculate_news_M_and_B(long*M,long*B);
+void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B,long*num_elem_array_number);
 #endif

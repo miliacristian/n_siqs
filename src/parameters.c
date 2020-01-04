@@ -3,6 +3,7 @@ unsigned long num_times_malloc_called=0;
 unsigned long num_times_free_called=0;
 long B=-1;
 long M=-1;
+long num_elem_array_number=-1;
 int num_thread_job=-1;
 int num_increment_M_and_B;
 mpz_t *array_bi=NULL;

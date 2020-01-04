@@ -261,7 +261,7 @@ struct node_square_relation* get_new_node_square_rel(struct square_relation squa
     if(new_node==NULL){
         handle_error_with_exit("error in malloc get_new_node\n");
     }
-    new_node->square_relation=square_relation;
+    new_node->square_relation=square_relation;//copy field element by element
     new_node->prev = NULL;
     new_node->next = NULL;
     return new_node;
