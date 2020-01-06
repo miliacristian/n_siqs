@@ -117,7 +117,7 @@ void print_list_square_relation(struct node_square_relation*head,int length){
     if(length==0){
         printf("list is empty\n");
     }
-    if(not_print_list(length)==1){
+    if(not_print_list(length,THRESOLD_PRINT_LIST)==1){
         return;
     }
     struct node_square_relation*p=head;

@@ -8,7 +8,7 @@ void print_array_number(mpz_t*array,int M){
         printf("array_number is empty\n");
         return;
     }
-    if(not_print_array(2*M+1)==1){
+    if(not_print_array(2*M+1,THRESOLD_PRINT_ARRAY)==1){
         return;
     }
     printf("array number:\n");

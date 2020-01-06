@@ -2,14 +2,14 @@
 #define MATH_H
 #include <stdio.h>
 #include <stdlib.h>
-#include "parameters.h"
 #include <unistd.h>
 #include <string.h>
+#include "basic.h"
 
 long calculate_mod_n(long a,long n);
 void reduce_int_mod_n(int *a,int n);
 int reduce_mod_2(int a);
-pthread_t *alloc_array_tid(int num_thread);
+
 int max(int i,int j);
 int min(int i,int j);
 void reduce_mod_n(long *a,long n);

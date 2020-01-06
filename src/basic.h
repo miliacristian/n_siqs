@@ -7,5 +7,11 @@
 #include <stdlib.h>
 
 void handle_error_with_exit(char*error_string);
+void destroy_mtx(pthread_mutex_t *mtx);
+void initialize_mtx(pthread_mutex_t *mtx);
+void lock_mtx(pthread_mutex_t *mtx);
+void unlock_mtx(pthread_mutex_t *mtx);
+FILE*open_file_log();
+long get_file_size(char*path);
 FILE*open_file(char*path);
 #endif

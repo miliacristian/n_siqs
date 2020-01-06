@@ -4,7 +4,7 @@ void print_array_mpz(mpz_t*array,int length){
 	if(length<=0 || array==NULL){
 		handle_error_with_exit("error in print_array_mpz\n");
 	}
-	if(not_print_array(length)==1){
+	if(not_print_array(length,THRESOLD_PRINT_ARRAY)==1){
 		return;
 	}
 	for(int i=0;i<length;i++){
@@ -37,7 +37,7 @@ void print_matrix_mpz(mpz_t**matrix,int num_row,int num_col){
 	if(num_row <=0 || num_col <=0){
 		handle_error_with_exit("error in print_matrix_mpz\n");
 	}
-	if(not_print_matrix(num_row,num_col)==1){
+	if(not_print_matrix(num_row,num_col,THRESOLD_PRINT_MATRIX_ROW,THRESOLD_PRINT_MATRIX_COL)==1){
 		return;
 	}
 	for(int i=0;i<num_row;i++){

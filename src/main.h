@@ -24,6 +24,7 @@
 #include "a_b_c_BK_functions.h"
 #include "square_relations_functions.h"
 #include "n.h"
+#include "timing.h"
 int thread_job_criv_quad(int i);
 int thread_job_to_create_factor_base(int id_thread);
 #endif

@@ -1,6 +1,8 @@
 #include "parameters.h"
 unsigned long num_times_malloc_called=0;
 unsigned long num_times_free_called=0;
+struct timespec time_start;
+struct timespec timer_test;
 long B=-1;
 long M=-1;
 long num_elem_array_number=-1;

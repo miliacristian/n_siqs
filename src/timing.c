@@ -1,7 +1,5 @@
 #include "timing.h"
 struct timespec timer;
-struct timespec time_start;
-struct timespec timer_test;
 
 void gettime(struct timespec*timer){
 	if(timer==NULL){
@@ -32,6 +30,7 @@ struct timespec diff_timespec(struct timespec time_current,struct timespec timer
 void print_time_elapsed_local(char*string,struct timespec*timer_thread,unsigned int tid){
 	//ns=1000000000=1 sec
 	//ns=1000000 1 ms
+	//calculate timer relative to timer_thread,change variable timer_thread to actual timer taken by gettime
 	long ns,ms,sec,min,hour,temp;
 	if(string==NULL || timer_thread==NULL){
 		handle_error_with_exit("error in print time elapsed local\n");
@@ -56,6 +55,7 @@ void print_time_elapsed_local(char*string,struct timespec*timer_thread,unsigned 
 	return;
 }
 void print_total_time_elapsed(char*string,struct timespec timer_start){
+	//calculate timer relative to timer_start,don't change any variable
 	long ns,ms,sec,min,hour,temp;
 	if(string==NULL){
 		handle_error_with_exit("error in print time\n");
@@ -80,6 +80,7 @@ void print_total_time_elapsed(char*string,struct timespec timer_start){
 struct timespec print_time_elapsed(char*string){
 	//ns=1000000000=1 sec
 	//ns=1000000 1 ms
+	//change global timer variable,this function is not thread_safe
 	long ns,ms,sec,min,hour,temp;
 	if(string==NULL){
 		handle_error_with_exit("error in print time\n");
@@ -91,9 +92,6 @@ struct timespec print_time_elapsed(char*string){
 	time_sub=diff_timespec(time_current,timer);
 	//re init timer
 	timer=time_current;
-	/*if(clock_gettime(CLOCK_MONOTONIC,&timer)!=0){
-        	handle_error_with_exit("error in clockgettime\n");
-    }*/
 	ns=time_sub.tv_nsec%1000000;
 	time_sub.tv_nsec-=ns;
 	ms=time_sub.tv_nsec/1000000;

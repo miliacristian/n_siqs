@@ -395,10 +395,9 @@ void print_thread_data(struct thread_data *pthread_data,long M,int cardinality_f
         gmp_printf("b=%Zd,",thread_data.b);
         printf("sum_log=%d,j=%d\n",thread_data.numbers[i].sum_log,thread_data.numbers[i].j);
     }
-    print_array_long(thread_data.j1_mod_p,cardinality_factor_base);
-    print_array_long(thread_data.j2_mod_p,cardinality_factor_base);
+    print_array_long(thread_data.j1_mod_p,cardinality_factor_base,THRESOLD_PRINT_ARRAY);
+    print_array_long(thread_data.j2_mod_p,cardinality_factor_base,THRESOLD_PRINT_ARRAY);
 }
-//#define offsetof(s,memb) ((size_t)((char *)&((s *)0)->memb-(char *)0))
 
 void clear_struct_thread_data(struct thread_data *pt_data) {
     struct number*numbers=pt_data->numbers;
@@ -516,36 +515,38 @@ int thread_job_criv_quad(int id_thread){//id inizia da 0,il lavoro di un thread 
     }
     struct timespec timer_thread;//istante di tempo
     struct timespec timer_thread_start;
-    int count=id_thread;//indica quale polinomio deve usare per fare il crivello quadratico
     struct node_square_relation*head_squares=NULL,*tail_squares=NULL;
     struct node_square_relation*head_residuoss=NULL,*tail_residuoss=NULL;
 
     //gettime
     gettime(&timer_thread);
     gettime(&timer_thread_start);
-    while(count<=local_num_thread_job-2){//ogni thread prende un sottoinsieme di compiti,il thread con id 0 farà i compiti 0,NUM_THREAD,2*NUM_THREAD,il thread 1 farà 1,NUM_THREAD+1,2*NUM_THREAD+1 ecc
+    struct thread_data *local_thread_data=&(thread_polynomial_data[id_thread]);
+    mpz_t *local_b=&(array_bi[id_thread]);
+    const int end_condition=local_num_thread_job-2;
+
+    for(int count=id_thread;count<=end_condition;count+=NUM_THREAD_POLYNOMIAL,local_b+=NUM_THREAD_POLYNOMIAL){//ogni thread prende un sottoinsieme di compiti,il thread con id 0 farà i compiti 0,NUM_THREAD,2*NUM_THREAD,il thread 1 farà 1,NUM_THREAD+1,2*NUM_THREAD+1 ecc
         //fattorizzazione,alla fine ogni thread ha una lista di relazioni quadratiche
 
         //fattorizza array di 2m+1 elementi e memorizza la somma dei logaritmi per ogni posizione e
         // indici last e first che ci dicono il primo elemento divisibile per num e l'ultimo(questo facilita la trial division)
-        mpz_set(thread_polynomial_data[id_thread].b,array_bi[count]);//imposta ad ogni ciclo il valore di b,array_bi è globale ma non viene più acceduto,thread_polynomial_data[id_thread].b=array_bi[count] è globale ma viene acceduto solo in lettura
-
-        factor_matrix_f(n,M,&(thread_polynomial_data[id_thread]),cardinality_factor_base,a_old,array_a_struct,s);//fattorizza una nuova matrice,tutte variabili locali o globali (ma accedute in sola lettura)
+        //mpz_set(local_thread_data->b,array_bi[count]);//imposta ad ogni ciclo il valore di b,array_bi è globale ma non viene più acceduto,thread_polynomial_data[id_thread].b=array_bi[count] è globale ma viene acceduto solo in lettura
+        mpz_set(local_thread_data->b,*local_b);
+        factor_matrix_f(n,M,(local_thread_data),cardinality_factor_base,a_old,array_a_struct,s);//fattorizza una nuova matrice,tutte variabili locali o globali (ma accedute in sola lettura)
         //print_time_elapsed_local("time to factor_matrix_f",&timer_thread,tid);
         //ricerca dei B_smooth potenziali,reali e fattorizzazione dei B_smooth reali
-        find_list_square_relation(&(thread_polynomial_data[id_thread]),&(thread_polynomial_data[id_thread].num_B_smooth),&(thread_polynomial_data[id_thread].num_semi_B_smooth),&(thread_polynomial_data[id_thread].num_potential_B_smooth),M,&head_squares,&tail_squares,&head_residuoss,&tail_residuoss,n,a_old,array_a_struct,s);
+        find_list_square_relation((local_thread_data),&(local_thread_data->num_B_smooth),&(local_thread_data->num_semi_B_smooth),&(local_thread_data->num_potential_B_smooth),M,&head_squares,&tail_squares,&head_residuoss,&tail_residuoss,n,a_old,array_a_struct,s);
         //pulisci struttura dati del thread per ricominciare con un altro polinomio
-        clear_struct_thread_data(&(thread_polynomial_data[id_thread]));
+        clear_struct_thread_data((local_thread_data));
         //print_time_elapsed_local("time to find_list_square_relationnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn",&timer_thread,tid);
         //unisci la lista dei quadrati trovata con il polinomio con la lista dei quadrati del thread,alla fine ogni thread ha un unica lista dei quadrati
-        union_list_square(&(thread_polynomial_data[id_thread].head_square),&(thread_polynomial_data[id_thread].tail_square),head_squares,tail_squares);
-        union_list_residuos(&(thread_polynomial_data[id_thread].head_residuos),&(thread_polynomial_data[id_thread].tail_residuos),head_residuoss,tail_residuoss);
+        union_list_square(&(local_thread_data->head_square),&(local_thread_data->tail_square),head_squares,tail_squares);
+        union_list_residuos(&(local_thread_data->head_residuos),&(local_thread_data->tail_residuos),head_residuoss,tail_residuoss);
         //print_time_elapsed_local("time to union list",&timer_thread,tid);
         head_squares=NULL;//resetta la lista locale delle relazioni quadratiche
         tail_squares=NULL;//resetta la lista locale delle relazioni quadratiche
         head_residuoss=NULL;
         tail_residuoss=NULL;
-        count+=NUM_THREAD_POLYNOMIAL;//modulo numero dei thread
     }
     print_time_elapsed_local("time to finish thread job",&timer_thread_start,tid);
     return 0;

@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS =-Wall -Wextra -o3 -Xlinker --wrap=malloc -Xlinker --wrap=free
+CFLAGS =-Wall -Wextra -o3 -finline-functions -funroll-loops -Xlinker --wrap=malloc -Xlinker --wrap=free
 CFILES=$(shell ls *.c)
 PROGS=$(CFILES:%.c=%)
 
@@ -8,6 +8,8 @@ CFLAGS:= $(CFLAGS) -DDEBUG=$(DEBUG)
 else
 CFLAGS:= $(CFLAGS) -DDEBUG=0
 endif
+
+CFLAGS:= $(CFLAGS) -DCACHE_LINE_SIZE=$(shell getconf LEVEL1_DCACHE_LINESIZE)
 
 install:criv_quad
 	

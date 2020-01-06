@@ -1,11 +1,9 @@
 #include "memory_manager.h"
-#include "parameters.h"
-#include "atomic.h"
+
 extern void* __real_malloc(size_t size);//l'implementazione vera di malloc
 extern void __real_free(void*data_to_free);//l'implementazione vera di malloc
 extern unsigned long num_times_malloc_called;
 extern unsigned long num_times_free_called;
-#define CACHE_LINE_SIZE 64
 #define CACHE_LINE_SIZE_MIN_1 (CACHE_LINE_SIZE-1)
 void __wrap_free(void*data_to_free){//malloc custom
 	#if DEBUG==1

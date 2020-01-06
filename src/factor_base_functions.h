@@ -49,4 +49,5 @@ void union_list_factor_base(struct node_factor_base**head1,struct node_factor_ba
 char verify_cardinality_list_factor_base(struct node_factor_base*head,int length);
 struct factor_base_data* alloc_array_factor_base_data(int length);
 void create_factor_base_f(int*cardinality_factor_base,long B,struct node_factor_base**head,struct node_factor_base**tail,const mpz_t n,int *last_prime_factor_base);
+mpz_t*create_array_temp_factorization(int card_f_base,mpz_t*row_matrix_b_smooth);
 #endif

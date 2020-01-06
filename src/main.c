@@ -512,7 +512,7 @@ int main(int argc,char*argv[]){
             binary_linear_system=NULL;
 
             //algebra step:base sistema lineare
-            base_matrix=calculate_base_linear_system_char(linear_system,cardinality_factor_base,num_col_linear_system,&dim_sol);
+            base_matrix=calculate_base_linear_system_char(linear_system,cardinality_factor_base,num_col_linear_system,&dim_sol,MAX_DIM_SOL);
             if(base_matrix==NULL){//non ci sono abbastanza soluzioni,ricomincia il crivello quadratico
 				calculate_news_M_and_B(&M,&B);
                 free(linear_system);

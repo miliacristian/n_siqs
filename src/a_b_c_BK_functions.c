@@ -8,7 +8,7 @@ void print_array_Bk(mpz_t*array_Bk,long s){
         printf("array_Bk is empty\n");
         return;
     }
-    if(not_print_array(s)==1){
+    if(not_print_array(s,THRESOLD_PRINT_ARRAY)==1){
         return;
     }
     printf("array Bk:\n");
@@ -24,7 +24,7 @@ void print_array_bi(mpz_t* array_bi,long s){
         return;
     }
     long length=(long)pow(2,s-1);
-    if(not_print_array(length)==1){
+    if(not_print_array(length,THRESOLD_PRINT_ARRAY)==1){
         return;
     }
     printf("array_bi:\n");
@@ -45,7 +45,7 @@ void print_array_chosen_for_a(long*array_of_prime_chosen_for_a,int card_factor_b
         }
     }
     printf("array of prime chosen for a:\n");
-    print_array_long(array_of_prime_chosen_for_a,card_factor_base*2);
+    print_array_long(array_of_prime_chosen_for_a,card_factor_base*2,THRESOLD_PRINT_ARRAY);
     return;
 }
 void create_num(mpz_t num,const mpz_t a,const mpz_t b,const mpz_t n,long j){

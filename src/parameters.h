@@ -6,7 +6,8 @@
 #define THRESOLD_PRINT_ARRAY 1000//dopo il valore di soglia l'array non viene stampato
 #define THRESOLD_PRINT_MATRIX 1000//dopo il valore di soglia la matrice non viene stampata
 #define THRESOLD_PRINT_LIST 1000 //dopo il valore di soglia la lista non viene stampata
-
+#define THRESOLD_PRINT_MATRIX_ROW 1000
+#define THRESOLD_PRINT_MATRIX_COL 1000
 #define SIQS_MIN_PRIME_POLYNOMIAL 400 //parametri per il calcolo di a
 #define SIQS_MAX_PRIME_POLYNOMIAL 4000 //parametri per il calcolo di a
 #define NUM_ITER_FOR_CALCULATE_A 30 //parametri per il calcolo di a,a diversi che vengono generati,si sceglie quello migliore
@@ -33,6 +34,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <gmp.h>
+
+
 #include "basic.h"
 void check_variable_in_defines();
 #endif

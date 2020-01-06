@@ -1,9 +1,6 @@
 
 #include "matrix_functions.h"
 
-extern struct row_factorization r;
-extern struct timespec timer;
-extern struct timespec time_start;
 
 char* from_matrix_binary_to_matrix_char(unsigned long**binary_linear_system,int num_row,int num_col_binary_matrix,int*num_col_linear_system){
 	if(binary_linear_system==NULL || *binary_linear_system==NULL || num_row<=0 || num_col_binary_matrix<=0 || num_col_linear_system==NULL){
@@ -40,7 +37,46 @@ void copy_matrix_with_array(char**linear_system2,char*linear_system,int num_row,
     }
     return;
 }
+
+pthread_t *alloc_array_tid(int num_thread){
+	if(num_thread<0){
+		handle_error_with_exit("error in create_thread\n");
+	}
+	if(num_thread==0){
+		return NULL;
+	}
+	pthread_t*array_tid=malloc(sizeof(pthread_t)*num_thread);
+	if(array_tid==NULL){
+		handle_error_with_exit("error in malloc alloc array tid\n");
+	}
+	return array_tid;
+}
+pthread_t *alloc_array_tid_and_materialize(int num_thread){
+	if(num_thread<0){
+		handle_error_with_exit("error in create_thread\n");
+	}
+	if(num_thread==0){
+		return NULL;
+	}
+	pthread_t*array_tid=malloc(sizeof(pthread_t)*num_thread);
+	if(array_tid==NULL){
+		handle_error_with_exit("error in malloc alloc array tid\n");
+	}
+	memset(array_tid,0,sizeof(pthread_t)*num_thread);
+	return array_tid;
+}
+
 char* alloc_array_char(long length){
+	if(length<=0){
+		handle_error_with_exit("error in parameter alloc_array_char\n");
+	}
+	char *array=malloc(sizeof(char)*(length));
+	if(array==NULL){
+		handle_error_with_exit("error in malloc\n");
+	}
+	return array;
+}
+char* alloc_array_char_and_materialize(long length){
 	if(length<=0){
 		handle_error_with_exit("error in parameter alloc_array_char\n");
 	}
@@ -51,8 +87,17 @@ char* alloc_array_char(long length){
 	memset(array,0,sizeof(char)*length);
 	return array;
 }
-
 long* alloc_array_long(int length){
+	if(length<=0){
+		handle_error_with_exit("error in parameter alloc aray_long\n");
+	}
+	long *array=malloc(sizeof(long)*(length));
+	if(array==NULL){
+		handle_error_with_exit("error in malloc alloc array long\n");
+	}
+	return array;
+}
+long* alloc_array_long_and_materialize(int length){
 	if(length<=0){
 		handle_error_with_exit("error in parameter alloc aray_long\n");
 	}
@@ -64,6 +109,17 @@ long* alloc_array_long(int length){
 	return array;
 }
 unsigned long* alloc_array_unsigned_long(int length){
+	if(length<=0){
+		handle_error_with_exit("error in parameter alloc aray_long\n");
+	}
+	unsigned long *array=malloc(sizeof(unsigned long)*(length));
+	if(array==NULL){
+		handle_error_with_exit("error in malloc alloc array long\n");
+	}
+	return array;
+}
+
+unsigned long* alloc_array_unsigned_long_and_materialize(int length){
 	if(length<=0){
 		handle_error_with_exit("error in parameter alloc aray_long\n");
 	}
@@ -85,7 +141,28 @@ int* alloc_array_int(int length){
 	memset(array,0,sizeof(int)*length);
 	return array;
 }
+int* alloc_array_int_and_materialize(int length){
+	if(length<=0){
+		handle_error_with_exit("error in parameter alloc array int\n");
+	}
+	int *array=malloc(sizeof(int)*(length));
+	if(array==NULL){
+		handle_error_with_exit("error in malloc alloc array int\n");
+	}
+	memset(array,0,sizeof(int)*length);
+	return array;
+}
 double* alloc_array_double(int length){
+	if(length<=0){
+		handle_error_with_exit("error in parameter alloc array double\n");
+	}
+	double *array=malloc(sizeof(double)*(length));
+	if(array==NULL){
+		handle_error_with_exit("error in malloc alloc array double\n");
+	}
+	return array;
+}
+double* alloc_array_double_and_materialize(int length){
 	if(length<=0){
 		handle_error_with_exit("error in parameter alloc array double\n");
 	}
@@ -104,10 +181,30 @@ float* alloc_array_float(int length){
 	if(array==NULL){
 		handle_error_with_exit("error in malloc alloc array double\n");
 	}
+	return array;
+}
+float* alloc_array_float_and_materialize(int length){
+	if(length<=0){
+		handle_error_with_exit("error in parameter alloc array double\n");
+	}
+	float *array=malloc(sizeof(float)*(length));
+	if(array==NULL){
+		handle_error_with_exit("error in malloc alloc array double\n");
+	}
 	memset(array,0,sizeof(float)*length);
 	return array;
 }
 long** alloc_array_pointer_to_long(int length){
+	if(length<=0){
+		handle_error_with_exit("error in parameteralloc array pointer to long\n");
+	}
+	long **array=malloc(sizeof(long*)*(length));
+	if(array==NULL){
+		handle_error_with_exit("error in malloc alloc array pointer to long\n");
+	}
+	return array;
+}
+long** alloc_array_pointer_to_long_and_materialize(int length){
 	if(length<=0){
 		handle_error_with_exit("error in parameteralloc array pointer to long\n");
 	}
@@ -126,10 +223,32 @@ unsigned long** alloc_array_pointer_to_unsigned_long(int length){
 	if(array==NULL){
 		handle_error_with_exit("error in malloc alloc array pointer to unsigned long\n");
 	}
+	return array;
+}
+unsigned long** alloc_array_pointer_to_unsigned_long_and_materialize(int length){
+	if(length<=0){
+		handle_error_with_exit("error in parameteralloc array pointer to unsigned long\n");
+	}
+	unsigned long **array=malloc(sizeof(unsigned long*)*(length));
+	if(array==NULL){
+		handle_error_with_exit("error in malloc alloc array pointer to unsigned long\n");
+	}
 	memset(array,0,sizeof(unsigned long*)*(length));
 	return array;
 }
+
 int** alloc_array_pointer_to_int(int length){
+	if(length<=0){
+		handle_error_with_exit("error in parameter alloc pointer to int\n");
+	}
+	int **array=malloc(sizeof(int*)*(length));
+	if(array==NULL){
+		handle_error_with_exit("error in malloc alloc array pointer to int\n");
+	}
+	memset(array,0,sizeof(int*)*(length));
+	return array;
+}
+int** alloc_array_pointer_to_int_and_materialize(int length){
 	if(length<=0){
 		handle_error_with_exit("error in parameter alloc pointer to int\n");
 	}
@@ -150,6 +269,16 @@ double** alloc_array_pointer_to_double(int length){
 	if(array==NULL){
 		handle_error_with_exit("error in malloc alloc array pointer to double\n");
 	}
+	return array;
+}
+double** alloc_array_pointer_to_double_and_materialize(int length){
+	if(length<=0){
+		handle_error_with_exit("error in parameter alloc_array_pointer_to_double\n");
+	}
+	double **array=malloc(sizeof(double*)*(length));
+	if(array==NULL){
+		handle_error_with_exit("error in malloc alloc array pointer to double\n");
+	}
 	memset(array,0,sizeof(double*)*(length));
 	return array;
 }
@@ -161,9 +290,44 @@ char** alloc_array_pointer_to_char(int length){
     if(array==NULL){
         handle_error_with_exit("error in malloc alloc array pointer to char\n");
     }
+    return array;
+}
+char** alloc_array_pointer_to_char_and_materialize(int length){
+    if(length<=0){
+        handle_error_with_exit("error in parameter alloc_array_pointer_to_char\n");
+    }
+    char **array=malloc(sizeof(char*)*(length));
+    if(array==NULL){
+        handle_error_with_exit("error in malloc alloc array pointer to char\n");
+    }
     memset(array,0,sizeof(char*)*(length));
     return array;
 }
+int** alloc_matrix_int(int num_row,int num_col){
+	if(num_row<=0 || num_col <=0){
+		handle_error_with_exit("error in alloc_matrix_int\n");
+	}
+	int**matrix;
+	matrix=alloc_array_pointer_to_int(num_row);
+	for(int i=0;i<num_row;i++){
+		matrix[i]=alloc_array_int(num_col);
+	}
+	return matrix;
+}
+int** alloc_matrix_int_and_materialize(int num_row,int num_col){
+	if(num_row<=0 || num_col <=0){
+		handle_error_with_exit("error in alloc_matrix_int\n");
+	}
+	int**matrix;
+	matrix=alloc_array_pointer_to_int_and_materialize(num_row);
+	for(int i=0;i<num_row;i++){
+		matrix[i]=alloc_array_int_and_materialize(num_col);
+	}
+	return matrix;
+}
+
+
+
 double** alloc_matrix_double(int num_row,int num_col){
 	if(num_row<=0 || num_col <=0){
 		handle_error_with_exit("error in alloc_matrix_double\n");
@@ -172,6 +336,17 @@ double** alloc_matrix_double(int num_row,int num_col){
 	matrix=alloc_array_pointer_to_double(num_row);
 	for(int i=0;i<num_row;i++){
 		matrix[i]=alloc_array_double(num_col);
+	}
+	return matrix;
+}
+double** alloc_matrix_double_and_materialize(int num_row,int num_col){
+	if(num_row<=0 || num_col <=0){
+		handle_error_with_exit("error in alloc_matrix_double\n");
+	}
+	double**matrix;
+	matrix=alloc_array_pointer_to_double_and_materialize(num_row);
+	for(int i=0;i<num_row;i++){
+		matrix[i]=alloc_array_double_and_materialize(num_col);
 	}
 	return matrix;
 }
@@ -186,17 +361,19 @@ char** alloc_matrix_char(int num_row,int num_col){
     }
     return matrix;
 }
-int** alloc_matrix_int(int num_row,int num_col){
-	if(num_row<=0 || num_col <=0){
-		handle_error_with_exit("error in alloc_matrix_int\n");
-	}
-	int**matrix;
-	matrix=alloc_array_pointer_to_int(num_row);
-	for(int i=0;i<num_row;i++){
-		matrix[i]=alloc_array_int(num_col);
-	}
-	return matrix;
+char** alloc_matrix_char_and_materialize(int num_row,int num_col){
+    if(num_row<=0 || num_col <=0){
+        handle_error_with_exit("error in alloc_matrix_char\n");
+    }
+    char**matrix;
+    matrix=alloc_array_pointer_to_char_and_materialize(num_row);
+    for(int i=0;i<num_row;i++){
+        matrix[i]=alloc_array_char_and_materialize(num_col);
+    }
+    return matrix;
 }
+
+
 long** alloc_matrix_long(int num_row,int num_col){
 	if(num_row<=0 || num_col <=0){
 		handle_error_with_exit("error in alloc_matrix_long\n");
@@ -205,6 +382,17 @@ long** alloc_matrix_long(int num_row,int num_col){
 	matrix=alloc_array_pointer_to_long(num_row);
 	for(int i=0;i<num_row;i++){
 		matrix[i]=alloc_array_long(num_col);
+	}
+	return matrix;
+}
+long** alloc_matrix_long_and_materialize(int num_row,int num_col){
+	if(num_row<=0 || num_col <=0){
+		handle_error_with_exit("error in alloc_matrix_long\n");
+	}
+	long**matrix;
+	matrix=alloc_array_pointer_to_long_and_materialize(num_row);
+	for(int i=0;i<num_row;i++){
+		matrix[i]=alloc_array_long_and_materialize(num_col);
 	}
 	return matrix;
 }
@@ -219,6 +407,18 @@ unsigned long** alloc_matrix_unsigned_long(int num_row,int num_col){
 	}
 	return matrix;
 }
+unsigned long** alloc_matrix_unsigned_long_and_materialize(int num_row,int num_col){
+	if(num_row<=0 || num_col <=0){
+		handle_error_with_exit("error in alloc_matrix_unsigned_long\n");
+	}
+	unsigned long**matrix;
+	matrix=alloc_array_pointer_to_unsigned_long_and_materialize(num_row);
+	for(int i=0;i<num_row;i++){
+		matrix[i]=alloc_array_unsigned_long_and_materialize(num_col);
+	}
+	return matrix;
+}
+
 
 char is_in_array_long(long*array,long length,long p_i){//ritorna vero se p_i è presente nell'array,0 altrimenti
 	if(array==NULL || length<=0){
@@ -260,12 +460,12 @@ void divide_vector_multiple_of_2_by_2(int*vector,int length){
     }
     return;
 }
-int** alloc_linear_system(int cardinality_f_base,int num_B_smooth){//alloca sistema lineare
-	if(cardinality_f_base<=0 || num_B_smooth<=0 || num_B_smooth<cardinality_f_base){
+int** alloc_linear_system(int num_rows,int num_cols){//alloca sistema lineare
+	if(num_rows<=0 || num_cols<=0){
 		handle_error_with_exit("invalid parameter alloc linear system\n");
 	}
 	int**linear_system;
-	linear_system=alloc_matrix_int(cardinality_f_base,num_B_smooth);
+	linear_system=alloc_matrix_int(num_rows,num_cols);
 	return linear_system;
 }
 int* get_coli(int **matrix,int num_row,int num_col,int index_col){//indice parte da 0,ottiene la colonna iesima della matrice
@@ -570,43 +770,6 @@ char check_if_array_is_reduce_mod_n(int*array,int length,int n){
 	return 1;
 }
 #endif
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 void swap_row(int**matrix,int num_row,int num_col,int ind_row1,int ind_row2){//ind_row1,int ind_row2 start at 0
 	if(matrix==NULL || *matrix==NULL || num_row<=0 || num_col<=0 || ind_row1==ind_row2 || ind_row1>=num_row || ind_row2>=num_row || ind_row1<0 || ind_row2<0){
 		handle_error_with_exit("error in parameter swap_row\n");
@@ -802,7 +965,7 @@ int* prod_vector_and_scalar_v2(int*vector,int scalar,int length){//prodotto vett
 
 
 
-void calculate_vector_base(int **matrix_linear_system,int num_row,int num_col,char*array_var,int*v){//calcola un vettore di base soluzione del sistema lineare,matrix linear system è ridotta a scala e binaria,calcola vettori di base binari
+void calculate_vector_base(int **matrix_linear_system,int num_row,int num_col,char*array_var,int*v,long thresold){//calcola un vettore di base soluzione del sistema lineare,matrix linear system è ridotta a scala e binaria,calcola vettori di base binari
 	//si concentra sulla sottomatrice con righe non nulle!
 	//memorizza la soluzione in v
 	//per ogni riga le variabili libere hanno valore 0 o 1 (già assegnato)->ogni riga ha esattamente un valore ricavabile da calcolare
@@ -843,7 +1006,7 @@ void calculate_vector_base(int **matrix_linear_system,int num_row,int num_col,ch
 		}
 		if(index_to_calculate<0){//riga in cui non è stato trovato nessun elemento da calcolare
 			printf("index_to_calculate=%d\n",index_to_calculate);
-			print_array_char(array_var,num_col);
+			print_array_char(array_var,num_col,thresold);
 			handle_error_with_exit("error in index_calculate index<0\n");
 		}
 		if(index_to_calculate>num_col){
@@ -863,7 +1026,7 @@ void calculate_vector_base(int **matrix_linear_system,int num_row,int num_col,ch
 	}
 	return;
 }
-void calculate_vector_base_char(char*matrix_linear_system,int num_row,int num_col,char*array_var,int*v,int num_row_not_null){//calcola un vettore di base soluzione del sistema lineare,matrix linear system è ridotta a scala e binaria,calcola vettori di base binari
+void calculate_vector_base_char(char*matrix_linear_system,int num_row,int num_col,char*array_var,int*v,int num_row_not_null,long thresold){//calcola un vettore di base soluzione del sistema lineare,matrix linear system è ridotta a scala e binaria,calcola vettori di base binari
     //si concentra sulla sottomatrice con righe non nulle!
     //memorizza la soluzione in v
     //per ogni riga le variabili libere hanno valore 0 o 1 (già assegnato)->ogni riga ha esattamente un valore ricavabile da calcolare
@@ -904,7 +1067,7 @@ void calculate_vector_base_char(char*matrix_linear_system,int num_row,int num_co
         }
         if(index_to_calculate<0){//riga in cui non è stato trovato nessun elemento da calcolare
             printf("index_to_calculate=%d\n",index_to_calculate);
-            print_array_char(array_var,num_col);
+            print_array_char(array_var,num_col,thresold);
             handle_error_with_exit("error in index_calculate index<0\n");
         }
         if(index_to_calculate>num_col){
@@ -1066,7 +1229,7 @@ char* find_free_var_char(char*matrix_linear_system,int num_row,int num_col,int n
 	return array_var;
 }
 
-int** calculate_base_linear_system_char(char*matrix_linear_system,int num_row,int num_col,int*dim_sol){//matrice ridotta modulo n,calcola una base del sistema lineare
+int** calculate_base_linear_system_char(char*matrix_linear_system,int num_row,int num_col,int*dim_sol,int max_dim_sol){//matrice ridotta modulo n,calcola una base del sistema lineare
     #if DEBUG==1
     if(matrix_linear_system==NULL || num_row<=0 || num_col<=0 || dim_sol==NULL){
         handle_error_with_exit("error in parameter get_coli\n");
@@ -1088,21 +1251,15 @@ int** calculate_base_linear_system_char(char*matrix_linear_system,int num_row,in
         return NULL;
     }
     //n.b. int free_var=*dim_sol;
-    if(*dim_sol>MAX_DIM_SOL){
-        *dim_sol=MAX_DIM_SOL;
+    if(*dim_sol>max_dim_sol){
+        *dim_sol=max_dim_sol;
     }
     int**base_linear_system=alloc_matrix_int(num_col,*dim_sol);//la base del sistema lineare ha come righe il numero di colonne della matrice 		(numero delle variabili) e come colonne il numero di vettori linearmente indipendenti
     char*array_var=NULL;
-    array_var=find_free_var_char(matrix_linear_system,num_row,num_col,num_row_not_null,num_col_not_null);//calcola array delle variabili libere che specifica tutte le 				variabili che sono state impostate come libere per tutto il sistema,è lungo num_col,è necessario 				allocarlo ogni volta perchè viene sporcato
-    //dalla funzione calculate_vector_base
-    /*if(check_if_array_var_is_correct(array_var,num_col,free_var)==0){
-        handle_error_with_exit("error in calculate array_var\n");
-    }
-    if(check_if_array_var_is_valid_char(matrix_linear_system,num_row,num_col,array_var)==0){
-        printf("array :");
-        print_array_char(array_var,num_col);
-        handle_error_with_exit("array_var is not valid\n");
-    }*/
+    array_var=find_free_var_char(matrix_linear_system,num_row,num_col,num_row_not_null,num_col_not_null);//calcola array delle variabili libere 
+    //che specifica tutte le variabili che sono state impostate come libere per tutto il sistema,è lungo num_col,è necessario 
+    //allocarlo ogni volta perchè viene sporcato dalla funzione calculate_vector_base
+    
     char*array_var_temp=alloc_array_char(num_col);
     int s=0;//s==start,indice della posizione delle variabili libere
     for(int i=0;i<*dim_sol;i++){//ripeti il procedimento per il numero di vettori linearmente indipendenti,e crea ad ogni ciclo un vettore
@@ -1115,7 +1272,7 @@ int** calculate_base_linear_system_char(char*matrix_linear_system,int num_row,in
         if(array_var[s]==1){//per ogni variabile libera va calcolato un vettore di base
             int*v=alloc_vector_base(array_var_temp,num_col,s);//alloca e inizializza vettore di base
             //risolvi il sistema lineare per sostituzione sapendo che ogni vettore di base fornisce una soluzione parziale
-            calculate_vector_base_char(matrix_linear_system,num_row,num_col,array_var_temp,v,num_row_not_null);//memorizza in v la soluzione
+            calculate_vector_base_char(matrix_linear_system,num_row,num_col,array_var_temp,v,num_row_not_null,max_dim_sol);//memorizza in v la soluzione
             //errore in calculate vector base
             for(int j=0;j<num_col;j++){//copia l'array v nella colonna della matrice base_sistema_lineare
                 base_linear_system[j][i]=v[j];//ok
@@ -1181,9 +1338,11 @@ void reduce_echelon_form(int**matrix,int num_row,int num_col){//versione rref,fa
 		if(i!=r){
 			swap_row(matrix,num_row,num_col,i,r);
 		}
+		#if TODO==1//this check is correct?program break in this point with debug enabled
 		if(matrix[r][lead]==0){
 			handle_error_with_exit("invalid pivot\n");
 		}
+		#endif
 		for(int i=0;i<num_row;i++){//riduzione della matrice versione rref
 			if(i!=r){
 				if(matrix[i][lead]!=0){
@@ -1231,9 +1390,13 @@ void reduce_echelon_form_binary_matrix(unsigned long**binary_matrix,int num_row,
 		if(i!=r){//se gli indici di riga sono diversi swappa le righe
 			swap_row_unsigned_long(binary_matrix,num_row,i,r);
 		}
-		//if(binary_matrix[r][lead]==0){
-		//	handle_error_with_exit("invalid pivot\n");
-		//}
+		#if TODO==1
+		#if DEBUG==1 //this check is valid?program break in this point
+		if(binary_matrix[r][lead]==0){
+			handle_error_with_exit("invalid pivot\n");
+		}
+		#endif
+		#endif
 
 		//in r,lead c'è il pivot sottrai tutta la sottomatrice
 		for(int i=r+1;i<num_row;i++){//versione ref,sottrai sottomatrice sotto pivot
@@ -1377,6 +1540,17 @@ long get_index(int index_row,int index_col,int num_col){
 	index+=index_col;//shift della colonna
 	return index;
 }
+char array_is_fill_of_value(char*combination,int length,char value){//verifica che ogni elemento dell'array è uguale a value
+	if(length<=0 || combination==NULL){
+		handle_error_with_exit("error in parameter\n");
+	}
+	for(int i=0;i<length;i++){
+		if(combination[i]!=value){
+			return 0;
+		}
+	}
+	return 1;
+}
 
 void free_memory_matrix_long(long **matrix,int num_row,int num_col){
 	if(matrix==NULL || *matrix==NULL || num_row<=0 || num_col<=0){
@@ -1422,17 +1596,7 @@ void free_memory_matrix_char(char **matrix,int num_row,int num_col){
 	matrix=NULL;
 	return;
 }
-char array_is_fill_of_value(char*combination,int length,char value){//verifica che ogni elemento dell'array è uguale a value
-	if(length<=0 || combination==NULL){
-		handle_error_with_exit("error in parameter\n");
-	}
-	for(int i=0;i<length;i++){
-		if(combination[i]!=value){
-			return 0;
-		}
-	}
-	return 1;
-}
+
 
 
 

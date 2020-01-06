@@ -78,7 +78,3 @@ void handle_error_with_exit(char*error_string){//uccide il processo dopo essersi
     printf("%s",error_string);
     exit(EXIT_FAILURE);
 }
-void test(){
-    //operazioni da fare in fase di test
-    handle_error_with_exit("\n");
-}

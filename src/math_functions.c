@@ -45,21 +45,6 @@ void reduce_int_mod_n(int *a,int n){//reduce a mod n,rendendo a positivo maggior
 	return;
 }
 
-pthread_t *alloc_array_tid(int num_thread){
-	if(num_thread<0){
-		handle_error_with_exit("error in create_thread\n");
-	}
-	if(num_thread==0){
-		return NULL;
-	}
-	pthread_t*array_tid=malloc(sizeof(pthread_t)*num_thread);
-	if(array_tid==NULL){
-		handle_error_with_exit("error in malloc alloc array tid\n");
-	}
-	memset(array_tid,0,sizeof(pthread_t)*num_thread);
-	return array_tid;
-}
-
 int max(int i,int j){//calcola il massimo tra i e j
 	if(i<=j){
 		return j;

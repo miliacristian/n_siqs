@@ -87,7 +87,7 @@ void print_list_factor_base(struct node_factor_base*head,int length){
 	if(length==0){
 		printf("list is empty\n");
 	}
-	if(not_print_list(length)==1){
+	if(not_print_list(length,THRESOLD_PRINT_LIST)==1){
 		return;
 	}
 	struct node_factor_base *p=head;
