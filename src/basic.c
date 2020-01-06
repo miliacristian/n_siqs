@@ -1,5 +1,28 @@
+#define _GNU_SOURCE
 #include "basic.h"
+int pin_thread_to_core(int core,cpu_set_t*oldset)
+{
+    int sched_cpu;
+    cpu_set_t cpuset;
 
+    pthread_getaffinity_np(pthread_self(), sizeof(cpu_set_t), oldset);
+
+    CPU_ZERO(&cpuset);
+    CPU_SET(core, &cpuset);
+
+    if (pthread_setaffinity_np(pthread_self(), sizeof(cpu_set_t), &cpuset))
+        return 1;
+
+    while (1)
+    {
+        if ((sched_cpu = sched_getcpu()) == -1)
+            return 1;
+        else if (sched_cpu == core)
+            break;
+    }
+
+    return 0;
+}
 void destroy_mtx(pthread_mutex_t *mtx){
 	if(mtx==NULL){
 		handle_error_with_exit("error in destroy_mtx mtx is NULL\n");

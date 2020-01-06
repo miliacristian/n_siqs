@@ -5,6 +5,7 @@ extern void __real_free(void*data_to_free);//l'implementazione vera di malloc
 extern unsigned long num_times_malloc_called;
 extern unsigned long num_times_free_called;
 #define CACHE_LINE_SIZE_MIN_1 (CACHE_LINE_SIZE-1)
+#if CUSTOM_MALLOC==1
 void __wrap_free(void*data_to_free){//malloc custom
 	#if DEBUG==1
 	atomic_inc_x86((atomic_t *)&num_times_free_called);
@@ -40,4 +41,4 @@ void* __wrap_malloc(size_t size){//malloc custom
 	return p;
 	//do posix_memalign every malloc is very slow
 }
-
+#endif

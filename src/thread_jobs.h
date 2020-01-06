@@ -16,7 +16,6 @@
 #include "M_and_B_functions.h"
 #include "list_factorization.h"
 #include "list_square_relations.h"
-//#include "memory_manager.h"
 
 extern int s;//numero di primi della factor base distinti che compongono a
 extern struct factor_base_data*thread_factor_base_data;

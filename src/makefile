@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS =-Wall -Wextra -o3 -finline-functions -funroll-loops -Xlinker --wrap=malloc -Xlinker --wrap=free
+CFLAGS =-Wall -Wextra -o3 -finline-functions -funroll-loops
 CFILES=$(shell ls *.c)
 PROGS=$(CFILES:%.c=%)
 
@@ -8,6 +8,10 @@ CFLAGS:= $(CFLAGS) -DDEBUG=$(DEBUG)
 else
 CFLAGS:= $(CFLAGS) -DDEBUG=0
 endif
+
+#wrap malloc and free
+CFLAGS:= $(CFLAGS) -DCUSTOM_MALLOC=1	
+CFLAGS:= $(CFLAGS) -Xlinker --wrap=malloc -Xlinker --wrap=free
 
 CFLAGS:= $(CFLAGS) -DCACHE_LINE_SIZE=$(shell getconf LEVEL1_DCACHE_LINESIZE)
 

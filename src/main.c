@@ -44,6 +44,11 @@ int main(int argc,char*argv[]){
     if(argc!=2){//se non c'è esattamente un parametro,termina,serve il path in cui c'è scritto il numero all'interno
         handle_error_with_exit("usage<path>\n");
     }
+    cpu_set_t oldset;
+    if (pin_thread_to_core(0,&oldset))
+    {
+        handle_error_with_exit("impossible pinning thread to core\n");
+    }
 	srand((unsigned int)time(NULL));//imposta seme casuale
 	check_variable_in_defines();
 	FILE*file_number=open_file(argv[1]);//apri file in cui risiede il numero n da fattorizzare

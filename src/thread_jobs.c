@@ -1,4 +1,4 @@
-#define _GNU_SOURCE
+
 #include "thread_jobs.h"
 
 __thread unsigned int tid;
@@ -14,30 +14,7 @@ extern mpz_t *array_bi;
 extern mpz_t thresold_large_prime;
 extern struct thread_data*thread_polynomial_data;
 
-static __thread cpu_set_t oldset;
-static inline int pin_thread_to_core(int core)
-{
-    int sched_cpu;
-    cpu_set_t cpuset;
 
-    pthread_getaffinity_np(pthread_self(), sizeof(cpu_set_t), &oldset);
-
-    CPU_ZERO(&cpuset);
-    CPU_SET(core, &cpuset);
-
-    if (pthread_setaffinity_np(pthread_self(), sizeof(cpu_set_t), &cpuset))
-        return 1;
-
-    while (1)
-    {
-        if ((sched_cpu = sched_getcpu()) == -1)
-            return 1;
-        else if (sched_cpu == core)
-            break;
-    }
-
-    return 0;
-}
 void find_list_square_relation(struct thread_data *pthread_data, int *num_B_smooth,int*num_semi_B_smooth, int *num_potential_B_smooth, long M,
                                struct node_square_relation **head_square, struct node_square_relation **tail_square,struct node_square_relation **head_residuos, struct node_square_relation **tail_residuos,
                                const mpz_t n,const mpz_t a,const struct a_struct*array_a_struct,int s) {
@@ -505,12 +482,14 @@ int* create_factor_base_threads(pthread_t*array_tid,int num_thread){//ritorna il
 int thread_job_criv_quad(int id_thread){//id inizia da 0,il lavoro di un thread rimane uguale anche se non si riesce a fattorizzare n
     tid=id_thread;
     int cpu = tid;
-    if (pin_thread_to_core(cpu))
+    cpu_set_t oldset;
+    if (pin_thread_to_core(cpu,&oldset))
     {
         handle_error_with_exit("impossible pinning thread to core\n");
     }
     int local_num_thread_job=num_thread_job;
-    if(id_thread+1>local_num_thread_job-1){//l'indice del thread eccede il numero di job da fare
+    const int end_condition=local_num_thread_job-2;
+    if(id_thread>end_condition){//l'indice del thread eccede il numero di job da fare
         return 0;
     }
     struct timespec timer_thread;//istante di tempo
@@ -523,8 +502,7 @@ int thread_job_criv_quad(int id_thread){//id inizia da 0,il lavoro di un thread 
     gettime(&timer_thread_start);
     struct thread_data *local_thread_data=&(thread_polynomial_data[id_thread]);
     mpz_t *local_b=&(array_bi[id_thread]);
-    const int end_condition=local_num_thread_job-2;
-
+    
     for(int count=id_thread;count<=end_condition;count+=NUM_THREAD_POLYNOMIAL,local_b+=NUM_THREAD_POLYNOMIAL){//ogni thread prende un sottoinsieme di compiti,il thread con id 0 farà i compiti 0,NUM_THREAD,2*NUM_THREAD,il thread 1 farà 1,NUM_THREAD+1,2*NUM_THREAD+1 ecc
         //fattorizzazione,alla fine ogni thread ha una lista di relazioni quadratiche
 
