@@ -152,6 +152,7 @@ int* alloc_array_int_and_materialize(int length){
 	memset(array,0,sizeof(int)*length);
 	return array;
 }
+
 double* alloc_array_double(int length){
 	if(length<=0){
 		handle_error_with_exit("error in parameter alloc array double\n");
@@ -325,7 +326,6 @@ int** alloc_matrix_int_and_materialize(int num_row,int num_col){
 	}
 	return matrix;
 }
-
 
 
 double** alloc_matrix_double(int num_row,int num_col){
