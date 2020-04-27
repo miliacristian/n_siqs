@@ -1,10 +1,11 @@
+-provare ad inserire relazioni quadratiche uguali(poche) per vedere se il codice è robusto e l'algoritmo continua a fattorizzare correttamente
 -fare in modo che i thread non vengano mai ricreati tramite barriere di sincronizzazione(
 -numero thread pari al numero di core,ottenerlo con le macro a tempo di compilazione
 -alloc/free meno possibile gestione della memoria manuale con wrapper,riutilizzo della memoria liberata o con madvise,posix_memalign mallopt,madvise ecc
 -parallelizzare le parti sequenziali come la parte di geometria
 -inserire define per far assumere al programma diversi comportamenti in base alla compilazione
 -inserire variabili per thread dove necessario
--in ogni istante tutti i thread devono essere running(in esecuzione o meno) speculare dove possibile se è conveniente
+-in ogni istante tutti i thread devono essere running(in esecuzione o meno), speculare dove possibile se è conveniente
 -meccanismo dei segnali per thread se serve a qualcosa
 -parallelizzare la riduzione della matrice a scala
 -pulizia codice
@@ -12,7 +13,7 @@
 vedere se conviene inserire la parte di training per un numero specifico da fattorizzare all'interno del programma(da considerare nel tempo di esecuzione del programma)
 -cache profilers
 -training su M e B parallelo e su tutti gli altri parametri
--accorpare mpz_init e mpz_clear
+-accorpare mpz_init e mpz_clear non dovrebbe essere cosi rilevante per le performance, il core della computazione sta sulla fase di sieving
 -inserire volatile e inline,register ed altri modificatori dove conviene
 il modo in cui vengono calcolati M e B deve dipendere dalla velocità dell'algoritmo(magari l'algoritmo è strutturato per trattare M molto alti e B molto bassi), lo stesso discorso vale per tutti gli altri parametri
 implementare un buon algoritmo di training che ottiene dei buoni parametri per velocizzare al massimo la fase di sieving(potrebbe rallentare la fase di algebra step)
@@ -21,22 +22,3 @@ implementare un buon algoritmo di training che ottiene dei buoni parametri per v
 -implementare algoritmi di training su tutti i possibili parametri(sia offline sia online(a runtime ) ).tutti i parametri si intende M,B,a,log_thresold ecc. L'algoritmo offline deve utilizzare lo stesso identico meccanismo usato nell'algoritmo online,perché dei buoni parametri dipendono strettamente dall'implementazione del setaccio o dell'algoritmo in sé
 -mettere variabili globali per thread tutte quelle variabili globali che non cambiano il loro valore per una certa esecuzione di cui non si vuole ricalcolare l'indirizzo a partire da struct es thread_data.b, es. il valore di b rimane costante fintantoché il thread ha finito il suo compito.
 -warning:sistemare il codice dei check sulla parte di geometria, c'è una macro chiamata TODO con tutti i pezzi di codice da sistemare, i check stampano invalid pivot,forse o è sbagliato il check o viene ridotta male la matrice a scala, se viene ridotta male la matrice a scala potrebbe fare fatica a trovare le fattorizzazioni
--collegato con il punto precedente,utilizzare più meccanismi di combinamento delle relazioni semi b smooth,attualmente viene utilizzato un solo metodo che combina solamente 2 relazioni con stesso residuo,quando invece se ne potrebbero potenzialmente ottenere molte di più infatti se abbiamo 4 relazioni con lo stesso residuo si potrebbero ottenere molte più relazioni:
-per le coppie:
-combinare la prima con la seconda
-la prima con la terza
-la prima con la quarta
-
-la seconda con la terza
-la seconda con la quarta
-la terza con la quarta
-
-per le triple
-la prima con la seconda e la terza
-la prima con la seconda e la quarta
-
-per le quadruple
-la prima con la seconda la terza e la quarta
-alcune di queste sono ridondanti(perché generano relazioni dipendenti??)e quindi non fanno trovare soluzioni algebriche!! Capire in che scenario ci sono e utilizzare solo quelle indipendenti,il maggior numero possibile
-Speed pauroso dell'algoritmo se si capisce come ottenerle in modo indipendente
-non buttare queste relazioni se possibile dopo averle utilizzate,potrebbero tornare nuovamente utili.Fare in modo che quelle inutili anche se vengono generate vengono ignorate/eliminate dall'algoritmo!!
