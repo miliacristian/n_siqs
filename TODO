@@ -1,3 +1,4 @@
+-migliorare l'accesso alle strutture dati esistenti per sfruttare la massimo la cache locality (implementare factor base con array dinamico e algoritmo di sieving che per calcolare la somma dei log di P cicla in un modo specifico)
 -provare ad inserire relazioni quadratiche uguali(poche) per vedere se il codice è robusto e l'algoritmo continua a fattorizzare correttamente
 -fare in modo che i thread non vengano mai ricreati tramite barriere di sincronizzazione(
 -numero thread pari al numero di core,ottenerlo con le macro a tempo di compilazione
