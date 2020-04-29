@@ -25,6 +25,10 @@
 #include "square_relations_functions.h"
 #include "n.h"
 #include "timing.h"
+#include "memory_limit.h"
+#if LINEAR_PINNING!=1
+#include "numa.h"
+#endif
 int thread_job_criv_quad(int i);
 int thread_job_to_create_factor_base(int id_thread);
 #endif

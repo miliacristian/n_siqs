@@ -1,6 +1,5 @@
 
 #include "main.h"
-
 	extern unsigned long num_times_malloc_called;
 	extern unsigned long num_times_free_called;
 	//valori globali(presi da altri file)
@@ -34,16 +33,52 @@
 	int*index_prime_a=NULL;//indice dei primi usati per ottenere a,rispetto alla factor base
 	int*number_prime_a=NULL;//numeri primi usati per ottenere a
 	extern struct a_struct*array_a_struct;
-    	int combined_relations;
-    	char combined;
-    	extern mpz_t thresold_large_prime;
-    	double thresold_relation;
+    int combined_relations;
+    char combined;
+    extern mpz_t thresold_large_prime;
+    double thresold_relation;
 
-
+void print_git_commit_hash(){
+    int res=system("echo commit hash: `git log --pretty=format:'%H' -n 1`");
+    (void)res;
+}
+void print_macros_enabled(){
+	#if DEBUG == 1
+    printf("\t- DEBUG mode enabled.\n");
+	#endif
+	#if LINEAR_PINNING== 1
+	printf("\t- LINEAR_PINNING mode enabled.\n");
+	#endif
+}
+void print_statistics(){
+	printf("TODO statistics to print\n");
+}
 int main(int argc,char*argv[]){
-    if(argc!=2){//se non c'è esattamente un parametro,termina,serve il path in cui c'è scritto il numero all'interno
+    if(argc!=2 && argc!=3){//se non c'è esattamente un parametro,termina,serve il path in cui c'è scritto il numero all'interno
         handle_error_with_exit("usage<path>\n");
     }
+    printf("taken %d parameters\n",argc);
+    print_git_commit_hash();
+    if(argc == 3){//pass compilation line as argument
+        const char* compilation_line="make";
+        if(strncmp(argv[2],compilation_line,strlen(compilation_line))==0){
+            printf("Compilation line: %s\n",argv[2]);
+        }
+        else{
+            printf("Last parameter must be compilation_line and start with \"%s\"\n",compilation_line);
+            exit(EXIT_FAILURE);
+        }    
+    }
+    print_macros_enabled();
+    set_max_memory_allocable(MAX_MEMORY_ALLOCABLE);
+    #if DEBUG==1
+    test_memory_limit();
+    #endif
+
+    #if LINEAR_PINNING!=1
+    set_numa_topology();
+    #endif
+
     cpu_set_t oldset;
     if (pin_thread_to_core(0,&oldset))
     {
@@ -649,5 +684,7 @@ int main(int argc,char*argv[]){
 	}
 	printf("num malloc called=%ld\n",num_times_malloc_called);
 	printf("num free called=%ld\n",num_times_free_called);
+	print_statistics();
+	printf("Max allocated space...........................: %lu MB\n", get_memory_allocated()/(1024));
 	return 0;
 }
