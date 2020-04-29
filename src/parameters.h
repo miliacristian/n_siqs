@@ -22,8 +22,9 @@
 #define PERC_INCREMENT_M 50 //quanto aumenta in percentuale M se non si riesce a fattorizzare n
 #define PERC_INCREMENT_B 20 //quanto aumenta in percentuale B se non si riesce a fattorizzare n
 //#define TEST 1 //test=0 nessuna verifica test=1 molte verifiche
-
+#ifndef NUM_OF_N_TO_FACTORIZE
 #define NUM_OF_N_TO_FACTORIZE 1
+#endif
 #define ENOUGH_RELATION 1.0 //numero maggiore o uguale a 1 indica quante relazioni
 //vanno trovate in più rispetto alla cardinalità della factor base num_b_smooth>cardinality*enough_relation
 #define ERROR_LOG 25//errore del logaritmo,aumentare per trovare più numeri B_smooth potenziali ma maggior computazione,

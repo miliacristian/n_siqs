@@ -1,4 +1,5 @@
 #include "memory_limit.h"
+#include "memory_manager.h"
 #include <sys/resource.h>
 #include <stdio.h>
 #include "basic.h"
@@ -42,13 +43,22 @@ void test_memory_limit_mmap(unsigned long byte_to_alloc){
 
 
 void test_memory_limit_malloc(unsigned long byte_to_alloc){
+    #if CUSTOM_MALLOC==1
+    char*memory_test=__real_malloc(byte_to_alloc);
+    #else
     char*memory_test=malloc(byte_to_alloc);
+    #endif
     if(memory_test==NULL){
         printf("unable to alloc memory with malloc,test succeed\n");
         perror("error");
     }
-    else
-        free(memory_test);//free memory if limit not exceed
+    else{
+        #if CUSTOM_MALLOC==1
+        __real_free(memory_test);//free memory if limit not exceed
+        #else
+        free(memory_test);
+        #endif
+    }
 }
 
 void test_memory_limit(){

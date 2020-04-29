@@ -25,6 +25,10 @@ else
 CFLAGS:= $(CFLAGS) -DMAX_ALLOCABLE_GIGAS=4
 endif
 
+ifdef NUM_OF_N_TO_FACTORIZE
+CFLAGS:= $(CFLAGS) -DNUM_OF_N_TO_FACTORIZE=$(NUM_OF_N_TO_FACTORIZE)
+endif
+
 ifdef LINEAR_PINNING
 CFLAGS:= $(CFLAGS) -DLINEAR_PINNING=$(LINEAR_PINNING)
 else
@@ -33,34 +37,40 @@ endif
 
 install:criv_quad
 	
-#factorize one number,print initialize,print time total,no check,print factorization,check factorization
+#factorize one number,print initialize,print time total,no check(debug macro disabled),print factorization,check factorization
 criv_quad:$(CFILES)
 	$(CC) $(CFLAGS) -o  $@ $^ $(LIBS)
 
-#factorize one number,print initialize,print all timing,no check,print factorization,check_factorization
-criv_quad_with_timimg:$(CFILES)
+#factorize one number,print initialize,print all timing,no check(debug macro disabled),print factorization,check_factorization
+criv_quad_with_timing:$(CFILES)
 	$(CC) $(CFLAGS) -o  $@ $^ $(LIBS)
 
-#factorize all numbers in file,print initialize,print all timing,print all things,all checks,print factorization,check_factorization
+#factorize all numbers in file,print initialize,print all timing,print all things,all checks(debug macro enabled),print factorization,check_factorization
 criv_quad_crash_test:$(CFILES)
 	$(CC) $(CFLAGS) -o  $@ $^ $(LIBS)
 
-#factorize one number,print initialize,print all timing,print all things,all checks,print factorization,check_factorization,run with valgrind
 criv_quad_debug:$(CFILES)
+	$(CC) $(CFLAGS) -o  $@ $^ $(LIBS)
+
+#factorize one number,print initialize,print all timing,print all things,all checks(debug macro enabled),print factorization,check_factorization,run with valgrind
+criv_quad_valgrind:$(CFILES)
 	$(CC) $(CFLAGS) -o  $@ $^ $(LIBS)
 	
 
 criv_quad_clean:
 	rm criv_quad
 
-criv_quad_with_timimg_clean:
-	rm criv_quad_with_timimg
+criv_quad_with_timing_clean:
+	rm criv_quad_with_timing
 
 criv_quad_crash_test_clean:
 	rm criv_quad_crash_test
 
 criv_quad_debug_clean:
 	rm criv_quad_debug
+
+criv_quad_valgrind_clean:
+	rm criv_quad_valgrind
 
 clean:
 	make criv_quad_clean

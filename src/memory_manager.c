@@ -1,7 +1,5 @@
 #include "memory_manager.h"
 
-extern void* __real_malloc(size_t size);//l'implementazione vera di malloc
-extern void __real_free(void*data_to_free);//l'implementazione vera di malloc
 extern unsigned long num_times_malloc_called;
 extern unsigned long num_times_free_called;
 #define CACHE_LINE_SIZE_MIN_1 (CACHE_LINE_SIZE-1)
@@ -44,7 +42,7 @@ void* __wrap_malloc(size_t size){//malloc custom
 	*p=remainder;
 	p++;
 	return p;
-	//do posix_memalign every malloc is very slow
+	//doing posix_memalign every malloc is very slow
 }
 #else
 void __wrap_free(void*data_to_free){//malloc custom
@@ -80,7 +78,7 @@ void* __wrap_malloc(size_t size){//malloc custom
 	*p=remainder;
 	p++;
 	return p;
-	//do posix_memalign every malloc is very slow
+	//doing posix_memalign every malloc is very slow
 }
-#endif
+#endif//LOCK_MEMORY
 #endif
