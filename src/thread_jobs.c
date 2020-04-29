@@ -441,15 +441,15 @@ void join_all_threads(pthread_t*array_tid,int length_array){
     return;
 }
 int calculate_start_factor_base(int id_thread){
-    long remainder=reduce_int_mod_n_v2(B,NUM_THREAD_FACTOR_BASE+1);
+    long remainder=reduce_int_mod_n_v2(B,NUM_THREAD_FACTOR_BASE+1);//rem=b mod num_thread
     long length=(B-remainder)/(NUM_THREAD_FACTOR_BASE+1);
-    int start=id_thread*length+1;
+    int start=id_thread*length+1;//se id=0 start=1
     return start;
 }
 int thread_job_to_create_factor_base(int id_thread){
     long remainder=reduce_int_mod_n_v2(B,NUM_THREAD_FACTOR_BASE+1);//rem=b mod num_thread
     long length=(B-remainder)/(NUM_THREAD_FACTOR_BASE+1);
-    int start=id_thread*length+1;//se id=o start=1
+    int start=id_thread*length+1;//se id=0 start=1
     int end=start+length-1;
     //es remainder=0 thread=5 B=500.000 -> len=100.000 start=0*100000+1,end=1+100000-1=100000,start2=100001,end2=200000
     thread_factor_base_data[id_thread].last_prime_factor_base=start;
@@ -462,6 +462,7 @@ void* thread_job_factor_base(void*arg){
     pthread_exit(NULL);
     return NULL;
 }
+
 int* create_factor_base_threads(pthread_t*array_tid,int num_thread){//ritorna il numero di thread creati con successo
     if(num_thread<0 || array_tid==NULL){
         handle_error_with_exit("error in create_thread\n");

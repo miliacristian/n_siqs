@@ -33,8 +33,8 @@
 	int*index_prime_a=NULL;//indice dei primi usati per ottenere a,rispetto alla factor base
 	int*number_prime_a=NULL;//numeri primi usati per ottenere a
 	extern struct a_struct*array_a_struct;
-    int combined_relations;
-    char combined;
+    int num_combined_relations;
+    char combined;//TODO farlo diventare bool
     extern mpz_t thresold_large_prime;
     double thresold_relation;
 
@@ -42,6 +42,7 @@ void print_git_commit_hash(){
     int res=system("echo commit hash: `git log --pretty=format:'%H' -n 1`");
     (void)res;
 }
+
 void print_macros_enabled(){
 	#if DEBUG == 1
     printf("\t- DEBUG mode enabled.\n");
@@ -50,9 +51,11 @@ void print_macros_enabled(){
 	printf("\t- LINEAR_PINNING mode enabled.\n");
 	#endif
 }
+
 void print_statistics(){
 	printf("TODO statistics to print\n");
 }
+
 int main(int argc,char*argv[]){
     if(argc!=2 && argc!=3){//se non c'è esattamente un parametro,termina,serve il path in cui c'è scritto il numero all'interno
         handle_error_with_exit("usage<path>\n");
@@ -91,10 +94,10 @@ int main(int argc,char*argv[]){
 
 		//dichiarazione variabili
 		num_increment_M_and_B=0;
-		cardinality_factor_base=0;
+		cardinality_factor_base=0;//cardinalità della factor base impostata a 0
 		char main_thread_work=1;
 		combined=0;
-		combined_relations=0;
+		num_combined_relations=0;
 		int removed;
 		mpz_t a_default,b_default;//a,b sono i coefficienti del polinomio aj^2+2bj+c,thresold a serve per calcolare il valore di a
 		int*array_id=NULL;//array che contiene gli id dei nuovi thread creati a partire da 0
@@ -107,16 +110,19 @@ int main(int argc,char*argv[]){
 		int factorizations_founded=-1;//numero di fattorizazzioni trovate
 		char factorized=0;//indica se il numero è stato fattorizzato o no
 		char digit=-1;//numero cifre di n
+
 		struct node_square_relation*head_residuos=NULL,*tail_residuos=NULL;
         struct node_square_relation*head_square=NULL,*tail_square=NULL;
 		struct node_square_relation *head_sort_residuos=NULL,*tail_sort_residuos=NULL;//contengono tutte le relazioni quadratiche
 		struct node_square_relation *head_sort_square=NULL,*tail_sort_square=NULL;
         int last_prime_factor_base=1;//indica l'ultimo primo della factor base,e quindi da quale primo si inizia a creare la factor base se una factor base è già esistente
-                //se last_prime==1 allora si aggiungono alla factor base anche -1 e 2
+                //valore speciale ==1,se last_prime==1 allora si aggiungono alla factor base anche -1 e 2
         char factor_base_already_exist=0;//indica se la factor base è già esistente oppure no
-        int start=0,number_cycle=0;
+        int number_cycle=0;//numero di cicli necessari per trovare la fattorizzazione
+		int start=0;//start della factor base
 		k=1;//moltiplicatore di n
-		unsigned int num_spawned_threads=0;
+		unsigned int num_spawned_threads=0,num_times_spawned_threads=0;//indica il numero di volte che i thread vengono creati
+		
 		//mpz_init
 		mpz_init(n);
 		mpz_init(a_old);
@@ -129,6 +135,7 @@ int main(int argc,char*argv[]){
 		mpz_init(a_default);
 		mpz_init(thresold_large_prime);
 		
+		//mpz_set
 		mpz_set_si(b1,-1);//b1=-1
         mpz_set_si(a_old,0);
         mpz_set_si(a_new,0);
@@ -162,6 +169,7 @@ int main(int argc,char*argv[]){
             handle_error_with_exit("error in B or M\n");
         }
         #endif
+
 		//k,moltiplicatore di n per renderlo un quadrato modulo 8
 		multiply_n_for_k(n,&k,&factorized);
 		if(factorized==1){//se n viene fattorizzato pulire la memoria e terminare il programma
@@ -199,13 +207,15 @@ int main(int argc,char*argv[]){
 			//thresold_a per applicare siqs
 			calculate_thresold_a(thresold_a,n,M);//a è circa rad(2*n)/M
 			print_time_elapsed("time to calculate thresold_a");
+
 			//factor base
 			if(factor_base_already_exist==0 && B>THRESOLD_B && NUM_THREAD_FACTOR_BASE>0) {//se la factor base non è mai stata creata
 				// e se B è maggiore del valore soglia e numero thread per creare factor base>0
-				thread_factor_base_data = alloc_array_factor_base_data(NUM_THREAD_FACTOR_BASE + 1);//alloca struttura condivisa a tutti i thread,
-				        // ogni thread ha il propri indice
+				thread_factor_base_data = alloc_array_factor_base_data(NUM_THREAD_FACTOR_BASE);//alloca struttura condivisa a tutti i thread,
+				        // ogni thread ha il proprio indice
 				array_tid = alloc_array_tid(NUM_THREAD_FACTOR_BASE);//alloca memoria per contenere tutti i tid
-				array_id = create_factor_base_threads(array_tid, NUM_THREAD_FACTOR_BASE);//crea tutti i thread
+				//TODO array_id non è necessario, non va allocato e non va liberato
+				array_id = create_factor_base_threads(array_tid, NUM_THREAD_FACTOR_BASE);//crea tutti i thread e ogni thread crea la sua porzione di factor base
 				join_all_threads(array_tid, NUM_THREAD_FACTOR_BASE);//aspetta tutti i thread
 				if (array_tid != NULL) {//libera memoria allocata
 					free(array_tid);
@@ -262,7 +272,7 @@ int main(int argc,char*argv[]){
             #endif
             print_time_elapsed("time to calculate factor base");
 			//a,per siqs e generare tutti gli altri b,prodotto di primi dispari distinti
-			calculate_a_f2(a_new,thresold_a,&s,head_f_base_f,cardinality_factor_base,&index_prime_a,&number_prime_a);
+			calculate_a(a_new,thresold_a,&s,head_f_base_f,cardinality_factor_base,&index_prime_a,&number_prime_a);
             #if DEBUG==1
             if(s==0 && mpz_cmp_si(a_new,0)!=0){
                 handle_error_with_exit("error in main calculate a 1\n");
@@ -283,7 +293,7 @@ int main(int argc,char*argv[]){
                     number_prime_a=NULL;
                 }
 				calculate_thresold_a(thresold_a,n,M);
-				calculate_a_f2(a_new,thresold_a,&s,head_f_base_f,cardinality_factor_base,&index_prime_a,&number_prime_a);
+				calculate_a(a_new,thresold_a,&s,head_f_base_f,cardinality_factor_base,&index_prime_a,&number_prime_a);
                 #if DEBUG==1
                 if(s==0 && mpz_cmp_si(a_new,0)!=0){
                     handle_error_with_exit("error in main calculate a 1\n");
@@ -321,7 +331,7 @@ int main(int argc,char*argv[]){
             }
             print_time_elapsed("time to calculate a");
 			//array Bk,può essere ridotto modulo a
-			array_Bk=calculate_array_Bk_f(number_prime_a,cardinality_factor_base,n,s,a_old,b1);
+			array_Bk=calculate_array_Bk(number_prime_a,cardinality_factor_base,n,s,a_old,b1);
 
 			//array bi
 			array_bi=calculate_bi(array_Bk,b1,s);
@@ -346,7 +356,7 @@ int main(int argc,char*argv[]){
 			}
 			print_time_elapsed("time to calculate array_bi and array_Bk");
 			//alloca struttura dati dei thread per fare il sieving
-            thread_polynomial_data=alloc_array_polynomial_thread_data(NUM_THREAD_POLYNOMIAL+1,M);
+            thread_polynomial_data=alloc_array_polynomial_thread_data(NUM_THREAD_POLYNOMIAL+1,M);//TODO la struttura dati in più serve per aggregare?
 			print_time_elapsed("time to alloc polynomial data");
 			//creazione della struttura row_factorization
 			// row_factorization contiene primi factor base,log per ogni primo radice 1 e radice 2 di n mod p e a^-1 mod p)
@@ -366,6 +376,7 @@ int main(int argc,char*argv[]){
 				array_tid=alloc_array_tid(NUM_THREAD_POLYNOMIAL);//alloca memoria per contenere tutti i tid
 				array_id=create_threads(array_tid,NUM_THREAD_POLYNOMIAL);//crea tutti i thread
 				num_spawned_threads+=NUM_THREAD_POLYNOMIAL;
+				num_times_spawned_threads++;
 			}
 			//fattorizza numeri nell'array lungo 2m+1
             if(s==0){//se non ci sono thread disponibili riattiva il main thread
@@ -456,8 +467,8 @@ int main(int argc,char*argv[]){
                 }
                 #endif
 				factorizations_founded = combine_relation_B_smooth_and_semi_B_smooth_v3(&head_square,
-																						&tail_square, &head_sort_residuos,&tail_sort_residuos, n, &num_B_smooth, &num_semi_B_smooth,&combined_relations);
-                printf("combined_relations=%d\n",combined_relations);
+																						&tail_square, &head_sort_residuos,&tail_sort_residuos, n, &num_B_smooth, &num_semi_B_smooth,&num_combined_relations);
+                printf("num_combined_relations=%d\n",num_combined_relations);
 				head_sort_residuos = NULL;
 				tail_sort_residuos = NULL;
                 if (factorizations_founded == 1) {
@@ -529,7 +540,7 @@ int main(int argc,char*argv[]){
                 continue;
             }
 			print_total_time_elapsed("time total to finish math steps",time_start);
-			printf("num spawned threads=%u\n",num_spawned_threads);
+			printf("num spawned threads=%u,num_times_spawned_threads=%u\n",num_spawned_threads,num_times_spawned_threads);
 			printf("num malloc called=%ld\n",num_times_malloc_called);
 			printf("num free called=%ld\n",num_times_free_called);
 			//handle_error_with_exit("finish math steps\n");
@@ -583,7 +594,7 @@ int main(int argc,char*argv[]){
 			}
 			#endif
 			print_time_elapsed("time to calculate base linear system");
-			printf("combined_relations=%d\n",combined_relations);
+			printf("num_combined_relations=%d\n",num_combined_relations);
 			#if DEBUG==1
 			if(check_solution_base_matrix_char(linear_system,cardinality_factor_base,num_col_linear_system,
             base_matrix,num_B_smooth,dim_sol)==0){
@@ -674,7 +685,7 @@ int main(int argc,char*argv[]){
 		mpz_clear(thresold_large_prime);
 
 		//tempo totale,imposta il tempo iniziale alla struct,tempo totale=get_time-tempo iniziale
-		printf("combined_relations=%d,combined=%d\n",combined_relations,combined);
+		printf("num_combined_relations=%d,combined=%d\n",num_combined_relations,combined);
 		timer.tv_nsec=time_start.tv_nsec;//timer=time_start
 		timer.tv_sec=time_start.tv_sec;//timer=time_start
 		print_time_elapsed("time_total");

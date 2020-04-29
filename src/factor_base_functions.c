@@ -389,6 +389,7 @@ struct factor_base_data* alloc_array_factor_base_data(int length){
     memset(array_factor_base,0, sizeof(struct factor_base_data)*length);
     return array_factor_base;
 }
+
 struct node_factor_base* initialize_factor_base(int*cardinality_factor_base,long B,struct node_factor_base**tail,const mpz_t n,int *last_prime_factor_base){
     if(B<2 || tail==NULL || cardinality_factor_base==NULL || n==NULL || last_prime_factor_base==NULL){
         handle_error_with_exit("error in parameter\n");

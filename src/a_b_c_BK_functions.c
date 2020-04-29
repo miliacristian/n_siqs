@@ -320,7 +320,7 @@ void calculate_x0(mpz_t x0,const mpz_t n,int k,char *factorized){
     mpz_clear(n_temp);
     return;
 }
-void calculate_p_min_p_max_i_f(long*p_min_i,long*p_max_i,struct node_factor_base*head_f_base_f,long cardinality_factor_base){
+void calculate_p_min_p_max_i(long*p_min_i,long*p_max_i,struct node_factor_base*head_f_base_f,long cardinality_factor_base){
     if(p_min_i==NULL || p_max_i==NULL || head_f_base_f==NULL || cardinality_factor_base<=0){
         handle_error_with_exit("error in calculate _p_min_p_max_i\n");
     }
@@ -353,7 +353,7 @@ void calculate_p_min_p_max_i_f(long*p_min_i,long*p_max_i,struct node_factor_base
     return;
 }
 
-void calculate_target_a1_f(mpfr_t target_a1,const mpfr_t target_a,struct node_factor_base*head_f_base_f,
+void calculate_target_a1(mpfr_t target_a1,const mpfr_t target_a,struct node_factor_base*head_f_base_f,
                            long p_min_i,long p_max_i,int 	cardinality_factor_base){
     if(target_a==NULL || head_f_base_f==NULL || p_min_i<0 || p_max_i<=0 || p_min_i>p_max_i || target_a1==NULL ||
        cardinality_factor_base<=p_max_i){
@@ -408,7 +408,7 @@ void calculate_target_a1_f(mpfr_t target_a1,const mpfr_t target_a,struct node_fa
     return;
 }
 
-void calculate_a_f2(mpz_t a,const mpfr_t target_a,int*s,struct node_factor_base*head_f_base_f,long cardinality_factor_base,int**best_q,int**best_q_number){
+void calculate_a(mpz_t a,const mpfr_t target_a,int*s,struct node_factor_base*head_f_base_f,long cardinality_factor_base,int**best_q,int**best_q_number){
     if(s==NULL || target_a==NULL || mpfr_sgn(target_a)<0 || head_f_base_f==NULL || cardinality_factor_base<=0 || a==NULL || best_q==NULL || best_q_number==NULL){
         handle_error_with_exit("error in calculate_a\n");
     }
@@ -467,12 +467,12 @@ void calculate_a_f2(mpz_t a,const mpfr_t target_a,int*s,struct node_factor_base*
     mpz_set_si(best_a,0);//best_a=0
     mpfr_set_si(best_ratio,0,MPFR_RNDN);//best_target=0
 
-    calculate_p_min_p_max_i_f(&p_min_i,&p_max_i,head_f_base_f,cardinality_factor_base);
+    calculate_p_min_p_max_i(&p_min_i,&p_max_i,head_f_base_f,cardinality_factor_base);
     s_max=p_max_i-p_min_i+1;//nel caso peggiore s=p_max-p_min+1
     if(s_max>S_MAX){
         s_max=S_MAX;
     }
-    calculate_target_a1_f(target_a1,target_a,head_f_base_f,p_min_i,p_max_i,cardinality_factor_base);
+    calculate_target_a1(target_a1,target_a,head_f_base_f,p_min_i,p_max_i,cardinality_factor_base);
     if(mpfr_cmp_si(target_a1,1)<=0){//se target_a1<0 poni s=0 e ritorna
         mpz_set_si(a,0);//poni a=0
         *s=0;
@@ -587,7 +587,7 @@ void calculate_a_f2(mpz_t a,const mpfr_t target_a,int*s,struct node_factor_base*
     return;
 }
 
-mpz_t*calculate_array_Bk_f(int*number_prime_a,int card_factor_base,const mpz_t n,long s,const mpz_t a,mpz_t b1){
+mpz_t*calculate_array_Bk(int*number_prime_a,int card_factor_base,const mpz_t n,long s,const mpz_t a,mpz_t b1){
     mpz_t*array_Bk=NULL;
     long vpk;
     char t;

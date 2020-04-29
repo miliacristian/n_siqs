@@ -1,8 +1,8 @@
 -fixare errore su NUM_OF_N_TO_FACTORIZE maggiore di 1.
+-rimuovere tutte le occorrenze di versioni multiple e funzioni che terminano per _f
 -migliorare l'accesso alle strutture dati esistenti per sfruttare la massimo la cache locality (implementare factor base con array dinamico e algoritmo di sieving che per calcolare la somma dei log di P cicla in un modo specifico)
 -provare ad inserire relazioni quadratiche uguali(poche) per vedere se il codice è robusto e l'algoritmo continua a fattorizzare correttamente
 -fare in modo che i thread non vengano mai ricreati tramite barriere di sincronizzazione(
--numero thread pari al numero di core,ottenerlo con le macro a tempo di compilazione
 -alloc/free meno possibile gestione della memoria manuale con wrapper,riutilizzo della memoria liberata o con madvise,posix_memalign mallopt,madvise ecc
 -parallelizzare le parti sequenziali come la parte di geometria
 -inserire define per far assumere al programma diversi comportamenti in base alla compilazione
