@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS =-Wall -Wextra -o3 -finline-functions -funroll-loops
+CFLAGS =-Wall -Wextra -funroll-loops -march=native -Ofast
 CFILES=$(shell ls *.c)
 PROGS=$(CFILES:%.c=%)
 

@@ -387,7 +387,7 @@ int main(int argc,char*argv[]){
 					main_thread_work = 0;
 				}
 				mpz_set(thread_polynomial_data[NUM_THREAD_POLYNOMIAL].b, b_default);//imposta b
-				factor_matrix_f(n, M, (&(thread_polynomial_data[NUM_THREAD_POLYNOMIAL])), cardinality_factor_base,
+				factor_matrix(n, M, (&(thread_polynomial_data[NUM_THREAD_POLYNOMIAL])), cardinality_factor_base,
 								a_default, array_a_struct, s);//fattorizza numeri
 
 				//trova relazioni quadratiche o semi_B_smooth e ordinale per numero

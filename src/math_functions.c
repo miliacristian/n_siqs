@@ -232,7 +232,7 @@ int rand_long(long a,long b){
 }
 
 long floor_sqrt(long x){//cerca con ricerca binaria la radice intera di n
-	long start = 1, end = x/2, ans,mid;  
+	long start = 1, end = x/2, ans=-1,mid=-1;  
 	// Base cases 
 	if(x<0){
 		handle_error_with_exit("impossibile trovare radice di un numero negativo\n");

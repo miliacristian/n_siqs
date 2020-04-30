@@ -15,6 +15,8 @@
 #define MAX_ITER2 3000 //iterazioni massime per calcolare a,
 #define RATIO_A 1.0 //rapporto tra "a" ideale e "a" trovato,se ratio=1 si vuole a trovato molto molto vicino ad a ideale
 
+#define NO_INDEX (-1)
+#define NUM_INTEGER_IN_CACHE_LINE CACHE_LINE_SIZE/sizeof(int)
 #define NUM_THREAD_FACTOR_BASE N_CPU//numero thread supplementari per costruire factor base
 #define NUM_THREAD_POLYNOMIAL N_CPU //numero di thread supplementari per calcolare i polinomi di siqs
 #define S_MAX 11//corrisponde a 2^(S_MAX-1) polinomi diversi,limita il numero di polinomi possibili
