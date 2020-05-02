@@ -147,7 +147,7 @@ void calculate_best_M_and_B(const mpz_t n,int digit_n,long*M,long*B,long*num_ele
 		return;
 	}
     if(digit_n<60){//50 secondi
-        *M=40000;
+        *M=80000;
         *B=130000;
         thresold_relation=0.6;
         *num_elem_array_number=*(M)*2+1;

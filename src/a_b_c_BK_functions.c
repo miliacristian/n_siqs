@@ -472,6 +472,7 @@ void calculate_a(mpz_t a,const mpfr_t target_a,int*s,struct node_factor_base*hea
     if(s_max>S_MAX){
         s_max=S_MAX;
     }
+    printf("s_max=%ld\n",s_max);
     calculate_target_a1(target_a1,target_a,head_f_base_f,p_min_i,p_max_i,cardinality_factor_base);
     if(mpfr_cmp_si(target_a1,1)<=0){//se target_a1<0 poni s=0 e ritorna
         mpz_set_si(a,0);//poni a=0
@@ -557,22 +558,35 @@ void calculate_a(mpz_t a,const mpfr_t target_a,int*s,struct node_factor_base*hea
         }
     }
 
+    
     mpz_set_si(a,1);//a=1
     for(int i=0;i<length_best_q;i++){//moltiplica tutti i fattori di a
         mpz_mul_si(a,a,(*best_q_number)[i]);
     }
+    printf("best_ratio_double=%lf\n",best_ratio_double);
+    gmp_printf("a=%Zd\n",a);
+    printf("target_a=\n");
+    mpfr_out_str (stdout, 10, 0, target_a, MPFR_RNDD);
+    printf("\n");
+    printf("target_a1=\n");
+    mpfr_out_str (stdout, 10, 0, target_a1, MPFR_RNDD);
+    printf("\n");
+    #if DEBUG==1
     if(mpz_cmp(best_a,a)!=0){
         gmp_printf("a=%Zd\n",a);
         gmp_printf("best_a=%Zd\n",best_a);
         handle_error_with_exit("error in calculate a\n");
     }
+    #endif
     *s=length_best_q;//imposta il valore di s
+    #if DEBUG==1
     if(*s>s_max){
         handle_error_with_exit("error in calculate a,s must be minor or equal to s_max\n");
     }
     if(*s==0 && mpz_cmp(a,0)!=0){
         handle_error_with_exit("error in function calculate_a s or a\n");
     }
+    #endif
     free(q);
     free(q_number);
     mpfr_clear(p_rational);

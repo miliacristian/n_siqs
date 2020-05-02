@@ -8,18 +8,21 @@
 #define THRESOLD_PRINT_LIST 1000 //dopo il valore di soglia la lista non viene stampata
 #define THRESOLD_PRINT_MATRIX_ROW 1000
 #define THRESOLD_PRINT_MATRIX_COL 1000
+
 #define SIQS_MIN_PRIME_POLYNOMIAL 400 //parametri per il calcolo di a
 #define SIQS_MAX_PRIME_POLYNOMIAL 4000 //parametri per il calcolo di a
 #define NUM_ITER_FOR_CALCULATE_A 30 //parametri per il calcolo di a,a diversi che vengono generati,si sceglie quello migliore
 #define MAX_ITER 3000 //iterazioni massime per calcolare a
 #define MAX_ITER2 3000 //iterazioni massime per calcolare a,
 #define RATIO_A 1.0 //rapporto tra "a" ideale e "a" trovato,se ratio=1 si vuole a trovato molto molto vicino ad a ideale
+#define S_MAX 11//corrisponde a 2^(S_MAX-1) polinomi diversi,limita il numero di polinomi possibili
+
 
 #define NO_INDEX (-1)
 #define NUM_INTEGER_IN_CACHE_LINE CACHE_LINE_SIZE/sizeof(int)
 #define NUM_THREAD_FACTOR_BASE N_CPU//numero thread supplementari per costruire factor base
 #define NUM_THREAD_POLYNOMIAL N_CPU //numero di thread supplementari per calcolare i polinomi di siqs
-#define S_MAX 11//corrisponde a 2^(S_MAX-1) polinomi diversi,limita il numero di polinomi possibili
+
 #define MAX_DIM_SOL 16 //dimensione soluzione massima del sistema lineare,si hanno a disposizione 2^(max_dim_sol)-1 soluzioni diverse
 #define PERC_INCREMENT_M 50 //quanto aumenta in percentuale M se non si riesce a fattorizzare n
 #define PERC_INCREMENT_B 20 //quanto aumenta in percentuale B se non si riesce a fattorizzare n

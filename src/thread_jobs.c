@@ -116,8 +116,8 @@ void find_list_square_relation(struct thread_data *pthread_data, int *num_B_smoo
     return;
 }
 void divide_all_by_p_to_k(int rad,long p,int index_of_prime,long k,long M,struct thread_data *pthread_data,const mpz_t n,const mpz_t a,const mpz_t b,const struct a_struct*array_a_struct,int*index_array_a_struct,int s){//r=square root di n mod p^k,ritorna >zero se c'è stata almeno 1 divisione
-//a(j)=aj^2+2bj+c,se polinomio forma semplice a=1 e b=x0
-//(x0+j)^2==n mod p^k r:r^2==n mod p^k -> r=x0+j ->j=r-x0
+//a(j)=aj^2+2bj+c,
+//se polinomio forma semplice allora a=1 e b=x0 (x0+j)^2==n mod p^k, r:r^2==n mod p^k -> r=x0+j ->j=r-x0
 //una volta trovate le soluzioni r1 e r2 e una volta trovati j e t le altre soluzioni sono della forma j+l*p^k t+h*p^k,cioè a salti di p^k rispetto a t e j,dove l ed h sono interi
 //n.b j+l*p^k è sempre diverso da t+h*p^k per ogni l ed h interi,quindi non bisogna memorizzare quali elementi dell'array sono stati divisi per p
 
@@ -314,29 +314,6 @@ void divide_all_by_2_log(long M,struct thread_data *pthread_data){//divide gli e
     thread_data.j2_mod_p[1]=NO_INDEX;
     return;
 }
-/*void factor_matrix(const mpz_t n,long M,struct thread_data *thread_data,const int cardinality_factor_base,const mpz_t a,
-                     const struct a_struct*array_a_struct,int s){
-    #if DEBUG==1
-    if(n==NULL || a==NULL || mpz_sgn(n)<=0 || M<=0 || cardinality_factor_base<=0 || (array_a_struct==NULL && s>0) || s<0){
-        handle_error_with_exit("error in factor matrix_f\n");
-    }
-    #endif
-    long p;
-    int index_array_a_struct=0;
-    for (int i=0;i<cardinality_factor_base;i++){//per ogni elemento della factor base
-        p=r.prime[i];//primo iesimo della factor base
-        if(p==-1){
-            continue;
-        }
-        if(p==2){
-            divide_all_by_2_log(M,thread_data);
-        }
-        else{//p>2 e dispari
-            divide_all_by_p_to_k_f(r.root_n_mod_p[i],p,i,1,M,thread_data,n,a,thread_data->b,array_a_struct,&index_array_a_struct,s);
-        }
-    }
-    return;
-}*/
 
 void factor_matrix(const mpz_t n,long M,struct thread_data *thread_data,const int cardinality_factor_base,const mpz_t a,
                      const struct a_struct*array_a_struct,int s){
@@ -345,12 +322,14 @@ void factor_matrix(const mpz_t n,long M,struct thread_data *thread_data,const in
         handle_error_with_exit("error in factor matrix_f\n");
     }
     #endif
+    mpz_t num;
     struct timespec timer_sieving,timer_roots;
     gettime(&timer_roots);
     long p;
     int index_array_a_struct=0;
     long prime;
-    int next_index_rad1,next_index_rad2;
+    int index_root1,index_root2;
+    mpz_init(num);
     for (int i=0;i<cardinality_factor_base;i++){//per ogni elemento della factor base
         p=r.prime[i];//primo iesimo della factor base
         if(p==-1){
@@ -367,22 +346,36 @@ void factor_matrix(const mpz_t n,long M,struct thread_data *thread_data,const in
     gettime(&timer_sieving);
     for(int index_prime=1;index_prime<cardinality_factor_base;index_prime++){
         prime=r.prime[index_prime];//primo iesimo della factor base
-        next_index_rad1=thread_data->j1_mod_p[index_prime]+M;
-        next_index_rad1%=prime;
+        index_root1=thread_data->j1_mod_p[index_prime]+M;
+        index_root1%=prime;
         if(thread_data->j2_mod_p[index_prime]!=NO_INDEX){
-            next_index_rad2=thread_data->j2_mod_p[index_prime]+M;
-            next_index_rad2%=prime;
+            index_root2=thread_data->j2_mod_p[index_prime]+M;
+            index_root2%=prime;
         }
         else{//esiste una sola soluzione
-            next_index_rad2=NO_INDEX;
+            index_root2=NO_INDEX;
         }
         int log_prime=r.log_prime[index_prime];
-        for(;next_index_rad1<2*M+1;next_index_rad1+=prime){
-            thread_data->numbers[next_index_rad1].sum_log+=log_prime;
+        #if DEBUG==1
+        create_num(num,a,thread_data->b,n,thread_data->numbers[index_root1].j);
+        if(mpz_divisible_ui_p(num,prime)==0){//non è divisibile
+            printf("number at index %d not divisible for prime(root1)\n",index_root1);
+            handle_error_with_exit("");
         }
-        if(next_index_rad2!=NO_INDEX){
-            for(;next_index_rad2< 2*M+1;next_index_rad2+=prime){
-                thread_data->numbers[next_index_rad2].sum_log+=log_prime;
+        #endif
+        for(;index_root1<2*M+1;index_root1+=prime){
+            thread_data->numbers[index_root1].sum_log+=log_prime;
+        }
+        if(index_root2!=NO_INDEX){
+            #if DEBUG==1
+            create_num(num,a,thread_data->b,n,thread_data->numbers[index_root2].j);
+            if(mpz_divisible_ui_p(num,prime)==0){//non è divisibile
+                printf("number at index %d not divisible for prime(root2)\n",index_root2);
+                handle_error_with_exit("");
+            }
+            #endif
+            for(;index_root2< 2*M+1;index_root2+=prime){
+                thread_data->numbers[index_root2].sum_log+=log_prime;
             }
         }
     }
@@ -541,6 +534,7 @@ int thread_job_criv_quad(int id_thread){//id inizia da 0,il lavoro di un thread 
     {
         handle_error_with_exit("impossible pinning thread to core\n");
     }
+    unsigned int number_cycle=0;
     int local_num_thread_job=num_thread_job;
     const int end_condition=local_num_thread_job-2;
     if(id_thread>end_condition){//l'indice del thread eccede il numero di job da fare
@@ -559,7 +553,7 @@ int thread_job_criv_quad(int id_thread){//id inizia da 0,il lavoro di un thread 
     
     for(int count=id_thread;count<=end_condition;count+=NUM_THREAD_POLYNOMIAL,local_b+=NUM_THREAD_POLYNOMIAL){//ogni thread prende un sottoinsieme di compiti,il thread con id 0 farà i compiti 0,NUM_THREAD,2*NUM_THREAD,il thread 1 farà 1,NUM_THREAD+1,2*NUM_THREAD+1 ecc
         //fattorizzazione,alla fine ogni thread ha una lista di relazioni quadratiche
-
+        //printf("count=%u,end_condition=%u,num_thread_polynomial=%u\n",count,end_condition,NUM_THREAD_POLYNOMIAL);
         //fattorizza array di 2m+1 elementi e memorizza la somma dei logaritmi per ogni posizione e
         // indici last e first che ci dicono il primo elemento divisibile per num e l'ultimo(questo facilita la trial division)
         //mpz_set(local_thread_data->b,array_bi[count]);//imposta ad ogni ciclo il valore di b,array_bi è globale ma non viene più acceduto,thread_polynomial_data[id_thread].b=array_bi[count] è globale ma viene acceduto solo in lettura
@@ -579,7 +573,9 @@ int thread_job_criv_quad(int id_thread){//id inizia da 0,il lavoro di un thread 
         tail_squares=NULL;//resetta la lista locale delle relazioni quadratiche
         head_residuoss=NULL;
         tail_residuoss=NULL;
+        number_cycle++;
     }
+    printf("tid=%u,number_cycle=%u\n",id_thread,number_cycle);
     print_time_elapsed_local("time to finish thread job",&timer_thread_start,tid);
     return 0;
 }
